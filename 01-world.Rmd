@@ -1,0 +1,81 @@
+# The World of Time Series
+
+## Objective of Time Series
+
+1. View a set of observations made sequentially in "time."
+    * "One damned thing after another." ~ R. A. Fisher
+2. Find a suitable model to describe an observed process 
+    * "All models are wrong, but some are useful" ~ George Box
+3. Forecast future observations 
+    * "Prediction is very difficult, especially if it's about the future." ~ Niels Bohr
+
+In essence, we seek to be able to predict, classify, and associate observed data with a theoretical backend. To do so, one must first create a model that provides an explanation of the data as a mixture of a pattern and noise (error). That is, we must be able to formulate the data in terms of: 
+
+Model = Pattern + Noise
+
+In Time Series, the pattern represents the association between values observed over time (e.g. autocorrelation). 
+
+***Since these patterns are correlated in time, methods that assume independence are unable to be used.***
+
+## What is a Time Series and can I eat it?
+
+The definition of ***Time Series (TS)*** is as follows: 
+
+A ***Time Series*** is a stochastic process, a sequence of random variables (RV) defined on a common probability space denoted as $\left(X_t\right)_{t=1, \ldots, T}$ (i.e. $X_1, X_2, \ldots, X_T$).
+
+Note: The time $t$ belongs to discrete index sets ($\in \mathbb{Z}$) not continuous ($\notin \mathbb{R}$). After all, TS data is always collected at discrete time points. Furthermore, by time belonging to $\mathbb{Z}$ it can take upon itself negative and positive integer values (e.g. $-2, -1, 0, 1, 2$).
+
+In laypersons terms, a time series is a variable that gets measured sequentially at fixed intervals of time, which are oftenly spaced apart at equal distances (e.g. equispaced).
+
+Examples of Time Series:
+
+1. Stock Data from Johnson and Johson's Quarterly earnings...
+
+```{r example_jj, echo=FALSE, fig.height=4, fig.width=7, cache=TRUE}
+```
+
+2. Speech data from someone talking
+
+```{r example_speech, echo=FALSE, fig.height=4, fig.width=7, cache=TRUE}
+```
+
+3. Earthquake and explosion data
+
+```{r example_eq, echo=FALSE, fig.height=4, fig.width=7, cache=TRUE}
+```
+
+
+## Exploratory Data Analysis (EDA) for Time Series
+
+A large part of time series involves looking at graphs of time series. The graphs provide us information as to what kind of trends and outliers the data maybe hiding.
+
+### Identifying Trends
+A trend exists when there is a long term increase or decrease or combination of increases or decreases (polynomial) in the data. It could be linear or non-linear. 
+
+Note: Long-term trend might change direction, indicating non-linear trends!
+
+Examples of non-linear trends:
+
+1. Seasonal trends (periodic): These are the cyclical patterns which repeat after a fixed/regular time period.
+    * Business cycles (bust/recession, recovery, boom)
+    * Seasons (summer, fall, winter, spring)
+    
+2. Non-seasonal trends (periodic): These patterns cannot be associated to seasonal variation.
+    * Impact of economic indicators on stock returns.
+3. "Other" trends: These trends have no regular patterns. They could be just local, short-term. They change statistical properties of a TS over a segment of time ("window").
+    * Earthquakes!
+    * El Nino
+
+### Noticing changes in time and outliers
+
+Change in time and outliers yields interesting results. These results can be seen as:
+
+1. Change in Means
+    * Change in means of a TS can be related to long-term, cyclical, and short-term trends.
+2. Change in Variance
+    * Change in variance can be related to change in the amplitude of the fluctuations of a TS.
+3. Change in State
+    * An event which causes change in statistical properties of TS for short term and long term! Some events cause abrupt changes in statistical properties of TS. They are often associated with "explosive" nature of TS.
+4. Outliers
+    * These are the "extreme" observations in the time series. May be related to data collection or change in state.
+

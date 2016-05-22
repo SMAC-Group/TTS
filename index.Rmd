@@ -1,0 +1,49 @@
+--- 
+title: "Time Series is Great!"
+author: "James Balamuta"
+date: "`r Sys.Date()`"
+knit: "bookdown::render_book"
+documentclass: book
+bibliography: [book.bib]
+biblio-style: apalike
+link-citations: yes
+site: bookdown::bookdown_site
+description: ""
+url: 'https\://coatless.github.io/timeseriesisgreat/'
+github-repo: coatless/timeseriesisgreat
+---
+
+```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
+require(knitr)
+read_chunk('r_book.R')
+options(scipen = 8, width=65)
+```
+
+```{r load_packages, message=FALSE,echo=FALSE, warning=FALSE}
+```
+
+```{r misc_func, echo=FALSE}
+```
+
+# Preface
+## A foreword
+
+The book presented below is a compilation of material and extended explanations that I have sought during my studies of time series. The material is not necessarily traditional, however, the hope is that it is at least helpful and/or provides an alternative explanation for the concepts under observation.
+
+Any typos or other issues should be reported to [James Balamuta](mailto:balamut2@illinois.edu) forthwith.
+
+##  Notation
+
+The following notation will be adopted throughout the book.
+
+* $X$ denotes a (continuous) RV.
+* $X_t$ is $X$ at time $t \in N$.
+* $E\left(X_t\right)$ is the Mean of $X$ at time $t$.
+* $Var\left(X_t\right)$ is the Variance of $X$ at time $t$.
+* $X_{1}, X_{2}, \ldots, X_{k}$ are sequence of random variables.
+* $f\left(x\right)$ denotes the density function of $X$ and $f\left(x, y\right)$ denotes the joint density function of $x$ and $Y$.
+* $\left(X_t\right)_{t=1,\ldots,T} := \left(X_t\right) := (X_1, \ldots, X_T)$.
+
+## R Code
+
+The code used throughout the book is R code. The R code should be able to used as-is. Alongside the PDF download of the book, you should find the R code used within each chapter. 

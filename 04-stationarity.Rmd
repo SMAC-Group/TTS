@@ -1,0 +1,272 @@
+# Stationarity
+
+There are two kinds of stationarity: Strong and Weak Stationarity. These types of stationarity are **not equivalent** and the presence of **one kind of stationarity does not imply the other**. That is, a time series can be strongly stationary but not weakly stationary and vice versa. In very rare cases, a time series can be both strong and weakly stationary. The most common form of stationarity is that of weakly stationarity.
+
+
+## Weak Stationarity
+
+*Definition:* **Weak Stationarity** or **Second-order Stationarity**
+
+The mean and autocovariance of the stochastic process are finite and invariant under a shift in time, i.e.
+$$\begin{aligned}
+E\left[X_t \right] &= \mu_t = \mu < \infty \\
+cov\left(X_t, X_{t+h} \right) &= cov\left(X_{t+k}, X_{t+h+k}\right) = \gamma \left(h\right)
+\end{aligned}$$
+
+
+## Strong Stationarity
+
+*Definition:* **Strong Stationarity** or **Strict Stationarity**
+
+The joint probability distribution of $\left(X_t \right)$, $t \in N$ is invariant under a shift in time, i.e.
+$$P\left(X_t \le x_1, \ldots, X_{t+k} \le x_k \right) = P\left(X_{t+h} \le x_1, \ldots, X_{t+h+k} \le x_k \right)$$
+for any time shift $h$ and any $x_1, x_2, \ldots, x_k$ belong to the domain of $X_{t_1}, X_{t_2}, \ldots, X_{t_k}$ respectively.
+
+So to summarize, we have **weak stationarity** that relies on how *separated each observation* is rather than their location in time. On the flip side, we have **strict stationarity** that relies on the *location in time* instead of how separated observations are.
+
+Stationarity of $X_t$ matters, because it provides the framework in which averaging makes sense. Unless properties like mean and covariance are either fixed or "evolve" in a known manner, we cannot average the observed data.
+
+With this being said, here are a few examples of stationarity:
+
+1. $X_t \sim Cauchy$ is strictly stationary but **NOT** weakly stationary.
+    * The strong stationarity exists due to the symmetric properties of the distribution.
+    * It cannot be weakly stationary because it has an infinite variance!
+2. $X_{2t} = U_{2t}, X_{2t+1} = V_{2t+1} \forall t$ where ${U_t}\mathop \sim \limits^{iid} N\left( {1,1} \right)$ and ${V_t}\mathop \sim \limits^{iid} Exponential\left( 1 \right)$ is weakly stationary but **NOT** strictly stationary.
+    * The weak stationary exists since the mean is constant ($\mu = 1$) and the variance does not depend on time ($\sigma ^2 = 1$).
+    * It cannot be strongly stationary due to values not aligning in time. 
+
+Regarding white noises, we  can obtain different levels of stationarity depending on the assumption:
+
+1. If $X_t \sim WN$, e.g. **uncorrelated observations** with a finite variance, then it is weakly stationary but **NOT** strictly stationary.
+2. If $X_t \mathop \sim \limits^{iid} NWN$, e.g. **normally distributed independent observations** with a finite variance, then it is weakly stationary *AND* strictly stationary.
+
+The autocovariance of weakly stationary processes has the following properties:
+
+1. $\gamma \left(0\right) = var\left[X_t \right] \ge 0$ (variance) 
+2. $\gamma \left(h\right) = \gamma \left(-h\right)$ (function is even / symmetric)
+3. $\left| \gamma \left(h\right) \right| \le \gamma \left( 0 \right) \forall h.$
+
+We obtain these properties through:
+
+1. \[\gamma \left( 0 \right) = Var\left( {{x_t}} \right) = E\left[ {{{\left( {{x_t} - \mu } \right)}^2}} \right] = \sum\limits_{t = 1}^T {{p_t}{{\left( {{x_t} - \mu } \right)}^2}}  = {p_1}{\left( {{x_1} - \mu } \right)^2} +  \cdots  + {p_T}{\left( {{x_T} - \mu } \right)^2} \ge 0\]
+2. \[\begin{aligned}
+  \gamma \left( h \right) &= \gamma \left( {t + h - t} \right) \\
+   &= E\left[ {\left( {{x_{t + h}} - \mu } \right)\left( {{x_t} - \mu } \right)} \right] \\
+   &= E\left[ {\left( {{x_t} - \mu } \right)\left( {{x_{t + h}} - \mu } \right)} \right] \\
+   &= \gamma \left( {t - \left( {t + h} \right)} \right) \\
+   &= \gamma \left( { - h} \right) 
+\end{aligned}\]
+3. Using the Cauchy-Schwarz Inequality, ${\left( {E\left[ {XY} \right]} \right)^2} \le E\left[ {{X^2}} \right]E\left[ {{Y^2}} \right]$, we have:
+\[\begin{aligned}
+  {\left( {\left| {\gamma \left( h \right)} \right|} \right)^2} &= {\left( {\gamma \left( h \right)} \right)^2}  \\
+   &= {\left( {E\left[ {\left( {{x_t} - \mu } \right)\left( {{x_{t + h}} - \mu } \right)} \right]} \right)^2}  \\
+   &\le E\left[ {{{\left( {{x_t} - \mu } \right)}^2}} \right]E\left[ {{{\left( {{x_{t + h}} - \mu } \right)}^2}} \right]  \\
+   &= {\left( {\gamma \left( 0 \right)} \right)^2}  \\
+  {\left( {\gamma \left( h \right)} \right)^2} &\le {\left( {\gamma \left( 0 \right)} \right)^2}  \\
+  \left| {\gamma \left( h \right)} \right| &\le \gamma \left( 0 \right) 
+\end{aligned}\]
+
+## Is it weakly stationary?
+
+In order to verify if it is weakly stationary, we must make sure the time series satisfies:
+
+1. $E\left[y_t \right] = \mu_t = \mu < \infty$
+2. $cov\left(y_t, Y_{t+h} \right) = \gamma \left(h\right)$
+
+
+### Is a random walk weakly stationary?
+
+First up, is a RW stationary? By intuition, the answer should be "no" since there is a randomness component that cannot be accounted for when looking for a pattern. But, we need to prove that.
+
+1. \[\begin{aligned}
+  E\left[ {{y_t}} \right] &= E\left[ {{y_{t - 1}} + {w_t}} \right] \\
+   &= E\left[ {\sum\limits_{i = 1}^t {{w_t}}  + {Y_0}} \right] \\
+   &= E\left[ {\sum\limits_{i = 1}^t {{w_t}} } \right] + {Y_0} \\
+   &= 0 + c \\
+   &= c \\ 
+\end{aligned} \] Note, the mean here is constant since it depends only on the value of the first term in the sequence.
+2. \[\begin{aligned}
+  Var\left( {{y_t}} \right) &= Var\left( {\sum\limits_{i = 1}^t {{w_t}}  + {Y_0}} \right) \\
+   &= Var\left( {\sum\limits_{i = 1}^t {{w_t}} } \right) + \underbrace {Var\left( {{Y_0}} \right)}_{ = 0{\text{ constant}}} \\
+   &= \sum\limits_{i = 1}^t {Var\left( {{w_t}} \right)}  \\
+   &= t\sigma _w^2 \\
+   &\Rightarrow Cov\left( {{y_t},{y_{t + h}}} \right) \ne \gamma \left( h \right) \\ 
+\end{aligned}\] Alas, the variance has a dependence on time. This causes the $Var\left(y_t\right) \ge \infty$ as $t \rightarrow \infty$. As a result, the process is not weakly stationary.
+
+Continuing on just to obtain the covariance, we have:
+\[\begin{aligned}
+  \gamma \left( h \right) &= Cov\left( {{y_t},{y_{t + h}}} \right) \\
+   &= Cov\left( {\sum\limits_{i = 1}^t {{w_i}} ,\sum\limits_{j = 1}^{t + h} {{w_j}} } \right) \\
+   &= Cov\left( {\sum\limits_{i = 1}^t {{w_i}} ,\sum\limits_{j = 1}^t {{w_j}} } \right) \\
+   &= \min \left( {t,t + h} \right)\sigma _w^2 \\
+   &= \left( {t + \min \left( {0,h} \right)} \right)\sigma _w^2 \\ 
+\end{aligned} \]
+
+### Is an MA(1) Stationary?
+
+1. \[\begin{aligned}
+  E\left[ {{y_t}} \right] &= E\left[ {{\theta _1}{w_{t - 1}} + {w_t}} \right] \\
+   &= {\theta _1}E\left[ {{w_{t - 1}}} \right] + E\left[ {{w_t}} \right] \\
+   &= 0 \\
+    \end{aligned}\] The mean is constant over time. So the first criterion is okay.
+2. \[\begin{aligned}
+  Cov\left( {{y_t},{y_{t + h}}} \right) &= E\left[ {\left( {{y_t} - E\left[ {{y_t}} \right]} \right)\left( {{y_{t + h}} - E\left[ {{y_{t + h}}} \right]} \right)} \right] \\
+   &= E\left[ {{y_t}{y_{t + h}}} \right] - \underbrace {E\left[ {{y_t}} \right]}_{ = 0}\underbrace {E\left[ {{y_{t + h}}} \right]}_{ = 0} \\
+   &= E\left[ {\left( {{\theta _1}{w_{t - 1}} + {w_t}} \right)\left( {{\theta _1}{w_{t + h - 1}} + {w_{t + h}}} \right)} \right] \\
+   &= E\left[ {\theta _1^2{w_{t - 1}}{w_{t + h - 1}} + \theta {w_t}{w_{t + h}} + {\theta _1}{w_{t - 1}}{w_{t + h}} + {w_t}{w_{t + h}}} \right] \\
+   &\\
+  E\left[ {{w_t}{w_{t + h}}} \right] &= \operatorname{cov} \left( {{w_t},{w_{t + h}}} \right) + E\left[ {{w_t}} \right]E\left[ {{w_{t + h}}} \right] = {1_{\left\{ {h = 0} \right\}}}\sigma _w^2 \\
+   \\
+   &\Rightarrow Cov\left( {{y_t},{y_{t + h}}} \right) = \left( {\theta _1^2{1_{\left\{ {h = 0} \right\}}} + {\theta _1}{1_{\left\{ {h = 1} \right\}}} + {\theta _1}{1_{\left\{ {h =  - 1} \right\}}} + {1_{\left\{ {h = 0} \right\}}}} \right)\sigma _w^2 \\
+  \gamma \left( h \right) &= \left\{ {\begin{array}{*{20}{c}}
+  {\left( {\theta _1^2 + 1} \right)\sigma _w^2}&{h = 0} \\ 
+  {{\theta _1}\sigma _w^2}&{\left| h \right| = 1} \\ 
+  0&{\left| h \right| > 1} 
+\end{array}} \right. 
+\end{aligned} \] Note, the autocovariance function does not depend on time. Thus, the second weakly stationary criterion is satisfied.
+
+The MA(1) process is weakly stationary since both the mean and variance are constant over time.
+
+As a bonus, note that we also can easily obtain the autocorrelation function (ACF)
+$$\Rightarrow \rho \left( h \right) = \left\{ {\begin{array}{*{20}{c}}
+  1&{h = 0} \\ 
+  {\frac{{{\theta _1}\sigma _w^2}}{{\left( {\theta _1^2 + 1} \right)\sigma _w^2}} = \frac{{{\theta _1}}}{{\theta _1^2 + 1}}}&{\left| h \right| = 1} \\ 
+  0&{\left| h \right| > 1} 
+\end{array}} \right.$$
+
+### Is an AR(1) Stationary?
+
+Consider the AR(1) process given as:
+$${y_t} = {\phi _1}{y_{t - 1}} + {w_t} \text{, where } {w_t}\mathop \sim \limits^{iid} WN\left( {0,\sigma _w^2} \right)$$
+
+This process was shown to simplify to: 
+
+$$y_t = {\phi ^t}{y_0} + \sum\limits_{i = 0}^{t - 1} {\phi _1^i{w_{t - i}}}$$
+
+In addition, we add the requirement that $\left| \phi _1 \right| < 1$. This requirement allows for the process to be stationary. If $\phi _1 \ge 1$, the process would not converge.  This way the process will be able to be written as a geometric series that converges:
+\[\sum\limits_{k = 0}^\infty  {{r^k}}  = \frac{1}{{1 - r}},{\text{ }}\left| r \right| < 1\]
+
+Next, we demonstrate how crucial this property is: 
+
+\[\begin{aligned}
+  \mathop {\lim }\limits_{t \to \infty } E\left[ {{y_t}} \right] &= \mathop {\lim }\limits_{t \to \infty } E\left[ {{\phi ^t}{y_0} + \sum\limits_{i = 0}^{t - 1} {\phi _1^i{w_{t - i}}} } \right] \\
+   &= \mathop {\lim }\limits_{t \to \infty } \underbrace {{\phi ^t}{y_0}}_{\left| \phi  \right| < 1 \Rightarrow t \to \infty {\text{  = 0}}} + \sum\limits_{i = 0}^{t - 1} {\phi _1^i\underbrace {E\left[ {{w_{t - i}}} \right]}_{ = 0}}  \\
+   &= 0 \\
+  \mathop {\lim }\limits_{t \to \infty } Var\left( {{y_t}} \right) &= \mathop {\lim }\limits_{t \to \infty } Var\left( {{\phi ^t}{y_0} + \sum\limits_{i = 0}^{t - 1} {\phi _1^i{w_{t - i}}} } \right) \\
+   &= \mathop {\lim }\limits_{t \to \infty } \underbrace {Var\left( {{\phi ^t}{y_0}} \right)}_{ = 0{\text{ since constant}}} + Var\left( {\sum\limits_{i = 0}^{t - 1} {\phi _1^i{w_{t - i}}} } \right) \\
+   &= \mathop {\lim }\limits_{t \to \infty } \sum\limits_{i = 0}^{t - 1} {\phi _1^{2i}Var\left( {{w_{t - i}}} \right)}  \\
+   &= \mathop {\lim }\limits_{t \to \infty } \sigma _w^2\sum\limits_{i = 0}^{t - 1} {\phi _1^{2i}}  \\
+   &= \sigma _w^2 \cdot  
+  \underbrace {\frac{1}{{1 - {\phi ^2}}}}_{\begin{subarray}{l} 
+  {\text{Geometric Series}} 
+\end{subarray}}
+\end{aligned} \]
+
+This leads us to being able to conclude the autocovariance function is:
+\[\begin{aligned}
+  Cov\left( {{y_t},{y_{t + h}}} \right) &= Cov\left( {{y_t},\phi {y_{t + h - 1}} + {w_{t + h}}} \right) \\
+   &= Cov\left( {{y_t},\phi {y_{t + h - 1}}} \right) \\
+   &= Cov\left( {{y_t},{\phi ^{\left| h \right|}}{y_t}} \right) \\
+   &= {\phi ^{\left| h \right|}}Cov\left( {{y_t},{y_t}} \right) \\
+   &= {\phi ^{\left| h \right|}}Var\left( {{y_t}} \right) \\
+   &= {\phi ^{\left| h \right|}}\frac{{\sigma _w^2}}{{1 - \phi _1^2}} \\ 
+\end{aligned} \]
+
+Both the mean and autocovariance function do not depend on time and, thus, the AR(1) process is stationary if $\left| \phi _1 \right| < 1$. 
+
+If we assume that the AR(1) process is stationary, we can derive the mean and variance in another way. Without a loss of generality, we'll assume $y_0 = 0$.
+
+Therefore:
+
+\[\begin{aligned}
+  {y_t} &= {\phi _t}{y_{t - 1}} + {w_t} \\
+   &= {\phi _1}\left( {{\phi _1}{y_{t - 2}} + {w_{t - 1}}} \right) + {w_t} \\
+   &= \phi _1^2{y_{t - 2}} + {\phi _1}{w_{t - 1}} + {w_t} \\
+   &\vdots  \\
+   &= \sum\limits_{i = 0}^{t - 1} {\phi _1^i{w_{t - i}}}  \\
+   & \\
+  E\left[ {{y_t}} \right] &= E\left[ {\sum\limits_{i = 0}^{t - 1} {\phi _1^i{w_{t - i}}} } \right] \\
+   &= \sum\limits_{i = 0}^{t - 1} {\phi _1^i\underbrace {E\left[ {{w_{t - i}}} \right]}_{ = 0}}  \\
+   &= 0 \\
+   &\\
+  Var\left( {{y_t}} \right) &= E\left[ {{{\left( {{y_t} - E\left[ {{y_t}} \right]} \right)}^2}} \right] \\
+   &= E\left[ {y_t^2} \right] - {\left( {E\left[ {{y_t}} \right]} \right)^2} \\
+   &= E\left[ {y_t^2} \right] \\
+   &= E\left[ {{{\left( {{\phi _1}{y_{t - 1}} + {w_t}} \right)}^2}} \right] \\
+   &= E\left[ {\phi _1^2y_{t - 1}^2 + w_t^2 + 2{\phi _1}{y_t}{w_t}} \right] \\
+   &= \phi _1^2E\left[ {y_{t - 1}^2} \right] + \underbrace {E\left[ {w_t^2} \right]}_{ = \sigma _w^2} + 2{\phi _1}\underbrace {E\left[ {{y_t}} \right]}_{ = 0}\underbrace {E\left[ {{w_t}} \right]}_{ = 0} \\
+   &= \underbrace {\phi _1^2Var\left( {{y_{t - 1}}} \right) + \sigma _w^2 = \phi _1^2Var\left( {{y_t}} \right) + \sigma _w^2}_{{\text{Assume stationarity}}} \\
+  Var\left( {{y_t}} \right) &= \phi _1^2Var\left( {{y_t}} \right) + \sigma _w^2 \\
+  Var\left( {{y_t}} \right) - \phi _1^2Var\left( {{y_t}} \right) &= \sigma _w^2 \\
+  Var\left( {{y_t}} \right)\left( {1 - \phi _1^2} \right) &= \sigma _w^2 \\
+  Var\left( {{y_t}} \right) &= \frac{{\sigma _w^2}}{{1 - \phi _1^2}} \\ 
+\end{aligned} \]
+
+# Joint Stationarity
+
+Two time series, say $\left(X_t \right)$ and $\left(Y_t\right)$, are said to be jointly stationary if they are each stationary, and the cross-covariance function
+
+\[{\gamma _{XY}}\left( {t,t + h} \right) = Cov\left( {{X_t},{Y_{t + h}}} \right) = {\gamma _{XY}}\left( h \right)\]
+
+is a function only of lag $h$.
+
+The cross-correlation function for jointly stationary times can be expressed as:
+
+\[{\rho _{XY}}\left( {t,t + h} \right) = \frac{{{\gamma _{XY}}\left( {t,t + h} \right)}}{{{\sigma _{{X_t}}}{\sigma _{{Y_{t + h}}}}}} = \frac{{{\gamma _{XY}}\left( h \right)}}{{{\sigma _{{X_t}}}{\sigma _{{Y_{t + h}}}}}} = {\rho _{XY}}\left( h \right)\]
+
+## The Backshift Operator and Differencing Operations
+
+*Definition:* **Backshift Operator**
+
+The **Backshift Operator** is helpful when manipulating time series. When we backshift, we are changing the indices of the time series. e.g. $t \rightarrow t-1$. The operator is defined as:
+
+\[B{x_t} = {x_{t - 1}}\]
+
+If we were to repeatedly apply the backshift operator, we would receive:
+
+\[\begin{aligned}
+  {B^2}{x_t} &= B\left( {B{x_t}} \right) \\
+   &= B\left( {{x_{t - 1}}} \right) \\
+   &= {x_{t - 2}} \\ 
+\end{aligned}\]
+
+We can generalize this behavior as:
+$${B^k}{x_t} = {x_{t - k}}$$
+
+The backshift operator is helpful for later decompositions in addition to making differencing operations more straightforward.
+
+*Definition:* **Differencing Operator**
+
+The **Differencing Operator** is defined as the gradient symbol applied to a time series:
+\[\nabla {x_t} = {x_t} - {x_{t - 1}}\]
+
+The differencing operator is helpful when trying to remove trend from the data.
+
+We can take higher moments of differences by:
+\[\begin{aligned}
+  {\nabla ^2}{x_t} &= \nabla \left( {\nabla {x_t}} \right) \\
+   &= \nabla \left( {{x_t} - {x_{t - 1}}} \right) \\
+   &= \left( {{x_t} - {x_{t - 1}}} \right) - \left( {{x_{t - 1}} - {x_{t - 2}}} \right) \\
+   &= {x_t} - 2{x_{t - 1}} + {x_{t - 2}} \\ 
+\end{aligned} \]
+
+So, the difference operator has the following properties:
+\[\begin{aligned}
+  {\nabla ^k}{x_t} &= {\nabla ^{k - 1}} \left( {\nabla {x_t}}\right) \hfill \\
+  {\nabla ^1}{x_t} &= \nabla {x_t} \hfill \\ 
+\end{aligned} \]
+
+Notice, within the difference operation, we are backshifting the timeseries.
+
+If we rewrite the difference operator to use the backshift operator, we receive:
+\[\nabla {x_t} = {x_t} - {x_{t - 1}} = \left( {1 - B} \right){x_t}\]
+
+This holds for later incarnations as well:
+\[\begin{aligned}
+  {\nabla ^2}{x_t} &= {x_t} - 2{x_{t - 1}} + {x_{t - 2}} \hfill \\
+   &= \left( {1 - B} \right)\left( {1 - B} \right){x_t} \hfill \\
+   &= {\left( {1 - B} \right)^2}{x_t} \hfill \\ 
+\end{aligned} \]
+
+Thus, we can generalize this to:
+\[{\nabla ^k}{x_t} = {\left( {1 - B} \right)^k}{x_t}\]
