@@ -8,13 +8,17 @@ env:
 
 r_packages:
   - devtools
+  - ggplot2
+  - astsa
   
 r_github_packages:
   - rstudio/bookdown
+  - sinhrks/ggfortify
     
 install:
-  - Rscript -e "if (!require('devtools')) install.packages('devtools')"
+  - Rscript -e "if (!require('devtools')) install.packages(c('ggplot2','astsa','devtools'))"
   - Rscript -e "if (!require('bookdown')) devtools::install_github('rstudio/bookdown')"
+  - Rscript -e "if (!require('ggfortify')) devtools::install_github('sinhrks/ggfortify')"
 
 before_script:
   - chmod +x ./_build.sh
