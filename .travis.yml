@@ -1,6 +1,4 @@
 language: r
-cache:
-  packages: yes
 
 sudo: false
 
