@@ -1,0 +1,17 @@
+Package: timeseriesisgreat
+Title: Time Series is Great!
+Version: 0.0.1
+Authors@R: c(
+  person("James", "Balamuta" , "balamut2@illinois.edu", c("aut", "cre"))
+  )
+Depends: R (>= 3.3.0)
+URL: https://github.com/coatless/timeseriesisgreat
+Imports:
+  bookdown,
+  ggplot2,
+  astsa,
+  ggfortify,
+  zoo
+Remotes:
+  sinhrks/ggfortify,
+  rstudio/bookdown
