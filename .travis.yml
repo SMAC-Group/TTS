@@ -1,15 +1,16 @@
 language: r
 cache: packages
 sudo: false
-
 env:
   global:
-    - secure: "ogNOrpIHONv3lGQdFCjuJCVZZYzlrHazj2nSFB2mDTe2AngWJIeUJ4urQu31ISIvwUb2ibGLxG/YGMb2agvcnn+QSZO/iy+8rtABYI31fsdZXOlohZg1AcfOZGd2YCfIiEFnCEk7HzXU93XUMz8LtZ4KA/ZsZddU2emdPaFPPVas7ypDcPJHPtuzRZ5yvvnXWpqa9mOBin7hmG0NYZlxl8qt4H8uywj0D7Xur3dS1zwhu0Ue2RXD1U2w96NLzC0YaHEVhbt4c9wsU+eMzdUKKlckHmNHboQpkVQcvSuT1o6K7H0rFBbDCaIjzbEfK+igeHTIUhItdmHuFhx0Tg59mKM9sufpTqOJoPdPe3waITrWq6gkveHiTT+VHZugx7atZnKV8+t852KrEWi2KHzFtJ4UAIxTtMm1Zf6s0vLPBY9XgodNLURaVbWtGdnWWbf2NexThOm60/FIVjFxjHb/rJKA1wLYCK8ssJfNd99F9y71aaeu3x+2tytW+shrKxxSsE6sR+gK6Zkpy3Jt9+0ZNkWlS47XF+OoAVqWYf8fJFy3yHUHtzEJI3vSPoUgBLWuUPllSRVMyq1/pZtdNPVyN8+xSkWjtamNLl6lvC2GwbWiI8Mtk3eXHqDvwLE7Yb1AO8vuSdxd2COQpNsnAsJKBoyzsHaJTJ5Z1oz7JTOckYU="
-    
+    secure: sxuUvpYy0Y4GbEjY6N2TCs54gYyWFUxAzjf7XulhLGBrT/eMQR/bZDpF7RQFvn6/ZD5xnK8aCz3M9h5SiIizs+2qWLRI9wbYC232r0JcUXDiT+oQDV++dgdx4eRiDUAbOwMy+dF/WwIn6RtTvftClaLrU8igCfgtI5sR+c9dbeNaOO0F1Qa7pKYxPtXKXhD6kQ4NtqOFjcd3uMT51j+sew+3Qx6/r51/vpdLs5ujDq24sQWO18LMlC0YH8kh+n13jrYKkTrNVQsf3JadDm9xt30cPR5aW4uPfwCY9ao2wU31swd+oKK0Wi11Xpf/jlmH8XWHoMTxjFHPxUeGZqtS0LyTCkcgHXgLiPm3bWzuD1EMWwrWD20feLQWftQVb1LWRAeeGDy5tMGxYp21oZntvjHHyI/mtNAs3QDweOPITjLlhNjPRX5PZ4au3rJyEu025wGmht3g08kuCsFR1eTq8BiXwuJluNZbA1V18Qe1kBpAhdDDhSBzuMEhSQQ4XmNSklE/QigvlzMGzKuYGkF9/DJ56iSWQmFwuPjfTe1aUU0896yn4/Ps907QfsP108dZ7ZfWrc1PyFDShAyX3BK6CTqQH2bTYLfPFh2gAZ8/6i08+pwK5r/QbZOjc9fhn8GYxo0X/R3+D03ScIizy2UV8aHdFASWenc2RCFpaAalyKo=
+
 before_script:
-  - chmod +x ./_build.sh
-  - chmod +x ./_deploy.sh
+- chmod +x ./_build.sh
+- chmod +x ./_deploy.sh
 
 script:
-  - ./_build.sh
-  - ./_deploy.sh
+- "./_build.sh"
+
+after_success:
+  - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && bash _deploy.sh
