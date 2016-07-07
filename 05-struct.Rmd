@@ -1,0 +1,34 @@
+
+# Structure
+
+1. **Introduction to large sample theory:** This chapter is a summary of the first three section of "*Large Sample Estimation and Hypothesis Testing*" by Newey and McFadden. 
+    1. Extremum Estimators
+    2. Consistency
+        1. Basic results
+        2. Identification
+        3. Uniform convergence and stochasitc equicontinuity
+        4. Consistency for maximum likelihood estimators
+        5. Consistency for generalized method of moments estimators
+    3. Asymptotic normality
+        1. Basic results
+        4. Asymptotic normality for maximum likelihood estimators
+        5. Asymptotic normality for generalized method of moments estimators 
+        
+2. **ARMA models:** This chapter is based on the following two references: "*Time Series for Macroeconomics and Finance (chapter 3)*" by Cochrane and "*Time Series Analysis and Its Applications: With R Examples - Third Edition (Chapter 3)*" by Shumway and Stoffer.  
+    1. Basic time series models
+        1. White noise
+        2. Random walk
+    2. Basic ARMA models
+        1. Definitions
+        2. Backshift operators
+        3. Autoregressive and moving average operators
+    3. Linear processes    
+3. **The Autocorrelation and Autocovariance functions:** This chapter is based on the following two references: "*Time Series for Macroeconomics and Finance (chapter 6)*" by Cochrane and "*Time Series Analysis and Its Applications: With R Examples - Third Edition (Chapter 1)*" by Shumway and Stoffer.
+    1. Definition 
+    2. Autocovariance and autocorrelation of ARMA processes
+    3. Fundamental represenation
+    4. Admissibility
+    5. Estimation and Inference
+4. **Stationarity and Wold representation** This chapter is based on the following two references: "*Time Series for Macroeconomics and Finance (chapter 6)*" by Cochrane and "*Time Series Analysis and Its Applications: With R Examples - Third Edition (Chapter 1)*" by Shumway and Stoffer.
+5. **Forecasting**
+6. **Estimation of ARMA parameters**
