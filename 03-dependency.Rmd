@@ -3,7 +3,7 @@ output: pdf_document
 ---
 # Dependency
 
-Generally speaking, there is a dependence that within the sequence of random variables. $\mathbf\theta \theta$
+Generally speaking, there is a dependence that within the sequence of random variables.
 
 Recall the difference between independent and dependent data:
 
