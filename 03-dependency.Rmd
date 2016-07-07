@@ -1,6 +1,9 @@
+---
+output: pdf_document
+---
 # Dependency
 
-Generally speaking, there is a dependence that within the sequence of random variables.
+Generally speaking, there is a dependence that within the sequence of random variables. $\mathbf\theta \theta$
 
 Recall the difference between independent and dependent data:
 
@@ -8,7 +11,14 @@ Recall the difference between independent and dependent data:
 
 $X_1, X_2, \ldots, X_T$ are independent and identically distributed if and only if
 
-$$P\left(X_1 \le x_1, X_2 \le x_2,\ldots, X_{T} \le x_T \right) = P\left(X_1 \le x_1\right) P\left(X_2 \le x_2\right) \cdots P\left(X_{T} \le x_T \right)$$ 
+$$
+\begin{equation}
+P\left(X_1 \le x_1, X_2 \le x_2,\ldots, X_{T} \le x_T \right) = P\left(X_1 \le x_1\right) P\left(X_2 \le x_2\right) \cdots P\left(X_{T} \le x_T \right)
+\label{test}
+\end{equation}
+$$
+
+\@ref(test)
 for any $T \ge 2$ and $x_1, \ldots, x_T \in \mathbb{R}$.
 
 *Definition:* **Dependence**
