@@ -1,11 +1,11 @@
-Package: timeseriesisgreat
-Title: Time Series is Great!
+Package: its
+Title: Introduction to Time Series
 Version: 0.0.1
 Authors@R: c(
   person("James", "Balamuta" , "balamut2@illinois.edu", c("aut", "cre"))
   )
 Depends: R (>= 3.3.0)
-URL: https://github.com/coatless/timeseriesisgreat
+URL: https://github.com/coatless/its
 Imports:
   bookdown,
   ggplot2,
