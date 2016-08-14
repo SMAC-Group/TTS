@@ -1,5 +1,7 @@
 bookdown::gitbook:
-  css: css/style.css
+  css: styling/style.css
+  includes:
+      in_header: styling/mathjax-config.html
   config:
     toc:
       before: |
