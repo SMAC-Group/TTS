@@ -1,0 +1,13 @@
+# ARMA
+
+## Definition
+
+
+## MA / AR Operators
+
+## Redundancy
+
+## Causal + Invertible
+
+## Prediction (Forecast)
+

@@ -1,5 +1,5 @@
 --- 
-title: "Time Series is Great!"
+title: "Introduction to Time Series"
 author: "James Balamuta"
 date: "`r Sys.Date()`"
 knit: "bookdown::render_book"
@@ -12,18 +12,6 @@ description: ""
 url: 'https\://coatless.github.io/timeseriesisgreat/'
 github-repo: coatless/timeseriesisgreat
 ---
-
-```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
-require(knitr)
-read_chunk('r_book.R')
-options(scipen = 8, width=65)
-```
-
-```{r load_packages, message=FALSE,echo=FALSE, warning=FALSE}
-```
-
-```{r misc_func, echo=FALSE}
-```
 
 # Preface
 ## A foreword

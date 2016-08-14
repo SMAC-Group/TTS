@@ -1,5 +1,9 @@
 # Basic Models
 
+```{r}
+knitr::read_chunk('code/chapter/02_basic_models.R')
+```
+
 ## White Noise
 
 The process name of white noise has meaning in the notion of colors of noise. Specifically, the white noise is a process that mirrors white light's flat frequency spectrum. So, the process has equal frequencies in any interval of time.

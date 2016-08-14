@@ -3,11 +3,11 @@ bookdown::gitbook:
   config:
     toc:
       before: |
-        <li><a href="./">Time Series is Great!</a></li>
+        <li><a href="./">Introduction to Time Series</a></li>
       after: |
-        <li><a href="https://github.com/coatless/timeseriesisgreat" target="blank">&copy; 2016 James Balamuta</a></li>
+        <li><a href="https://github.com/coatless/its" target="blank">&copy; 2016 James Balamuta</a></li>
     edit:
-      link: https://github.com/coatless/timeseriesisgreat/edit/master/%s
+      link: https://github.com/coatless/its/edit/master/%s
 bookdown::pdf_book:
   includes:
     in_header: preamble.tex

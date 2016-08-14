@@ -1,2 +1,5 @@
-book_filename: "time_series_is_great"
+book_filename: "its"
 chapter_name: "Chapter "
+
+before_chapter_script: "code/init/chapter_start.R"
+after_chapter_script: "code/init/chapter_end.R"

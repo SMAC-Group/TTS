@@ -1,5 +1,49 @@
+## (APPENDIX) Outline {-}
 
-# Structure
+## Structure (New)
+
+## Chapter 0: EDA
+
+## Chapter 1: Stationarity and ACF
+
+### Stationarity
+
+- 2 kinds + examples
+
+### ACF / CCF
+
+- Definitions
+- Admisibility
+- Confidence Bands
+- Examples
+
+## Chapter 2: Time Series Models
+
+
+- Geometric Series
+- Backshift operator
+- Basic models
+  - RW
+  - WN
+  - AR1
+- Linear processes
+
+## Chapter 3: ARMA 
+
+### Definition
+
+### MA / AR Operations
+
+### Redundancy
+
+### Causal + invertible
+
+### Estimation
+
+### Prediction / Forecast
+
+
+## Structure (Old)
 
 1. **Introduction to large sample theory:** This chapter is a summary of the first three section of "*Large Sample Estimation and Hypothesis Testing*" by Newey and McFadden. 
     1. Extremum Estimators

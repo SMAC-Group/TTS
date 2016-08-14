@@ -1,5 +1,10 @@
 # The World of Time Series
 
+```{r}
+knitr::read_chunk('code/chapter/01_introduction.R')
+```
+
+
 ## Objective of Time Series
 
 1. View a set of observations made sequentially in "time."
