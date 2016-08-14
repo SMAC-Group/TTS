@@ -13,7 +13,8 @@ data for [STAT 429](http://catalog.illinois.edu/courses-of-instruction/stat/) at
 Below is a list of helpful references that were used in the construction of the 
 book.
 
-- [TeX Commands available in MathJax](http://www.onemathematicalcat.org/MathJaxDocumentation/TeXSyntax.htm)
+- [TeX Commands available in MathJax](http://www.onemathematicalcat.org/MathJaxDocumentation/TeXSyntax.htm) and
+[how to implement macros in MathJax](http://docs.mathjax.org/en/latest/tex.html#tex-macros)
 - [Bookdown Reference Guide](https://bookdown.org/yihui/bookdown)
 
 # License

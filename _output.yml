@@ -7,7 +7,7 @@ bookdown::gitbook:
       before: |
         <li><a href="./">Introduction to Time Series</a></li>
       after: |
-        <li><a href="https://github.com/coatless/its" target="blank">&copy; 2016 James Balamuta</a></li>
+        <li><a href="https://github.com/coatless/its" target="blank">&copy; 2016 James Balamuta, Stephane Guerrier</a></li>
     edit:
       link: https://github.com/coatless/its/edit/master/%s
 bookdown::pdf_book:
