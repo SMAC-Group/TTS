@@ -1,20 +1,158 @@
-# Stationarity
+# Autocorrelation and Stationarity
 
-There are two kinds of stationarity: Strong and Weak Stationarity. These types of stationarity are **not equivalent** and the presence of **one kind of stationarity does not imply the other**. That is, a time series can be strongly stationary but not weakly stationary and vice versa. In very rare cases, a time series can be both strong and weakly stationary. The most common form of stationarity is that of weakly stationarity.
+> "I have seen the future and it is very much like the present, only longer."
+>
+> --- Kehlog Albran, The Profit
+
+After reading this chapter you will be able to:
+
+- Describe independent and dependent data
+- Interpret a processes ACF and CCF.  
+- Understand the notion of stationarity.
+- Differentiate between Strong and Weak stationarity.
+- Judge whether a process is stationary. 
+
+## Dependency
+
+Generally speaking, there is a dependence that within the sequence of random variables.
+
+Recall the difference between independent and dependent data:
+
+*Definition:* **Independence**
+
+$X_1, X_2, \ldots, X_T$ are independent and identically distributed if and only if
+
+\begin{equation}
+P\left(X_1 \le x_1, X_2 \le x_2,\ldots, X_{T} \le x_T \right) = P\left(X_1 \le x_1\right) P\left(X_2 \le x_2\right) \cdots P\left(X_{T} \le x_T \right) \label{eq:independent}
+\end{equation}
+
+for any $T \ge 2$ and $x_1, \ldots, x_T \in \mathbb{R}$.
+
+*Definition:* **Dependence**
+
+$X_1, X_2, \ldots, X_T$ are identically distributed but dependent, then 
+
+\begin{equation}
+\left| {P\left( {{X_1} < {x_1},{X_2} < {x_2}, \ldots ,{X_T} < {x_T}} \right) - P\left( {{X_1} < {x_1}} \right)P\left( {{X_2} < {x_2}} \right) \cdots P\left( {{X_T} < {x_T}} \right)} \right| \ne 0 \label{eq:dependent}
+\end{equation}
+
+for some $x_1, \ldots, x_T \in \mathbb{R}$.
+
+### Measuring (Linear) Dependence
+
+There are many forms of dependency...
+
+![dependency](images/1280px-Correlation_examples2.png)
+
+However, the methods, covariance and correlation, that we will be using are specific to measuring linear dependence. As a result, these tools are less helpful to measure monotonic dependence and they are much less helpful to measure nonlinearly dependence.
+
+#### Autocovariance Function 
+
+Dependence between $T$ different RV is difficult to measure in one shot! So we consider just two random variables, $X_t$ and $X_{t+h}$. Then one
+(linear) measure of dependence is the covariance between $\left(X_t , X_{t+h}\right)$. Since $X$ is the same RV observed at two different time
+points, the covariance between $X_t$ and $X_{t+h}$ is defined as the Autocovariance.
+
+*Definition:* **Autocovariance Function**
+
+The **Autocovariance Function** is defined as the second moment product
+
+\[{\gamma _x}\left( {t,t+h} \right) = \operatorname{cov} \left( {{x_t},{x_{t+h}}} \right) = E\left[ {\left( {{x_t} - {\mu _t}} \right)\left( {{x_{t+h}} - {\mu _{t+h}}} \right)} \right]\]
+
+for all $t$ and $t+h$. 
+
+The notation used above corresponds to:
+
+\[\begin{aligned}
+  \operatorname{cov} \left( {{X_t},{X_{t+h}}} \right) &= E\left[ {{X_t}{X_{t+h}}} \right] - E\left[ {{X_t}} \right]E\left[ {{X_{t+h}}} \right] \\
+  E\left[ {{X_t}} \right] &= \int\limits_{ - \infty }^\infty  {x \cdot {f_x}\left( x \right)dx}  \\
+  E\left[ {{X_t}{X_{t+h}}} \right] &= \int\limits_{ - \infty }^\infty  {\int\limits_{ - \infty }^\infty  {{x_1}{x_2} \cdot f\left( {{x_1},{x_2}} \right)d{x_1}d{x_2}} }  \\ 
+\end{aligned} \]
+
+We normally drop the subscript referring to the time series if it is clear to the time series the autocovariance function is referencing.
+e.g. ${\gamma _x}\left( {t,t+h} \right) = {\gamma}\left( {t,t+h} \right)$.
+
+The more commonly used formulation for weakly stationary processes (more next section) is:
+\[\gamma \left( {{X_t},{X_{t + h}}} \right) = \operatorname{cov} \left( {{X_t},{X_{t+h}}} \right) = \gamma \left( {h} \right)\]
+
+A few other notes: 
+
+1. The covariance function is symmetric. That is, ${\gamma}\left( {t,t+h} \right) = {\gamma}\left( {t+h,t} \right)$
+2. Just as any covariance, the ${\gamma}\left( {t,t+h} \right)$ is "scale dependent", ${\gamma}\left( {t,t+h} \right) \in \mathbb{R}$, or $-\infty \le {\gamma}\left( {t,t+h} \right) \le +\infty$
+    1. If $\left| {\gamma}\left( {t,t+h} \right) \right|$ is "close" to 0, then they are "less dependent"
+    2. If $\left| {\gamma}\left( {t,t+h} \right) \right|$ is "far" from 0, $X_t$ and $X_{t+h}$ are "more dependent".
+3. ${\gamma}\left( {t,t+h} \right)=0$ does not imply $X_t$ and $X_{t+h}$ are independent.
+4. If $X_t$ and $X_{t+h}$ are joint normally distributed then $X_t$ and $X_{t+h}$ are independent.
 
 
-## Weak Stationarity
+#### Autocorrelation Function (ACF)
+
+A "simplified" $\gamma \left(t, t+h\right)$ is the Autocorrelation (AC) between $X_t$ and $X_{t+h}$, which is scale free! It is simply defined as
+$$\rho \left( {{X_t},{X_{t + h}}} \right) = Corr\left( {{X_t},{X_{t + h}}} \right) = \frac{{Cov\left( {{X_t},{X_{t + h}}} \right)}}{{{\sigma _{{X_t}}}{\sigma _{{X_{t + h}}}}}}$$
+
+The more commonly used formulation for weakly stationary processes (more next section) is:
+\[\rho \left( {{X_t},{X_{t + h}}} \right) = \frac{{Cov\left( {{X_t},{X_{t + h}}} \right)}}{{{\sigma _{{X_t}}}{\sigma _{{X_{t + h}}}}}} = \frac{{\gamma \left( h \right)}}{{\gamma \left( 0 \right)}} = \rho \left( h \right)\]
+
+Therefore, the autocorrelation function is only a function of the lag $h$ between observations.
+
+Just as any correlation:
+
+1. $\rho \left( {{X_t},{X_{t + h}}} \right)$ is scale free
+2. $\rho \left( {{X_t},{X_{t + h}}} \right)$ is closer to $\pm 1 \Rightarrow \left({ X_t, X_{t+h} } \right)$ "more dependent."
+
+Remember... When using correlation....
+
+![correlation_sillies](images/correlation-does-not-imply-causation.jpg)
+
+#### Cross dependency functions
+
+Consider two time series: $\left(X_t \right)$ and $\left(Y_t \right)$.
+
+Then the cross-covariance function between two series $\left(X_t \right)$ and $\left(Y_t \right)$ is:
+
+\[{\gamma _{XY}}\left( {t,t + h} \right) = \operatorname{cov} \left( {{X_t},{Y_{t + h}}} \right) = E\left[ {\left( {{X_t} - E\left[ {{X_t}} \right]} \right)\left( {{Y_{t + h}} - E\left[ {{Y_{t + h}}} \right]} \right)} \right]\]
+
+The cross-correlation function is given by
+\[{\rho _{XY}}\left( {t,t + h} \right) = Corr\left( {{X_t},{Y_{t + h}}} \right) = \frac{{{\gamma _{XY}}\left( {t,t + h} \right)}}{{{\sigma _{{X_t}}}{\sigma _{{Y_{t + h}}}}}}\]
+
+These ideas can extended beyond the bivariate case to a general multivariate setting.
+
+#### Sample Autocovariance and Autocorrelation Functions
+
+*Definition:* **Sample Autocovariance Function**
+
+The **Sample Autocovariance Function** is defined as:
+
+\[\hat \gamma \left( h \right) = \frac{1}{T}\sum\limits_{t = 1}^{T - h} {\left( {{X_t} - \bar X} \right)\left( {{X_{t + h}} - \bar X} \right)} \]
+
+*Definition:* **Sample Autocorrelation function**
+
+The **Sample Autocorrelation function** is defined as:
+
+\[\hat \rho \left( h \right) = \frac{{\hat \gamma \left( h \right)}}{{\hat \gamma \left( 0 \right)}}\]
+
+
+## Stationarity
+
+There are two kinds of stationarity: *Strong* and *Weak* Stationarity. 
+These types of stationarity are **not equivalent** and the presence of 
+**one kind of stationarity does not imply the other**. 
+That is, a time series can be strongly stationary but not weakly stationary and
+vice versa. In very rare cases, a time series can be both strong and weakly
+stationary. The most common form of stationarity is that of weakly stationarity.
+
+### Weak Stationarity
 
 *Definition:* **Weak Stationarity** or **Second-order Stationarity**
 
 The mean and autocovariance of the stochastic process are finite and invariant under a shift in time, i.e.
+
 $$\begin{aligned}
 E\left[X_t \right] &= \mu_t = \mu < \infty \\
-cov\left(X_t, X_{t+h} \right) &= cov\left(X_{t+k}, X_{t+h+k}\right) = \gamma \left(h\right)
+cov\left(X_t, X_{t+h} \right) &= cov\left(X_{t+k}, X_{t+h+k}\right)  \\
+ &= \gamma \left(h\right)
 \end{aligned}$$
 
-
-## Strong Stationarity
+### Strong Stationarity
 
 *Definition:* **Strong Stationarity** or **Strict Stationarity**
 
@@ -66,7 +204,7 @@ We obtain these properties through:
   \left| {\gamma \left( h \right)} \right| &\le \gamma \left( 0 \right) 
 \end{aligned}\]
 
-## Is it weakly stationary?
+### Is it weakly stationary?
 
 In order to verify if it is weakly stationary, we must make sure the time series satisfies:
 
@@ -202,7 +340,7 @@ Therefore:
   Var\left( {{y_t}} \right) &= \frac{{\sigma _w^2}}{{1 - \phi _1^2}} \\ 
 \end{aligned} \]
 
-# Joint Stationarity
+## Joint Stationarity
 
 Two time series, say $\left(X_t \right)$ and $\left(Y_t\right)$, are said to be jointly stationary if they are each stationary, and the cross-covariance function
 
@@ -214,59 +352,3 @@ The cross-correlation function for jointly stationary times can be expressed as:
 
 \[{\rho _{XY}}\left( {t,t + h} \right) = \frac{{{\gamma _{XY}}\left( {t,t + h} \right)}}{{{\sigma _{{X_t}}}{\sigma _{{Y_{t + h}}}}}} = \frac{{{\gamma _{XY}}\left( h \right)}}{{{\sigma _{{X_t}}}{\sigma _{{Y_{t + h}}}}}} = {\rho _{XY}}\left( h \right)\]
 
-## The Backshift Operator and Differencing Operations
-
-*Definition:* **Backshift Operator**
-
-The **Backshift Operator** is helpful when manipulating time series. When we backshift, we are changing the indices of the time series. e.g. $t \rightarrow t-1$. The operator is defined as:
-
-\[B{x_t} = {x_{t - 1}}\]
-
-If we were to repeatedly apply the backshift operator, we would receive:
-
-\[\begin{aligned}
-  {B^2}{x_t} &= B\left( {B{x_t}} \right) \\
-   &= B\left( {{x_{t - 1}}} \right) \\
-   &= {x_{t - 2}} \\ 
-\end{aligned}\]
-
-We can generalize this behavior as:
-$${B^k}{x_t} = {x_{t - k}}$$
-
-The backshift operator is helpful for later decompositions in addition to making differencing operations more straightforward.
-
-*Definition:* **Differencing Operator**
-
-The **Differencing Operator** is defined as the gradient symbol applied to a time series:
-\[\nabla {x_t} = {x_t} - {x_{t - 1}}\]
-
-The differencing operator is helpful when trying to remove trend from the data.
-
-We can take higher moments of differences by:
-\[\begin{aligned}
-  {\nabla ^2}{x_t} &= \nabla \left( {\nabla {x_t}} \right) \\
-   &= \nabla \left( {{x_t} - {x_{t - 1}}} \right) \\
-   &= \left( {{x_t} - {x_{t - 1}}} \right) - \left( {{x_{t - 1}} - {x_{t - 2}}} \right) \\
-   &= {x_t} - 2{x_{t - 1}} + {x_{t - 2}} \\ 
-\end{aligned} \]
-
-So, the difference operator has the following properties:
-\[\begin{aligned}
-  {\nabla ^k}{x_t} &= {\nabla ^{k - 1}} \left( {\nabla {x_t}}\right) \hfill \\
-  {\nabla ^1}{x_t} &= \nabla {x_t} \hfill \\ 
-\end{aligned} \]
-
-Notice, within the difference operation, we are backshifting the timeseries.
-
-If we rewrite the difference operator to use the backshift operator, we receive:
-\[\nabla {x_t} = {x_t} - {x_{t - 1}} = \left( {1 - B} \right){x_t}\]
-
-This holds for later incarnations as well:
-\[\begin{aligned}
-  {\nabla ^2}{x_t} &= {x_t} - 2{x_{t - 1}} + {x_{t - 2}} \hfill \\
-   &= \left( {1 - B} \right)\left( {1 - B} \right){x_t} \hfill \\
-   &= {\left( {1 - B} \right)^2}{x_t} \hfill \\ 
-\end{aligned} \]
-
-Thus, we can generalize this to:
-\[{\nabla ^k}{x_t} = {\left( {1 - B} \right)^k}{x_t}\]

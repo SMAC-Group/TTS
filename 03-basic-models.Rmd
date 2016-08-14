@@ -1,8 +1,29 @@
 # Basic Models
 
-```{r}
+```{r basic_models_code, echo = FALSE}
 knitr::read_chunk('code/chapter/02_basic_models.R')
 ```
+
+## The Backshift Operator
+
+*Definition:* **Backshift Operator**
+
+The **Backshift Operator** is helpful when manipulating time series. When we backshift, we are changing the indices of the time series. e.g. $t \rightarrow t-1$. The operator is defined as:
+
+\[B{x_t} = {x_{t - 1}}\]
+
+If we were to repeatedly apply the backshift operator, we would receive:
+
+\[\begin{aligned}
+  {B^2}{x_t} &= B\left( {B{x_t}} \right) \\
+   &= B\left( {{x_{t - 1}}} \right) \\
+   &= {x_{t - 2}} \\ 
+\end{aligned}\]
+
+We can generalize this behavior as:
+$${B^k}{x_t} = {x_{t - k}}$$
+
+The backshift operator is helpful for later decompositions in addition to making differencing operations more straightforward.
 
 ## White Noise
 

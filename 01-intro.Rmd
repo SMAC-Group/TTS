@@ -1,6 +1,6 @@
 # The World of Time Series
 
-```{r}
+```{r introduction_code, echo = FALSE}
 knitr::read_chunk('code/chapter/01_introduction.R')
 ```
 

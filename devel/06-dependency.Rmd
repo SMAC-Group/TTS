@@ -1,0 +1,39 @@
+# ARIMA
+
+## Differencing Operator
+
+*Definition:* **Differencing Operator**
+
+The **Differencing Operator** is defined as the gradient symbol applied to a time series:
+\[\nabla {x_t} = {x_t} - {x_{t - 1}}\]
+
+The differencing operator is helpful when trying to remove trend from the data.
+
+We can take higher moments of differences by:
+\[\begin{aligned}
+  {\nabla ^2}{x_t} &= \nabla \left( {\nabla {x_t}} \right) \\
+   &= \nabla \left( {{x_t} - {x_{t - 1}}} \right) \\
+   &= \left( {{x_t} - {x_{t - 1}}} \right) - \left( {{x_{t - 1}} - {x_{t - 2}}} \right) \\
+   &= {x_t} - 2{x_{t - 1}} + {x_{t - 2}} \\ 
+\end{aligned} \]
+
+So, the difference operator has the following properties:
+\[\begin{aligned}
+  {\nabla ^k}{x_t} &= {\nabla ^{k - 1}} \left( {\nabla {x_t}}\right) \hfill \\
+  {\nabla ^1}{x_t} &= \nabla {x_t} \hfill \\ 
+\end{aligned} \]
+
+Notice, within the difference operation, we are backshifting the timeseries.
+
+If we rewrite the difference operator to use the backshift operator, we receive:
+\[\nabla {x_t} = {x_t} - {x_{t - 1}} = \left( {1 - B} \right){x_t}\]
+
+This holds for later incarnations as well:
+\[\begin{aligned}
+  {\nabla ^2}{x_t} &= {x_t} - 2{x_{t - 1}} + {x_{t - 2}} \hfill \\
+   &= \left( {1 - B} \right)\left( {1 - B} \right){x_t} \hfill \\
+   &= {\left( {1 - B} \right)^2}{x_t} \hfill \\ 
+\end{aligned} \]
+
+Thus, we can generalize this to:
+\[{\nabla ^k}{x_t} = {\left( {1 - B} \right)^k}{x_t}\]

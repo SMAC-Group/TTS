@@ -1,4 +1,4 @@
-## (APPENDIX) Outline {-}
+# (APPENDIX) Appendix {-} 
 
 ## Structure (New)
 
@@ -18,7 +18,6 @@
 - Examples
 
 ## Chapter 2: Time Series Models
-
 
 - Geometric Series
 - Backshift operator

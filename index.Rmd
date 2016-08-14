@@ -1,6 +1,6 @@
 --- 
 title: "Introduction to Time Series"
-author: "James Balamuta"
+author: "James Balamuta and Stephane Guerrier"
 date: "`r Sys.Date()`"
 knit: "bookdown::render_book"
 documentclass: book
@@ -9,18 +9,52 @@ biblio-style: apalike
 link-citations: yes
 site: bookdown::bookdown_site
 description: ""
-url: 'https\://coatless.github.io/timeseriesisgreat/'
-github-repo: coatless/timeseriesisgreat
+url: 'https\://coatless.github.io/its/'
+github-repo: coatless/its
 ---
 
 # Preface
+
+Welcome to Introduction to Time Series with `R`!
+
 ## A foreword
 
-The book presented below is a compilation of material and extended explanations that I have sought during my studies of time series. The material is not necessarily traditional, however, the hope is that it is at least helpful and/or provides an alternative explanation for the concepts under observation.
+This book was designed for use in STAT 429, Time Series Analysis,
+at the University of Illinois at Urbana-Champaign. When possible, it would be
+best to always access the text online to be sure you are using the latest
+version. The online version affords additional features over the
+traditional PDF copy such as a scaling text, variety of font faces, and
+themed backgrounds. However, if you are in need of a local copy, 
+a [**pdf version** is also available](http://its.thecoatlessprofessor.com/its.pdf).
 
-Any typos or other issues should be reported to [James Balamuta](mailto:balamut2@illinois.edu) forthwith.
+**Disclaimer:** This book is under active development. As a result, errors 
+may occur that range in severity from typos to broken code. If any of these 
+issues arise, there are two options:
 
-##  Notation
+1. If you are familiar with GitHub and know RMarkdown,
+[make a pull request and fix the issue yourself!](https://github.com/coatless/its) (fastest resolution)
+     - In the Online version, click the edit button in the top-left corner.
+     ![](images/support/edit_button.png)
+2. Send an email to `balamut2 AT illinois DOT edu` and we will address issue.
+
+##  Rendering Mathematical Formulae
+
+Throughout the book, there will be mathematical symbols used to express the
+material. Depending on the version of the book, there are two different render
+engines. 
+
+- For the online version, the text uses [MathJax](https://www.mathjax.org/)
+to render mathematical notation for the web. In the event the formulae does
+not load for a specific chapter, first try to refresh the page. 9 times out of
+10 the issue is related to the software library not loading quickly.
+- For the pdf version, the text is built using the recommended AMS LaTeX 
+symbolic packages. As a result, there should be no issue displaying equations.
+
+An example of a mathematical rendering capabilities would be given as:
+
+\[ a^2 + b^2 = c^2 \]
+
+##  Mathematical Notation
 
 The following notation will be adopted throughout the book.
 
@@ -29,9 +63,38 @@ The following notation will be adopted throughout the book.
 * $E\left(X_t\right)$ is the Mean of $X$ at time $t$.
 * $Var\left(X_t\right)$ is the Variance of $X$ at time $t$.
 * $X_{1}, X_{2}, \ldots, X_{k}$ are sequence of random variables.
-* $f\left(x\right)$ denotes the density function of $X$ and $f\left(x, y\right)$ denotes the joint density function of $x$ and $Y$.
+* $f\left(x\right)$ denotes the density function of $X$ and $f\left(x, y\right)$
+denotes the joint density function of $x$ and $Y$.
 * $\left(X_t\right)_{t=1,\ldots,T} := \left(X_t\right) := (X_1, \ldots, X_T)$.
 
-## R Code
+## R Code Conventions
 
-The code used throughout the book is R code. The R code should be able to used as-is. Alongside the PDF download of the book, you should find the R code used within each chapter. 
+The code used throughout the book will predominately be `R` code.  
+To obtain a copy of [`R`](https://cloud.r-project.org/), go to the
+[Comprehensive R Archive Network (CRAN)](https://cloud.r-project.org/)
+and download the appropriate installer for your operating system.
+
+When `R` code is displayed it will be typeset using a `monospace` font with 
+syntax highlighting enabled to ensure the differentiation of functions,
+variables, and so on. For example, the following adds 1 to 1
+
+```{r, eval = FALSE}
+a = 1L + 1L
+a
+```
+
+Each code segment may contain actual output from `R`. Such output will appear
+in grey font prefixed by `##`. For example, the output of the above code
+segment would look like so:
+
+```{r, echo = FALSE, eval = TRUE}
+a = 1L + 1L
+a
+```
+
+Alongside the PDF download of the book, you should find the R code used within 
+each chapter. 
+
+## License
+
+![This work is licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).](images/license/cc.png)
