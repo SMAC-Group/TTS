@@ -3,7 +3,18 @@ MathJax.Hub.Config({
   TeX: { extensions: ["AMSmath.js"], 
          equationNumbers: { autoNumber: "AMS" },
          Macros: {
-          notimplies: "\\nRightarrow"
+          notimplies: "\\nRightarrow",
+          mean: ["\\operatorname{mean}"],
+          var: ["\\operatorname{var}"],
+          tr: ["\\operatorname{tr}"],
+          cov: ["\\operatorname{cov}"],
+          corr: ["\\operatorname{corr}"],
+          argmax: ["\\operatorname{argmax}"],
+          argmin: ["\\operatorname{argmin}"],
+          card: ["\\operatorname{card}"],
+          diag: ["\\operatorname{diag}"],
+          rank: ["\\operatorname{rank}"],
+          length: ["\\operatorname{length}"]
     }
   }
 });

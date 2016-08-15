@@ -1,4 +1,4 @@
-[![TravisCI Build Status](https://api.travis-ci.org/coatless/its.svg)](https://travis-ci.org/coatless/its)
+[![TravisCI Build Status](https://api.travis-ci.org/coatless/ITS.svg)](https://travis-ci.org/coatless/ITS)
 
 # Introduction to Time Series
 

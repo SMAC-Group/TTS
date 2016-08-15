@@ -11,7 +11,9 @@ Imports:
   ggplot2,
   astsa,
   ggfortify,
-  zoo
+  zoo,
+  gmwm
 Remotes:
   sinhrks/ggfortify,
-  rstudio/bookdown
+  rstudio/bookdown,
+  SMAC-Group/gmwm
