@@ -23,7 +23,7 @@ Generally speaking a *time series* (or stochastic process) corresponds to set of
 
  \[\left(X_1, X_2, ..., X_T \right) \;\;\; \text{ or } \;\;\; \left(X_t\right)_{t = 1,...,T}.\]
  
-The time index $t$ generally the set $\mathbb{N}$ (or sometimes $\mathbb{Z}$). When $t \in \mathbb{R}$, a time series becomes a *continuous-time* stochastic process such a Brownian motion. In this class we limit our selves to *discrete-time* processes where a variable is measured sequentially at fixed and equally spaced intervals in time. This implies that we will assume $t$ is not random (the time at which each observation is measure is know) and the time between two consequtive observation is constant. 
+The time index $t$ generally the set $\mathbb{N}$ or $\mathbb{Z}$. When $t \in \mathbb{R}$, a time series becomes a *continuous-time* stochastic process such a Brownian motion. In this class we limit our selves to *discrete-time* processes where a variable is measured sequentially at fixed and equally spaced intervals in time. This implies that we will assume $t$ is not random (the time at which each observation is measure is know) and the time between two consequtive observation is constant. 
 
 Moreover, the term "time series" can, as we discussed, denote a sample or a set of observations but also a probability model for that sample. For example, on of the simplest probability model used in time series analysis is called a *white noise* process and is defined as
 \[W_t \mathop \sim \limits^{iid} N(0, \sigma^2).\]
@@ -135,11 +135,11 @@ Change in time and outliers yields interesting results. These results can be see
 
 ## Basic Time Series Models
 
-In this section, we introduce some simple time series models. Before doing so we define all the information avaiable up to time $t-1$ has $\Omega_t$, i.e.
+In this section, we introduce some simple time series models. Before doing so it is useful to define $\Omega_t$ as all the information avaiable up to time $t-1$, i.e.
 
 \[\Omega_t = \left(X_{t-1}, X_{t-2}, ..., X_0 \right).\]
 
-As we will this compact notation is quite useful.
+As we will see this compact notation is quite useful.
 
 ### White noise processes
 
@@ -152,7 +152,7 @@ This definition implies that:
 1. $E[W_t | \Omega_t] = 0$ for all $t$,
 2. $\operatorname{cov}\left(W_t, W_{t-h} \right) = \boldsymbol{1}_{h = 0} \; \sigma^2$ for all $t, h$.
 
-Therefore, this process present an absence of temporal (or serial) dependence and has a constant variance. This definition can be generalized in two sorts of processes, the *weak* and *strong* white noise. The process $(W_t)$ is a weak white noise if
+Therefore, this process present an absence of temporal (or serial) dependence and is homoskedastic (i.e it has a constant variance). This definition can be generalized in two sorts of processes, the *weak* and *strong* white noise. The process $(W_t)$ is a weak white noise if
 
 1. $E[W_t] = 0$ for all $t$,
 2. $\operatorname{var}\left(W_t\right) = \sigma^2$ for all $t$,
@@ -164,7 +164,7 @@ Note that this definition does not imply that $W_t$ and $W_{t-h}$ are independen
 2. $F(W_t) = F(W_{t-h})$, for all $t,h$ (where $F(W_t)$ denotes the distribution of $W_t$),
 3. $W_t$ and $W_{t-h}$ are independent for all $t$ and for all $h \neq 0$.
 
-It is clear from these definition that if a process is a strong white noise it is also a weak white noise. However, the converse is not true a shown in the following example:
+It is clear from these definitions that if a process is a strong white noise it is also a weak white noise. However, the converse is not true a shown in the following example:
 
 **Example**: Let $X_t \mathop \sim \limits^{iid} F_t$, where $F_t$ denote a Student distribution with $t$ degrees of freedom. Such process is a weak but not a strong white noise.
 
@@ -173,6 +173,138 @@ The code below presents an example of how to simulate a Gaussian white noise pro
 ```{r example_WN, fig.height=4, fig.width=7, cache=TRUE}
 ```
 
+### Random Walk Processes
+
+The term *random walk* was first introduce by Karl Pearson in the early 19 hunders. As for the white noise, there exist a large range of random walk processes. For example, one of the simplest form of random walk are be explained as follows: suppose that you are walking on campus and your next step can either be on your left, your right, forward or backward (each with equal probability). Two realizations of such processes are represented below:
+
+```{r RW2d, fig.height=4, fig.width=7, cache=TRUE}
+```
+
+Such processes inspired Karl Pearson famous quote that
+
+>
+> "*the most likely place to find a drunken walker is somewhere near his starting point.*"
+> 
+
+Empirical evidence of this phenomenon is not too hard to find on a Friday night in Champaign. In this class, we only consider one very specific form of randon walk, namely the Gaussian random walk which can be defined as:
+
+$$X_t = X_{t-1} + W_t,$$
+
+where $W_t$ is a Gaussian white noise and with initial condition $X_0 = c$ (typically $c = 0$). This process can be expressed differently by *backsubstitution* as follows:
+
+\[\begin{aligned}
+  {X_t} &= {X_{t - 1}} + {W_t} 
+   = \left( {{X_{t - 2}} + {W_{t - 1}}} \right) + {W_t} \\
+  {X_t} &= \sum\limits_{i = 1}^t {{W_i}} + X_0 =  \sum\limits_{i = 1}^t {{W_i}} + c \\ 
+\end{aligned} \]
+
+The code below presents an example of how to simulate a such process
+
+```{r generate_rw, cache=TRUE}
+```
+
+### Autoregressive Process of Order 1
+
+An autoregressive process of order 1 or AR(1) is a generalization of both the white noise and random walk process which are both special case of an AR(1). A (Gaussian) AR(1) process can be defined as
+
+\[{X_t} = {\phi}{X_{t - 1}} + {W_t},\]
+
+where $W_t$ is a Gaussian white noise. Clearly, an AR(1) with $\phi = 0$ is a Gaussian white noise and when $\phi = 1$ the process becomes a random walk. 
+
+**Remark:** We generally assume that an AR(1) (as well as other time series models) have zero mean. The reason for this assumption is only to simplfy the notation but it is easy to consider an AR(1) process around an arbitrary mean $\mu$, i.e.
+
+\[\left(X_t - \mu\right) = \phi \left(X_{t-1} - \mu \right) + W_t,\]
+
+which is of course equivalent to
+
+\[X_t = \left(1 - \phi \right) \mu + \phi X_{t-1} + W_t.\]
+
+Thus, we will generally onyl work with zero mean processes since adding means is simple.
+
+**Remark:** An AR(1) is in fact a linear combination of the past realisations of the white noise $W_t$. Indeed, we have
+
+\[\begin{aligned}
+ {X_t} &= {\phi_t}{X_{t - 1}} + {W_t} 
+   = {\phi}\left( {{\phi}{X_{t - 2}} + {W_{t - 1}}} \right) + {W_t} \\
+   &= \phi^2{X_{t - 2}} + {\phi}{W_{t - 1}} + {W_t} 
+   = {\phi^t}{X_0} + \sum\limits_{i = 0}^{t - 1} {\phi^i{W_{t - i}}}.
+\end{aligned}\]
+
+Under the assumption of infinite past (i.e. $t \in \mathbb{Z}$), we obtain
+
+\[X_t = \sum\limits_{i = 0}^{\infty} {\phi^i {W_{t - i}}},\]
+
+since $\operatorname{lim}_{i \to \infty} \; {\phi^i}{X_{t-i}} = 0$.
+
+The code below presents an example of how an AR(1) can be simulated
+
+```{r example_AR1, cache=TRUE}
+```
+
+### Moving Average Process of Order 1
+
+As we have seen in the previous example, an AR(1) can be expressed as a linear combination of all past observation of $(W_t)$, the next process, called a moving average process of order 1 or MA(1) is (in some sense) a "truncated" version of an AR(1). It is defined as
+
+\[X_t = \theta W_{t-1} + W_t,\]
+ 
+where (again) $W_t$ denotes a Gaussian white noise process. 
+
+The concept of a **Moving Average Process of Order q** is a way to remove "noise" and emphasize the signal. The moving average achieves this by taking the local averages of the data to produce a new smoother time series series. The newly created time series is more descriptive, but it does influence the dependence within the time series.
+
+This process is generally denoted as **MA(1)** and is defined as:
+
+$${y_t} = {\theta _1}{w_{t - 1}} + {w_t},$$
+
+where ${w_t}\mathop \sim \limits^{iid} WN\left( {0,\sigma _w^2} \right)$
+
+```{r generate_ma1, cache=TRUE}
+```
+
+
+### Linear Drift
+
+*Definition:* **Drift**
+
+A **drift process** has two components: time and a slope. As more points are accumlated over time, the drift will match the common slope form.
+
+Specifically, the drift process has the following form:
+$$y_t = y_{t-1} + \delta $$
+with the initial condition $y_0 = c$.
+
+The process can be simplified using **backsubstitution** to being:
+\[\begin{aligned}
+  {y_t} &= {y_{t - 1}} + \delta \\
+   &= \left( {{y_{t - 2}} + \delta} \right) + \delta \\
+   &\vdots  \\
+   &= \sum\limits_{i = 1}^t {\delta}  + y_0 \\ 
+   {y_t} &= t{\delta} + c  \\ 
+\end{aligned} \]
+
+Again, note that a drift is similar to the slope-intercept form a linear line. e.g. $y = mx + b$.
+
+To generate a drift use:
+
+```{r generate_drift, cache=TRUE}
+```
+
+
+
+
+<!--
+*Definition:* **Autoregressive Process of Order p = 1**
+
+This process is generally denoted as **AR(1)** and is defined as:
+${y_t} = {\phi _1}{y_{t - 1}} + {w_t},$
+
+where ${w_t}\mathop \sim \limits^{iid} WN\left( {0,\sigma _w^2} \right)$
+
+If $\phi _1 = 1$, then the process is equivalent to a random walk.
+
+The process can be simplified using **backsubstitution** to being:
+
+```{r generate_ar1, cache=TRUE}
+```
+-->
 <!--
 white noise can actually be generalize
 
@@ -188,6 +320,5 @@ where ${w_t}\mathop \sim \limits^{id} WN\left( {0,\sigma _w^2} \right)$
 Now, if the $w_t$ are **Normally (Gaussian) distributed**, then the process is known as a **Gaussian White Noise** e.g. ${w_t}\mathop \sim \limits^{iid} N\left( {0,{\sigma ^2}} \right)$ -->
 
 
-We 
-1. 
+
 
