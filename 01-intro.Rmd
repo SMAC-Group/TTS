@@ -1,6 +1,6 @@
 # Introduction
 
-```{r introduction_code, echo = FALSE}
+```{r introduction_code, echo = FALSE, cache = FALSE}
 knitr::read_chunk('code/chapter/01_introduction.R')
 ```
 
@@ -18,6 +18,8 @@ knitr::read_chunk('code/chapter/01_introduction.R')
 > *Hâtons-nous; le temps fuit, et nous entraîne avec soi : le moment où je parle est déjà loin de moi*. Nicolas Boileau
 >
 -->
+
+**Objectives TODO JAMES**
 
 Generally speaking a *time series* (or stochastic process) corresponds to set of "repeated" observations of the same variable such as price of a financial asset or temperature in a given location. In terms of notation a time series is often writen as
 
@@ -46,6 +48,30 @@ Another example is Thomas Watson, president of IBM, who said in 1943:
 >
 > "*I think there is a world market for maybe five computers.*"
 >
+
+
+## Exploratory Data Analysis (EDA) for Time Series
+
+When dealing with relatively small time series (e.g. a few thousands), it is often useful to look at a graph of the original data. Such graphs can be informative to "detect" some features of a time series such as trends and the presence of outliers.
+
+Indeed, a trend is typically deamed present in a time series when the data exhibit some form of long term increase or decrease or combination of increases or decreases. Such trends could be linear or non-linear and represent a important part of the "signal" of a model. Here are few examples of non-linear trends:
+
+1. **Seasonal trends** (periodic): These are the cyclical patterns which repeat after a fixed/regular time period. This could be due to business cycles (e.g. bust/recession, recovery).
+    
+2. **Non-seasonal trends** (periodic): These patterns cannot be associated to seasonal variation and can for example to external variable. For example, impact of economic indicators on stock returns. Such trends are often hard to detect based on a graphical anaylsis of the data.
+    
+3. **"Other" trends**: These trends have typically no regular patterns and change statistical properties of a time series over a segment of time ("window"). A typicall example of such trends corresponds to vibrations observed before, during and after an earthquake.
+
+**Example:** An example of a time series is, for example, the quarterly earnings of the company Johnson and Johson. In the figure below we present these earnings between 1960 and 1980:
+
+**JAMES: can we "gmwm" this graph? Thanks!**
+
+```{r example_jj, echo=FALSE, fig.height=4, fig.width=7, cache=TRUE}
+```
+
+It can clearly be observed that the data present a non-linear increasing trend as well as a yearly seasonal component. In addition, on can note that the *variability* of the data seems to increase with time. As we will such observations provide some valuable guilines to select a suitable models for such data.
+
+
 
 <!-- Model = Pattern + Noise
 
@@ -77,61 +103,33 @@ A ***Time Series*** is a stochastic process, a sequence of random variables (RV)
 
 -->
 
-Examples of Time Series:
 
-```{r example_highfreq, echo=FALSE, fig.height=4, fig.width=7, cache=TRUE}
-```
+Moreover, when observing "raw" time series data is it also intersting to evaluate if some the following phenomeon occur:
 
-1. Stock Data from Johnson and Johson's Quarterly earnings...
-
-
-
-3. Earthquake and explosion data
-
-```{r example_eq, echo=FALSE, fig.height=4, fig.width=7, cache=TRUE}
-```
+1. **Change in Means:** Does the mean of the process seems to evaluate in time?
+2. **Change in Variance:** Does the variance of the process evolves with time?
+3. **Change in State:** Does the time series seems to change between to "states" having distinct statistical properties?
+4. **Outliers** Does the time series contain some "extreme" observations? Note that this is typically difficult to assess visually.
 
 
-## Exploratory Data Analysis (EDA) for Time Series
-
-When dealing with relatively small time series (e.g. a few thousands), it is often useful to look at a graph of the original data. Such graphs can be informative to "detect" some features of a time series such as trends and the presence of outliers.
-
-Indeed, a trend is typically deamed present in a time series when the data exhibit some form of long term increase or decrease or combination of increases or decreases. Such trends could be linear or non-linear and represent a important part of the "signal" of a model. Here are few examples of non-linear trends:
-
-1. **Seasonal trends** (periodic): These are the cyclical patterns which repeat after a fixed/regular time period. This could be due to business cycles (e.g. bust/recession, recovery).
-    
-2. **Non-seasonal trends** (periodic): These patterns cannot be associated to seasonal variation and can for example to external variable. For example, impact of economic indicators on stock returns. Such trends are often hard to detect based on a graphical anaylsis of the data.
-    
-3. **"Other" trends**: These trends have typically no regular patterns and change statistical properties of a time series over a segment of time ("window"). A typicall example of such trends corresponds to vibrations observed before, during and after an earthquake.
-
-**Example:** An example of a time series is, for example, the quarterly earnings of the company Johnson and Johson. In the figure below we present these earnings between 1960 and 1980:
-
-**JAMES: can we "gmwm" this graph? Thanks!**
-
-```{r example_jj, echo=FALSE, fig.height=4, fig.width=7, cache=TRUE}
-```
-
-It can clearly be observed that the data present a non-linear increasing trend as well as a yearly seasonal component. In addition, on can note that the *variability* of the data seems to increase with time. As we will such observations provide some valuable guilines to select a suitable models for such data.
-
-**Example:** In the figure below we present TO COMPLETE
+**Example:** In the figure below we present an example of displacement recorded during an earthquake as well as explosion (**JAMES MORE DETAILS, also what are the units for the displacement?**).
 
 **JAMES: can we "gmwm" this graph? Thanks!**
 
 ```{r example_eq, echo=FALSE, fig.height=4, fig.width=7, cache=TRUE}
 ```
 
-**ADD VISUAL DESCRIPTION**
+It can clearly be observed the statistical properties of the time series appears to change in time. **JAMES ADD DETAILS also talk about 4 things (e.g. change in variance) about.**
 
-Change in time and outliers yields interesting results. These results can be seen as:
+Finally, we consider an example about high-frequency finance to illustate to limitation our current framework.
 
-1. Change in Means
-    * Change in means of a TS can be related to long-term, cyclical, and short-term trends.
-2. Change in Variance
-    * Change in variance can be related to change in the amplitude of the fluctuations of a TS.
-3. Change in State
-    * An event which causes change in statistical properties of TS for short term and long term! Some events cause abrupt changes in statistical properties of TS. They are often associated with "explosive" nature of TS.
-4. Outliers
-    * These are the "extreme" observations in the time series. May be related to data collection or change in state.
+**Example:** The figure below present the returns (i.e. informally speaking the changes in price) for Starbuck's stock on the first of July 2011 during about 150 seconds (left panel) and about 400 minutes (right panel). 
+
+```{r example_highfreq, fig.height=4, fig.width=7, cache=TRUE}
+```
+
+It can be observed on the left panel that points are not equally spaced. Indeed, in high-frequency data interval between two points is typically not constant and is, even worst, a random variable. This implies that when a new observation will be available is in general unknown. On the right panel, one can observed that that the varibility of the data seems to change dring the course of the trading day. Such phenomon is well know in the finance community as a lot variation typically happends at the start (and the end) of the day while the middle of the day is associated with small changes. Moreover, clear extrem observations can also be noted in this graph. 
+
 
 ## Basic Time Series Models
 
@@ -230,11 +228,12 @@ Thus, we will generally onyl work with zero mean processes since adding means is
    = {\phi^t}{X_0} + \sum\limits_{i = 0}^{t - 1} {\phi^i{W_{t - i}}}.
 \end{aligned}\]
 
-Under the assumption of infinite past (i.e. $t \in \mathbb{Z}$), we obtain
+Under the assumption of infinite past (i.e. $t \in \mathbb{Z}$) and $|\phi| < 1$, we obtain
 
 \[X_t = \sum\limits_{i = 0}^{\infty} {\phi^i {W_{t - i}}},\]
 
 since $\operatorname{lim}_{i \to \infty} \; {\phi^i}{X_{t-i}} = 0$.
+
 
 The code below presents an example of how an AR(1) can be simulated
 
@@ -247,49 +246,56 @@ As we have seen in the previous example, an AR(1) can be expressed as a linear c
 
 \[X_t = \theta W_{t-1} + W_t,\]
  
-where (again) $W_t$ denotes a Gaussian white noise process. 
+where (again) $W_t$ denotes a Gaussian white noise process. An example on how generate an MA(1) is given below:
 
-The concept of a **Moving Average Process of Order q** is a way to remove "noise" and emphasize the signal. The moving average achieves this by taking the local averages of the data to produce a new smoother time series series. The newly created time series is more descriptive, but it does influence the dependence within the time series.
-
-This process is generally denoted as **MA(1)** and is defined as:
-
-$${y_t} = {\theta _1}{w_{t - 1}} + {w_t},$$
-
-where ${w_t}\mathop \sim \limits^{iid} WN\left( {0,\sigma _w^2} \right)$
-
-```{r generate_ma1, cache=TRUE}
+```{r example_MA1, cache=TRUE}
 ```
 
-
+  
 ### Linear Drift
 
-*Definition:* **Drift**
+A linear drift is a very simple detemrinistic time series model which can be expressed as 
 
-A **drift process** has two components: time and a slope. As more points are accumlated over time, the drift will match the common slope form.
+\[X_t = X_{t+1} + \omega, \]
 
-Specifically, the drift process has the following form:
-$$y_t = y_{t-1} + \delta $$
-with the initial condition $y_0 = c$.
+where $\omega$ is a constant and with the initial condition $X_0 = c$, an arbitrary constant (typically zero). This process can be expressed in a more familiar form as follows:
 
-The process can be simplified using **backsubstitution** to being:
-\[\begin{aligned}
-  {y_t} &= {y_{t - 1}} + \delta \\
-   &= \left( {{y_{t - 2}} + \delta} \right) + \delta \\
-   &\vdots  \\
-   &= \sum\limits_{i = 1}^t {\delta}  + y_0 \\ 
-   {y_t} &= t{\delta} + c  \\ 
-\end{aligned} \]
+\[
+  {X_t} = {X_{t - 1}} + \omega 
+   = \left( {{X_{t - 2}} + \omega} \right) + \omega 
+   = t{\delta} + c  \]
 
-Again, note that a drift is similar to the slope-intercept form a linear line. e.g. $y = mx + b$.
+Therefore, a (linear) drift corresponds to a simple linear model with slope $\omega$ and intercept $c$.
 
-To generate a drift use:
+A drift can simply be generated used the code below:
 
-```{r generate_drift, cache=TRUE}
+```{r example_DR, cache=TRUE}
 ```
 
 
+### Composite Stochastic Processes
 
+A composite stochastic processes can be defined as the sum of underlying (or latent) stochastic processes. In this text, we will use the term *latent time series* as a synomym to composite stochastic processes. A simple example of such process is for example
 
+\[\begin{aligned}
+Y_t &= Y_{t-1} + W_t + \delta\\
+X_t &= Y_t + Z_t,
+\end{aligned}\]
+
+where $W_t$ and $Z_t$ are two independent Gaussian white noise processes. This model often used as first tool to approximate the number of individuals in the context ecological population dynamic. For example, suppose we want to study the popiulation of Chamois in the Swiss Alpes so let $Y_t$ denote the "true" number of individual in this population at time $t$. It is reasonable that $Y_t$ is (approximately) the population at the previous time $t-1$ (e.g the previous year) plus a random variation and a drift. This random variation is due to the natural random in ecological population and reflects changes in number of predators, in aboundance of food or weather condition. On the other hand, the drift is often of particular interest for ecologist as it can used to determine the "long" term trends for the population (e.g. is the population increasing, stable or decreasing). Of course, $Y_t$ (the number of individauls) is typically unknown and we observed a noisy version of it, denotes as $X_t$. This process corresponds to the true population plus a measruementr error as some Chamois may not be observed individuals and some counted several times. Interestingly, this process can clearly be expressed as a *latent time series model* (or composite stochastic process) as follows:
+
+\[\begin{aligned}
+R_t &= R_{t-1} + W_t \\
+S_t &= \delta t \\
+X_t &= R_t + S_t + Z_t,
+\end{aligned}\]
+
+where $R_t$, $S_t$ and $Z_t$ denote, respectively, a radnom walk, a drift and a white noise. The code below can be used to simulate such data:
+
+```{r example_ecolo, cache=TRUE}
+```
+
+In the above graph, the three latent (unobserved) processes are first depicted (i.e. white noise, random walk and drift) and then the sum of the three is present (i.e. $(X_t)$).
 <!--
 *Definition:* **Autoregressive Process of Order p = 1**
 

@@ -6,8 +6,23 @@ sigma2 = 1                            # innovation variance
 Xt = gen.gts(AR1(phi = phi, sigma2 = sigma2), n = n)
 plot(Xt)
 
-## @knitr RW2d
+## @knitr example_ecolo
+n = 1000                                # process length
+delta = 0.005                           # delta parameter (drift)
+sigma2 = 10                             # variance parameter (white noise)
+gamma2 = 0.1                            # innovation variance (random walk)
+model = WN(sigma2 = sigma2) + RW(gamma2 = gamma2) + DR(omega = delta)
+Xt = gen.lts(model, n = n)
+plot(Xt)
 
+## @knitr example_DR
+# This code simulate a linear drift with 0 intercept
+n = 100                               # process length
+omega = 0.5                           # slope parameter
+Xt = gen.gts(DR(omega = omega), n = n)
+plot(Xt)
+
+## @knitr RW2d
 RW2dimension = function(steps = 100){
   # Initial matrix
   step_direction = matrix(0,steps+1,2)
@@ -46,24 +61,32 @@ RW2dimension = function(steps = 100){
   bg = "white", box.col = "white", cex = 1.2)
 }
 
-# Plot 2D random walk with 10^2 and 10^4 steps
+# Plot 2D random walk with 10^2 and 10^5 steps
 set.seed(2)
 par(mfrow = c(1,2))
 RW2dimension(steps = 10^2)
-RW2dimension(steps = 10^4) 
+RW2dimension(steps = 10^5) 
 
 ## @knitr example_WN
 # This code simulate a gaussian white noise process
 n = 100                               # process length
 sigma2 = 1                            # process variance
-Xt = gen.gts(WN(sigma2 = 1), n = n)
+Xt = gen.gts(WN(sigma2 = sigma2), n = n)
+plot(Xt)
+
+## @knitr example_MA1
+# This code simulate a gaussian white noise process
+n = 100                               # process length
+sigma2 = 1                            # innovation variance
+theta = 0.5                           # theta parameter
+Xt = gen.gts(MA1(theta = theta, sigma2 = sigma2), n = n)
 plot(Xt)
 
 ## @knitr example_RW
 # This code simulate a gaussian random walk process
 n = 100                               # process length
-sigma2 = 1                            # innovation variance
-Xt = gen.gts(RW(sigma2 = sigma2), n = n)
+gamma2 = 1                            # innovation variance
+Xt = gen.gts(RW(gamma2 = gamma2), n = n)
 plot(Xt)
 
 ## @knitr example_highfreq

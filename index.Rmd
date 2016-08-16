@@ -1,6 +1,6 @@
 --- 
 title: "Introduction to Time Series"
-author: "James Balamuta and Stephane Guerrier"
+author: "James Balamuta, Stéphane Guerrier and Roberto Molinari"
 date: "`r Sys.Date()`"
 knit: "bookdown::render_book"
 documentclass: book
@@ -15,7 +15,10 @@ github-repo: coatless/its
 
 # Preface
 
-Welcome to Introduction to Time Series with `R`!
+Welcome to Introduction to Time Series using `R`!
+
+
+$\var (x)$
 
 ## A foreword
 
