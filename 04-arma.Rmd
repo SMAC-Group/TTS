@@ -10,8 +10,34 @@
 
 ## Estimation of Parameters
 
-There are two primary methods for estimating parameters:
-Maximum Likelihood Estimation and Method of Moments.
+Consider a time series given by $x_t \sim ARMA(p,q)$. This gives us with a paramter space $\Omega$ that looks like so: 
+
+\[\vec \varphi  = \left[ {\begin{array}{*{20}{c}}
+  {{\phi _1}} \\ 
+   \vdots  \\ 
+  {{\phi _p}} \\ 
+  {{\theta _1}} \\ 
+   \vdots  \\ 
+  {{\theta _q}} \\ 
+  {{\sigma ^2}} 
+\end{array}} \right]\]
+
+In order to estimate this parameter space, we must assume the following three conditions:
+
+1. The process is casual
+1. The process is invertible
+1. The process has Gaussian innovations.
+
+**Innovations** are a time series equivalent to residuals. That is, an innovation is given by ${x_t} - \hat x_t^{t - 1}$, where $\hat x_t^{t - 1}$ is the prediction at time $t$ given $t-1$ observations and ${x_t}$ is the true value observed at time $t$.
+
+There are two main ways of performing such an estimation of the parameter space.
+
+1. Maximum Likelihood / Least Squares Estimation [MLE / LSE]
+1. Method of Moments (MoM)
+
+To begin, we'll explore using the MLE to perform the estimation.
+
+### Maximum Likelihood Estimation
 
 **Definition** 
 Consider $X_n = (X_1, X_2, \ldots, X_n)$ with the joint density $f(X_1, X_2, \ldots, X_n ; \theta)$ where $\theta \in \Theta$. Given $X_1 = x_1, X_2 = x_2, \ldots, X_n = x_n$ is observed, we have the likelihood function of $\theta$ as
@@ -30,7 +56,7 @@ From maximizes the likelihood function $L(\theta)$, we get the **maximum likelih
 
 Note: The likelihood function is **not** a probability density function.
 
-# $AR(1)$ with mean $\mu$
+#### $AR(1)$ with mean $\mu$
 
 Consider an $AR(1)$ process given as $y_t = \phi y_{t-1} + w_t$, ${w_t}\mathop  \sim \limits^{iid} N\left( {0,{\sigma ^2}} \right)$, with $E\left[ {{y_t}} \right] = 0$, $\left| \phi  \right| < 1$.
 
@@ -68,7 +94,7 @@ Note that the distribution of $x_t$ is normal and, thus, the density function of
 
 We'll call the last equation [1].
 
-# Conditioning time $x_t | x_{t-1}$
+#### Conditioning time $x_t | x_{t-1}$
 
 Now, consider $x_t | x_{t-1}$ for $t > 1$.
 
@@ -100,7 +126,7 @@ Again, note that the distribution of $x_t$ is normal and, thus, the density func
 
 And for this equation we'll call it [2].
 
-# MLE for $\sigma ^2$ on $AR(1)$ with mean $\mu$
+### MLE for $\sigma ^2$ on $AR(1)$ with mean $\mu$
 
 *Whew*, with all of the above said, we're now ready to obtain an MLE estimate on an $AR(1)$.
 
@@ -149,7 +175,7 @@ Now, taking the derivative and solving for the maximized point gives:
 
 Thus, the MLE for ${\hat \sigma }^2 = \frac{1}{T}S\left( {\hat \mu ,\hat \phi } \right)$, where $\hat \mu$ and $\hat \phi$ are the MLEs for $\mu , \phi$ that are obtained numerically via either *Newton Raphson* or a *Scoring Algorithm*. (More details in a numerical recipe book.)
 
-# Conditional MLE on $AR(1)$ with mean $\mu$
+#### Conditional MLE on $AR(1)$ with mean $\mu$
 
 A common strategy to reduce the dependency on numerical recipes is to simplify $l\left( {\vec \theta |{x_1}, \ldots ,{x_T}} \right)$ by using ${l^*}\left( {\vec \theta |{x_1}, \ldots ,{x_T}} \right)$:
 
@@ -241,32 +267,6 @@ When $T$ is large, we have:
   {{\hat \phi }^*} &= \frac{{\sum\limits_{t = 2}^T {\left( {{x_t} - {{\bar x}_{\left( 2 \right)}}} \right)\left( {{x_t} - {{\bar x}_{\left( 1 \right)}}} \right)} }}{{\sum\limits_{t = 2}^T {{{\left( {{x_{t - 1}} - {{\bar x}_{\left( 1 \right)}}} \right)}^2}} }} \approx \frac{{\sum\limits_{t = 2}^T {\left( {{x_t} - \bar x} \right)\left( {{x_{t - 1}} - \bar x} \right)} }}{{\sum\limits_{t = 1}^T {{{\left( {{x_t} - \bar x} \right)}^2}} }} = \hat \rho \left( 1 \right) \hfill \\ 
 \end{aligned} \]
 
-
-
-Consider a time series given by $x_t \sim ARMA(p,q)$. This gives us with a paramter space $\Omega$ that looks like so: 
-
-\[\vec \varphi  = \left[ {\begin{array}{*{20}{c}}
-  {{\phi _1}} \\ 
-   \vdots  \\ 
-  {{\phi _p}} \\ 
-  {{\theta _1}} \\ 
-   \vdots  \\ 
-  {{\theta _q}} \\ 
-  {{\sigma ^2}} 
-\end{array}} \right]\]
-
-In order to estimate this parameter space, we must assume the following three conditions:
-
-1. The process is casual
-1. The process is invertible
-1. The process has Gaussian innovations.
-
-**Innovations** are a time series equivalent to residuals. That is, an innovation is given by ${x_t} - \hat x_t^{t - 1}$, where $\hat x_t^{t - 1}$ is the prediction at time $t$ given $t-1$ observations and ${x_t}$ is the true value observed at time $t$.
-
-There are two main ways of performing such an estimation of the parameter space.
-
-1. Method of Moments (MoM)
-1. Maximum Likelihood / Least Squares Estimation [MLE / LSE]
 
 ## Method of Moments
 
