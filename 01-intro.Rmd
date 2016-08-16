@@ -1,26 +1,73 @@
-# The World of Time Series
+# Introduction
 
 ```{r introduction_code, echo = FALSE}
 knitr::read_chunk('code/chapter/01_introduction.R')
 ```
 
+<!--
+> "One damned thing after another." ~ R. A. Fisher
+>
+-->
 
-## Objective of Time Series
+>
+> *Prévoir consiste à projeter dans l’avenir ce qu’on a perçu dans le passé.* Henri Bergson
+>
+
+<!--
+>
+> *Hâtons-nous; le temps fuit, et nous entraîne avec soi : le moment où je parle est déjà loin de moi*. Nicolas Boileau
+>
+-->
+
+Generally speaking a *time series* (or stochastic process) corresponds to set of "repeated" observations of the same variable such as price of a financial asset or temperature in a given location. In terms of notation a time series is often writen as
+
+ \[\left(X_1, X_2, ..., X_T \right) \;\;\; \text{ or } \;\;\; \left(X_t\right)_{t = 1,...,T}.\]
+ 
+The time index $t$ generally the set $\mathbb{N}$ (or sometimes $\mathbb{Z}$). When $t \in \mathbb{R}$, a time series becomes a *continuous-time* stochastic process such a Brownian motion. In this class we limit our selves to *discrete-time* processes where a variable is measured sequentially at fixed and equally spaced intervals in time. This implies that we will assume $t$ is not random (the time at which each observation is measure is know) and the time between two consequtive observation is constant. 
+
+Moreover, the term "time series" can, as we discussed, denote a sample or a set of observations but also a probability model for that sample. For example, on of the simplest probability model used in time series analysis is called a *white noise* process and is defined as
+\[W_t \mathop \sim \limits^{iid} N(0, \sigma^2).\]
+This statement simply means that $(X_t)$ is normally distribtued and independent over time. This model is quite unintersting but as we will very usefull to construct other (more interesting) models. Unlike white noise process, time series are typically *not* independent over time. Suppose that the temperature in Champaign is unusually low, then it is reasonable to assume that tomorrow's temperature will also be low. Such behaviour suggest a dependent over time. The time series methods we will discuss in this class consists parametric models used to characterize (or at least approximate) the joint distribution of $(X_t)$. Often, time series models can be decomposed in what we called a *signal*, say $(Y_t)$ and a *noise*, say $(W_t)$, leading to the model
+ \[X_t = Y_t + W_t.\]
+Typically, we have $E[Y_t] \neq 0$ while $E[W_t] = 0$ (although we may have $E[W_t | W_{t-1}, ..., W_1] \neq 0$). Such models impose some parametric structure which represent a convenient and flexible way of studying time series and evalute to which extent *future* value of the series can be forecasted. As we will see, predicting future values is one of the main aspects of time series analysis. However, making predictions is often a daunting taks or as famously stated by Nils Bohr:
+
+> 
+> "*Prediction is very difficult, especially about the future.*"
+>
+
+There are plenty of examples predictions which releved to be completely erroneous. For example, Irving Fisher, Professor of Economics at Yale University, famously predicted three days before the 1929 crash:
+
+>
+> "*Stock prices have reached what looks like a permanently high plateau*". 
+>
+
+Another example is Thomas Watson, president of IBM, who said in 1943:
+
+>
+> "*I think there is a world market for maybe five computers.*"
+>
+
+<!-- Model = Pattern + Noise
+
+In Time Series, the pattern represents the association between values observed over time (e.g. autocorrelation). 
+
+***Since these patterns are correlated in time, methods that assume independence are unable to be used.***
+
+
+
+
+
+In essence, we seek to be able to predict, classify, and associate observed data with a theoretical backend.
+
+ ## Objective of Time Series
 
 1. View a set of observations made sequentially in "time."
     * "One damned thing after another." ~ R. A. Fisher
 2. Find a suitable model to describe an observed process 
     * "All models are wrong, but some are useful" ~ George Box
 3. Forecast future observations 
-    * "Prediction is very difficult, especially if it's about the future." ~ Niels Bohr
+    * "Prediction is very difficult, especially if it's about the future." ~ Niels Bohr 
 
-In essence, we seek to be able to predict, classify, and associate observed data with a theoretical backend. To do so, one must first create a model that provides an explanation of the data as a mixture of a pattern and noise (error). That is, we must be able to formulate the data in terms of: 
-
-Model = Pattern + Noise
-
-In Time Series, the pattern represents the association between values observed over time (e.g. autocorrelation). 
-
-***Since these patterns are correlated in time, methods that assume independence are unable to be used.***
 
 ## What is a Time Series and can I eat it?
 
@@ -28,21 +75,16 @@ The definition of ***Time Series (TS)*** is as follows:
 
 A ***Time Series*** is a stochastic process, a sequence of random variables (RV) defined on a common probability space denoted as $\left(X_t\right)_{t=1, \ldots, T}$ (i.e. $X_1, X_2, \ldots, X_T$).
 
-Note: The time $t$ belongs to discrete index sets ($\in \mathbb{Z}$) not continuous ($\notin \mathbb{R}$). After all, TS data is always collected at discrete time points. Furthermore, by time belonging to $\mathbb{Z}$ it can take upon itself negative and positive integer values (e.g. $-2, -1, 0, 1, 2$).
-
-In laypersons terms, a time series is a variable that gets measured sequentially at fixed intervals of time, which are oftenly spaced apart at equal distances (e.g. equispaced).
+-->
 
 Examples of Time Series:
 
+```{r example_highfreq, echo=FALSE, fig.height=4, fig.width=7, cache=TRUE}
+```
+
 1. Stock Data from Johnson and Johson's Quarterly earnings...
 
-```{r example_jj, echo=FALSE, fig.height=4, fig.width=7, cache=TRUE}
-```
 
-2. Speech data from someone talking
-
-```{r example_speech, echo=FALSE, fig.height=4, fig.width=7, cache=TRUE}
-```
 
 3. Earthquake and explosion data
 
@@ -52,26 +94,33 @@ Examples of Time Series:
 
 ## Exploratory Data Analysis (EDA) for Time Series
 
-A large part of time series involves looking at graphs of time series. The graphs provide us information as to what kind of trends and outliers the data maybe hiding.
+When dealing with relatively small time series (e.g. a few thousands), it is often useful to look at a graph of the original data. Such graphs can be informative to "detect" some features of a time series such as trends and the presence of outliers.
 
-### Identifying Trends
-A trend exists when there is a long term increase or decrease or combination of increases or decreases (polynomial) in the data. It could be linear or non-linear. 
+Indeed, a trend is typically deamed present in a time series when the data exhibit some form of long term increase or decrease or combination of increases or decreases. Such trends could be linear or non-linear and represent a important part of the "signal" of a model. Here are few examples of non-linear trends:
 
-Note: Long-term trend might change direction, indicating non-linear trends!
-
-Examples of non-linear trends:
-
-1. Seasonal trends (periodic): These are the cyclical patterns which repeat after a fixed/regular time period.
-    * Business cycles (bust/recession, recovery, boom)
-    * Seasons (summer, fall, winter, spring)
+1. **Seasonal trends** (periodic): These are the cyclical patterns which repeat after a fixed/regular time period. This could be due to business cycles (e.g. bust/recession, recovery).
     
-2. Non-seasonal trends (periodic): These patterns cannot be associated to seasonal variation.
-    * Impact of economic indicators on stock returns.
-3. "Other" trends: These trends have no regular patterns. They could be just local, short-term. They change statistical properties of a TS over a segment of time ("window").
-    * Earthquakes!
-    * El Nino
+2. **Non-seasonal trends** (periodic): These patterns cannot be associated to seasonal variation and can for example to external variable. For example, impact of economic indicators on stock returns. Such trends are often hard to detect based on a graphical anaylsis of the data.
+    
+3. **"Other" trends**: These trends have typically no regular patterns and change statistical properties of a time series over a segment of time ("window"). A typicall example of such trends corresponds to vibrations observed before, during and after an earthquake.
 
-### Noticing changes in time and outliers
+**Example:** An example of a time series is, for example, the quarterly earnings of the company Johnson and Johson. In the figure below we present these earnings between 1960 and 1980:
+
+**JAMES: can we "gmwm" this graph? Thanks!**
+
+```{r example_jj, echo=FALSE, fig.height=4, fig.width=7, cache=TRUE}
+```
+
+It can clearly be observed that the data present a non-linear increasing trend as well as a yearly seasonal component. In addition, on can note that the *variability* of the data seems to increase with time. As we will such observations provide some valuable guilines to select a suitable models for such data.
+
+**Example:** In the figure below we present TO COMPLETE
+
+**JAMES: can we "gmwm" this graph? Thanks!**
+
+```{r example_eq, echo=FALSE, fig.height=4, fig.width=7, cache=TRUE}
+```
+
+**ADD VISUAL DESCRIPTION**
 
 Change in time and outliers yields interesting results. These results can be seen as:
 
@@ -83,4 +132,62 @@ Change in time and outliers yields interesting results. These results can be see
     * An event which causes change in statistical properties of TS for short term and long term! Some events cause abrupt changes in statistical properties of TS. They are often associated with "explosive" nature of TS.
 4. Outliers
     * These are the "extreme" observations in the time series. May be related to data collection or change in state.
+
+## Basic Time Series Models
+
+In this section, we introduce some simple time series models. Before doing so we define all the information avaiable up to time $t-1$ has $\Omega_t$, i.e.
+
+\[\Omega_t = \left(X_{t-1}, X_{t-2}, ..., X_0 \right).\]
+
+As we will this compact notation is quite useful.
+
+### White noise processes
+
+The building block for most time series models is the Gaussian white noise process, which can be defined as
+
+\[{W_t}\mathop \sim \limits^{iid} N\left( {0,\sigma _w^2} \right).\]
+
+This definition implies that:
+
+1. $E[W_t | \Omega_t] = 0$ for all $t$,
+2. $\operatorname{cov}\left(W_t, W_{t-h} \right) = \boldsymbol{1}_{h = 0} \; \sigma^2$ for all $t, h$.
+
+Therefore, this process present an absence of temporal (or serial) dependence and has a constant variance. This definition can be generalized in two sorts of processes, the *weak* and *strong* white noise. The process $(W_t)$ is a weak white noise if
+
+1. $E[W_t] = 0$ for all $t$,
+2. $\operatorname{var}\left(W_t\right) = \sigma^2$ for all $t$,
+3. $\operatorname{cov} \left(W_t, W_{t-h}\right) = 0$, for all $t$, and for all $h \neq 0$.
+
+Note that this definition does not imply that $W_t$ and $W_{t-h}$ are independent (for $h \neq 0$) but simply uncorrelated. However, the notion of indepence is used to define a *strong* white noise as
+
+1. $E[W_t] = 0$ and $\operatorname{var}(W_t) = \sigma^2 < \infty$, for all $t$,
+2. $F(W_t) = F(W_{t-h})$, for all $t,h$ (where $F(W_t)$ denotes the distribution of $W_t$),
+3. $W_t$ and $W_{t-h}$ are independent for all $t$ and for all $h \neq 0$.
+
+It is clear from these definition that if a process is a strong white noise it is also a weak white noise. However, the converse is not true a shown in the following example:
+
+**Example**: Let $X_t \mathop \sim \limits^{iid} F_t$, where $F_t$ denote a Student distribution with $t$ degrees of freedom. Such process is a weak but not a strong white noise.
+
+The code below presents an example of how to simulate a Gaussian white noise process
+
+```{r example_WN, fig.height=4, fig.width=7, cache=TRUE}
+```
+
+<!--
+white noise can actually be generalize
+
+The process name of white noise has meaning in the notion of colors of noise. Specifically, the white noise is a process that mirrors white light's flat frequency spectrum. So, the process has equal frequencies in any interval of time.
+
+*Definition:* **White Noise**
+
+$w_t$ or $\varepsilon _t$ is a **white noise process** if $w_t$ are uncorrelated identically distributed random variables with
+$E\left[w_t\right] = 0$ and $Var\left[w_t\right] = \sigma ^2$, for all $t$. We can represent this algebraically as:
+$$y_t = w_t,$$
+where ${w_t}\mathop \sim \limits^{id} WN\left( {0,\sigma _w^2} \right)$
+
+Now, if the $w_t$ are **Normally (Gaussian) distributed**, then the process is known as a **Gaussian White Noise** e.g. ${w_t}\mathop \sim \limits^{iid} N\left( {0,{\sigma ^2}} \right)$ -->
+
+
+We 
+1. 
 

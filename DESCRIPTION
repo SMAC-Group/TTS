@@ -12,8 +12,10 @@ Imports:
   astsa,
   ggfortify,
   zoo,
-  gmwm
+  gmwm,
+  imudata
 Remotes:
   sinhrks/ggfortify,
   rstudio/bookdown,
-  SMAC-Group/gmwm
+  SMAC-Group/gmwm,
+  SMAC-Group/imudata

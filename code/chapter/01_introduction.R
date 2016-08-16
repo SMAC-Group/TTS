@@ -1,3 +1,34 @@
+## @knitr example_WN
+# This code simulate a gaussian white noise process
+n = 100                               # process length
+sigma2 = 1                            # process variance
+Xt = gen.gts(WN(sigma2 = 1), n = n)
+plot(Xt)
+
+## @knitr example_highfreq
+# Load packages
+library(highfrequency)
+library(timeDate)
+
+# Load "high-frequency" Starbucks returns for Jul 01 2011
+data(sbux.xts)
+
+# Plot returns
+par(mfrow = c(1,2))
+plot(sbux.xts[1:89], main = " ", ylab = "Returns")
+plot(sbux.xts, main = " ", ylab = "Returns")
+
+## @knitr example_IMU
+# Load packages
+library(imudata)
+library(gmwm)
+
+# Load IMU data
+load(imu6)
+
+# Plot gryoscope on axis X
+plot(imu6[1:100,1], type = "l", ylab = "Measurement error")
+
 ## @knitr example_jj
 # Stock Data
 data(jj)
