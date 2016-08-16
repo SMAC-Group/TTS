@@ -1,5 +1,5 @@
 --- 
-title: "Introduction to Time Series"
+title: "A Tour of Time Series Analysis with R"
 author: "James Balamuta, Stéphane Guerrier and Roberto Molinari"
 date: "`r Sys.Date()`"
 knit: "bookdown::render_book"
@@ -16,9 +16,6 @@ github-repo: coatless/its
 # Preface
 
 Welcome to Introduction to Time Series using `R`!
-
-
-$\var (x)$
 
 ## A foreword
 
