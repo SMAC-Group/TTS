@@ -1,11 +1,13 @@
-[![TravisCI Build Status](https://api.travis-ci.org/coatless/ITS.svg)](https://travis-ci.org/coatless/ITS)
+[![TravisCI Build Status](https://api.travis-ci.org/SMAC-Group/TTS.svg)](https://travis-ci.org/SMAC-Group/TTS)
 
-# Introduction to Time Series
+# A Tour of Time Series Analysis with R (`TTS`) 
 
-Housed within this repository is the Introduction to Time Series (ITS) book
+Housed within this repository is the A Tour of Time Series Analysis with R (TTS) book
 written using [`bookdown`](https://github.com/rstudio/bookdown). The objective
 of the book is to provide an introduction to concepts related to dependent
-data for [STAT 429](http://catalog.illinois.edu/courses-of-instruction/stat/) at the [University of Illinois at Urbana-Champaign](http://www.stat.illinois.edu/)
+data for 
+[STAT 429: Time Series Analysis](http://catalog.illinois.edu/courses-of-instruction/stat/) 
+at the [University of Illinois at Urbana-Champaign](http://www.stat.illinois.edu/)
 
 # Helpful References
 
