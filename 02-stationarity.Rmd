@@ -8,6 +8,7 @@ knitr::read_chunk('code/chapter/02_stationarity_autocorrelation.R')
 >
 > --- Kehlog Albran, The Profit -->
 
+<!--
 After reading this chapter you will be able to:
 
 - Describe independent and dependent data
@@ -15,6 +16,18 @@ After reading this chapter you will be able to:
 - Understand the notion of stationarity.
 - Differentiate between Strong and Weak stationarity.
 - Judge whether a process is stationary. 
+
+-->
+
+In this chapter we will discuss and formalize a little how knowledge about $X_{t-1}$ (or $\Omega_t$) can provide us with some information about $X_t$. In particular, we will consisder the correlation (or covariance) of $(X_t)$ at different times such as $\corr \left(X_t, X_{t+h}\right)$. This "form" of correlation (covariance) is called the *autocorrelation* (*autocovariance*) and is a very usefull tool in time series analysis. Without assuming that a time series present form of "stability", it would be rather difficult to estimate $\corr \left(X_t, X_{t+h}\right)$ as this quantity would dependent on both $t$ and $h$ leading to far parameters to estimate than observations. Therefore, the concept of *stationarity* is conveniant in this context as it allow (among other things) to assume that
+
+\[\corr \left(X_t, X_{t+h}\right) = \corr \left(X_t+j, X_{t+h+j}\right),\]
+
+implying that the autocorrelation (or autocovariance) is only function of the lag between observation. This two concepts will be discuss in this chapter. Before moving on, it is helpful to remind that correlation (or autocorrelation) is only approriate to measure a very spefic kind on dependence, i.e. linear dependence. There are many forms of dependency as illustrated
+
+![dependency](images/1280px-Correlation_examples2.png)
+
+However, the methods, covariance and correlation, that we will be using are specific to measuring linear dependence. As a result, these tools are less helpful to measure monotonic dependence and they are much less helpful to measure nonlinearly dependence.
 
 ## Dependency
 
