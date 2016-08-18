@@ -6,3 +6,6 @@ _book
 _bookdown_files
 tts_cache
 its_cache
+its_files
+tts_files
+tts.Rmd
