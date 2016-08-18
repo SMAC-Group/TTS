@@ -517,7 +517,7 @@ Alternatively, simulation methods can also employed. The figure compares these t
 
 <!-- TO DO: comment grpah a little -->
 
-### Sample Autocovariance and Autocorrelation Functions
+## Sample Autocovariance and Autocorrelation Functions
 
 A natural estimator of the **autocovariance function** is given as:
 
@@ -555,7 +555,15 @@ It can clearly be observed that asymptotic approximation is quite poor when $T =
 <!-- TO DO: ADD MORE DETAILS ON THE SIMULATION -->
 
 
-<!-- TO DO: Joint stationarity is mising at the moment -->
+<!-- TO DO: JOINT STATIONARITY IS MISSING. 
+- Add content of class notes
+- Add simulated example 
+- Add real bivariate example
+-->
+
+<!-- TO DO: ADD REAL DATA EXAMPLE -->
+
+
 
 <!--
 ## Joint Stationarity
@@ -571,3 +579,11 @@ The cross-correlation function for jointly stationary times can be expressed as:
 \[{\rho _{XY}}\left( {t,t + h} \right) = \frac{{{\gamma _{XY}}\left( {t,t + h} \right)}}{{{\sigma _{{X_t}}}{\sigma _{{Y_{t + h}}}}}} = \frac{{{\gamma _{XY}}\left( h \right)}}{{{\sigma _{{X_t}}}{\sigma _{{Y_{t + h}}}}}} = {\rho _{XY}}\left( h \right)\]
 
 -->
+
+## Robustness Issues
+
+Robust methods for time series analysis is 
+<!-- Rob I am sure you would be great to extent this section! -->
+
+```{r simulationRobust, cache = TRUE}
+```

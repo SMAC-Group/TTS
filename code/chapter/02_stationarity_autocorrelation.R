@@ -1,3 +1,61 @@
+## @knitr simulationRobust
+
+# Define sample size
+n = 100
+
+# Define proportion of "extreme" observation
+alpha = 0.05
+
+# Extreme observation are generated from N(0,sigma2.cont)
+sigma2.cont = 10
+
+# Number of Monte-Carlo replications
+B = 1000
+
+# Define model AR(1)
+phi = 0.5
+sigma2 = 1
+model = AR1(phi = phi, sigma2 = sigma2)
+
+# Initialization of result array
+result = array(NA, c(B,2,20))
+
+# Start Monte-Carlo
+for (i in 1:B){
+  # Simulate AR(1)
+  Xt = gen.gts(model, N = n)
+  
+  # Create a copy of Xt
+  Yt = Xt
+  
+  # Add a proportion alpha of extreme observations to Yt
+  Yt[sample(1:n,round(alpha*n))] = rnorm(round(alpha*n), 0, sigma2.cont)
+  
+  # Compute ACF of Xt and Yt
+  acf_Xt = ACF(Xt)
+  acf_Yt = ACF(Yt)
+  
+  # Store ACFs
+  result[i,1,] = acf_Xt[1:20]
+  result[i,2,] = acf_Yt[1:20]
+}
+
+
+# Compare empirical distribution of ACF based on Xt and Yt
+
+# Vector of lags considered (h <= 20)
+lags = c(1,2,5,10) + 1
+
+# Make graph
+par(mfrow = c(2,2))
+
+for (i in 1:4){
+  boxplot(result[,1,lags[i]], result[,2,lags[i]], col = "lightgrey",
+          names = c("Uncont.","Cont."), main = paste("lag: h = ", lags[i]-1),
+          ylab = "Sample autocorrelation")
+  abline(h = phi^(lags[i]-1), col = 2, lwd = 2)
+}
+
 ## @knitr estimXbar
 
 # Define sample size
