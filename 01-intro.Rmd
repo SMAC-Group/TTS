@@ -22,26 +22,28 @@ knitr::read_chunk('code/chapter/01_introduction.R')
 
 After reading this chapter you will be able to:
 
-- Describe what a *time series* is
-- Perform explore data analysis on time series data 
+- Describe what a *time series* is.
+- Perform explore data analysis on time series data.
 - Evaluate different characteristics of a time series.
 - Classify basic time series models by equation and plots. 
-- Manipulate a time series equation using *backsubstitution*
+- Manipulate a time series equation using *backsubstitution*.
 
 ## Time Series
 
-Generally speaking a *time series* (or stochastic process) corresponds to set of "repeated" observations of the same variable such as price of a financial asset or temperature in a given location. In terms of notation a time series is often writen as
+Generally speaking a *time series* (or stochastic process) corresponds to set of "repeated" observations of the same variable such as price of a financial asset or temperature in a given location. In terms of notation a time series is often written as
 
- \[\left(X_1, X_2, ..., X_T \right) \;\;\; \text{ or } \;\;\; \left(X_t\right)_{t = 1,...,T}.\]
+ \[\left(X_1, X_2, ..., X_n \right) \;\;\; \text{ or } \;\;\; \left(X_t\right)_{t = 1,...,n}.\]
  
-The time index $t$ is contained within either the set of reals, $\real$, or integers, $\integers$. When $t \in \real$, the time series becomes a *continuous-time* stochastic process that is able to display Brownian motion, the random movement of particles within a suspended liquid or gas, and an electrocardiogram (ECG), the pulpitations of the heart as shown in Figure \@ref(fig:ecg-img). However, within this class, we will limit ourselves to the case the later case. That is, the focus will be on cases where $t \in \integers$ better known as *discrete-time* processes. *Discrete-time* processes are where a variable is measured sequentially at fixed and equally spaced intervals in time akin to \@ref(fig:numberline). This implies that we will assume two tenents:
+The time index $t$ is contained within either the set of reals, $\real$, or integers, $\integers$. When $t \in \real$, the time series becomes a *continuous-time* stochastic process such a Brownian motion, a model used to represent the random movement of particles within a suspended liquid or gas, or an ElectroCardioGram (ECG) signal, which corresponds to the pulpitations of the heart. <!-- as shown in Figure \@ref(fig:ecg-img).--> However, within this text, we will limit ourselves to the case the later case. That is, the focus will be on cases where $t \in \integers$ better known as *discrete-time* processes. *Discrete-time* processes are where a variable is measured sequentially at fixed and equally spaced intervals in time akin to \@ref(fig:numberline). This implies that we will assume two tenents:
 
 1. $t$ is not random e.g. the time at which each observation is measured is known, and
 2. the time between two consequtive observation is constant. 
 
+<!-- JAMES: I commented this figure, not sure it is very useful. If you want to keep it let me know...
 ```{r ecg-img, echo = FALSE, cache = TRUE, fig.align = 'center', fig.cap = "Continuous-time view that is used by an ECG"}
 knitr::include_graphics("images/ecg.png")
 ```
+-->
 
 ```{r numberline, echo = FALSE, cache = TRUE, fig.height = 1.5, fig.align = 'center', fig.cap = "Discrete-time can be thought of as viewing a number line with equally spaced points."}
 ```
@@ -50,7 +52,7 @@ Moreover, the term "time series" can also represent a probability model for set 
 
 \[W_t \mathop \sim \limits^{iid} N(0, \sigma^2).\]
 
-This statement simply means that $(W_t)$ is normally distribtued and independent over time. This model may appear to be dull but as we will see it is a crucial component to constructing intricate and riveting models. Unlike the white noise process, time series are typically *not* independent over time. Suppose that the temperature in Champaign is unusually low, then it is reasonable to assume that tomorrow's temperature will also be low. Indeed, such behaviour would suggest the existence of a dependency over time. The time series methods we will discuss in this class consists of parametric models used to characterize (or at least approximate) the joint distribution of $(X_t)$. Often, time series models can be decomposed into two components the first of which is what we call a *signal*, say $(Y_t)$, and the second component is a *noise*, say $(W_t)$, leading to the model
+This statement simply means that $(W_t)$ is normally distributed and independent over time. This model may appear to be dull but as we will see it is a crucial component to constructing intricate and riveting models. Unlike the white noise process, time series are typically *not* independent over time. Suppose that the temperature in Champaign is unusually low, then it is reasonable to assume that tomorrow's temperature will also be low. Indeed, such behavior would suggest the existence of a dependency over time. The time series methods we will discuss in this text consists of parametric models used to characterize (or at least approximate) the joint distribution of $(X_t)$. Often, time series models can be decomposed into two components the first of which is what we call a *signal*, say $(Y_t)$, and the second component is a *noise*, say $(W_t)$, leading to the model
 
  \[X_t = Y_t + W_t.\]
  
@@ -73,7 +75,7 @@ Another example is Thomas Watson, president of IBM, who said in 1943:
 >
 
 
-## Exploratory Data Analysis (EDA) for Time Series
+## Exploratory Data Analysis for Time Series
 
 When dealing with relatively small time series (e.g. a few thousands), it is often useful to look at a graph of the original data. Such graphs can be informative to "detect" some features of a time series such as trends and the presence of outliers.
 
@@ -106,16 +108,28 @@ Moreover, when observing "raw" time series data it is also interesting to evalua
 ```
 
 From the graph, it can be observed that the statistical properties of the time series appear to change over time. For instance, the variance of the time series shifts at around $t = 1150$ for both series.
-The shift in variance also opens "windows" where there appears to be distinct states. In the case of the explosion data this is particularly relevant around $t = 50, \cdots, 250$ and then again from $t = 1200, \cdots, 1500$. Even within these windows, there are "spikes" that appear to be outliers most notably at $t = 1200$ for explosion and $t = 1450$ for the earthquake series.
+The shift in variance also opens "windows" where there appears to be distinct states. In the case of the explosion data this is particularly relevant around $t = 50, \cdots, 250$ and then again from $t = 1200, \cdots, 1500$. Even within these windows, there are "spikes" that could be considered as outliers most notably around $t = 1200$ for explosion series.
 
-Finally, we consider an example about high-frequency finance to illustate to limitation our current framework.
+Next, we consider an example about high-frequency finance to illustate to limitation our current framework.
 
 **Example:** The figure below present the returns (i.e. informally speaking the changes in price) for Starbuck's stock on the first of July 2011 during about 150 seconds (left panel) and about 400 minutes (right panel). 
 
 ```{r example_highfreq, fig.height = 4, fig.width = 7, cache = TRUE, message = FALSE}
 ```
 
-It can be observed on the left panel that points are not equally spaced. Indeed, in high-frequency data interval between two points is typically not constant and is, even worse, a random variable. This implies that when a new observation will be available is in general unknown. On the right panel, one can observe that that the variability of the data seems to change during the course of the trading day. Such phenomenon is well known in the finance community as a lot variation occurs at the start (and the end) of the day while the middle of the day is associated with small changes. Moreover, clear extreme observations can also be noted in this graph at around 09:30:34.
+It can be observed on the left panel that points are not equally spaced. Indeed, in high-frequency data interval between two points is typically not constant and is, even worse, a random variable. This implies that when a new observation will be available is in general unknown. On the right panel, one can observe that the variability of the data seems to change during the course of the trading day. Such phenomenon is well known in the finance community as a lot variation occurs at the start (and the end) of the day while the middle of the day is associated with small changes. Moreover, clear extreme observations can also be noted in this graph at around 09:30:34.
+
+<!-- Geatan: Could you please check and if you have the time expend with example a little -->
+
+Finally, ....
+
+<!--
+Complete example on IMU to show the limit for such graph when n is too big.
+-->
+
+```{r example_IMU, fig.height = 4, fig.width = 7, cache = TRUE, message = FALSE}
+```
+
 
 
 ## Basic Time Series Models
