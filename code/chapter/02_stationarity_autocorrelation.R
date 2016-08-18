@@ -73,19 +73,21 @@ text(0,0, c("Admissible Region"))
 
 
 ## @knitr basicACF
+# Load package
+library(gmwm)
 
-# Simulate iid gaussian RV (i.e. white noise)
-Xt = rnorm(100)
+# Simulate 100 observation from a Gaussian white noise
+Xt = gen.gts(WN(sigma2 = 1), N = 100)
 
 # Compute autocorrelation
-acf_Xt = acf(Xt)
+acf_Xt = ACF(Xt)
 
 # Plot autocorrelation
-plot(acf_Xt)
+plot(acf_Xt, show.ci = FALSE)
 
 ## @knitr basicACF2
 
-# Plot autocorrelation with confidence bands
+# Plot autocorrelation with confidence bands 
 plot(acf_Xt)
 
 ## @knitr simulationACF

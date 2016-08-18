@@ -463,7 +463,7 @@ Therefore:
 \end{aligned} \]
 
 
-### Esimtation of the Mean Function
+## Estimation of the Mean Function
 
 If a time series is stationary, the mean function is constant and a possible estimator of this quantity is given by
 
@@ -515,6 +515,7 @@ Alternatively, simulation methods can also employed. The figure compares these t
 ```{r estimXbar, cache = TRUE}
 ```
 
+<!-- TO DO: comment grpah a little -->
 
 ### Sample Autocovariance and Autocorrelation Functions
 
@@ -531,18 +532,18 @@ A graphical representation of the autocorrelation function is often the first st
 ```{r basicACF, cache = TRUE}
 ```
 
-In this example, the true autocorrelation at lag $h$ ($|h|$ > 0 ) is equal 0 but obviously the estimated autocorrelations are random variables and are not equal to their true value. It would therefore be usefull to have have some knowledge about the variability of the sample autocorrelations (under some conditions) to assess whether the data comes from a completely random series or presents some significant correlation at some lags. The following result provide an  asymptotic solution to this problem:
+In this example, the true autocorrelation is equal to zero at any lag $h \neq 0$ but obviously the estimated autocorrelations are random variables and are not equal to their true values. It would therefore be usefull to have some knowledge about the variability of the sample autocorrelations (under some conditions) to assess whether the data comes from a completely random series or presents some significant correlation at some lags. The following result provide an asymptotic solution to this problem:
 
->
-> If $X_t$ is white noise with finite fourth moment, then $\hat{\rho}(h)$ is approximately normally distributed with mean $0$ and variance $T^{-1}$ for all fixed $h$.
->
+**Theorem:** If $X_t$ is white noise with finite fourth moment, then $\hat{\rho}(h)$ is approximately normally distributed with mean $0$ and variance $n^{-1}$ for all fixed $h$.
 
-Using on this result, we now have an approximate method to assess whether peaks in sample autocorrelation are significant by determining whether the observed peak lies outside the interval $+/- 2/\sqrt{T}$ (i.e. an approximate 95%  confidence interval). Returning to our previous example:
+<!-- ADD PROOF -->
+
+Using on this result, we now have an approximate method to assess whether peaks in sample autocorrelation are significant by determining whether the observed peak lies outside the interval $\pm 2/\sqrt{T}$ (i.e. an approximate 95%  confidence interval). Returning to our previous example:
 
 ```{r basicACF2, cache = TRUE}
 ```
 
-It can now be observed that most peaks lies within the interval $+/- 2/\sqrt{T}$ suggesting that the true data generating process is completely random (in the linear sense).
+It can now be observed that most peaks lies within the interval $\pm 2/\sqrt{T}$ suggesting that the true data generating process is completely random (in the linear sense).
 
 Unfortunately, this method is asymptotic (it relies on the central limit theorem) and there no "exact" tools that can be used in this case. In the simulation study below consider the "quality" of this result for $h = 3$ considering different sample sizes:
 
@@ -551,25 +552,12 @@ Unfortunately, this method is asymptotic (it relies on the central limit theorem
 
 It can clearly be observed that asymptotic approximation is quite poor when $T = 5$ but as the sample size increases the approximation becomes more appropriate and is nearly perfect with $T = 300$.
 
+<!-- TO DO: ADD MORE DETAILS ON THE SIMULATION -->
 
 
+<!-- TO DO: Joint stationarity is mising at the moment -->
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<!--
 ## Joint Stationarity
 
 Two time series, say $\left(X_t \right)$ and $\left(Y_t\right)$, are said to be jointly stationary if they are each stationary, and the cross-covariance function
@@ -582,3 +570,4 @@ The cross-correlation function for jointly stationary times can be expressed as:
 
 \[{\rho _{XY}}\left( {t,t + h} \right) = \frac{{{\gamma _{XY}}\left( {t,t + h} \right)}}{{{\sigma _{{X_t}}}{\sigma _{{Y_{t + h}}}}}} = \frac{{{\gamma _{XY}}\left( h \right)}}{{{\sigma _{{X_t}}}{\sigma _{{Y_{t + h}}}}}} = {\rho _{XY}}\left( h \right)\]
 
+-->
