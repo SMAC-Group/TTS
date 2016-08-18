@@ -141,12 +141,14 @@ plot(sbux.xts, main = " ", ylab = "Returns")
 ## @knitr example_IMU
 # Load packages
 library(gmwm)
+library(imudata)
 
 # Load IMU data
 data(imu6, package = "imudata")
+Xt = gts(imu6[,1], name = "Gyroscope data", unit = "sec", freq = 100)
 
-# Plot gryoscope on axis X
-plot(imu6[1:100,1], type = "l", ylab = "Measurement error")
+# Plot gryoscope data
+autoplot(Xt) + ylab("Error (rad/s^2)")
 
 ## @knitr example_jj
 # Stock Data
