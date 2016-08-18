@@ -11,7 +11,7 @@ before_script:
 - chmod +x ./deployment/_build.sh
 - chmod +x ./deployment/_deploy.sh
 script:
-- travis_wait 30 ./deployment/_build.sh
+- travis_wait 20 bash deployment/_build.sh
 after_success:
 - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && bash
   deployment/_deploy.sh
