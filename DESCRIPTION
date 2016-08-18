@@ -1,11 +1,13 @@
-Package: its
-Title: Introduction to Time Series
+Package: tts
+Title: A Tour of Time Series Analysis with R
 Version: 0.0.1
 Authors@R: c(
-  person("James", "Balamuta" , "balamut2@illinois.edu", c("aut", "cre"))
+  person("James", "Balamuta" , "balamut2@illinois.edu", c("aut", "cre")),
+  person("Stephane", "Guerrier" , "stephane@illinois.edu", c("aut")),
+  person("Roberto", "Molinari" , "roberto.molinari@unige.ch", c("aut"))
   )
 Depends: R (>= 3.3.0)
-URL: https://github.com/coatless/its
+URL: https://github.com/SMAC-Group/TTS
 Imports:
   bookdown,
   ggplot2,
@@ -15,7 +17,8 @@ Imports:
   gmwm,
   imudata,
   highfrequency,
-  timeDate
+  timeDate,
+  gridExtra
 Remotes:
   sinhrks/ggfortify,
   rstudio/bookdown,
