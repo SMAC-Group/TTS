@@ -500,10 +500,21 @@ In the white noise case, the above formula reduces to the usual $\operatorname{v
 
 **Example:** For an AR(1) we have $\gamma(h) = \phi^h \sigma_w^2 \left(1 - \phi^2\right)^2$, therefore, we obtain (after a bit of algebra):
 
-\[ \var \left( {\bar X} \right) = \frac{\sigma_w^2 \left( n - 2\phi - n \phi^2 + 2 \phi^{n + 1}\right)}{n\left(1-\phi^2\right)\left(n \left(\phi - 1\right)^2\right)}\]
+\[ \var \left( {\bar X} \right) = \frac{\sigma_w^2 \left( n - 2\phi - n \phi^2 + 2 \phi^{n + 1}\right)}{n^2\left(1-\phi^2\right)\left(1-\phi\right)^2}.\]
+
+Unfortunately, deriving such an exact formula is often difficult when considering more complexe models, however, asymptotic approximations are often employed simply the calculation. For example, in our case we have
+
+\[\mathop {\lim }\limits_{n \to \infty } \; n \var \left( {\bar X} \right) = \frac{\sigma_w^2}{\left(1-\phi\right)^2},\]
+
+providing the following approximate formula:
+
+\[\var \left( {\bar X} \right) \approx \frac{\sigma_w^2}{n \left(1-\phi\right)^2}.\]
+
+Alternatively, simulation methods can also employed. The figure compares these three methods:
 
 ```{r estimXbar, cache = TRUE}
 ```
+
 
 ### Sample Autocovariance and Autocorrelation Functions
 

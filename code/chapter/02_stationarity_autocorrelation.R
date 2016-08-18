@@ -1,14 +1,52 @@
 ## @knitr estimXbar
 
+# Define sample size
+n = 10
+
 # Number of Monte-Carlo replications
-for (i in 1:B){
-  # Simulate AR(1)
-  Xt = gen.
+B = 5000
+
+# Define grid of values for phi
+phi = seq(from = 0.95, to = -0.95, length.out = 30)
+
+# Define result matrix
+result = matrix(NA,B,length(phi))
+
+# Start simulation
+for (i in 1:length(phi)){
+  # Define model
+  model = AR1(phi = phi[i], sigma2 = 1)
+  
+  # Monte-Carlo
+  for (j in 1:B){
+    # Simulate AR(1)
+    Xt = gen.gts(model, N = n)
+    
+    # Estimate Xbar
+    result[j,i] = mean(Xt)
+  }
 }
 
+# Estimate variance of Xbar
+var.Xbar = apply(result,2,var)
 
+# Compute theoretical variance
+var.theo = (n - 2*phi - n*phi^2 + 2*phi^(n+1))/(n^2*(1-phi^2)*(1-phi)^2)
 
-
+# Compute (approximate) vairance
+var.approx = 1/(n*(1-phi)^2)
+  
+# Compare variance estimations
+plot(NA, xlim = c(-1,1), ylim = range(var.approx), log = "y", 
+    ylab = expression(paste("var(", bar(X), ")")),
+    xlab= expression(phi), cex.lab = 1.5)
+grid()
+lines(phi,var.theo, col = "deepskyblue4")
+lines(phi, var.Xbar, col = "firebrick3")
+lines(phi,var.approx, col = "springgreen4")
+legend("topleft",c("Theoretical variance","Estimated variance","Approximate variance"), 
+       col = c("deepskyblue4","firebrick3","springgreen4"), lty = 1,
+       bty = "n",bg = "white", box.col = "white", cex = 1.2)
 
 ## @knitr admissibility
 plot(NA, xlim = c(-1.1,1.1), ylim = c(-1.1,1.1), xlab = expression(rho[1]),
