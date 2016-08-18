@@ -1,3 +1,50 @@
+--- 
+title: "A Tour of Time Series Analysis with R"
+author: "James Balamuta, Stéphane Guerrier and Roberto Molinari"
+date: "`r Sys.Date()`"
+knit: "bookdown::render_book"
+documentclass: book
+bibliography: [book.bib]
+biblio-style: apalike
+link-citations: yes
+site: bookdown::bookdown_site
+description: ""
+url: 'https\://tts.smac-group.com/'
+github-repo: 'SMAC-Group/TTS'
+---
+--- 
+title: "A Tour of Time Series Analysis with R"
+author: "James Balamuta, Stéphane Guerrier and Roberto Molinari"
+date: "`r Sys.Date()`"
+knit: "bookdown::render_book"
+documentclass: book
+bibliography: [book.bib]
+biblio-style: apalike
+link-citations: yes
+site: bookdown::bookdown_site
+description: ""
+url: 'https\://tts.smac-group.com/'
+github-repo: 'SMAC-Group/TTS'
+---
+
+# Preface {-}
+
+<!--chapter:end:index.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# Clean workspace each chapter
+rm(list = ls(all = TRUE))
+
+options(scipen = 8, width=65)
+
+# Any package that is required by the script below is given here:
+inst_pkgs = load_pkgs =  c("ggplot2","astsa","ggfortify","zoo","gmwm","gridExtra")
+inst_pkgs = inst_pkgs[!(inst_pkgs %in% installed.packages()[,"Package"])]
+if(length(inst_pkgs)) install.packages(inst_pkgs)
+
+# Dynamically load packages
+pkgs_loaded = lapply(load_pkgs, require, character.only=T)
+```
 # Introduction
 
 ```{r introduction_code, echo = FALSE, cache = FALSE}
@@ -301,3 +348,24 @@ where $R_t$, $S_t$ and $Z_t$ denote, respectively, a radnom walk, a drift and a 
 ```
 
 In the above graph, the three latent (unobserved) processes are first depicted (i.e. white noise, random walk and drift) and then the sum of the three is present (i.e. $(X_t)$).
+```{r include=FALSE, cache=FALSE}
+# Run at the end
+```
+
+<!--chapter:end:01-intro.Rmd-->
+
+
+# Autocorrelation and Stationarity
+
+<!--chapter:end:02-stationarity.Rmd-->
+
+
+# Basic Models
+
+<!--chapter:end:03-basic-models.Rmd-->
+
+
+# ARMA
+
+<!--chapter:end:04-arma.Rmd-->
+
