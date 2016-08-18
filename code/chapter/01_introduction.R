@@ -31,7 +31,7 @@ number_line(named)
 n = 100                               # process length
 phi = 0.5                             # phi parameter
 sigma2 = 1                            # innovation variance
-Xt = gen.gts(AR1(phi = phi, sigma2 = sigma2), n = n)
+Xt = gen.gts(AR1(phi = phi, sigma2 = sigma2), N = n)
 plot(Xt)
 
 ## @knitr example_ecolo
@@ -40,14 +40,14 @@ delta = 0.005                           # delta parameter (drift)
 sigma2 = 10                             # variance parameter (white noise)
 gamma2 = 0.1                            # innovation variance (random walk)
 model = WN(sigma2 = sigma2) + RW(gamma2 = gamma2) + DR(omega = delta)
-Xt = gen.lts(model, n = n)
+Xt = gen.lts(model, N = n)
 plot(Xt)
 
 ## @knitr example_DR
 # This code simulate a linear drift with 0 intercept
 n = 100                               # process length
 omega = 0.5                           # slope parameter
-Xt = gen.gts(DR(omega = omega), n = n)
+Xt = gen.gts(DR(omega = omega), N = n)
 plot(Xt)
 
 ## @knitr RW2d
@@ -108,7 +108,7 @@ RW2dimension(steps = 10^5)
 # This code simulate a gaussian white noise process
 n = 100                               # process length
 sigma2 = 1                            # process variance
-Xt = gen.gts(WN(sigma2 = sigma2), n = n)
+Xt = gen.gts(WN(sigma2 = sigma2), N = n)
 plot(Xt)
 
 ## @knitr example_MA1
@@ -116,14 +116,14 @@ plot(Xt)
 n = 100                               # process length
 sigma2 = 1                            # innovation variance
 theta = 0.5                           # theta parameter
-Xt = gen.gts(MA1(theta = theta, sigma2 = sigma2), n = n)
+Xt = gen.gts(MA1(theta = theta, sigma2 = sigma2), N = n)
 plot(Xt)
 
 ## @knitr example_RW
 # This code simulates a gaussian random walk process
 n = 100                               # process length
 gamma2 = 1                            # innovation variance
-Xt = gen.gts(RW(gamma2 = gamma2), n = n)
+Xt = gen.gts(RW(gamma2 = gamma2), N = n)
 plot(Xt)
 
 ## @knitr example_highfreq
