@@ -244,7 +244,10 @@ The code below presents an example of how an AR(1) can be simulated
 
 As we have seen in the previous example, an AR(1) can be expressed as a linear combination of all past observation of $(W_t)$, the next process, called a moving average process of order 1 or MA(1) is (in some sense) a "truncated" version of an AR(1). It is defined as
 
-\[X_t = \theta W_{t-1} + W_t,\]
+\begin{equation} 
+  X_t = \theta W_{t-1} + W_t,
+ \label{eq:defMA1}
+\end{equation}
  
 where (again) $W_t$ denotes a Gaussian white noise process. An example on how generate an MA(1) is given below:
 

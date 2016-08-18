@@ -1,3 +1,37 @@
+## @knitr estimXbar
+
+# Number of Monte-Carlo replications
+for (i in 1:B){
+  # Simulate AR(1)
+  Xt = gen.
+}
+
+
+
+
+
+## @knitr admissibility
+plot(NA, xlim = c(-1.1,1.1), ylim = c(-1.1,1.1), xlab = expression(rho[1]),
+     ylab = expression(rho[2]), cex.lab = 1.5)
+grid()
+
+# Adding boundary of constraint |rho_1| < 1
+abline(v = c(-1,1), lty = 2, col = "darkgrey")
+
+# Adding boundary of constraint |rho_2| < 1
+abline(h = c(-1,1), lty = 2, col = "darkgrey")
+
+# Adding boundary of non-linear constraint
+rho1 = seq(from = -1, to = 1, length.out = 10^3)
+rho2 = (rho1^2 - 1) + rho1^2 
+lines(rho1, rho2, lty = 2, col = "darkgrey")
+
+# Adding admissible region
+polygon(c(rho1,rev(rho1)),c(rho2,rep(1,10^3)),
+        border = NA, col= rgb(0,0,1, alpha = 0.1))
+
+# Adding text
+text(0,0, c("Admissible Region"))
 
 
 ## @knitr basicACF
