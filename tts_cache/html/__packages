@@ -1,0 +1,11 @@
+base
+ggplot2
+astsa
+ggfortify
+zoo
+gmwm
+xts
+highfrequency
+timeDate
+devtools
+gridExtra
