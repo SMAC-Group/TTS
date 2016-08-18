@@ -1,3 +1,31 @@
+## @knitr numberline
+number_line = function(named){
+  
+  d = data.frame(v = seq_along(named), o = rep(0, length(named)), named = named)
+  
+  ggplot(d, aes(x = v, y = o)) + geom_line() + 
+    geom_segment(mapping = aes(xend = v, yend = 0, y = -.05)) + # Replicate Tick marks
+    geom_text(vjust = 2, aes(label = named)) +  # Label axis marks
+    coord_fixed(ylim = c(-0.5,0.5)) +           # Suppress graph window changes
+    theme(axis.line=element_blank(),       # Disable everything...
+          axis.text.x=element_blank(),
+          axis.text.y=element_blank(),
+          axis.ticks=element_blank(),
+          axis.title.x=element_blank(),
+          axis.title.y=element_blank(),
+          legend.position="none",
+          panel.background=element_blank(),
+          panel.border=element_blank(),
+          panel.grid.major=element_blank(),
+          panel.grid.minor=element_blank(),
+          plot.background=element_blank())
+}
+
+named = c(paste0("t = ", 1:2), "...", paste0("t = n - ", 2:1), "t = n")
+
+number_line(named)          
+
+
 ## @knitr example_AR1
 # This code simulate a gaussian random walk process
 n = 100                               # process length
@@ -23,12 +51,13 @@ Xt = gen.gts(DR(omega = omega), n = n)
 plot(Xt)
 
 ## @knitr RW2d
+# Function computes direction random walk moves
 RW2dimension = function(steps = 100){
   # Initial matrix
-  step_direction = matrix(0,steps+1,2)
+  step_direction = matrix(0, steps+1, 2)
   
   # Start random walk
-  for (i in 2:steps+1){
+  for (i in seq(2, steps+1)){
     # Draw a random number from U(0,1)
     rn = runif(1)
     
@@ -45,27 +74,35 @@ RW2dimension = function(steps = 100){
     if (rn >= 0.75) {step_direction[i,2] = -1}
   }
   
-  # Cumulate steps
-  position = cbind(cumsum(step_direction[,1]),cumsum(step_direction[,2]))
+  # Cumulative steps
+  position = data.frame(x = cumsum(step_direction[, 1]),
+                        y = cumsum(step_direction[, 2]))
+  
+  # Mark start and stop locations
+  start_stop = data.frame(x = c(0, position[steps+1, 1]),
+                          y = c(0, position[steps+1, 2]),
+                          type = factor(c("Start","End"),
+                                        levels = c("Start","End")))
   
   # Plot results
-  plot(NA, xlim = range(position[,1]), ylim = range(position[,2]),
-       xlab = "X-position", ylab = "Y-position",
-       main = paste("2D random walk with", steps, "steps"))
-  grid()
-  lines(position, type = "l")
-  points(c(0,position[steps,1]),c(0,position[steps,2]), 
-         pch = 16, cex= 3, col = c("red","blue"))
-  legend("topleft", c("Start point","End point"),
-  pch = 16, pt.cex = 3, col = c("red","blue"), bty = "n",
-  bg = "white", box.col = "white", cex = 1.2)
+  ggplot(mapping = aes(x = x, y = y)) +
+    geom_line(data = position) + 
+    geom_point(data = start_stop, aes(color = type), size = 4) +
+    theme_bw() + 
+    labs(
+      x = "X-position",
+      y = "Y-position",
+      title = paste("2D random walk with", steps, "steps"),
+      color = ""
+    ) + theme(legend.position = c(0.1, 0.5))
 }
 
 # Plot 2D random walk with 10^2 and 10^5 steps
 set.seed(2)
-par(mfrow = c(1,2))
+
 RW2dimension(steps = 10^2)
 RW2dimension(steps = 10^5) 
+
 
 ## @knitr example_WN
 # This code simulate a gaussian white noise process
@@ -75,7 +112,7 @@ Xt = gen.gts(WN(sigma2 = sigma2), n = n)
 plot(Xt)
 
 ## @knitr example_MA1
-# This code simulate a gaussian white noise process
+# This code simulates a gaussian white noise process
 n = 100                               # process length
 sigma2 = 1                            # innovation variance
 theta = 0.5                           # theta parameter
@@ -83,7 +120,7 @@ Xt = gen.gts(MA1(theta = theta, sigma2 = sigma2), n = n)
 plot(Xt)
 
 ## @knitr example_RW
-# This code simulate a gaussian random walk process
+# This code simulates a gaussian random walk process
 n = 100                               # process length
 gamma2 = 1                            # innovation variance
 Xt = gen.gts(RW(gamma2 = gamma2), n = n)
@@ -91,11 +128,10 @@ plot(Xt)
 
 ## @knitr example_highfreq
 # Load packages
-library(highfrequency)
 library(timeDate)
 
 # Load "high-frequency" Starbucks returns for Jul 01 2011
-data(sbux.xts)
+data(sbux.xts, package = "highfrequency")
 
 # Plot returns
 par(mfrow = c(1,2))
@@ -104,30 +140,32 @@ plot(sbux.xts, main = " ", ylab = "Returns")
 
 ## @knitr example_IMU
 # Load packages
-library(imudata)
 library(gmwm)
 
 # Load IMU data
-load(imu6)
+data(imu6, package = "imudata")
 
 # Plot gryoscope on axis X
 plot(imu6[1:100,1], type = "l", ylab = "Measurement error")
 
 ## @knitr example_jj
 # Stock Data
-data(jj)
+data(jj, package = "astsa")
 
-autoplot(jj) +
-  ggtitle("Johnson and Johnson Quarterly Earnings") +
-  xlab("Year")  + ylab("Quarterly Earnings per Share")
+# Make it a gts object
+jj = gts(jj, name = 'Johnson and Johnson Quarterly Earnings', unit = "year")
+
+autoplot(jj)  +
+  ylab("Quarterly Earnings per Share")
  
 ## @knitr example_speech
 # Speech information
-data(speech)
+data(speech, package = "astsa")
 
-autoplot(speech) +
-  ggtitle("Speech Data") +
-  xlab("Time")  + ylab("Speech")
+# Make it into a gts object
+speech = gts(speech, name = 'Speech Data', unit = "sec", freq = 10000)
+
+autoplot(speech)  + ylab("Speech")
 
 ## @knitr example_eq
 # Earthquake
@@ -144,5 +182,5 @@ eq.df = rbind(EQ5.df, EXP6.df)
 ggplot(data = eq.df, aes(Index, Data)) +
   geom_line() +
   facet_grid( type ~ .) +
-  ylab("Displacement") +
-  xlab("Time (seconds)")
+  ylab("Ground Displacement (mm)") +
+  xlab("Time (seconds)") + theme_bw()
