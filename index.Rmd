@@ -24,12 +24,15 @@ This document is under active development and as a result is likely to contains 
 > "*La nature semblait avoir sagement pourvu à ce que les sottises des hommes fussent passagères, et les livres les immortalisent.*"
 >
 
-If you notice any errors, we would be grateful if you would let us know. For that there are two options:
+If you notice any errors, we would be grateful if you would let us know. To let us know about the errors, there are two options available to you. The first and subsequently the fastest being if you are familiar with GitHub and know RMarkdown, then [make a pull request and fix the issue yourself!](https://github.com/SMAC-Group/TTS). Note, in the online version, there is even an option to automatically start the pull request by clicking the edit button in the top-left corner of the text.
 
-1. If you are familiar with GitHub and know RMarkdown, [make a pull request and fix the issue yourself!](https://github.com/SMAC-Group/TTS) (fastest resolution)
-     - In the Online version, click the edit button in the top-left corner.
-     ![](images/support/edit_button.png)
-2. Send an email to `balamut2 AT illinois DOT edu` and we will address issue.
+```{r ebutton, cache = TRUE, echo = FALSE, fig.height=10, fig.align='center'}
+knitr::include_graphics("images/support/edit_button.png")
+```
+
+The second option, that will have a slightly slower resolution time is to
+send an email to `balamut2 AT illinois DOT edu` that includes: the error and a
+possible revision. Please put in the subject header: `[TTS]`.
 
 ## Bibliographic Note {-}
 
@@ -38,7 +41,6 @@ This text is heavily inspired by the following three execellent references:
 1. "*Time Series Analysis and Its Applications*", Third Edition, Robert H. Shumway & David S. Stoffer.
 2. "*Time Series for Macroeconomics and Finance*", John H. Cochrane.
 3. "*Cours de Séries Temporelles: Théorie et Applications*", Volume 1, Arthur Charpentier.
-
 
 ##  Rendering Mathematical Formulae {-}
 
