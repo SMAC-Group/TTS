@@ -49,7 +49,7 @@ Now, the first step in this process is to use the
 `"Clone or desktop"` feature found on the
 [book repository](https://github.com/SMAC-Group/TTS) to download its contents (
 direct link: [(macOS)](github-mac://openRepo/https://github.com/SMAC-Group/TTS) |
-[(windows)](github-win://openRepo/https://github.com/SMAC-Group/TTS)).
+[(windows)](github-windows://openRepo/https://github.com/SMAC-Group/TTS) ).
 
 Once the content has been downloaded, the next step is to open the project up
 in *RStudio*. To do that, open the `tts.Rproj` file located in the repository
