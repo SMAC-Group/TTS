@@ -1,6 +1,6 @@
 # Proofs
 
-Triggering merge conflict!
+Triggering merge conflict! merge merge merge
 
 ## Proof of Theorem 1
 
