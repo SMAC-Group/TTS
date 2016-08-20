@@ -1,8 +1,10 @@
-# Linear Regression with Autocorrelated Errors
+# Linear Regression
 
 ```{r linear_reg_code, echo = FALSE}
 knitr::read_chunk('code/chapter/05_linear_models.R')
 ```
+
+## Review on Linear Regression
 
 In this chapter we discuss how the classical linear regression setting can be extended to accomodate for autocorrelated error. Before considering this more general setting, we start by discussing the usual linear regression model with Gaussian errors, i.e. 
 
@@ -227,3 +229,8 @@ Illustration for model selection with linear model:
 
 ```{r modelSelectionEg, cache=TRUE, fig.height= 5.5, fig.width= 10}
 ```
+
+
+## Linear Regression with Autocorrelated Errors
+
+**TO DO**
