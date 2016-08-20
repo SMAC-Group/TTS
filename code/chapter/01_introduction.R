@@ -105,7 +105,7 @@ RW2dimension(steps = 10^5)
 
 
 ## @knitr example_WN
-# This code simulate a gaussian white noise process
+# This code simulates a gaussian white noise process
 n = 100                               # process length
 sigma2 = 1                            # process variance
 Xt = gen.gts(WN(sigma2 = sigma2), N = n)
@@ -141,7 +141,6 @@ plot(sbux.xts, main = " ", ylab = "Returns")
 ## @knitr example_IMU
 # Load packages
 library(gmwm)
-library(imudata)
 
 # Load IMU data
 data(imu6, package = "imudata")
