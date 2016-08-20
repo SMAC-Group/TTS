@@ -176,7 +176,7 @@ The code below presents an example of how to simulate a Gaussian white noise pro
 
 The term *random walk* was first introduce by Karl Pearson in the early 19 hunders. As for the white noise, there exist a large range of random walk processes. For example, one of the simplest form of random walk are be explained as follows: suppose that you are walking on campus and your next step can either be on your left, your right, forward or backward (each with equal probability). Two realizations of such processes are represented below:
 
-```{r RW2d, fig.height = 3, fig.width = 7, cache = TRUE, fig.show = 'hold'}
+```{r RW2d, fig.height = 3.5, fig.width = 7, cache = TRUE}
 ```
 
 Such processes inspired Karl Pearson's famous quote that

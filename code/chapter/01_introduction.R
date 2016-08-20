@@ -94,15 +94,18 @@ RW2dimension = function(steps = 100){
       y = "Y-position",
       title = paste("2D random walk with", steps, "steps"),
       color = ""
-    ) + theme(legend.position = c(0.1, 0.55))
+    ) + theme(legend.position = c(0.15, 0.55))
 }
 
 # Plot 2D random walk with 10^2 and 10^5 steps
 set.seed(2)
 
-RW2dimension(steps = 10^2)
-RW2dimension(steps = 10^5) 
+a = RW2dimension(steps = 10^2)
+b = RW2dimension(steps = 10^5) 
 
+library("gridExtra")
+
+grid.arrange(a, b, nrow = 1)
 
 ## @knitr example_WN
 # This code simulates a gaussian white noise process
