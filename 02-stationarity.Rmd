@@ -536,7 +536,6 @@ In this example, the true autocorrelation is equal to zero at any lag $h \neq 0$
 
 **Theorem:** If $X_t$ is white noise with finite fourth moment, then $\hat{\rho}(h)$ is approximately normally distributed with mean $0$ and variance $n^{-1}$ for all fixed $h$.
 
-<<<<<<< Updated upstream
 **Proof:**
 
 Let $\{X_t\}_1^T$ be white noise process with mean $\mu$ and variance $\sigma^2$ and finite fourth moment.
@@ -640,10 +639,7 @@ Since we can show that $\hat \gamma \left( 0 \right) \overset{p}{\to} \sigma^2$,
 \end{equation*}
 
 
-
-=======
 The proof of this Theorem is given in Appendix \@ref(appendix-a)
->>>>>>> Stashed changes
 
 Using on this result, we now have an approximate method to assess whether peaks in sample autocorrelation are significant by determining whether the observed peak lies outside the interval $\pm 2/\sqrt{T}$ (i.e. an approximate 95%  confidence interval). Returning to our previous example:
 

@@ -1,9 +1,0 @@
-# (APPENDIX) Appendix {-} 
-
-# Proofs
-
-## Proofs of Theorem 1
-
-
-
-# Appendix B
