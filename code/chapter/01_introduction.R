@@ -86,7 +86,7 @@ RW2dimension = function(steps = 100){
   
   # Plot results
   ggplot(mapping = aes(x = x, y = y)) +
-    geom_line(data = position) + 
+    geom_path(data = position) +  # Mimics type = 'l'
     geom_point(data = start_stop, aes(color = type), size = 4) +
     theme_bw() + 
     labs(
@@ -94,7 +94,7 @@ RW2dimension = function(steps = 100){
       y = "Y-position",
       title = paste("2D random walk with", steps, "steps"),
       color = ""
-    ) + theme(legend.position = c(0.1, 0.5))
+    ) + theme(legend.position = c(0.05, 0.55))
 }
 
 # Plot 2D random walk with 10^2 and 10^5 steps
