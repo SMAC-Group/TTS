@@ -1,6 +1,6 @@
 # Linear Regression with Autocorrelated Errors
 
-```{r autocorrelation_stationarity_code, echo = FALSE}
+```{r linear_reg_code, echo = FALSE}
 knitr::read_chunk('code/chapter/05_linear_models.R')
 ```
 
