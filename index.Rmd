@@ -24,6 +24,8 @@ This document is under active development and as a result is likely to contains 
 > "*La nature semblait avoir sagement pourvu à ce que les sottises des hommes fussent passagères, et les livres les immortalisent.*"
 >
 
+## Contributing {-}
+
 If you notice any errors, we would be grateful if you would let us know. To let us know about the errors, there are two options available to you. The first and subsequently the fastest being if you are familiar with GitHub and know RMarkdown, then [make a pull request and fix the issue yourself!](https://github.com/SMAC-Group/TTS). Note, in the online version, there is even an option to automatically start the pull request by clicking the edit button in the top-left corner of the text.
 
 ```{r ebutton, cache = TRUE, echo = FALSE, fig.height=10, fig.align='center'}
