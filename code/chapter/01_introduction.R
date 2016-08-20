@@ -94,7 +94,7 @@ RW2dimension = function(steps = 100){
       y = "Y-position",
       title = paste("2D random walk with", steps, "steps"),
       color = ""
-    ) + theme(legend.position = c(0.05, 0.55))
+    ) + theme(legend.position = c(0.1, 0.55))
 }
 
 # Plot 2D random walk with 10^2 and 10^5 steps
