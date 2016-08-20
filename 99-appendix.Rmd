@@ -1,7 +1,9 @@
 # (APPENDIX) Appendix {-} 
 
-# Appendix A
+# Proofs
 
-## Subject
+## Proofs of Theorem 1
+
+
 
 # Appendix B

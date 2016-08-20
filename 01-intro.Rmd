@@ -303,7 +303,7 @@ where $W_t$ is a Gaussian white noise and with initial condition $X_0 = c$
 
 The code below presents an example of how to simulate a such process
 
-```{r generate_rw, fig.height = 5, cache=TRUE}
+```{r example_RW, fig.height = 5, cache=TRUE}
 ```
 
 ### Autoregressive Process of Order 1

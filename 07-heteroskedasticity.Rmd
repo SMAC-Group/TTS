@@ -1,1 +1,15 @@
 # Time Series Models of Heteroskedasticity
+
+<div class="theorem">
+
+There are no natural numbers
+
+$\naturals = (1, 2, 3, \ldots)$
+
+$x$, $y$, and $z$ such that
+
+$x^n + y^n = z^n$, in which $n$
+
+is a natural number greater than 2.
+
+</div>

@@ -124,8 +124,8 @@ plot(Xt)
 
 ## @knitr example_RW
 # This code simulates a gaussian random walk process
-n = 100                               # process length
-gamma2 = 1                            # innovation variance
+n = 1000                               # process length
+gamma2 = 1                             # innovation variance
 Xt = gen.gts(RW(gamma2 = gamma2), N = n)
 plot(Xt)
 

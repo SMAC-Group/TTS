@@ -33,3 +33,24 @@ pre code {
 .rmdwarning {
   background-image: url("../images/support/warning.png");
 }
+
+.theorem {
+
+    display: block;
+
+    margin: 12px 0;
+
+    font-style: italic;
+
+}
+
+.theorem:before {
+
+    content: "Theorem.";
+
+    font-weight: bold;
+
+    font-style: normal;
+
+}
+
