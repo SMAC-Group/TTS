@@ -1,5 +1,10 @@
 # ARMA
 
+```{r arma_code, echo = FALSE}
+knitr::read_chunk('code/chapter/04_arma.R')
+```
+
+
 ## Definition
 
 ## MA / AR Operators
@@ -7,6 +12,28 @@
 ## Redundancy
 
 ## Causal + Invertible
+
+**Example: Causal Conditons for an AR(2) Process** We already know that an AR(1) is causal with the simple condition $|\phi_1| < 1$. It could seem natural to believe that an AR(2) should be stationary with the conditon: $|\phi_i| < 1, \, i = 1,2$, however, this is not the case. Indeed, an AR(1) can be expressed as
+
+\[X_t = \phi_1 X_{t-1} + \phi_2 X_{t-2} + W_t = \phi_1 B X_t + \phi_2 B^2 X_t + W_t,\]
+
+corresponding to the following autoregressive operator:
+
+\[\phi(z) = 1 - \phi_1 z + \phi_2 z^2.\]
+
+Therefore, the process is causal when the roots of $\phi(z)$ lies outside of the unit circle. Letting $z_1$ and $z_2$ denote those roots, we impose the following constraints to ensure the causality of the model:
+
+\[\begin{aligned}
+|z_1| &> 1, \;\;\;\; \text{where} \;\; &z_1 = \frac{\phi_1 + \sqrt{\phi_1^2 + 4\phi_2}}{-2 \phi_2},\\
+|z_2| &> 1, \;\;\;\; \text{where} \;\; &z_2 = \frac{\phi_1 - \sqrt{\phi_1^2 + 4\phi_2}}{-2 \phi_2}.
+\end{aligned}\]
+
+**TO FINISH**
+
+```{r causalAR2, cache = TRUE}
+```
+
+
 
 ## Estimation of Parameters
 
