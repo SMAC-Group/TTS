@@ -213,7 +213,7 @@ Thus, an unbiased estimator of $\KL$ is given by
 
 \[\text{AICc} = \log \left( \hat{\sigma}^2 \right)  + \frac{n+p}{(n-p-2)},\]
 
-since an unbiased estimator of $\log \left( \hat{\sigma}^2 \right)$ is simply $\log \left( \hat{\sigma}^2 \right)$. However, it can be observed that the result we derived is not equal to the AIC defined in (\@ref(eq:defAIC)). Indeed, this result is known as the bias-corrected AIC or AICc. To understand the relationship between the AIC and AICc it is instructif to consider their difference and letting $n$ diverge to infinity, i.e.
+since an unbiased estimator of $E \left[\log \left( \hat{\sigma}^2 \right)\right]$ is simply $\log \left( \hat{\sigma}^2 \right)$. However, it can be observed that the result we derived is not equal to the AIC defined in (\@ref(eq:defAIC)). Indeed, this result is known as the bias-corrected AIC or AICc. To understand the relationship between the AIC and AICc it is instructif to consider their difference and letting $n$ diverge to infinity, i.e.
 
 \[\lim_{n \to \infty} \; \text{AIC} - \text{AICc} = \frac{2 \left(p^2 + 2p + n\right)}{n \left(p - n - 2\right)} = 0.\]
 
