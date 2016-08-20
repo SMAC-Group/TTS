@@ -1,5 +1,7 @@
 # Proofs
 
+Triggering merge conflict!
+
 ## Proof of Theorem 1
 
 Let $(X_t)_1^T$ be white noise process with mean $\mu$ and variance $\sigma^2$ and finite fourth moment.
