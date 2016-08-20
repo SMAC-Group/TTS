@@ -7,7 +7,7 @@ bookdown::gitbook:
       before: |
         <li><a href="./">A Tour of Time Series Analysis with R</a></li>
       after: |
-        <li><a href="https://github.com/SMAC-Group/TTS" target="blank">&copy; 2016 Balamuta, Guerrier, Molinari</a></li>
+        <li><a href="https://github.com/SMAC-Group/TTS" target="blank">&copy; 2016 Balamuta, Guerrier, Molinari, Xu</a></li>
     edit:
       link: https://github.com/SMAC-Group/TTS/edit/master/%s
 bookdown::pdf_book:

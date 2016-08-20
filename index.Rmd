@@ -1,6 +1,6 @@
 --- 
 title: "A Tour of Time Series Analysis with R"
-author: "James Balamuta, Stéphane Guerrier and Roberto Molinari"
+author: "James Balamuta, Stéphane Guerrier, Roberto Molinari and Haotian Xu"
 date: "`r Sys.Date()`"
 knit: "bookdown::render_book"
 documentclass: book
