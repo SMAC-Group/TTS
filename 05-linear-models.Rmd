@@ -1,5 +1,9 @@
 # Linear Regression with Autocorrelated Errors
 
+```{r autocorrelation_stationarity_code, echo = FALSE}
+knitr::read_chunk('code/chapter/05_linear_models.R')
+```
+
 In this chapter we discuss how the classical linear regression setting can be extended to accomodate for autocorrelated error. Before considering this more general setting, we start by discussing the usual linear regression model with Gaussian errors, i.e. 
 
 \begin{equation*}
@@ -213,57 +217,13 @@ since an unbiased estimator of $\log \left( \hat{\sigma}^2 \right)$ is simply $\
 
 Therefore, the AIC is an asymptotically unbiased estimator of $\KL$. In practice, the AIC and AICc provides very similar result expect when the sample size is rather small.
 
-<!--
 
-\[\begin{aligned}
-\frac{1}{{2n\sigma _0^2}} {E_0}\left[ {{{\left( {\y_0 - \X{\bbeta _0}} \right)}^T}\left( {\y_0 - \X{\bbeta _0}} \right)} \right] &= \frac{1}{2},\\
-  \frac{1}{{2n\hat{\sigma}^2}} {E}\left[ {E_0}\left[ {{{\left( {\y_0 - \X{\hat{\bbeta}}} \right)}^T}\left( {\y_0 - \X\hat{\bbeta}} \right)} \right]\right]
-   &=  \frac{1}{{2n\hat{\sigma}^2}} {E}\left[ {E_0}\left[ {{{\left( {\y_0 - \X \bbeta_0 - \X\left( {\hat{\bbeta} - \bbeta_0} \right)} \right)}^T}\left( {\y_0 - \X \bbeta_0 - \X\left( {\hat{\bbeta} - \bbeta_0} \right)} \right)} \right] \right]  \\
-   &= {E_0}\left[ {{{\left( {\y_0 - \X \bbeta_0} \right)}^T}\left( {\y_0 - \X \bbeta_0} \right)} \right]  + E \left[ \left( \bbeta_0 - \hat{\bbeta} \right)^T \X^T \X\left( \bbeta_0 - \hat{\bbeta} \right)\right]\\
-\end{aligned} \]
+**TO DO** Talk about BIC
 
-Using these derivation, we obtain
+Illustration for model selection with linear model:
 
-\[\begin{aligned}
-  \KL \left(\hat{\btheta}, \btheta_0 \right) & = \frac{1}{n}{E_0}\left[ {\log \left( {\frac{{f\left( {\y|{\btheta_0}} \right)}}{{f\left( {\y|{\hat{\btheta}}} \right)}}} \right)} \right]\\
-     &= \frac{1}{n}\left[ {\frac{n}{2}\left( {\frac{{\sigma _0^2}}{{\hat{\sigma}^2}} - \log \left( {\frac{{\sigma _0^2}}{{\hat{\sigma}^2}}} \right) - 1} \right) + \frac{{{{\left( {{\bbeta _0} - {\hat{\bbeta}}} \right)}^T}{\X^T}\X\left( {{\bbeta _0} - {\hat{\bbeta}}} \right)}}{{2\hat{\sigma}^2}}} \right]  \\
-   &= \frac{1}{2}\left( {\frac{{\sigma _0^2}}{{\hat{\sigma}^2}} - \log \left( {\frac{{\sigma _0^2}}{{\hat{\sigma}^2}}} \right) - 1} \right) + \frac{1}{2}\frac{{{{\left( {{\bbeta _0} - {\hat{\bbeta}}} \right)}^T}{\X^T}\X\left( {{\bbeta _0} - {\hat{\bbeta}}} \right)}}{{n\hat{\sigma}^2}}  .
-\end{aligned} \]
+**TO DO** add comments
 
 
-This problem relies heavily on the conclusion given in 2.4 and the
-chi-square distribution hint. Specifically, the previous conclusion was:
-\[\begin{aligned}
-  I\left( {{\beta _1},\sigma _1^2;\hat \beta ,{{\hat \sigma }^2}} \right) &= \frac{1}{n}{E_1}\left[ {\log \left( {\frac{{f\left( {y;{\beta _1},\sigma _1^2} \right)}}{{f\left( {y;\hat \beta ,{{\hat \sigma }^2}} \right)}}} \right)} \right]  \\
-   &= \frac{1}{2}\left( {\frac{{\sigma _1^2}}{{{{\hat \sigma }^2}}} - \log \left( {\frac{{\sigma _1^2}}{{{{\hat \sigma }^2}}}} \right) - 1} \right) + \frac{1}{2}\frac{{{{\left( {{\beta _1} - \hat \beta } \right)}^t}{Z^t}Z\left( {{\beta _1} - \hat \beta } \right)}}{{n{{\hat \sigma }^2}}}  \\ 
-\end{aligned} \]
-
-Note that
-$\frac{{n{{\hat \sigma }^2}}}{{\sigma _1^2}}\sim \chi _{n - k}^2$ and
-$\frac{{{{\left( {{\beta _1} - \hat \beta } \right)}^t}{Z^t}Z\left( {{\beta _1} - \hat \beta } \right)}}{{{{\hat \sigma }^2}}}\sim \chi _k^2$.
-
-Proceeding onward: \[\begin{aligned}
-  {E_1}\left[ {I\left( {{\beta _1},\sigma _1^2;\hat \beta ,{{\hat \sigma }^2}} \right)} \right] &= {E_1}\left[ {\frac{1}{2}\left( {\frac{{\sigma _1^2}}{{{{\hat \sigma }^2}}} - \log \left( {\frac{{\sigma _1^2}}{{{{\hat \sigma }^2}}}} \right) - 1} \right) + \frac{1}{2}\frac{{{{\left( {{\beta _1} - \hat \beta } \right)}^t}{Z^t}Z\left( {{\beta _1} - \hat \beta } \right)}}{{n{{\hat \sigma }^2}}}} \right]  \\
-   &= \frac{1}{2}\left( {{E_1}\left[ {\frac{{\sigma _1^2}}{{{{\hat \sigma }^2}}}} \right] - {E_1}\left[ {\log \left( {\frac{{\sigma _1^2}}{{{{\hat \sigma }^2}}}} \right)} \right] - 1 + {E_1}\left[ {\frac{{{{\left( {{\beta _1} - \hat \beta } \right)}^t}{Z^t}Z\left( {{\beta _1} - \hat \beta } \right)}}{{n{{\hat \sigma }^2}}}} \right]} \right) 
-\end{aligned} \]
-
-Using the expectation hint:
-\[{E_1}\left[ {\frac{{\sigma _1^2}}{{{{\hat \sigma }^2}}}} \right] = {E_1}\left[ {\frac{n{\sigma _1^2}}{{n{{\hat \sigma }^2}}}} \right]  = n{E_1}\left[ {\frac{{\sigma _1^2}}{{n{{\hat \sigma }^2}}}} \right] = n \cdot \frac{1}{{n - k - 2}} = \frac{n}{{n - k - 2}}\]
-
-Using the independence, expectation, and $X \sim N\left(0,1\right)$ with
-$X^2 \sim \chi _1^2$, \[\begin{aligned}
-  {E_1}\left[ {\frac{{{{\left( {{\beta _1} - \hat \beta } \right)}^t}{Z^t}Z\left( {{\beta _1} - \hat \beta } \right)}}{{n{{\hat \sigma }^2}}}} \right] &= \frac{1}{n}{E_1}\left[ {\frac{{{{\left( {{\beta _1} - \hat \beta } \right)}^t}{Z^t}Z\left( {{\beta _1} - \hat \beta } \right)}}{{\sigma _1^2}} \cdot \frac{{\sigma _1^2}}{{{{\hat \sigma }^2}}}} \right]  \\
-   &= \frac{1}{n}\underbrace {{E_1}\left[ {\frac{{{{\left( {{\beta _1} - \hat \beta } \right)}^t}{Z^t}Z\left( {{\beta _1} - \hat \beta } \right)}}{{\sigma _1^2}}} \right]E\left[ {\frac{{\sigma _1^2}}{{{{\hat \sigma }^2}}}} \right]}_{{\text{Independence}}}  \\
-   &= \frac{1}{n}\underbrace {{E_1}\left[ {\frac{{{{\left( {{\beta _1} - \hat \beta } \right)}^t}{Z^t}Z\left( {{\beta _1} - \hat \beta } \right)}}{{\sigma _1^2}}} \right]}_{{X^2}\sim \chi _1^2 \Rightarrow \sum\limits_{i = 1}^k {X_i^2} \sim \chi _k^2
-} \cdot \frac{n}{{n - k - 2}}  \\
-   &= \frac{1}{n} \cdot k \cdot \frac{n}{{n - k - 2}}  \\
-   &= \frac{k}{{n - k - 2}} 
-\end{aligned} \]
-
-Returning: \[\begin{aligned}
-   &= \frac{1}{2}\left( {{E_1}\left[ {\frac{{\sigma _1^2}}{{{{\hat \sigma }^2}}}} \right] - {E_1}\left[ {\log \left( {\frac{{\sigma _1^2}}{{{{\hat \sigma }^2}}}} \right)} \right] - 1 + {E_1}\left[ {\frac{{{{\left( {{\beta _1} - \hat \beta } \right)}^t}{Z^t}Z\left( {{\beta _1} - \hat \beta } \right)}}{{n{{\hat \sigma }^2}}}} \right]} \right)  \\
-   &= \frac{1}{2}\left( {\left( {\frac{n}{{n - k - 2}}} \right) - {E_1}\left[ {\log \left( {\frac{{\sigma _1^2}}{{{{\hat \sigma }^2}}}} \right)} \right] - 1 + \left( {\frac{k}{{n - k - 2}}} \right)} \right)  \\
-   &= \frac{1}{2}\left( {\frac{{n + k}}{{n - k - 2}} - {E_1}\left[ {\log \left( {\frac{{\sigma _1^2}}{{{{\hat \sigma }^2}}}} \right)} \right] - 1} \right)  \\
-   &= \frac{1}{2}\left( { - {E_1}\left[ {\log \left( {\sigma _1^2} \right) - \log \left( {{{\hat \sigma }^2}} \right)} \right] + \frac{{n + k}}{{n - k - 2}} - 1} \right)  \\
-   &= \frac{1}{2}\left( { - \log \left( {\sigma _1^2} \right) + {E_1}\left[ {\log \left( {{{\hat \sigma }^2}} \right)} \right] + \frac{{n + k}}{{n - k - 2}} - 1} \right)
-\end{aligned} \]
+```{r modelSelectionEg, cache=TRUE, fig.height= 5.5, fig.width= 10}
+```
