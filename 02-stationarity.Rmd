@@ -536,7 +536,110 @@ In this example, the true autocorrelation is equal to zero at any lag $h \neq 0$
 
 **Theorem:** If $X_t$ is white noise with finite fourth moment, then $\hat{\rho}(h)$ is approximately normally distributed with mean $0$ and variance $n^{-1}$ for all fixed $h$.
 
-<!-- ADD PROOF -->
+**Proof:**
+
+Let $\{X_t\}_1^T$ be white noise process with mean $\mu$ and variance $\sigma^2$ and finite fourth moment.
+
+And the sample autocovariance function is defined as
+\begin{equation*}
+    \hat \gamma \left( h \right) = \frac{1}{T}\sum\limits_{t = 1}^{T - h} {\left( {{X_t} - \bar X} \right)\left( {{X_{t + h}} - \bar X} \right)}.
+\end{equation*}
+
+Since it is difficult to obtain the asymptotic distribution of $\hat \gamma \left( h \right)$, we define a new statistic
+\begin{equation*}
+    \tilde{\gamma} \left( h \right) = \frac{1}{T}\sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)}.
+\end{equation*}
+
+According to Problem 1.30 on TS text book, we have
+\begin{equation*}
+    T^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)] = o_p(1).
+\end{equation*}
+
+Therefore $\tilde{\gamma} \left( h \right)$ and $\hat \gamma \left( h \right)$ have the same asymptotic distribution, it is suffice to show the asymptotic distribution of $\tilde{\gamma} \left( h \right)$.
+
+The expectation of $\tilde{\gamma} \left( h \right)$
+\begin{equation*}
+    \mathbb{E}[\tilde{\gamma} \left( h \right)] = \frac{1}{T}\mathbb{E}\left[\sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)}\right].
+\end{equation*}
+
+By Cauchy–Schwarz inequality and $\var(X_t) = \sigma^2$, we have
+\begin{equation*}
+    \sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)} \leq \sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)^2} \sum\limits_{t = 1}^{T} {\left( {{X_{t + h}} - \mu} \right)^2} < \infty.
+\end{equation*}
+
+Then by bounded convergence theorem and $\{X_t\}_1^T$ are independent, we have
+
+\begin{equation*}
+    \mathbb{E}[\tilde{\gamma} \left( h \right)] = \frac{1}{T}\left[\sum\limits_{t = 1}^{T} { \mathbb{E}\left( {{X_t} - \mu} \right)\mathbb{E}\left( {{X_{t + h}} - \mu} \right)}\right] =
+    \begin{cases}
+        \sigma^2, & \text{for } h = 0\\
+        0, & \text{for } h \neq 0
+    \end{cases}.
+\end{equation*}
+
+
+The variance of $\tilde{\gamma} \left( h \right)$, 
+
+when $h \neq 0$,
+\begin{equation*}
+    \begin{aligned}
+        \var[\tilde{\gamma} \left( h \right)] &= \frac{1}{T^2}\mathbb{E}\left\{\left[\sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)}\right]^2\right\}\\
+        &= \frac{1}{T^2}\mathbb{E}\left\{\left[\sum\limits_{i = 1}^{T} {\left( {{X_i} - \mu} \right)\left( {{X_{i + h}} - \mu} \right)}\right] \left[\sum\limits_{j = 1}^{T} {\left( {{X_j} - \mu} \right)\left( {{X_{j + h}} - \mu} \right)}\right]\right\}\\
+        &= \frac{1}{T^2}\mathbb{E}\left[\sum\limits_{i = 1}^{T}\sum\limits_{j = 1}^{T} {\left( {{X_i} - \mu} \right)\left( {{X_{i + h}} - \mu} \right)}{\left( {{X_j} - \mu} \right)\left( {{X_{j + h}} - \mu} \right)}\right].
+    \end{aligned}
+\end{equation*}
+
+Also by Cauchy–Schwarz inequality and the finite fourth moment assumption, we can use the bounded convergence theorem. And since $\{X_t\}_1^T$ is white noise process, we have 
+
+
+\begin{equation*}
+    \mathbb{E}\left[{\left( {{X_i} - \mu} \right)\left( {{X_{i + h}} - \mu} \right)}{\left( {{X_j} - \mu} \right)\left( {{X_{j + h}} - \mu} \right)}\right] \neq 0
+\end{equation*}
+only when $i = j$.
+
+Therefore,
+\begin{equation*}
+    \begin{aligned}
+        \var[\tilde{\gamma} \left( h \right)] &= \frac{1}{T^2}\sum\limits_{i = 1}^{T} \mathbb{E}\left[ {\left( {{X_i} - \mu} \right)^2\left( {{X_{i + h}} - \mu} \right)^2}\right]\\
+        &= \frac{1}{T^2}\sum\limits_{i = 1}^{T} \mathbb{E}{\left( {{X_i} - \mu} \right)^2\mathbb{E}\left( {{X_{i + h}} - \mu} \right)^2}\\
+        &= \frac{1}{T}\sigma^4, \text{for } (h \neq 0).
+    \end{aligned}
+\end{equation*}
+
+Similarly, when $h = 0$, we have
+
+\begin{equation*}
+    \begin{aligned}
+        \var[\tilde{\gamma} \left( 0 \right)] &= \frac{1}{T^2}\mathbb{E}\left\{\left[\sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)^2}\right]^2\right\} - \frac{1}{T^2}\left[\mathbb{E}\sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)^2}\right]^2\\
+        &= \frac{2}{T}\sigma^4, \text{for } (h = 0).
+    \end{aligned}
+\end{equation*}
+
+Next, since $\{\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)\}_1^T$ are iid, we can apply CLT to it, and have
+\begin{equation*}
+    \sqrt{T}\tilde{\gamma} \left( h \right) = \frac{1}{\sqrt{T}}\sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)} \overset{\mathcal{D}}{\to} 
+    \begin{cases}
+        N(\sigma^2, 2\sigma^4), & \text{for } h = 0\\
+        N(0, \sigma^4), & \text{for } h \neq 0
+    \end{cases}.
+\end{equation*}
+
+Therefore, we also have
+\begin{equation*}
+    \sqrt{T}\hat \gamma \left( h \right) \overset{\mathcal{D}}{\to} 
+    \begin{cases}
+        N(\sigma^2, 2\sigma^4), & \text{for } h = 0\\
+        N(0, \sigma^4), & \text{for } h \neq 0
+    \end{cases}.
+\end{equation*}
+
+Since we can show that $\hat \gamma \left( 0 \right) \overset{p}{\to} \sigma^2$, by Slutsky Theorem, for $h \neq 0$
+\begin{equation*}
+    \hat \rho \left( h \right) = \frac{ \hat \gamma \left( h \right)}{\hat \gamma \left( 0 \right)} \overset{\mathcal{D}}{\to} N(0, \frac{1}{T}).
+\end{equation*}
+
+
+
 
 Using on this result, we now have an approximate method to assess whether peaks in sample autocorrelation are significant by determining whether the observed peak lies outside the interval $\pm 2/\sqrt{T}$ (i.e. an approximate 95%  confidence interval). Returning to our previous example:
 
