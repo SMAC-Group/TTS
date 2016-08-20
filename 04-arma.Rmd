@@ -23,10 +23,10 @@ corresponding to the following autoregressive operator:
 
 Therefore, the process is causal when the roots of $\phi(z)$ lies outside of the unit circle. Letting $z_1$ and $z_2$ denote those roots, we impose the following constraints to ensure the causality of the model:
 
-\[\begin{align}
+\[\begin{aligned}
 |z_1| &> 1, \;\;\;\; \text{where} \;\; &z_1 = \frac{\phi_1 + \sqrt{\phi_1^2 + 4\phi_2}}{-2 \phi_2},\\
 |z_2| &> 1, \;\;\;\; \text{where} \;\; &z_2 = \frac{\phi_1 - \sqrt{\phi_1^2 + 4\phi_2}}{-2 \phi_2}.
-\end{align}\]
+\end{aligned}\]
 
 **TO FINISH**
 
