@@ -2,24 +2,24 @@
 
 Hi guys, since we are all using a different syntax here is what I propose. Let me know if we should change it. Once we agree, we will unify the syntax:
 
-|                     |                  |
-|---------------------|------------------|
-| $\mathbb{E} []$     |  Expected value  |
-| $\var$              |  variance        |
-| $\cov$              |  covariance      |
-| $\corr$             |  correlation     |
-| $\boldsymbol{1}$    |  indicator       |
-| $\real$             |  real            |
-| $\natural$          |  natural         |
-| $\integers$         |  integers        |
-| $(X_t)$             |  a time series   |
-| $\{X_t\}$           |  a set           |
-| $\gamma()$          |  autocov. fun.   |
-| $\rho()$            |  autocor. fun.   |
-| $W_t$               |  white noise     |
-| $\mathcal{N}$       |  normal dist.    |
-| $\KL$               |  KL diverg.      |
-| $n$               |  length of time series|
+| Symbol              |  Meaning              |
+|---------------------|-----------------------|
+| $\e{ }$             |  Expected value       |
+| $\var$              |  Variance             |
+| $\cov$              |  Covariance           |
+| $\corr$             |  Correlation          |
+| $\ind$              |  Indicator            |
+| $\real$             |  Real                 |
+| $\natural$          |  Natural              |
+| $\integers$         |  Integers             |
+| $(X_t)$             |  A time series        |
+| $\{X_t\}$           |  A set                |
+| $\gamma()$          |  Autocov. fun.        |
+| $\rho()$            |  Autocor. fun.        |
+| $W_t$               |  White noise          |
+| $\normal$           |  Normal dist.         |
+| $\KL$               |  KL diverg.           |
+| $n$                 |  Length of time series|
 
 
 Also for the parenthesis, I propose to use this as much as possible $\{[(\{[( \cdot )]\})]\}$, for which I am a terrible example.

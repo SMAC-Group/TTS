@@ -1,6 +1,7 @@
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{framed,color}
+\usepackage{amsfonts}
 \definecolor{shadecolor}{RGB}{248,248,248}
 
 \ifxetex
@@ -77,13 +78,19 @@
 \renewcommand{\epsilon}{\varepsilon}
 \newcommand{\btheta}{\boldsymbol{\theta}}
 
+\newcommand{\e}[1]{{\mathbb E}\left[ #1 \right]}
+
+\newcommand{\ind}{\boldsymbol{1}}
+\newcommand{\normal}{\mathcal{N}}
+
 % Model Selection
 \newcommand{\KL}{\text{KL}}
 \newcommand{\AIC}{\text{AIC}}
 \newcommand{\BIC}{\text{BIC}}
 
-% Different Number sets
 
+
+% Different Number sets
 \DeclareSymbolFont{lettersA}{U}{txmia}{m}{it}
 \DeclareMathSymbol{\real}{\mathord}{lettersA}{"92}
 \DeclareMathSymbol{\integers}{\mathord}{lettersA}{154}
