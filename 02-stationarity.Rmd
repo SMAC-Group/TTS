@@ -23,11 +23,11 @@ After reading this chapter you will be able to:
 > "*One of the first things taught in introductory statistics textbooks is that correlation is not causation. It is also one of the first things forgotten.*", Thomas Sowell
 >
 
-In this chapter we will discuss and formalize a little how knowledge about $X_{t-1}$ (or $\Omega_t$) can provide us with some information about $X_t$. In particular, we will consisder the correlation (or covariance) of $(X_t)$ at different times such as $\corr \left(X_t, X_{t+h}\right)$. This "form" of correlation (covariance) is called the *autocorrelation* (*autocovariance*) and is a very usefull tool in time series analysis. Without assuming that a time series present form of "stability", it would be rather difficult to estimate $\corr \left(X_t, X_{t+h}\right)$ as this quantity would dependent on both $t$ and $h$ leading to far parameters to estimate than observations. Therefore, the concept of *stationarity* is conveniant in this context as it allow (among other things) to assume that
+In this chapter we will discuss and formalize a little how knowledge about $X_{t-1}$ (or $\Omega_t$) can provide us with some information about $X_t$. In particular, we will consisder the correlation (or covariance) of $(X_t)$ at different times such as $\corr \left(X_t, X_{t+h}\right)$. This "form" of correlation (covariance) is called the *autocorrelation* (*autocovariance*) and is a very usefull tool in time series analysis. Without assuming that a time series is characterized by a certain form of "stability", it would be rather difficult to estimate $\corr \left(X_t, X_{t+h}\right)$ as this quantity would depend on both $t$ and $h$ leading to far more parameters to estimate than observations available. Therefore, the concept of *stationarity* is conveniant in this context as it allows (among other things) to assume that
 
 \[\corr \left(X_t, X_{t+h}\right) = \corr \left(X_t+j, X_{t+h+j}\right),\]
 
-implying that the autocorrelation (or autocovariance) is only function of the lag between observation. This two concepts will be discuss in this chapter. Before moving on, it is helpful to remind that correlation (or autocorrelation) is only approriate to measure a very spefic kind on dependence, i.e. linear dependence. There are many forms of dependency as illustrated in the bottom panels on the graph below, which all have a (true) zero correlation:
+implying that the autocorrelation (or autocovariance) is a function only of the lag between observations. These two concepts (autocorrelation and stationarity) will be discussed in this chapter. Before moving on, it is helpful to remind that correlation (or autocorrelation) is only approriate to measure a very spefic kind of dependence, i.e. linear dependence. There are many forms of dependence as illustrated in the bottom panels of the graph below, which all have a (true) zero correlation:
 
 ![dependency](images/1280px-Correlation_examples2.png)
 
@@ -100,24 +100,23 @@ Since we generally consider stochastic processes with constant zero mean we ofte
   E\left[ {{X_t}{X_{t+h}}} \right] &= \int\limits_{ - \infty }^\infty  {\int\limits_{ - \infty }^\infty  {{x_1}{x_2} \cdot f\left( {{x_1},{x_2}} \right)d{x_1}d{x_2}} }  \\ 
 \end{aligned} \] -->
 
-We normally drop the subscript referring to the time series if it is clear to the time series the autocovariance function is referencing. For example, we generally use ${\gamma}\left( {t,t+h} \right)$ instead of ${\gamma_x}\left( {t,t+h} \right)$. Moreover, the notation is even further simplify when the covariance of $X_t$ and $X_{t+h}$ is the same as that of $X_{t+j}$ and $X_{t+h+j}$ (for $j \in \mathbb{Z}$), i.e. that the covariance depends only on the time between observations and not the absolute date $t$. This is an important property call *stationarity*, which will be discuss in the next section. In this case, we simply use to following notation:
+We normally drop the subscript referring to the time series if it is clear from the context which time series the autocovariance refers to. For example, we generally use ${\gamma}\left( {t,t+h} \right)$ instead of ${\gamma_x}\left( {t,t+h} \right)$. Moreover, the notation is even further simplified when the covariance of $X_t$ and $X_{t+h}$ is the same as that of $X_{t+j}$ and $X_{t+h+j}$ (for $j \in \mathbb{Z}$), i.e. the covariance depends only on the time between observations and not on the specific time $t$. This is an important property called *stationarity*, which will be discuss in the next section. In this case, we simply use to following notation:
 \[\gamma \left( {h} \right) = \operatorname{cov} \left( X_t , X_{t+h} \right). \]
 
 A few other remarks: 
 
 1. The covariance function is **symmetric**. That is, ${\gamma}\left( {h} \right) = {\gamma}\left( -h \right)$ since $\operatorname{cov} \left( {{X_t},{X_{t+h}}} \right) = \operatorname{cov} \left( X_{t+h},X_{t} \right)$.
 2. Note that $\var \left( X_{t} \right) = {\gamma}\left( 0 \right)$.
-3. We have that $|\gamma(h)| \leq \gamma(0)$ for all $h$. The proof of this inequality follows from Cauchy-Schwarz inequality, i.e.
+3. We have that $|\gamma(h)| \leq \gamma(0)$ for all $h$. The proof of this inequality follows from the Cauchy-Schwarz inequality, i.e.
 \[ \begin{aligned}
 \left(|\gamma(h)| \right)^2 &= \gamma(h)^2 = \left(E\left[\left(X_t - E[X_t] \right)\left(X_{t+h} - E[X_{t+h}] \right)\right]\right)^2\\
 &\leq E\left[\left(X_t - E[X_t] \right)^2 \right] E\left[\left(X_{t+h} - E[X_{t+h}] \right)^2 \right] =  \gamma(0)^2. 
 \end{aligned}
 \] 
-4. Just as any covariance, the ${\gamma}\left( {h} \right)$ is "scale dependent", ${\gamma}\left( {h} \right) \in \real$, or $-\infty \le {\gamma}\left( {h} \right) \le +\infty$, so of course we have:
-    - if $\left| {\gamma}\left( {h} \right) \right|$ is "close" to zero, then $X_t$ and $X_{t+h}$ are "weakly" (linearly) dependent,
-    - if $\left| {\gamma}\left( {h} \right) \right|$ is "far" from zero, then the two random variable present a "strong" (linear) dependence,
-    but this is generally difficult to asses what "close" and "far" from zero means in this case. 
-5. ${\gamma}\left( {h} \right)=0$ does not imply $X_t$ and $X_{t+h}$ are independent. This is only true in joint Gaussian case.
+4. Just as any covariance, ${\gamma}\left( {h} \right)$ is "scale dependent" since ${\gamma}\left( {h} \right) \in \real$, or $-\infty \le {\gamma}\left( {h} \right) \le +\infty$. We therefore have:
+    - if $\left| {\gamma}\left( {h} \right) \right|$ is "close" to zero, then $X_t$ and $X_{t+h}$ are "weakly" (linearly) dependent;
+    - if $\left| {\gamma}\left( {h} \right) \right|$ is "far" from zero, then the two random variable present a "strong" (linear) dependence. However it is generally difficult to asses what "close" and "far" from zero means in this case. 
+5. ${\gamma}\left( {h} \right)=0$ does not imply that $X_t$ and $X_{t+h}$ are independent. This is only true in the jointly Gaussian case.
 
 An important related statistic is the correlation of $X_t$ with $X_{t+h}$ or *autocorrelation* which is defined as
 
@@ -128,28 +127,28 @@ $$\rho \left(  h \right) = \operatorname{corr}\left( {{X_t},{X_{t + h}}} \right)
 
 Similarly to $\gamma(h)$, it is important to note that the above notation implies that the autocorrelation function is only a function of the lag $h$ between observations. Thus, autocovariances and autocorrelations are one possible way to describe the joint distribution of a time series. Indeed, the correlation of $X_t$ with $X_{t+1}$ is an obvious measure of how *persistent* a time series is. 
 
-Remeber that just as with any correlation:
+Remember that just as with any correlation:
 
-1. $\rho \left( h \right)$ is scale free so it is much easier to interpret that than $\gamma(h)$.
+1. $\rho \left( h \right)$ is "scale free" so it is much easier to interpret than $\gamma(h)$.
 <!-- 2. $\rho \left( {{X_t},{X_{t + h}}} \right)$ is closer to $\pm 1 \Rightarrow \left({ X_t, X_{t+h} } \right)$ "more dependent." -->
 2. $|\rho \left( h \right)| \leq 1$ since $|\gamma(h)| \leq \gamma(0)$.
 3. Causation and correlation are two very different things!
 
 ### A Fundamental Representation
 
-Autocovariances and autocorrelation also turn out to be a very useful tool because they are one of the *fundamental
-representations* of time series. Indeed, if we consider a zero mean normally distrbuted process it is clear that its joint distribution is fully characterized by the autocariances $E[X_t X_{t+h}]$ (since the joint probability
+Autocovariances and autocorrelations also turn out to be a very useful tool because they are one of the *fundamental
+representations* of time series. Indeed, if we consider a zero mean normally distrbuted process, it is clear that its joint distribution is fully characterized by the autocariances $E[X_t X_{t+h}]$ (since the joint probability
 density only depends of these covariances). Once we know the autocovariances we know *everything* there is to know about the process and therefore:
 *if two processes have the same autocovariance function, then they are the same process.*
 
 ### Admissible autocorrelation functions
 
-Since the autocorrelation is related to a fundamental representation of time series it implies that one might be able to define a stochastic process by picking a set autocorrelation values. However, it turns out not every collection of numbers such as $\{\rho_1, \rho_2, ...\}$ is the autocorrelation of a process. Two conditions are required to ensure the validity of an autocorrelation sequence:
+Since the autocorrelation is related to a fundamental representation of time series, it implies that one might be able to define a stochastic process by picking a set of autocorrelation values. However, it turns out that not every collection of numbers, say $\{\rho_1, \rho_2, ...\}$, can represent the autocorrelation of a process. Indeed, two conditions are required to ensure the validity of an autocorrelation sequence:
 
 1. $\operatorname{max}_j \; | \rho_j| \leq 1$.
 2. $\var \left[\sum_{j = 0}^\infty \alpha_j X_{t-j} \right] \geq 0$ for all $\{\alpha_0, \alpha_1, ...\}$.
 
-The first condition is obvious and simply relects the fact that $|\rho \left( h \right)| \leq 1$ but the second is more difficult to verify. Let $\alpha_j = 0, \; j > 1$, then conditon 2 implies that
+The first condition is obvious and simply reflects the fact that $|\rho \left( h \right)| \leq 1$ but the second is more difficult to verify. Let $\alpha_j = 0$ for $j > 1$, then conditon 2 implies that
 
 \[\var \left[ \alpha_0 X_{t} + \alpha_1 X_{t-1}  \right] = \gamma_0 \begin{bmatrix}
   \alpha_0 & \alpha_1
@@ -168,11 +167,11 @@ The first condition is obvious and simply relects the fact that $|\rho \left( h 
   \rho_1 & 1
  \end{bmatrix} \]
  
- must be positive semi-definite. Therefore, 
+ must be positive semi-definite. Taking the determinant we have 
  
  \[\operatorname{det} \left(\boldsymbol{A}_1\right) = 1 - \rho_1^2 \]
 
-implying that $|\rho_1| < 1$. Next, let $\alpha_j = 0, \; j > 2$, then we must verify that:
+implying that the condition $|\rho_1| < 1$ must be respected. Now, let $\alpha_j = 0$ for $j > 2$, then we must verify that:
 
 \[\var \left[ \alpha_0 X_{t} + \alpha_1 X_{t-1}  + \alpha_2 X_{t-2} \right] = \gamma_0 \begin{bmatrix}
   \alpha_0 & \alpha_1 &\alpha_2
@@ -186,7 +185,7 @@ implying that $|\rho_1| < 1$. Next, let $\alpha_j = 0, \; j > 2$, then we must v
   \alpha_2
  \end{bmatrix} \geq 0. \]
 
-Similarly, this implies that the matrix
+Again, this implies that the matrix
 
  \[ \boldsymbol{A}_2 = \begin{bmatrix}
   1 & \rho_1 & \rho_2\\
@@ -211,7 +210,7 @@ imlying that $\rho_1$ and $\rho_2$ must lie in a parabolic shaped region defined
 ```{r admissibility, cache=TRUE}
 ```
 
-Therefore, the restrictions on the autocorrelation are very complicated providing a motivation for other form of fundamental representation, which will explore later in this text. Before moving on the estimation of the autocorrelation and covariance function we first discuss the stationarity of $(X_t)$, which will provide a conveninant framework in which $\gamma(h)$ and $\rho(h)$ can be used (rather that $\gamma(t,t+h)$ for example).
+Therefore, the restrictions on the autocorrelation are very complicated thereby justifying the need for other forms of fundamental representation which will explore later in this text. Before moving on to the estimation of the autocorrelation and autocovariance functions, we first discuss the stationarity of $(X_t)$, which will provide a convenient framework in which $\gamma(h)$ and $\rho(h)$ can be used (rather that $\gamma(t,t+h)$ for example).
 
 <!-- Remember... When using correlation....
 
@@ -234,16 +233,16 @@ These ideas can extended beyond the bivariate case to a general multivariate set
 
 ###Definitions
 
-There are two kinds of stationarity which are commonly used. They are defined below:
+There are two kinds of stationarity that are commonly used. They are defined below:
 
 - A process $(X_t)$ is *strongly stationary* or *strictly stationary* if the joint probability distribution of $\{X_{t-h}, ..., X_t, ..., X_{t+h}\}$ is independent of $t$ for all $h$.
 - A process $(X_t)$ is *weakly stationary*, *covariance stationary* or *second order stationary* if $E[X_t]$, $E[X_t^2]$ are finite and $E[X_t X_{t-h}]$ depends only on $h$ and not on $t$.
 
-These types of stationarity are *not equivalent* and the presence of  one kind of stationarity does not imply the other. That is, a time series can be strongly stationary but not weakly stationary and vice versa. In some cases, a time series can be both strong and weakly stationary, this is happends for example in the (joint) Gaussian case. Stationarity of $(X_t)$ matters, because *it provides the framework in which averaging dependent data makes sense* allows to easily estimate quantities such as the autocorrelation function.
+These types of stationarity are *not equivalent* and the presence of  one kind of stationarity does not imply the other. That is, a time series can be strongly stationary but not weakly stationary and vice versa. In some cases, a time series can be both strongly and weakly stationary and this is occurs, for example, in the (jointly) Gaussian case. Stationarity of $(X_t)$ matters because *it provides the framework in which averaging dependent data makes sense* thereby allowing to easily estimate quantities such as the autocorrelation function.
 
 A few remarks:
 
-- Strong stationarity *does not imply* weak stationarity. *Example*: an iid Cauchy process is strongly but not weakly stationary.
+- As mentioned earlier, strong stationarity *does not imply* weak stationarity. *Example*: an iid Cauchy process is strongly but not weakly stationary.
 - Weak stationarity *does not imply* strong stationarity. *Example*: Consider the following weak white noise process: $X_{2t} = U_{2t}, X_{2t+1} = V_{2t+1}$, for $t = 1,..., n$ where ${U_t}\mathop \sim \limits^{iid} N\left( {1,1} \right)$ and ${V_t}\mathop \sim \limits^{iid} Exponential\left( 1 \right)$ is weakly stationary but *not* strongly stationary.
 - Strong stationarity combined with bounded values of $E[X_t]$ and $E[X_t^2]$ *implies* weak stationarity
 - Weak stationarity combined with normalityof the process *implies* strong stationarity.
@@ -292,7 +291,7 @@ We obtain these properties through:
 -->
 ### Assessing Weak Stationarity of Time Series Models
 
-It is important to understand how to verify if a postulated model is (waekly) stationary. In order to do so, we must ensure that the model satisfies three properties, i.e.
+It is important to understand how to verify if a postulated model is (weakly) stationary. In order to do so, we must ensure that the model satisfies three properties, i.e.
 
 1. $E\left[X_t \right] = \mu_t = \mu < \infty$,
 2. $\var\left[X_t \right] = \sigma^2_t = \sigma^2 < \infty$,
@@ -300,7 +299,7 @@ It is important to understand how to verify if a postulated model is (waekly) st
 
 In the following examples we evaluate the stationarity of the processes introduced in Section \@ref(basic-time-series-models).
 
-**Example: Gaussian White Noise** It is easy to verify that a this process is stationary. Indeed, we have:
+**Example: Gaussian White Noise** It is easy to verify that this process is stationary. Indeed, we have:
 
 1. $E\left[ {{X_t}} \right] = 0$,
 2. $\gamma(0) = \sigma^2 < \infty$,  
@@ -320,7 +319,7 @@ In the following examples we evaluate the stationarity of the processes introduc
    &= \sum\limits_{i = 1}^t {Var\left( {{w_t}} \right)} 
    = t \sigma_w^2. 
 \end{aligned}\] 
-where $\sigma_w^2 = \var(W_t)$. Therefore, the variance has a dependence on time contradicting our second property. Moreover, we have:
+where $\sigma_w^2 = \var(W_t)$. Therefore, the variance depends on time ($t$) contradicting our second property. Moreover, we have:
 \[\mathop {\lim }\limits_{t \to \infty } \; \var\left(X_t\right) = \infty.\]
 This process is therefore not weakly stationary.
 
@@ -333,7 +332,7 @@ This process is therefore not weakly stationary.
    &= \left( {t + \min \left( {0,h} \right)} \right)\sigma _w^2,
 \end{aligned} \]
 
-which further illustrates that non-stationarity of this process. 
+which further illustrates that this process is not weakly stationary. 
 
 Moreover, the autocorrelation of this process is given by
 
@@ -343,12 +342,12 @@ implying (for a fixed $h$) that
 
 \[\mathop {\lim }\limits_{t \to \infty } \; \rho(h) = 1.\]
 
-In the following simulated example, we illustrate the non-stationary feature of such process:
+In the following simulated example, we illustrate the non-stationary feature of such a process:
 
 ```{r RW, cache = TRUE}
 ```
 
-The relationship between time and variance can clearly be observed in the above graph.
+In the plot, two hundred simulated random walks are plotted along with the theoretical 95\% confidence intervals (red-dashed lines). The relationship between time and variance can clearly be observed (i.e. the variance of the process increases with the time).
 
 **Example: MA(1)** Similarly to our previous examples, we attempt to verify the stationary properties for the MA(1) model defined in \@ref(eq:defMA1) **REF NOT WORKING**:
   
@@ -396,45 +395,45 @@ Interestingly, we can note that $|\rho(1)| \leq 0.5$.
 
 **JAMES TO DO - USE MA(1) AS EXAMPLE, ADD DETAILS FROM HOMEWORK, CHANGE $\phi_1$ in $\phi$ and add ref to chap 1. Thanks**
 
-Consider the AR(1) process given as:
+Consider the AR(1) process given by:
 $${y_t} = {\phi _1}{y_{t - 1}} + {w_t} \text{, where } {w_t}\mathop \sim \limits^{iid} WN\left( {0,\sigma _w^2} \right)$$
 
-This process was shown to simplify to: 
+It can be shown that this process simplifies to: 
 
-$$y_t = {\phi ^t}{y_0} + \sum\limits_{i = 0}^{t - 1} {\phi _1^i{w_{t - i}}}$$
+$$y_t = {\phi ^t}{y_0} + \sum\limits_{i = 0}^{t - 1} {\phi _1^i{w_{t - i}}}.$$
 
-In addition, we add the requirement that $\left| \phi _1 \right| < 1$. This requirement allows for the process to be stationary. If $\phi _1 \ge 1$, the process would not converge.  This way the process will be able to be written as a geometric series that converges:
-\[\sum\limits_{k = 0}^\infty  {{r^k}}  = \frac{1}{{1 - r}},{\text{ }}\left| r \right| < 1\]
+In addition, we add the requirement that $\left| \phi _1 \right| < 1$. This requirement allows the process to be stationary. If $\phi _1 \ge 1$, the process would not converge.  In this way the process can represented as a geometric series that converges:
+\[\sum\limits_{k = 0}^\infty  {{r^k}}  = \frac{1}{{1 - r}},{\text{ }}\left| r \right| < 1.\]
 
 Next, we demonstrate how crucial this property is: 
 
 \[\begin{aligned}
   \mathop {\lim }\limits_{t \to \infty } E\left[ {{y_t}} \right] &= \mathop {\lim }\limits_{t \to \infty } E\left[ {{\phi ^t}{y_0} + \sum\limits_{i = 0}^{t - 1} {\phi _1^i{w_{t - i}}} } \right] \\
-   &= \mathop {\lim }\limits_{t \to \infty } \underbrace {{\phi ^t}{y_0}}_{\left| \phi  \right| < 1 \Rightarrow t \to \infty {\text{  = 0}}} + \sum\limits_{i = 0}^{t - 1} {\phi _1^i\underbrace {E\left[ {{w_{t - i}}} \right]}_{ = 0}}  \\
+   &= \mathop {\lim }\limits_{t \to \infty } \underbrace {{\phi ^t}{y_0}}_{= 0 \, \text{since} \, \left| \phi  \right| < 1 \, \text{and} \, t \to \infty} + \sum\limits_{i = 0}^{t - 1} {\phi _1^i\underbrace {E\left[ {{w_{t - i}}} \right]}_{ = 0}}  \\
    &= 0 \\
   \mathop {\lim }\limits_{t \to \infty } Var\left( {{y_t}} \right) &= \mathop {\lim }\limits_{t \to \infty } Var\left( {{\phi ^t}{y_0} + \sum\limits_{i = 0}^{t - 1} {\phi _1^i{w_{t - i}}} } \right) \\
    &= \mathop {\lim }\limits_{t \to \infty } \underbrace {Var\left( {{\phi ^t}{y_0}} \right)}_{ = 0{\text{ since constant}}} + Var\left( {\sum\limits_{i = 0}^{t - 1} {\phi _1^i{w_{t - i}}} } \right) \\
    &= \mathop {\lim }\limits_{t \to \infty } \sum\limits_{i = 0}^{t - 1} {\phi _1^{2i}Var\left( {{w_{t - i}}} \right)}  \\
    &= \mathop {\lim }\limits_{t \to \infty } \sigma _w^2\sum\limits_{i = 0}^{t - 1} {\phi _1^{2i}}  \\
    &= \sigma _w^2 \cdot  
-  \underbrace {\frac{1}{{1 - {\phi ^2}}}}_{\begin{subarray}{l} 
+  \underbrace {\frac{1}{{1 - {\phi ^2}}}.}_{\begin{subarray}{l} 
   {\text{Geometric Series}} 
 \end{subarray}}
 \end{aligned} \]
 
-This leads us to being able to conclude the autocovariance function is:
+This leads us to conclude that the autocovariance function is:
 \[\begin{aligned}
   Cov\left( {{y_t},{y_{t + h}}} \right) &= Cov\left( {{y_t},\phi {y_{t + h - 1}} + {w_{t + h}}} \right) \\
    &= Cov\left( {{y_t},\phi {y_{t + h - 1}}} \right) \\
    &= Cov\left( {{y_t},{\phi ^{\left| h \right|}}{y_t}} \right) \\
    &= {\phi ^{\left| h \right|}}Cov\left( {{y_t},{y_t}} \right) \\
    &= {\phi ^{\left| h \right|}}Var\left( {{y_t}} \right) \\
-   &= {\phi ^{\left| h \right|}}\frac{{\sigma _w^2}}{{1 - \phi _1^2}} \\ 
+   &= {\phi ^{\left| h \right|}}\frac{{\sigma _w^2}}{{1 - \phi _1^2}}. \\ 
 \end{aligned} \]
 
 Both the mean and autocovariance function do not depend on time and, thus, the AR(1) process is stationary if $\left| \phi _1 \right| < 1$. 
 
-If we assume that the AR(1) process is stationary, we can derive the mean and variance in another way. Without a loss of generality, we'll assume $y_0 = 0$.
+If we assume that the AR(1) process is stationary, we can derive the mean and variance in another way. Without loss of generality, we'll assume that $y_0 = 0$.
 
 Therefore:
 
@@ -459,7 +458,7 @@ Therefore:
   Var\left( {{y_t}} \right) &= \phi _1^2Var\left( {{y_t}} \right) + \sigma _w^2 \\
   Var\left( {{y_t}} \right) - \phi _1^2Var\left( {{y_t}} \right) &= \sigma _w^2 \\
   Var\left( {{y_t}} \right)\left( {1 - \phi _1^2} \right) &= \sigma _w^2 \\
-  Var\left( {{y_t}} \right) &= \frac{{\sigma _w^2}}{{1 - \phi _1^2}} \\ 
+  Var\left( {{y_t}} \right) &= \frac{{\sigma _w^2}}{{1 - \phi _1^2}}. \\ 
 \end{aligned} \]
 
 
@@ -498,11 +497,11 @@ This estimator is clearly unbiased and has the following variance:
 
 In the white noise case, the above formula reduces to the usual $\var \left( {\bar X} \right) = \var(X_t)/n$.
 
-**Example:** For an AR(1) we have $\gamma(h) = \phi^h \sigma_w^2 \left(1 - \phi^2\right)^2$, therefore, we obtain (after a bit of algebra):
+**Example:** For an AR(1) we have $\gamma(h) = \phi^h \sigma_w^2 \left(1 - \phi^2\right)^2$, therefore, we obtain (after some computations):
 
 \[ \var \left( {\bar X} \right) = \frac{\sigma_w^2 \left( n - 2\phi - n \phi^2 + 2 \phi^{n + 1}\right)}{n^2\left(1-\phi^2\right)\left(1-\phi\right)^2}.\]
 
-Unfortunately, deriving such an exact formula is often difficult when considering more complexe models, however, asymptotic approximations are often employed simply the calculation. For example, in our case we have
+Unfortunately, deriving such an exact formula is often difficult when considering more complex models. However, asymptotic approximations are often employed to simplify the calculation. For example, in our case we have
 
 \[\mathop {\lim }\limits_{n \to \infty } \; n \var \left( {\bar X} \right) = \frac{\sigma_w^2}{\left(1-\phi\right)^2},\]
 
@@ -510,7 +509,7 @@ providing the following approximate formula:
 
 \[\var \left( {\bar X} \right) \approx \frac{\sigma_w^2}{n \left(1-\phi\right)^2}.\]
 
-Alternatively, simulation methods can also employed. The figure compares these three methods:
+Alternatively, simulation methods can also be employed. The figure generated by the following code compares these three methods:
 
 ```{r estimXbar, cache = TRUE}
 ```
@@ -519,7 +518,7 @@ Alternatively, simulation methods can also employed. The figure compares these t
 
 ## Sample Autocovariance and Autocorrelation Functions
 
-A natural estimator of the **autocovariance function** is given as:
+A natural estimator of the **autocovariance function** is given by:
 
 \[\hat \gamma \left( h \right) = \frac{1}{T}\sum\limits_{t = 1}^{T - h} {\left( {{X_t} - \bar X} \right)\left( {{X_{t + h}} - \bar X} \right)} \]
 
@@ -527,133 +526,30 @@ leading the following "plug-in" estimator of the **autocorrelation function**
 
 \[\hat \rho \left( h \right) = \frac{{\hat \gamma \left( h \right)}}{{\hat \gamma \left( 0 \right)}}.\]
 
-A graphical representation of the autocorrelation function is often the first step of any time series analysis (assuming the process to be stationary). Consider the following simulated example:
+A graphical representation of the autocorrelation function is often the first step for any time series analysis (assuming the process to be stationary). Consider the following simulated example:
 
 ```{r basicACF, cache = TRUE}
 ```
 
-In this example, the true autocorrelation is equal to zero at any lag $h \neq 0$ but obviously the estimated autocorrelations are random variables and are not equal to their true values. It would therefore be usefull to have some knowledge about the variability of the sample autocorrelations (under some conditions) to assess whether the data comes from a completely random series or presents some significant correlation at some lags. The following result provide an asymptotic solution to this problem:
+In this example, the true autocorrelation is equal to zero at any lag $h \neq 0$ but obviously the estimated autocorrelations are random variables and are not equal to their true values. It would therefore be usefull to have some knowledge about the variability of the sample autocorrelations (under some conditions) to assess whether the data comes from a completely random series or presents some significant correlation at some lags. The following result provides an asymptotic solution to this problem:
 
 **Theorem:** If $X_t$ is white noise with finite fourth moment, then $\hat{\rho}(h)$ is approximately normally distributed with mean $0$ and variance $n^{-1}$ for all fixed $h$.
 
-**Proof:**
+The proof of this Theorem is given in Appendix \@ref(appendix-a).
 
-Let $\{X_t\}_1^T$ be white noise process with mean $\mu$ and variance $\sigma^2$ and finite fourth moment.
-
-And the sample autocovariance function is defined as
-\begin{equation*}
-    \hat \gamma \left( h \right) = \frac{1}{T}\sum\limits_{t = 1}^{T - h} {\left( {{X_t} - \bar X} \right)\left( {{X_{t + h}} - \bar X} \right)}.
-\end{equation*}
-
-Since it is difficult to obtain the asymptotic distribution of $\hat \gamma \left( h \right)$, we define a new statistic
-\begin{equation*}
-    \tilde{\gamma} \left( h \right) = \frac{1}{T}\sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)}.
-\end{equation*}
-
-According to Problem 1.30 on TS text book, we have
-\begin{equation*}
-    T^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)] = o_p(1).
-\end{equation*}
-
-Therefore $\tilde{\gamma} \left( h \right)$ and $\hat \gamma \left( h \right)$ have the same asymptotic distribution, it is suffice to show the asymptotic distribution of $\tilde{\gamma} \left( h \right)$.
-
-The expectation of $\tilde{\gamma} \left( h \right)$
-\begin{equation*}
-    \mathbb{E}[\tilde{\gamma} \left( h \right)] = \frac{1}{T}\mathbb{E}\left[\sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)}\right].
-\end{equation*}
-
-By Cauchy–Schwarz inequality and $\var(X_t) = \sigma^2$, we have
-\begin{equation*}
-    \sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)} \leq \sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)^2} \sum\limits_{t = 1}^{T} {\left( {{X_{t + h}} - \mu} \right)^2} < \infty.
-\end{equation*}
-
-Then by bounded convergence theorem and $\{X_t\}_1^T$ are independent, we have
-
-\begin{equation*}
-    \mathbb{E}[\tilde{\gamma} \left( h \right)] = \frac{1}{T}\left[\sum\limits_{t = 1}^{T} { \mathbb{E}\left( {{X_t} - \mu} \right)\mathbb{E}\left( {{X_{t + h}} - \mu} \right)}\right] =
-    \begin{cases}
-        \sigma^2, & \text{for } h = 0\\
-        0, & \text{for } h \neq 0
-    \end{cases}.
-\end{equation*}
-
-
-The variance of $\tilde{\gamma} \left( h \right)$, 
-
-when $h \neq 0$,
-\begin{equation*}
-    \begin{aligned}
-        \var[\tilde{\gamma} \left( h \right)] &= \frac{1}{T^2}\mathbb{E}\left\{\left[\sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)}\right]^2\right\}\\
-        &= \frac{1}{T^2}\mathbb{E}\left\{\left[\sum\limits_{i = 1}^{T} {\left( {{X_i} - \mu} \right)\left( {{X_{i + h}} - \mu} \right)}\right] \left[\sum\limits_{j = 1}^{T} {\left( {{X_j} - \mu} \right)\left( {{X_{j + h}} - \mu} \right)}\right]\right\}\\
-        &= \frac{1}{T^2}\mathbb{E}\left[\sum\limits_{i = 1}^{T}\sum\limits_{j = 1}^{T} {\left( {{X_i} - \mu} \right)\left( {{X_{i + h}} - \mu} \right)}{\left( {{X_j} - \mu} \right)\left( {{X_{j + h}} - \mu} \right)}\right].
-    \end{aligned}
-\end{equation*}
-
-Also by Cauchy–Schwarz inequality and the finite fourth moment assumption, we can use the bounded convergence theorem. And since $\{X_t\}_1^T$ is white noise process, we have 
-
-
-\begin{equation*}
-    \mathbb{E}\left[{\left( {{X_i} - \mu} \right)\left( {{X_{i + h}} - \mu} \right)}{\left( {{X_j} - \mu} \right)\left( {{X_{j + h}} - \mu} \right)}\right] \neq 0
-\end{equation*}
-only when $i = j$.
-
-Therefore,
-\begin{equation*}
-    \begin{aligned}
-        \var[\tilde{\gamma} \left( h \right)] &= \frac{1}{T^2}\sum\limits_{i = 1}^{T} \mathbb{E}\left[ {\left( {{X_i} - \mu} \right)^2\left( {{X_{i + h}} - \mu} \right)^2}\right]\\
-        &= \frac{1}{T^2}\sum\limits_{i = 1}^{T} \mathbb{E}{\left( {{X_i} - \mu} \right)^2\mathbb{E}\left( {{X_{i + h}} - \mu} \right)^2}\\
-        &= \frac{1}{T}\sigma^4, \text{for } (h \neq 0).
-    \end{aligned}
-\end{equation*}
-
-Similarly, when $h = 0$, we have
-
-\begin{equation*}
-    \begin{aligned}
-        \var[\tilde{\gamma} \left( 0 \right)] &= \frac{1}{T^2}\mathbb{E}\left\{\left[\sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)^2}\right]^2\right\} - \frac{1}{T^2}\left[\mathbb{E}\sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)^2}\right]^2\\
-        &= \frac{2}{T}\sigma^4, \text{for } (h = 0).
-    \end{aligned}
-\end{equation*}
-
-Next, since $\{\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)\}_1^T$ are iid, we can apply CLT to it, and have
-\begin{equation*}
-    \sqrt{T}\tilde{\gamma} \left( h \right) = \frac{1}{\sqrt{T}}\sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)} \overset{\mathcal{D}}{\to} 
-    \begin{cases}
-        N(\sigma^2, 2\sigma^4), & \text{for } h = 0\\
-        N(0, \sigma^4), & \text{for } h \neq 0
-    \end{cases}.
-\end{equation*}
-
-Therefore, we also have
-\begin{equation*}
-    \sqrt{T}\hat \gamma \left( h \right) \overset{\mathcal{D}}{\to} 
-    \begin{cases}
-        N(\sigma^2, 2\sigma^4), & \text{for } h = 0\\
-        N(0, \sigma^4), & \text{for } h \neq 0
-    \end{cases}.
-\end{equation*}
-
-Since we can show that $\hat \gamma \left( 0 \right) \overset{p}{\to} \sigma^2$, by Slutsky Theorem, for $h \neq 0$
-\begin{equation*}
-    \hat \rho \left( h \right) = \frac{ \hat \gamma \left( h \right)}{\hat \gamma \left( 0 \right)} \overset{\mathcal{D}}{\to} N(0, \frac{1}{T}).
-\end{equation*}
-
-
-The proof of this Theorem is given in Appendix \@ref(appendix-a)
-
-Using on this result, we now have an approximate method to assess whether peaks in sample autocorrelation are significant by determining whether the observed peak lies outside the interval $\pm 2/\sqrt{T}$ (i.e. an approximate 95%  confidence interval). Returning to our previous example:
+Using this result, we now have an approximate method to assess whether peaks in the sample autocorrelation are significant by determining whether the observed peak lies outside the interval $\pm 2/\sqrt{T}$ (i.e. an approximate 95%  confidence interval). Returning to our previous example:
 
 ```{r basicACF2, cache = TRUE}
 ```
 
-It can now be observed that most peaks lies within the interval $\pm 2/\sqrt{T}$ suggesting that the true data generating process is completely random (in the linear sense).
+It can now be observed that most peaks lie within the interval $\pm 2/\sqrt{T}$ suggesting that the true data generating process is completely random (in the linear sense).
 
-Unfortunately, this method is asymptotic (it relies on the central limit theorem) and there no "exact" tools that can be used in this case. In the simulation study below consider the "quality" of this result for $h = 3$ considering different sample sizes:
+Unfortunately, this method is asymptotic (it relies on the central limit theorem) and there are no "exact" tools that can be used in this case. In the simulation study below we consider the "quality" of this result for $h = 3$ considering different sample sizes:
 
 ```{r simulationACF, cache = TRUE}
 ```
 
-It can clearly be observed that asymptotic approximation is quite poor when $T = 5$ but as the sample size increases the approximation becomes more appropriate and is nearly perfect with $T = 300$.
+It can clearly be observed that the asymptotic approximation is quite poor when $T = 5$ but as the sample size increases the approximation improves and is very close when, for example, $T = 300$.
 
 <!-- TO DO: ADD MORE DETAILS ON THE SIMULATION -->
 
@@ -687,5 +583,20 @@ The cross-correlation function for jointly stationary times can be expressed as:
 
 <!-- Rob I am sure you would be great to extent this section! I add a small simulation as an example -->
 
+The data generating process delivers a theoretical autocorrelation (autocovariance) function that, as explained in the previous section, can then be estimated through the sample autocorrelation (autocovariance) functions. However, in practice, the sample is often issued from a data generating process that is "close" to the true one, meaning that the sample suffers from some form of small contamination. This contamination is typically represented by a small amount of extreme observations that are called "outliers" that come from a process that is different from the true data generating process.
+
+The fact that the sample can suffer from outliers implies that the standard estimation of the autocorrelation (autocovariance) functions through the sample functions can be highly biased. The standard estimators presented in the previous section are therefore not "robust" and can behave badly when the sample suffers from contamination. The following simulated example highlights how the performance of these estimators can deteriorate if the sample is contaminated:
+
 ```{r simulationRobust, cache = TRUE}
 ```
+
+The boxplots in each figure show how the standard autocorrelation estimator is centred around the true value (red line) when the sample is not contaminated (left boxplot) while it is considerably biased when the sample is contaminated (right boxplot), especially at the smallest lags. Indeed, it can be seen how the boxplots under contamination are often close to zero indicating that it does not detect much dependence in the data although it should. This is a known result in robustness, more specifically that outliers in the data can break the dependence structure and make it more difficult for the latter to be detected.
+
+In order to limit this problematic, different robust estimators exist for time series problems allowing to reduce the impact of contamination on the estimation procedure. Among these estimators there are a few that estimate the autocorrelation (autocovariance) functions in a robust manner. One of these estimators is provided in the robacf() function in the "robcor" package and the following simulated example shows how it limits the bias due to contamination:
+
+```{r simulationRobust2, cache = TRUE}
+```
+
+The robust estimator remains close to the true value represented by the red line in the boxplots as opposed to the standard estimator. It can also be observed that to reduce the bias induced by contamination in the sample, robust estimators pay a certain price in terms of efficiency as highlighted by the boxplots that show more variability compared to those of the standard estimator.
+
+Robustness issues therefore need to be considered for any time series analysis, not only when estimating the autocorrelation (autocovariance) functions.
