@@ -2,24 +2,26 @@
 
 Hi guys, since we are all using a different syntax here is what I propose. Let me know if we should change it. Once we agree, we will unify the syntax:
 
-| Symbol              |  Meaning              |
-|---------------------|-----------------------|
-| $\e{ }$             |  Expected value       |
-| $\var$              |  Variance             |
-| $\cov$              |  Covariance           |
-| $\corr$             |  Correlation          |
-| $\ind$              |  Indicator            |
-| $\real$             |  Real                 |
-| $\natural$          |  Natural              |
-| $\integers$         |  Integers             |
-| $(X_t)$             |  A time series        |
-| $\{X_t\}$           |  A set                |
-| $\gamma()$          |  Autocov. fun.        |
-| $\rho()$            |  Autocor. fun.        |
-| $W_t$               |  White noise          |
-| $\normal$           |  Normal dist.         |
-| $\KL$               |  KL diverg.           |
-| $n$                 |  Length of time series|
+| Symbol              |  Meaning              | Code             |
+|---------------------|-----------------------|------------------|
+| $\e{ }$             |  Expected value       |  `\e{ }`         |
+| $\var$              |  Variance             |  `\var`          |
+| $\cov$              |  Covariance           |  `\cov`          |
+| $\corr$             |  Correlation          |  `\corr`         |
+| $\ind$              |  Indicator            |  `\ind`          |
+| $\real$             |  Real                 |  `\real`         |
+| $\natural$          |  Natural              |  `\natural`      |
+| $\integers$         |  Integers             |  `\integers`     |
+| $(X_t)$             |  A time series        | `(X_t)`          |
+| $\{X_t\}$           |  A set                | `\{X_t\}`        |
+| $\gamma()$          |  Autocov. fun.        | `\gamma()`       |
+| $\rho()$            |  Autocor. fun.        | `\rho()`         |
+| $W_t$               |  White noise          | `W_t`            |
+| $\normal$           |  Normal dist.         | `\normal`        |
+| $\KL$               |  KL diverg.           | `\KL`            |
+| $\AIC$              |  AIC                  | `\AIC`           |
+| $\BIC$              |  BIC                  | `\BIC`           |
+| $n$                 |  Length of time series| `n`              |
 
 
 Also for the parenthesis, I propose to use this as much as possible $\{[(\{[( \cdot )]\})]\}$, for which I am a terrible example.
