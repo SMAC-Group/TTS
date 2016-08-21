@@ -2,22 +2,27 @@
 
 ## Proof of Theorem 1
 
-Let $(X_t)_1^T$ be white noise process with mean $\mu$ and variance $\sigma^2$ and finite fourth moment.
+Let $X_t = W_t + \mu$, where $\mu < \infty$ and $(W_t)$ is a strong white noise process with variance $\sigma^2$ and finite fourth moment.
 
-And the sample autocovariance function is defined as
+Next, we consider the sample autocovariance function computed on $(X_t)$, i.e.
+
 \begin{equation*}
     \hat \gamma \left( h \right) = \frac{1}{T}\sum\limits_{t = 1}^{T - h} {\left( {{X_t} - \bar X} \right)\left( {{X_{t + h}} - \bar X} \right)}.
 \end{equation*}
 
-Since it is difficult to obtain the asymptotic distribution of $\hat \gamma \left( h \right)$, we define a new statistic
+For this equation, it is clear that $\hat \gamma \left( 0 \right)$ and $\hat \gamma \left( h \right)$ (with $h > 0$) are two statistics involving sums of different lengths. As we will see, this prevents us from using directely the multivariate central limit theorem on the vector $[ \hat \gamma \left( h \right) \;\;\; \hat \gamma \left( h \right) ]^T$. However, the lag $h$ is fixed and therefore the difference in the number of elements of both sums is asymptotically negligible. Therefore, we define a new statistic 
+
 \begin{equation*}
-    \tilde{\gamma} \left( h \right) = \frac{1}{T}\sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)}.
+    \tilde{\gamma} \left( h \right) = \frac{1}{T}\sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)},
 \end{equation*}
 
-According to Problem 1.30 on TS text book, we have
+which is easier to "handle" and show that $\hat \gamma \left( h \right)$ and $\tilde{\gamma} \left( h \right)$ are asymptotically equivalent in the sense that:
+
 \begin{equation*}
     T^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)] = o_p(1).
 \end{equation*}
+
+**ADD HERE PROOF OF THE ABOVE RESULT**
 
 Therefore $\tilde{\gamma} \left( h \right)$ and $\hat \gamma \left( h \right)$ have the same asymptotic distribution, it is suffice to show the asymptotic distribution of $\tilde{\gamma} \left( h \right)$.
 

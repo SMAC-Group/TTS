@@ -19,6 +19,7 @@ Hi guys, since we are all using a different syntax here is what I propose. Let m
 | $W_t$               |  white noise     |
 | $\mathcal{N}$       |  normal dist.    |
 | $\KL$               |  KL diverg.      |
+| $n$               |  length of time series|
 
 
 Also for the parenthesis, I propose to use this as much as possible $\{[(\{[( \cdot )]\})]\}$, for which I am a terrible example.
