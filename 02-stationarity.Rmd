@@ -594,8 +594,10 @@ The boxplots in each figure show how the standard autocorrelation estimator is c
 
 In order to limit this problematic, different robust estimators exist for time series problems allowing to reduce the impact of contamination on the estimation procedure. Among these estimators there are a few that estimate the autocorrelation (autocovariance) functions in a robust manner. One of these estimators is provided in the robacf() function in the "robcor" package and the following simulated example shows how it limits the bias due to contamination:
 
-```{r simulationRobust2, cache = TRUE}
-```
+
+<!--```{r simulationRobust2, cache = TRUE}
+```-->
+
 
 The robust estimator remains close to the true value represented by the red line in the boxplots as opposed to the standard estimator. It can also be observed that to reduce the bias induced by contamination in the sample, robust estimators pay a certain price in terms of efficiency as highlighted by the boxplots that show more variability compared to those of the standard estimator.
 
