@@ -106,7 +106,7 @@ We normally drop the subscript referring to the time series if it is clear to th
 A few other remarks: 
 
 1. The covariance function is **symmetric**. That is, ${\gamma}\left( {h} \right) = {\gamma}\left( -h \right)$ since $\operatorname{cov} \left( {{X_t},{X_{t+h}}} \right) = \operatorname{cov} \left( X_{t+h},X_{t} \right)$.
-2. Note that $\operatorname{var} \left( X_{t} \right) = {\gamma}\left( 0 \right)$.
+2. Note that $\var \left( X_{t} \right) = {\gamma}\left( 0 \right)$.
 3. We have that $|\gamma(h)| \leq \gamma(0)$ for all $h$. The proof of this inequality follows from Cauchy-Schwarz inequality, i.e.
 \[ \begin{aligned}
 \left(|\gamma(h)| \right)^2 &= \gamma(h)^2 = \left(E\left[\left(X_t - E[X_t] \right)\left(X_{t+h} - E[X_{t+h}] \right)\right]\right)^2\\
@@ -147,11 +147,11 @@ density only depends of these covariances). Once we know the autocovariances we 
 Since the autocorrelation is related to a fundamental representation of time series it implies that one might be able to define a stochastic process by picking a set autocorrelation values. However, it turns out not every collection of numbers such as $\{\rho_1, \rho_2, ...\}$ is the autocorrelation of a process. Two conditions are required to ensure the validity of an autocorrelation sequence:
 
 1. $\operatorname{max}_j \; | \rho_j| \leq 1$.
-2. $\operatorname{var} \left[\sum_{j = 0}^\infty \alpha_j X_{t-j} \right] \geq 0$ for all $\{\alpha_0, \alpha_1, ...\}$.
+2. $\var \left[\sum_{j = 0}^\infty \alpha_j X_{t-j} \right] \geq 0$ for all $\{\alpha_0, \alpha_1, ...\}$.
 
 The first condition is obvious and simply relects the fact that $|\rho \left( h \right)| \leq 1$ but the second is more difficult to verify. Let $\alpha_j = 0, \; j > 1$, then conditon 2 implies that
 
-\[\operatorname{var} \left[ \alpha_0 X_{t} + \alpha_1 X_{t-1}  \right] = \gamma_0 \begin{bmatrix}
+\[\var \left[ \alpha_0 X_{t} + \alpha_1 X_{t-1}  \right] = \gamma_0 \begin{bmatrix}
   \alpha_0 & \alpha_1
  \end{bmatrix}   \begin{bmatrix}
   1 & \rho_1\\
@@ -174,7 +174,7 @@ The first condition is obvious and simply relects the fact that $|\rho \left( h 
 
 implying that $|\rho_1| < 1$. Next, let $\alpha_j = 0, \; j > 2$, then we must verify that:
 
-\[\operatorname{var} \left[ \alpha_0 X_{t} + \alpha_1 X_{t-1}  + \alpha_2 X_{t-2} \right] = \gamma_0 \begin{bmatrix}
+\[\var \left[ \alpha_0 X_{t} + \alpha_1 X_{t-1}  + \alpha_2 X_{t-2} \right] = \gamma_0 \begin{bmatrix}
   \alpha_0 & \alpha_1 &\alpha_2
  \end{bmatrix}   \begin{bmatrix}
   1 & \rho_1 & \rho_2\\
@@ -295,7 +295,7 @@ We obtain these properties through:
 It is important to understand how to verify if a postulated model is (waekly) stationary. In order to do so, we must ensure that the model satisfies three properties, i.e.
 
 1. $E\left[X_t \right] = \mu_t = \mu < \infty$,
-2. $\operatorname{var}\left[X_t \right] = \sigma^2_t = \sigma^2 < \infty$,
+2. $\var\left[X_t \right] = \sigma^2_t = \sigma^2 < \infty$,
 3. $\operatorname{cov}\left(X_t, X_{t+h} \right) = \gamma \left(h\right)$.
 
 In the following examples we evaluate the stationarity of the processes introduced in Section \@ref(basic-time-series-models).
@@ -315,13 +315,13 @@ In the following examples we evaluate the stationarity of the processes introduc
    = c \\ 
 \end{aligned} \] Note that the mean here is constant since it depends only on the value of the first term in the sequence.
 2. \[\begin{aligned}
-  \operatorname{var}\left( {{X_t}} \right) &= \operatorname{var}\left( {\sum\limits_{i = 1}^t {{W_t}}  + {X_0}} \right) 
-   = \operatorname{var}\left( {\sum\limits_{i = 1}^t {{w_t}} } \right) + \underbrace {\operatorname{var}\left( {{X_0}} \right)}_{= 0} \\
+  \var\left( {{X_t}} \right) &= \var\left( {\sum\limits_{i = 1}^t {{W_t}}  + {X_0}} \right) 
+   = \var\left( {\sum\limits_{i = 1}^t {{w_t}} } \right) + \underbrace {\var\left( {{X_0}} \right)}_{= 0} \\
    &= \sum\limits_{i = 1}^t {Var\left( {{w_t}} \right)} 
    = t \sigma_w^2. 
 \end{aligned}\] 
-where $\sigma_w^2 = \operatorname{var}(W_t)$. Therefore, the variance has a dependence on time contradicting our second property. Moreover, we have:
-\[\mathop {\lim }\limits_{t \to \infty } \; \operatorname{var}\left(X_t\right) = \infty.\]
+where $\sigma_w^2 = \var(W_t)$. Therefore, the variance has a dependence on time contradicting our second property. Moreover, we have:
+\[\mathop {\lim }\limits_{t \to \infty } \; \var\left(X_t\right) = \infty.\]
 This process is therefore not weakly stationary.
 
 3. Rgearding the autovariance of a random walk we have:
@@ -472,8 +472,8 @@ If a time series is stationary, the mean function is constant and a possible est
 This estimator is clearly unbiased and has the following variance: 
 
 \[\begin{aligned}
-  \var \left( {\bar X} \right) &= \operatorname{var} \left( {\frac{1}{n}\sum\limits_{t = 1}^n {{X_t}} } \right)  \\
-   &= \frac{1}{{{n^2}}}\operatorname{var} \left( {{{\left[ {\begin{array}{*{20}{c}}
+  \var \left( {\bar X} \right) &= \var \left( {\frac{1}{n}\sum\limits_{t = 1}^n {{X_t}} } \right)  \\
+   &= \frac{1}{{{n^2}}}\var \left( {{{\left[ {\begin{array}{*{20}{c}}
   1& \cdots &1
 \end{array}} \right]}_{1 \times n}}{{\left[ {\begin{array}{*{20}{c}}
   {{X_1}} \\
@@ -496,7 +496,7 @@ This estimator is clearly unbiased and has the following variance:
    &= \frac{1}{n}\sum\limits_{h =  - n}^n {\left( {1 - \frac{{\left| h \right|}}{n}} \right)\gamma \left( h \right)}   \\
 \end{aligned}. \]
 
-In the white noise case, the above formula reduces to the usual $\operatorname{var} \left( {\bar X} \right) = \operatorname{var}(X_t)/n$.
+In the white noise case, the above formula reduces to the usual $\var \left( {\bar X} \right) = \var(X_t)/n$.
 
 **Example:** For an AR(1) we have $\gamma(h) = \phi^h \sigma_w^2 \left(1 - \phi^2\right)^2$, therefore, we obtain (after a bit of algebra):
 
