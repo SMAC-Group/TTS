@@ -19,7 +19,8 @@ Imports:
   imudata,
   highfrequency,
   timeDate,
-  gridExtra
+  gridExtra,
+  robcor
 Remotes:
   sinhrks/ggfortify,
   rstudio/bookdown,

@@ -56,6 +56,64 @@ for (i in 1:4){
   abline(h = phi^(lags[i]-1), col = 2, lwd = 2)
 }
 
+## @knitr simulationRobust2
+
+# Load packages
+library("robcor")
+
+# Define sample size
+n = 100
+
+# Define proportion of "extreme" observation
+alpha = 0.05
+
+# Extreme observation are generated from N(0,sigma2.cont)
+sigma2.cont = 10
+
+# Number of Monte-Carlo replications
+B = 1000
+
+# Define model AR(1)
+phi = 0.5
+sigma2 = 1
+model = AR1(phi = phi, sigma2 = sigma2)
+
+# Initialization of result array
+result = array(NA, c(B,2,20))
+
+# Start Monte-Carlo
+for (i in 1:B){
+  # Simulate AR(1)
+  Xt = gen.gts(model, N = n)
+  
+  # Add a proportion alpha of extreme observations to Yt
+  Xt[sample(1:n,round(alpha*n))] = rnorm(round(alpha*n), 0, sigma2.cont)
+  
+  # Compute standard and robust ACF of Xt and Yt
+  acf = ACF(Xt)
+  rob_acf = robacf(Xt, plot=FALSE)$acf
+  
+  # Store ACFs
+  result[i,1,] = acf[1:20]
+  result[i,2,] = rob_acf[1:20]
+}
+
+
+# Compare empirical distribution of standard and robust ACF based on Xt
+
+# Vector of lags considered (h <= 20)
+lags = c(1,2,5,10) + 1
+
+# Make graph
+par(mfrow = c(2,2))
+
+for (i in 1:4){
+  boxplot(result[,1,lags[i]], result[,2,lags[i]], col = "lightgrey",
+          names = c("Standard","Robust"), main = paste("lag: h = ", lags[i]-1),
+          ylab = "Sample autocorrelation")
+  abline(h = phi^(lags[i]-1), col = 2, lwd = 2)
+}
+
 ## @knitr estimXbar
 
 # Define sample size
@@ -93,11 +151,11 @@ var.theo = (n - 2*phi - n*phi^2 + 2*phi^(n+1))/(n^2*(1-phi^2)*(1-phi)^2)
 
 # Compute (approximate) vairance
 var.approx = 1/(n*(1-phi)^2)
-  
+
 # Compare variance estimations
 plot(NA, xlim = c(-1,1), ylim = range(var.approx), log = "y", 
-    ylab = expression(paste("var(", bar(X), ")")),
-    xlab= expression(phi), cex.lab = 1.5)
+     ylab = expression(paste("var(", bar(X), ")")),
+     xlab= expression(phi), cex.lab = 1.5)
 grid()
 lines(phi,var.theo, col = "deepskyblue4")
 lines(phi, var.Xbar, col = "firebrick3")
@@ -132,7 +190,7 @@ text(0,0, c("Admissible Region"))
 
 ## @knitr basicACF
 # Load package
-library(gmwm)
+library("gmwm")
 
 # Simulate 100 observation from a Gaussian white noise
 Xt = gen.gts(WN(sigma2 = 1), N = 100)
