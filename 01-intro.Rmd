@@ -169,15 +169,15 @@ notably around $t = 1200$ for explosion series.
 Next, we consider an example coming from high-frequency finance to illustrate
 the limitations our current framework.
 
-**Example:** The figure below presents the returns
-(i.e. informally speaking the changes in price) for the Starbuck's stock on
+**Example:** The figure below presents the returns or price innovation
+(i.e. informally speaking the changes in price from one observation to the other) for the Starbuck's stock on
 July 1, 2011 for about 150 seconds (left panel) and about 400 minutes
 (right panel). 
 
 ```{r example_highfreq, fig.height = 4, fig.width = 7, cache = TRUE, message = FALSE}
 ```
 
-It can be observed on the left panel that points are not equally spaced.
+It can be observed on the left panel that observations are not equally spaced.
 Indeed, in high-frequency data the intervals between two points is typically not
 constant and, even worse, is a random variable. This implies that the time when
 a new observation will be available is in general unknown. On the right panel,
