@@ -150,7 +150,6 @@ evaluate if some of the following phenomena occur:
 3. **Change in State:** Does the time series appear to change between "states" having distinct statistical properties?
 4. **Outliers** Does the time series contain some "extreme" observations? Note that this is typically difficult to assess visually.
 
-
 **Example:** In the figure below, we present an example of displacement recorded
 during an earthquake as well as an explosion.
 
@@ -186,17 +185,18 @@ course of the trading day. Such a phenomenon is well known in the finance
 community since a lot of variation occurs at the start (and the end) of the 
 day while the middle of the day is associated with small changes. 
 Moreover, clear extreme observations can also be noted in this graph at
-around 09:30:34.
-
-<!-- Geatan: Could you please check and if you have the time expend with example a little -->
+around 11:00
 
 Finally, let us consider the limitations of a direct graphical representation of
 a time series when the sample size is large. Indeed, due to visual limitations,
 a direct plotting of the data will probably result in an uninformative
-aggregation of points between which it is unable to distinguish anything.
-As an example, let us take the data coming from the calibration procedure of
+aggregation of points between which it is unable to distinguish anything. This is
+illustrated in the following example.
+
+**Example:** We consider here the data coming from the calibration procedure of
 an Inertial Measurement Unit (IMU) which, in general terms, is used to enhance
-navigation precision. The signals coming from these instruments are measured at
+navigation precision or reconstruct three dimensional movements.
+The signals coming from these instruments are measured at
 high frequencies over a long time and are often characterized by linear trends
 and numerous underlying stochastic processes. The code below retrieves some 
 data from an IMU and plots it directly:
