@@ -168,7 +168,7 @@ notably around $t = 1200$ for explosion series.
 Next, we consider an example coming from high-frequency finance to illustrate
 the limitations our current framework.
 
-**Example:** The figure below presents the returns or price innovation
+**Example:** The figure below presents the returns or price innovations
 (i.e. informally speaking the changes in price from one observation to the other) for the Starbuck's stock on
 July 1, 2011 for about 150 seconds (left panel) and about 400 minutes
 (right panel). 
