@@ -380,7 +380,7 @@ generate an MA(1) is given below:
 A linear drift is a very simple deterministic time series model which can be
 expressed as 
 
-\[X_t = X_{t+1} + \omega, \]
+\[X_t = X_{t-1} + \omega, \]
 
 where $\omega$ is a constant and with the initial condition $X_0 = c$, an
 arbitrary constant (typically zero). This process can be expressed in a more
