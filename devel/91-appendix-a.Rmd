@@ -1,5 +1,83 @@
 # Proofs
 
+## Proof of Lemma 1
+
+\begin{Lemma}
+Following the definition above, for linear process $X_t$ of the form $X_t = \mu + \sum\limits_{j = -\infty}^{\infty} \psi_j w_{t-j}$, where $w_t$ are i.i.d with mean 0 and variance $\sigma^2$, and the coefficients satisfy $\sum\limits_{j = -\infty}^{\infty}|\psi_j| < \infty$. We have
+    \begin{equation*}
+        T^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)] = o_p(1).
+    \end{equation*}
+\end{Lemma}
+
+**Proof**
+By Markov inequality, we have:
+
+\begin{equation*}
+\mathbb{P}\left( |T^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)]| \geq \epsilon \right) < \frac{\mathbb{E}|T^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)]|}{\epsilon},
+\end{equation*}
+for any $\epsilon > 0$.
+
+Thus, it is enough to show that $\mathbb{E}|T^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)]| \to 0$ as $T \to \infty$.
+
+By the definitions of $\tilde{\gamma} \left( h \right)$ and $\hat \gamma \left( h \right)$,
+\begin{equation*}
+\begin{aligned}
+T^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)] &= \frac{T^{\frac{1}{2}}}{T} \sum_{t = T-h+1}^{T}(X_t - \mu)(X_{t+h} - \mu) \\
+&+ \frac{T^{\frac{1}{2}}}{T} \sum_{t = 1}^{T-h}\left[(X_t - \mu)(X_{t+h} - \mu) - (X_t - \bar{X})(X_{t+h} - \bar{X})\right]\\
+&= \frac{T^{\frac{1}{2}}}{T} \sum_{t = T-h+1}^{T}(X_t - \mu)(X_{t+h} - \mu) \\
+&+ \frac{T^{\frac{1}{2}}}{T} \sum_{t = 1}^{T-h}\left[(X_t - \mu)(X_{t+h} - \mu) - (X_t - \mu + \mu - \bar{X})(X_{t+h} - \mu + \mu - \bar{X})\right]\\
+&= \frac{T^{\frac{1}{2}}}{T} \sum_{t = T-h+1}^{T}(X_t - \mu)(X_{t+h} - \mu) \\
+&+ \frac{T^{\frac{1}{2}}}{T} \sum_{t = 1}^{T-h}\left[(\bar{X} - \mu)(X_{t+h} - \mu) + (\bar{X} - \mu)(X_t - \mu) - (\bar{X} - \mu)^2\right],
+\end{aligned}
+\end{equation*}
+where $\bar{X} = \frac{1}{T}\sum_{t=1}^T X_t = \mu + \frac{1}{T}\sum_{t=1}^T\sum_{j=-\infty}^{\infty} \psi_j w_{t-j} = \mu + \frac{1}{T} \sum_{j = -\infty}^{\infty} \sum_{t=1}^T \psi_j w_{t-j}$.
+
+Then,
+\begin{equation*}
+\begin{aligned}
+\mathbb{E}|T^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)]| &\leq \frac{T^{\frac{1}{2}}}{T} \sum_{t = T-h+1}^{T} \mathbb{E}|(X_t - \mu)(X_{t+h} - \mu)|\\
+&+ \frac{T^{\frac{1}{2}}}{T} \sum_{t = 1}^{T-h} \left[\mathbb{E} |(\bar{X} - \mu)(X_{t+h} - \mu)| + \mathbb{E} |(\bar{X} - \mu)(X_t - \mu)| - \mathbb{E}[(\bar{X} - \mu)^2]\right]
+\end{aligned}
+\end{equation*}
+
+Next, we consider each term of the above equation. For the first term, since $(X_t - \mu)(X_{t+h} - \mu) = \sum_{j = -\infty}^{\infty} \psi_j w_{t-j} \sum_{i=-\infty}^{\infty} \psi_i w_{t+h-i}$, and $\mathbb{E}[w_iw_j] \neq 0$ only if $i = j$. Thus we have
+\begin{equation*}
+\mathbb{E}|(X_t - \mu)(X_{t+h} - \mu)| \leq \sigma^2 \sum_{i = -\infty}^{\infty}|\psi_i \psi_{i+h}|.
+\end{equation*}
+
+Similarly, for the second term we have
+\begin{equation*}
+\mathbb{E}|(\bar{X} - \mu)(X_{t+h} - \mu)| \leq \frac{\sigma^2}{T} \sum_{i = -\infty}^{\infty}|\psi_i \psi_{i+h}|.
+\end{equation*}
+
+The third term
+\begin{equation*}
+\mathbb{E}|(\bar{X} - \mu)(X_t - \mu)| = \frac{\sigma^2}{T} \sum_{i = -\infty}^{\infty}\psi_i^2.
+\end{equation*}
+
+The fourth term
+\begin{equation*}
+\mathbb{E}[(\bar{X} - \mu)^2] = \frac{\sigma^2}{T} \sum_{i = -\infty}^{\infty}\psi_i^2.
+\end{equation*}
+
+Then the third term and the fourth term will be cancelled out, we have 
+
+\begin{equation*}
+\begin{aligned}
+\mathbb{E}|T^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)]| &\leq \frac{T^{\frac{1}{2}}}{T} \sum_{t = T-h+1}^{T} \mathbb{E}|(X_t - \mu)(X_{t+h} - \mu)|\\
+&+ \frac{T^{\frac{1}{2}}}{T} \sum_{t = 1}^{T-h} \left[\mathbb{E} |(\bar{X} - \mu)(X_{t+h} - \mu)|\right]\\
+&\leq \frac{T^{\frac{1}{2}}}{T} h \sigma^2 \sum_{i = -\infty}^{\infty}|\psi_i \psi_{i+h}| + \frac{T^{\frac{1}{2}}}{T^2} (T-h) \sigma^2 \sum_{i = -\infty}^{\infty}|\psi_i \psi_{i+h}|\\
+&= \frac{T^{\frac{1}{2}}}{T^2} (Th + T - h) \sigma^2 \sum_{i = -\infty}^{\infty}|\psi_i \psi_{i+h}| \to 0,
+\end{aligned}
+\end{equation*}
+as $T \to \infty$.
+
+Thus we conclude that
+\begin{equation*}
+T^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)] = o_p(1).
+\end{equation*}
+
+
 ## Proof of Theorem 1
 
 Let $X_t = W_t + \mu$, where $\mu < \infty$ and $(W_t)$ is a strong white noise process with variance $\sigma^2$ and finite fourth moment.
@@ -21,8 +99,6 @@ which is easier to "handle" and show that $\hat \gamma \left( h \right)$ and $\t
 \begin{equation*}
     T^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)] = o_p(1).
 \end{equation*}
-
-**ADD HERE PROOF OF THE ABOVE RESULT**
 
 Therefore $\tilde{\gamma} \left( h \right)$ and $\hat \gamma \left( h \right)$ have the same asymptotic distribution, it is suffice to show the asymptotic distribution of $\tilde{\gamma} \left( h \right)$.
 

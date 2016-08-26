@@ -9,3 +9,5 @@ its_cache
 its_files
 tts_files
 tts.Rmd
+.html
+libs

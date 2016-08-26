@@ -168,7 +168,7 @@ notably around $t = 1200$ for explosion series.
 Next, we consider an example coming from high-frequency finance to illustrate
 the limitations our current framework.
 
-**Example:** The figure below presents the returns or price innovation
+**Example:** The figure below presents the returns or price innovations
 (i.e. informally speaking the changes in price from one observation to the other) for the Starbuck's stock on
 July 1, 2011 for about 150 seconds (left panel) and about 400 minutes
 (right panel). 
@@ -195,10 +195,13 @@ illustrated in the following example.
 
 **Example:** We consider here the data coming from the calibration procedure of
 an Inertial Measurement Unit (IMU) which, in general terms, is used to enhance
-navigation precision or reconstruct three dimensional movements.
+navigation precision or reconstruct three dimensional movements (see e.g. [link](https://www.youtube.com/watch?v=htoBvSq8jLA)). These sensors are used in a very wide range of applications such as robotics, virtual reality, vehicle stability control, human and animal motion capture and so forth (see e.g. [link](https://www.youtube.com/watch?v=g4tgtPA54_Y)).
 The signals coming from these instruments are measured at
 high frequencies over a long time and are often characterized by linear trends
-and numerous underlying stochastic processes. The code below retrieves some 
+and numerous underlying stochastic processes. If you have never heard 
+
+
+The code below retrieves some 
 data from an IMU and plots it directly:
 
 <!--
@@ -377,7 +380,7 @@ generate an MA(1) is given below:
 A linear drift is a very simple deterministic time series model which can be
 expressed as 
 
-\[X_t = X_{t+1} + \omega, \]
+\[X_t = X_{t-1} + \omega, \]
 
 where $\omega$ is a constant and with the initial condition $X_0 = c$, an
 arbitrary constant (typically zero). This process can be expressed in a more
