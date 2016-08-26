@@ -30,7 +30,7 @@ In this chapter we will discuss and formalize a little how knowledge about $X_{t
 
 implying that the autocorrelation (or autocovariance) is a function only of the lag between observations. These two concepts (autocorrelation and stationarity) will be discussed in this chapter. Before moving on, it is helpful to remind that correlation (or autocorrelation) is only approriate to measure a very spefic kind of dependence, i.e. linear dependence. There are many forms of dependence as illustrated in the bottom panels of the graph below, which all have a (true) zero correlation:
 
-![dependency](images/1280px-Correlation_examples2.png)
+![dependency](../images/1280px-Correlation_examples2.png)
 
 Note that several other metrics have been introduced in the litterature to assess the degree of "dependence" of two random variables but this goes beyond the material discussed in this text.
 
