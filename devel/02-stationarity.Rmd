@@ -1,7 +1,8 @@
 # Autocorrelation and Stationarity
 
 ```{r autocorrelation_stationarity_code, echo = FALSE}
-knitr::read_chunk('code/chapter/02_stationarity_autocorrelation.R')
+source("../code/init/chapter_start.R")
+knitr::read_chunk('../code/chapter/02_stationarity_autocorrelation.R')
 ```
 
 <!-- > "I have seen the future and it is very much like the present, only longer."
