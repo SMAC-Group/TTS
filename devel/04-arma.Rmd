@@ -1,7 +1,8 @@
 # ARMA
 
 ```{r arma_code, echo = FALSE}
-knitr::read_chunk('code/chapter/04_arma.R')
+source("../code/init/chapter_start.R")
+knitr::read_chunk('../code/chapter/04_arma.R')
 ```
 
 

@@ -1,7 +1,8 @@
 # Linear Regression
 
 ```{r linear_reg_code, echo = FALSE}
-knitr::read_chunk('code/chapter/05_linear_models.R')
+source("../code/init/chapter_start.R")
+knitr::read_chunk('../code/chapter/05_linear_models.R')
 ```
 
 ## Review on Linear Regression

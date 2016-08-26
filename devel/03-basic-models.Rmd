@@ -1,7 +1,8 @@
 # Basic Models
 
 ```{r basic_models_code, echo = FALSE}
-knitr::read_chunk('code/chapter/02_basic_models.R')
+source("../code/init/chapter_start.R")
+knitr::read_chunk('../code/chapter/02_basic_models.R')
 ```
 
 ## The Backshift Operator
