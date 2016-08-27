@@ -260,9 +260,12 @@ It is clear from these definitions that if a process is a strong white noise
 it is also a weak white noise. However, the converse is not true as shown in
 the following example:
 
-**Example**: Let $X_t \mathop \sim \limits^{iid} F_t$, where $F_t$ denotes
-a Student distribution with $t$ degrees of freedom.
-This process is a weak white noise but not a strong one.
+**Example**: Let $Y_t \mathop \sim F_{t+2}$, where $F_{t+2}$ denotes
+a Student distribution with $t+2$ degrees of freedom. Assuming the sequence $(Y_1, \ldots, Y_n)$ to be independent, we let $X_t = \sqrt{\frac{t}{t+2}} Y_t$. Then, the process $(X_t)$ is obviously not a strong white noise as the distribution of $X_t$ changes with $t$. However, this process is a weak white noise since we have:
+
+- $E[X_t] = \sqrt{\frac{t}{t+2}} E[Y_t] = 0$ for all $t$.
+- $\var(X_t) = \frac{t}{t+2} \var(Y_t) = \frac{t}{t+2} \frac{t+2}{t} = 1$ for all $t$.
+- $\cov(X_t, X_{t+h}) = 0$ (by independence), for all $t$, and for all $h \neq 0$.
 
 The code below presents an example of how to simulate a Gaussian white noise process
 
