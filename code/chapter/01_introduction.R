@@ -170,12 +170,12 @@ data(speech, package = "astsa")
 # Make it into a gts object
 speech = gts(speech, name = 'Speech Data', unit = "sec", freq = 10000)
 
-autoplot(speech)  + ylab("Speech")
+autoplot(speech) + ylab("Speech")
 
 ## @knitr example_eq
 # Earthquake
-data(EQ5)
-data(EXP6)
+data(EQ5, package="astsa")
+data(EXP6, package="astsa")
 
 EQ5.df = fortify(EQ5)
 EQ5.df$type = "earthquake"
