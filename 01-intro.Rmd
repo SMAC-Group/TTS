@@ -208,7 +208,7 @@ data from an IMU and plots it directly:
 Complete example on IMU to show the limit for such graph when n is too big.
 -->
 
-```{r example_IMU, fig.height = 4, fig.width = 7, cache = TRUE, message = FALSE}
+```{r example_IMU, fig.height = 4, fig.width = 7, cache = TRUE, message = FALSE, dev='png'}
 ```
 
 Although a linear trend and other processes are present in this signal
