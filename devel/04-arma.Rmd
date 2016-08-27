@@ -14,6 +14,54 @@ knitr::read_chunk('../code/chapter/04_arma.R')
 
 ## Causal + Invertible
 
+### Definitions
+(Def. 3.7, p.94). An ARMA(p, q) model is *causal*, if the time series $\{ X_t \}_{-\infty}^{\infty}$ can be written as a one-sided linear process:
+\begin{equation}
+    X_t = \sum_{j = 0}^{\infty} \psi_j \omega_{t-j} = \psi(B) \omega_t,
+    \label{eq:causal}
+\end{equation}
+where $\psi(B) = \sum_{j = 0}^{\infty} \psi_j B^j$, and $\sum_{j=0}^{\infty}|\psi_j| < \infty$; we set $\psi_0 = 1$.
+
+(Def. 3.8, p.95). An ARMA(p, q) model is *invertible*, if the time series $\{ X_t \}_{-\infty}^{\infty}$ can be written as
+\begin{equation}
+    \pi(B)X_t = \sum_{j = 0}^{\infty} \pi_j X_{t-j} = \omega_t,
+    \label{eq:invertible}
+\end{equation}
+where $\pi(B) = \sum_{j = 0}^{\infty} \pi_j B^j$, and $\sum_{j=0}^{\infty}|\pi_j| < \infty$; we set $\pi_0 = 1$.
+
+It might be difficult and not obvious to show the causality or the invertibility of an ARMA process (especially the higher order process) by using these definitions directly, thus the following properties are useful in practice. Define the *AR and MA polynomials* respectively as
+\begin{equation*}
+    \phi(z) = 1 - \phi_1 z - ... - \phi_p z^p, \mbox{ } \phi_p \neq 0,
+\end{equation*}
+and
+\begin{equation*}
+    \theta(z) = 1 + \theta_1 z + ... + \theta_p z^p, \mbox{ } \theta_p \neq 0,
+\end{equation*}
+where $z$ is a complex number.
+
+**Property: Causality**
+If an ARMA(p, q) model is causal, then the coefficients of the one-sided linear process given in (\@ref(eq:causal)) can be obtained by
+\begin{equation*}
+    \psi(z) = \sum_{j=0}^{\infty} \psi_j z^j = \frac{\theta(z)}{\phi(z)}, \mbox{ } |z| \leq 1.
+\end{equation*}
+    
+Thus, we have the following results for causality
+
+- An ARMA(p, q) is causal iff $\phi(z) \neq 0$ for $|z| \leq 1$,
+- An ARMA(p, q) is causal only when the roots of $\phi(z) = 0$ lie outside the unit circle, i.e. $|z| > 1$.
+
+**Property: Invertibility**
+If an ARMA(p, q) model is invertible, then the coefficients of the one-sided linear process given in (\@ref(eq:invertible)) can be obtained by
+\begin{equation*}
+    \pi(z) = \sum_{j=0}^{\infty} \pi_j z^j = \frac{\phi(z)}{\theta(z)}, \mbox{ } |z| \leq 1.
+\end{equation*}
+    
+Thus, we have the following results for causality
+
+- item An ARMA(p, q) is causal iff $\theta(z) \neq 0$ for $|z| \leq 1$,
+- item An ARMA(p, q) is causal only when the roots of $\theta(z) = 0$ lie outside the unit circle, i.e. $|z| > 1$.
+
+
 **Example: Causal Conditons for an AR(2) Process** We already know that an AR(1) is causal with the simple condition $|\phi_1| < 1$. It could seem natural to believe that an AR(2) should be stationary with the conditon: $|\phi_i| < 1, \, i = 1,2$, however, this is not the case. Indeed, an AR(1) can be expressed as
 
 \[X_t = \phi_1 X_{t-1} + \phi_2 X_{t-2} + W_t = \phi_1 B X_t + \phi_2 B^2 X_t + W_t,\]
