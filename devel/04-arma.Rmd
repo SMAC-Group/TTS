@@ -58,11 +58,11 @@ If an ARMA(p, q) model is invertible, then the coefficients of the one-sided lin
     
 Thus, we have the following results for causality
 
-- An ARMA(p, q) is causal iff $\theta(z) \neq 0$ for $|z| \leq 1$,
-- An ARMA(p, q) is causal only when the roots of $\theta(z) = 0$ lie outside the unit circle, i.e. $|z| > 1$.
+- An ARMA(p, q) is invertible iff $\theta(z) \neq 0$ for $|z| \leq 1$,
+- An ARMA(p, q) is invertible only when the roots of $\theta(z) = 0$ lie outside the unit circle, i.e. $|z| > 1$.
 
 
-**Example: Causal Conditons for an AR(2) Process** We already know that an AR(1) is causal with the simple condition $|\phi_1| < 1$. It could seem natural to believe that an AR(2) should be stationary with the conditon: $|\phi_i| < 1, \, i = 1,2$, however, this is not the case. Indeed, an AR(1) can be expressed as
+**Example: Causal Conditons for an AR(2) Process** We already know that an AR(1) is causal with the simple condition $|\phi_1| < 1$. It could seem natural to believe that an AR(2) should be causal (implies stationary) with the conditon: $|\phi_i| < 1, \, i = 1,2$, however, this is not the case. Indeed, an AR(2) can be expressed as
 
 \[X_t = \phi_1 X_{t-1} + \phi_2 X_{t-2} + W_t = \phi_1 B X_t + \phi_2 B^2 X_t + W_t,\]
 
