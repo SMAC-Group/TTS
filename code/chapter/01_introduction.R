@@ -170,3 +170,28 @@ saving = gts(saving$VALUE, start = 1959, freq = 12, name = 'US Personal Saving R
 
 # Plot time series
 autoplot(saving) + ylab("US Personal Saving Rates (%)")
+
+## @knitr numberline
+number_line = function(named){
+  d = data.frame(v = seq_along(named), o = rep(0, length(named)), named = named)
+  
+  ggplot(d, aes(x = v, y = o)) + geom_line() + 
+  geom_segment(mapping = aes(xend = v, yend = 0, y = -.05)) +  # Replicate Tick marks
+  geom_text(vjust = 2, aes(label = named)) +                   # Label axis marks
+  coord_fixed(ylim = c(-0.5,0.5)) +                            # Suppress graph window changes
+  theme(axis.line=element_blank(),                             # Disable everything...
+  axis.text.x=element_blank(),
+  axis.text.y=element_blank(),
+  axis.ticks=element_blank(),
+  axis.title.x=element_blank(),
+  axis.title.y=element_blank(),
+  legend.position="none",
+  panel.background=element_blank(),
+  panel.border=element_blank(),
+  panel.grid.major=element_blank(),
+  panel.grid.minor=element_blank(),
+  plot.background=element_blank())
+}
+
+named = c(paste0("t = ", 1:2), "...", paste0("t = n - ", 2:1), "t = n")
+number_line(named) 
