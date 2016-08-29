@@ -2,7 +2,29 @@
 
 ## Proof of Theorem 1
 
-Before provifing the proof of Theorem 1 we state and prove the following lemma:
+*Proof:* we let $X_t = W_t + \mu$, where $\mu < \infty$ and $(W_t)$ is a strong white noise process with variance $\sigma^2$ and finite fourth moment.
+
+Next, we consider the sample autocovariance function computed on $(X_t)$, i.e.
+
+\begin{equation*}
+    \hat \gamma \left( h \right) = \frac{1}{n}\sum\limits_{t = 1}^{n - h} {\left( {{X_t} - \bar X} \right)\left( {{X_{t + h}} - \bar X} \right)}.
+\end{equation*}
+
+For this equation, it is clear that $\hat \gamma \left( 0 \right)$ and $\hat \gamma \left( h \right)$ (with $h > 0$) are two statistics involving sums of different lengths. As we will see, this prevents us from using directely the multivariate central limit theorem on the vector $[ \hat \gamma \left( h \right) \;\;\; \hat \gamma \left( h \right) ]^T$. However, the lag $h$ is fixed and therefore the difference in the number of elements of both sums is asymptotically negligible. Therefore, we define a new statistic 
+
+\begin{equation*}
+    \tilde{\gamma} \left( h \right) = \frac{1}{n}\sum\limits_{t = 1}^{n} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)},
+\end{equation*}
+
+which is easier to "handle" and show that $\hat \gamma \left( h \right)$ and $\tilde{\gamma} \left( h \right)$ are asymptotically equivalent in the sense that:
+
+\begin{equation*}
+    n^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)] = o_p(1).
+\end{equation*}
+
+Therefore $\tilde{\gamma} \left( h \right)$ and $\hat \gamma \left( h \right)$ have the same asymptotic distribution, it is suffice to show the asymptotic distribution of $\tilde{\gamma} \left( h \right)$.
+
+So that before continuing prove the Theorem 1 we state and prove the following lemma:
 
 **Lemma A1:** Let 
 \begin{equation}
@@ -10,101 +32,85 @@ X_t = \mu + \sum\limits_{j = -\infty}^{\infty} \psi_j W_{t-j},
 \end{equation}
 where $(W_t)$ is a strong white process with variance $\sigma^2$, and the coefficients satisfying $\sum \, |\psi_j| < \infty$. Then, we have
     \begin{equation*}
-        T^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)] = o_p(1).
+        n^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)] = o_p(1).
     \end{equation*}
 
 *Proof:* By Markov inequality, we have
 \begin{equation*}
-\mathbb{P}\left( |T^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)]| \geq \epsilon \right) \leq \frac{\mathbb{E}|T^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)]|}{\epsilon},
+\mathbb{P}\left( |n^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)]| \geq \epsilon \right) \leq \frac{\mathbb{E}|n^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)]|}{\epsilon},
 \end{equation*}
 for any $\epsilon > 0$.
 
-Thus, it is enough to show that $\mathbb{E}|T^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)]| \to 0$ as $T \to \infty$.
+Thus, it is enough to show that $\mathbb{E}|n^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)]| \to 0$ as $n \to \infty$.
 
 By the definitions of $\tilde{\gamma} \left( h \right)$ and $\hat \gamma \left( h \right)$,
 \begin{equation*}
 \begin{aligned}
-T^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)] &= \frac{T^{\frac{1}{2}}}{T} \sum_{t = T-h+1}^{T}(X_t - \mu)(X_{t+h} - \mu) \\
-&+ \frac{T^{\frac{1}{2}}}{T} \sum_{t = 1}^{T-h}\left[(X_t - \mu)(X_{t+h} - \mu) - (X_t - \bar{X})(X_{t+h} - \bar{X})\right]\\
-&= \frac{T^{\frac{1}{2}}}{T} \sum_{t = T-h+1}^{T}(X_t - \mu)(X_{t+h} - \mu) \\
-&+ \frac{T^{\frac{1}{2}}}{T} \sum_{t = 1}^{T-h}\left[(X_t - \mu)(X_{t+h} - \mu) - (X_t - \mu + \mu - \bar{X})(X_{t+h} - \mu + \mu - \bar{X})\right]\\
-&= \frac{T^{\frac{1}{2}}}{T} \sum_{t = T-h+1}^{T}(X_t - \mu)(X_{t+h} - \mu) \\
-&+ \frac{T^{\frac{1}{2}}}{T} \sum_{t = 1}^{T-h}\left[(\bar{X} - \mu)(X_{t+h} - \mu) + (\bar{X} - \mu)(X_t - \mu) - (\bar{X} - \mu)^2\right],
+n^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)] &= \frac{1}{\sqrt{n}} \sum_{t = n-h+1}^{n}(X_t - \mu)(X_{t+h} - \mu) \\
+&+ \frac{1}{\sqrt{n}} \sum_{t = 1}^{n-h}\left[(X_t - \mu)(X_{t+h} - \mu) - (X_t - \bar{X})(X_{t+h} - \bar{X})\right]\\
+&= \frac{1}{\sqrt{n}} \sum_{t = n-h+1}^{n}(X_t - \mu)(X_{t+h} - \mu) \\
+&+ \frac{1}{\sqrt{n}} \sum_{t = 1}^{n-h}\left[(\bar{X} - \mu)(X_t + X_{t+h} - \mu - \bar{X})\right]\\
+&= \frac{1}{\sqrt{n}} \sum_{t = n-h+1}^{n} (X_t - \mu)(X_{t+h} - \mu)\\
+&+ \frac{1}{\sqrt{n}} (\bar{X} - \mu)\sum_{t = 1}^{n-h}(X_t + X_{t+h} - \mu - \bar{X})\\
+&= \frac{1}{\sqrt{n}} \sum_{t = n-h+1}^{n} (X_t - \mu)(X_{t+h} - \mu)\\
+&+ \frac{1}{\sqrt{n}} (\bar{X} - \mu)\left[\sum_{t = 1+h}^{n-h}X_t - (n-h)\mu - h\bar{X}\right]\\
+&= \frac{1}{\sqrt{n}} \sum_{t = n-h+1}^{n} (X_t - \mu)(X_{t+h} - \mu)\\
+&+ \frac{1}{\sqrt{n}} (\bar{X} - \mu)\left[\sum_{t = 1+h}^{n-h}(X_t - \mu) - h(\mu - \bar{X})\right]\\
+&= \frac{1}{\sqrt{n}} \sum_{t = n-h+1}^{n} (X_t - \mu)(X_{t+h} - \mu)\\
+&+ \frac{1}{\sqrt{n}} (\bar{X} - \mu)\sum_{t = 1+h}^{n-h}(X_t - \mu) + \frac{h}{\sqrt{n}} (\bar{X} - \mu)^2,
 \end{aligned}
 \end{equation*}
-where $\bar{X} = \frac{1}{T}\sum_{t=1}^T X_t = \mu + \frac{1}{T}\sum_{t=1}^T\sum_{j=-\infty}^{\infty} \psi_j w_{t-j} = \mu + \frac{1}{T} \sum_{j = -\infty}^{\infty} \sum_{t=1}^T \psi_j w_{t-j}$.
+where $\bar{X} = \frac{1}{n}\sum_{t=1}^n X_t = \mu + \frac{1}{n}\sum_{t=1}^n\sum_{j=-\infty}^{\infty} \psi_j W_{t-j} = \mu + \frac{1}{n} \sum_{j = -\infty}^{\infty} \sum_{t=1}^n \psi_j W_{t-j}$.
 
 Then,
 \begin{equation*}
 \begin{aligned}
-\mathbb{E}|T^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)]| &\leq \frac{T^{\frac{1}{2}}}{T} \sum_{t = T-h+1}^{T} \mathbb{E}|(X_t - \mu)(X_{t+h} - \mu)|\\
-&+ \frac{T^{\frac{1}{2}}}{T} \sum_{t = 1}^{T-h} \left[\mathbb{E} |(\bar{X} - \mu)(X_{t+h} - \mu)| + \mathbb{E} |(\bar{X} - \mu)(X_t - \mu)| - \mathbb{E}[(\bar{X} - \mu)^2]\right]
+\mathbb{E}|n^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)]|
+&\leq \frac{1}{\sqrt{n}} \sum_{t = n-h+1}^{n} \mathbb{E}\left[|(X_t - \mu)||(X_{t+h} - \mu)|\right]\\
+&+ \frac{1}{\sqrt{n}} \mathbb{E} \left[|(\bar{X} - \mu)||\sum_{t = 1+h}^{n-h}(X_t - \mu)|\right] +  \frac{h}{\sqrt{n}}\mathbb{E} \left[ (\bar{X} - \mu)^2 \right].
 \end{aligned}
 \end{equation*}
 
-Next, we consider each term of the above equation. For the first term, since $(X_t - \mu)(X_{t+h} - \mu) = \sum_{j = -\infty}^{\infty} \psi_j w_{t-j} \sum_{i=-\infty}^{\infty} \psi_i w_{t+h-i}$, and $\mathbb{E}[w_iw_j] \neq 0$ only if $i = j$. Thus we have
+Next, we consider each term of the above equation. For the first term, since $(X_t - \mu)^2 = \left(\sum_{j = -\infty}^{\infty} \psi_j W_{t-j}\right)^2$, and $\mathbb{E}[W_iW_j] \neq 0$ only if $i = j$. And by Cauchy–Schwarz inequality we have
 \begin{equation*}
-\mathbb{E}|(X_t - \mu)(X_{t+h} - \mu)| \leq \sigma^2 \sum_{i = -\infty}^{\infty}|\psi_i \psi_{i+h}|.
+\mathbb{E}\left[|(X_t - \mu)||(X_{t+h} - \mu)|\right] \leq \sqrt{\mathbb{E}\left[|(X_t - \mu)|^2\right] \mathbb{E}\left[|(X_{t+h} - \mu)|^2\right]} = \sigma^2 \sum_{i = -\infty}^{\infty}\psi_i^2.
+\end{equation*}
+
+Then, we consider the third term, since it will be used in the second term
+\begin{equation*}
+\mathbb{E}[(\bar{X} - \mu)^2] = \frac{1}{n^2} \sum_{t = 1}^{n} \sum_{i = -\infty}^{\infty} \psi_i^2 \mathbb{E}\left[ W_{t-i}^2 \right] = \frac{\sigma^2}{n} \sum_{i = -\infty}^{\infty}\psi_i^2.
 \end{equation*}
 
 Similarly, for the second term we have
 \begin{equation*}
-\mathbb{E}|(\bar{X} - \mu)(X_{t+h} - \mu)| \leq \frac{\sigma^2}{T} \sum_{i = -\infty}^{\infty}|\psi_i \psi_{i+h}|.
+\begin{aligned}
+\mathbb{E}\left[|(\bar{X} - \mu)||\sum_{t = 1+h}^{n-h}(X_t - \mu)|\right] &\leq \sqrt{\mathbb{E}\left[|(\bar{X} - \mu)|^2\right] \mathbb{E}\left[|\sum_{t = 1+h}^{n-h}(X_t - \mu)|^2\right]}\\
+&= \sqrt{\mathbb{E}\left[(\bar{X} - \mu)^2\right] \mathbb{E}\left[\sum_{t = 1+h}^{n-h}\left(X_t - \mu \right)^2 + \sum_{t_1 \neq t_2}(X_{t_1} - \mu)(X_{t_2} - \mu) \right]}\\
+&\leq \sqrt{\frac{\sigma^2}{n} \sum_{i = -\infty}^{\infty}\psi_i^2 \cdot (n-h)\sigma^2 \left( \sum_{j = -\infty}^{\infty} |\psi_j| \right)^2}\\
+&\leq \sqrt{\frac{n-2h}{n}}\sigma^2 \left(\sum_{i = -\infty}^{\infty}|\psi_i| \right)^2.
+\end{aligned}
 \end{equation*}
 
-The third term
-\begin{equation*}
-\mathbb{E}|(\bar{X} - \mu)(X_t - \mu)| = \frac{\sigma^2}{T} \sum_{i = -\infty}^{\infty}\psi_i^2.
-\end{equation*}
 
-The fourth term
-\begin{equation*}
-\mathbb{E}[(\bar{X} - \mu)^2] = \frac{1}{T^2} \sum_{t = 1}^{T} \sum_{i = -\infty}^{\infty} \psi_i^2 \mathbb{E}\left[ w_{t-i}^2 \right] = \frac{\sigma^2}{T} \sum_{i = -\infty}^{\infty}\psi_i^2.
-\end{equation*}
-
-Then the third term and the fourth term will be cancelled out, we have 
+Then we have 
 
 \begin{equation*}
 \begin{aligned}
-\mathbb{E}|T^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)]| &\leq \frac{T^{\frac{1}{2}}}{T} \sum_{t = T-h+1}^{T} \mathbb{E}|(X_t - \mu)(X_{t+h} - \mu)|\\
-&+ \frac{T^{\frac{1}{2}}}{T} \sum_{t = 1}^{T-h} \mathbb{E} |(\bar{X} - \mu)(X_{t+h} - \mu)|\\
-&\leq \frac{T^{\frac{1}{2}}}{T^2} Th \sigma^2 \sum_{i = -\infty}^{\infty}|\psi_i \psi_{i+h}| + \frac{T^{\frac{1}{2}}}{T^2} (T-h) \sigma^2 \sum_{i = -\infty}^{\infty}|\psi_i \psi_{i+h}|\\
-&= \frac{T^{\frac{1}{2}}}{T^2} (Th + T - h) \sigma^2 \sum_{i = -\infty}^{\infty}|\psi_i \psi_{i+h}|\\
-&< \frac{T^{\frac{1}{2}}}{T^2} (Th + T - h) \sigma^2 \left(\sum_{i = -\infty}^{\infty}|\psi_i|\right)^2 \to 0,
+\mathbb{E}|n^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)]|
+&\leq \frac{1}{\sqrt{n}} h \sigma^2 \sum_{i = -\infty}^{\infty}\psi_i^2 + \sqrt{\frac{n-2h}{n^2}}\sigma^2 \left(\sum_{i = -\infty}^{\infty}|\psi_i| \right)^2 + \frac{h}{n\sqrt{n}}\sigma^2 \sum_{i = -\infty}^{\infty}\psi_i^2\\
+&\leq \frac{1}{n\sqrt{n}} (nh + \sqrt{n - 2h} + h) \sigma^2 \left(\sum_{i = -\infty}^{\infty}|\psi_i|\right)^2 \to 0,
 \end{aligned}
 \end{equation*}
-as $T \to \infty$.
+as $n \to \infty$.
 
 Thus we conclude that
 \begin{equation*}
-T^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)] = o_p(1).
+\sqrt{n}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)] = o_p(1).
 \end{equation*}
 
-Returning to the proof of Theorem 1, we let $X_t = W_t + \mu$, where $\mu < \infty$ and $(W_t)$ is a strong white noise process with variance $\sigma^2$ and finite fourth moment.
-
-Next, we consider the sample autocovariance function computed on $(X_t)$, i.e.
-
+Returning to the proof of Theorem 1, since $\{\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)\}_1^n$ are iid, we can apply multivariate CLT to it, and have
 \begin{equation*}
-    \hat \gamma \left( h \right) = \frac{1}{T}\sum\limits_{t = 1}^{T - h} {\left( {{X_t} - \bar X} \right)\left( {{X_{t + h}} - \bar X} \right)}.
-\end{equation*}
-
-For this equation, it is clear that $\hat \gamma \left( 0 \right)$ and $\hat \gamma \left( h \right)$ (with $h > 0$) are two statistics involving sums of different lengths. As we will see, this prevents us from using directely the multivariate central limit theorem on the vector $[ \hat \gamma \left( h \right) \;\;\; \hat \gamma \left( h \right) ]^T$. However, the lag $h$ is fixed and therefore the difference in the number of elements of both sums is asymptotically negligible. Therefore, we define a new statistic 
-
-\begin{equation*}
-    \tilde{\gamma} \left( h \right) = \frac{1}{T}\sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)},
-\end{equation*}
-
-which is easier to "handle" and show that $\hat \gamma \left( h \right)$ and $\tilde{\gamma} \left( h \right)$ are asymptotically equivalent in the sense that:
-
-\begin{equation*}
-    T^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)] = o_p(1).
-\end{equation*}
-
-Therefore $\tilde{\gamma} \left( h \right)$ and $\hat \gamma \left( h \right)$ have the same asymptotic distribution, it is suffice to show the asymptotic distribution of $\tilde{\gamma} \left( h \right)$.
-
-Since $\{\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)\}_1^T$ are iid, we can apply multivariate CLT to it, and have
-\begin{equation*}
-    \sqrt{T}\left\{
+    \sqrt{n}\left\{
         \begin{bmatrix}
          \tilde{\gamma} \left( 0 \right) \\
          \tilde{\gamma} \left( h \right)
@@ -113,11 +119,11 @@ Since $\{\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)\}_1^T$ a
          \tilde{\gamma} \left( 0 \right) \\
          \tilde{\gamma} \left( h \right)
         \end{bmatrix} \right\}
-    = \frac{1}{\sqrt{T}}\begin{bmatrix}
-         \sum\limits_{t = 1}^{T}(X_t - \mu)^2 - T\mathbb{E}\left[ \tilde{\gamma} \left( 0 \right) \right]\\
-         \sum\limits_{t = 1}^{T}\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right) - T\mathbb{E}\left[ \tilde{\gamma} \left( h \right) \right]
+    = \frac{1}{\sqrt{n}}\begin{bmatrix}
+         \sum\limits_{t = 1}^{n}(X_t - \mu)^2 - n\mathbb{E}\left[ \tilde{\gamma} \left( 0 \right) \right]\\
+         \sum\limits_{t = 1}^{n}\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right) - n\mathbb{E}\left[ \tilde{\gamma} \left( h \right) \right]
         \end{bmatrix} \overset{\mathcal{D}}{\to} 
-    \mathcal{N}\left(0, T \cdot var \left(\begin{bmatrix}
+    \mathcal{N}\left(0, n \cdot var \left(\begin{bmatrix}
          \tilde{\gamma} \left( 0 \right) \\
          \tilde{\gamma} \left( h \right)
         \end{bmatrix} \right)\right)
@@ -127,18 +133,18 @@ Since $\{\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)\}_1^T$ a
 
 The expectation of $\tilde{\gamma} \left( h \right)$,
 \begin{equation*}
-    \mathbb{E}[\tilde{\gamma} \left( h \right)] = \frac{1}{T}\mathbb{E}\left[\sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)}\right].
+    \mathbb{E}[\tilde{\gamma} \left( h \right)] = \frac{1}{n}\mathbb{E}\left[\sum\limits_{t = 1}^{n} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)}\right].
 \end{equation*}
 
 By Cauchy–Schwarz inequality and $var(X_t) = \sigma^2$, we have
 \begin{equation*}
-    \sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)} \leq \sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)^2} \sum\limits_{t = 1}^{T} {\left( {{X_{t + h}} - \mu} \right)^2} < \infty.
+    \sum\limits_{t = 1}^{n} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)} \leq \sqrt{\sum\limits_{t = 1}^{n} {\left( {{X_t} - \mu} \right)^2} \sum\limits_{t = 1}^{n} {\left( {{X_{t + h}} - \mu} \right)^2}} < \infty.
 \end{equation*}
 
-Then by bounded convergence theorem and $\{X_t\}_1^T$ are independent, we have
+Then by bounded convergence theorem and $\{X_t\}_1^n$ are independent, we have
 
 \begin{equation*}
-    \mathbb{E}[\tilde{\gamma} \left( h \right)] = \frac{1}{T}\left[\sum\limits_{t = 1}^{T} { \mathbb{E}\left( {{X_t} - \mu} \right)\mathbb{E}\left( {{X_{t + h}} - \mu} \right)}\right] =
+    \mathbb{E}[\tilde{\gamma} \left( h \right)] = \frac{1}{n}\left[\sum\limits_{t = 1}^{n} { \mathbb{E}\left( {{X_t} - \mu} \right)\mathbb{E}\left( {{X_{t + h}} - \mu} \right)}\right] =
     \begin{cases}
         \sigma^2, & \text{for } h = 0\\
         0, & \text{for } h \neq 0
@@ -151,13 +157,13 @@ The variance of $\tilde{\gamma} \left( h \right)$,
 when $h \neq 0$,
 \begin{equation*}
     \begin{aligned}
-        var[\tilde{\gamma} \left( h \right)] &= \frac{1}{T^2}\mathbb{E}\left\{\left[\sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)}\right]^2\right\}\\
-        &= \frac{1}{T^2}\mathbb{E}\left\{\left[\sum\limits_{i = 1}^{T} {\left( {{X_i} - \mu} \right)\left( {{X_{i + h}} - \mu} \right)}\right] \left[\sum\limits_{j = 1}^{T} {\left( {{X_j} - \mu} \right)\left( {{X_{j + h}} - \mu} \right)}\right]\right\}\\
-        &= \frac{1}{T^2}\mathbb{E}\left[\sum\limits_{i = 1}^{T}\sum\limits_{j = 1}^{T} {\left( {{X_i} - \mu} \right)\left( {{X_{i + h}} - \mu} \right)}{\left( {{X_j} - \mu} \right)\left( {{X_{j + h}} - \mu} \right)}\right].
+        var[\tilde{\gamma} \left( h \right)] &= \frac{1}{n^2}\mathbb{E}\left\{\left[\sum\limits_{t = 1}^{n} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)}\right]^2\right\}\\
+        &= \frac{1}{n^2}\mathbb{E}\left\{\left[\sum\limits_{i = 1}^{n} {\left( {{X_i} - \mu} \right)\left( {{X_{i + h}} - \mu} \right)}\right] \left[\sum\limits_{j = 1}^{n} {\left( {{X_j} - \mu} \right)\left( {{X_{j + h}} - \mu} \right)}\right]\right\}\\
+        &= \frac{1}{n^2}\mathbb{E}\left[\sum\limits_{i = 1}^{n}\sum\limits_{j = 1}^{n} {\left( {{X_i} - \mu} \right)\left( {{X_{i + h}} - \mu} \right)}{\left( {{X_j} - \mu} \right)\left( {{X_{j + h}} - \mu} \right)}\right].
     \end{aligned}
 \end{equation*}
 
-Also by Cauchy–Schwarz inequality and the finite fourth moment assumption, we can use the bounded convergence theorem. And since $\{X_t\}_1^T$ is white noise process, we have 
+Also by Cauchy–Schwarz inequality and the finite fourth moment assumption, we can use the bounded convergence theorem. And since $\{X_t\}_1^n$ is white noise process, we have 
 
 
 \begin{equation*}
@@ -168,9 +174,9 @@ only when $i = j$.
 Therefore,
 \begin{equation*}
     \begin{aligned}
-        var[\tilde{\gamma} \left( h \right)] &= \frac{1}{T^2}\sum\limits_{i = 1}^{T} \mathbb{E}\left[ {\left( {{X_i} - \mu} \right)^2\left( {{X_{i + h}} - \mu} \right)^2}\right]\\
-        &= \frac{1}{T^2}\sum\limits_{i = 1}^{T} \mathbb{E}{\left( {{X_i} - \mu} \right)^2\mathbb{E}\left( {{X_{i + h}} - \mu} \right)^2}\\
-        &= \frac{1}{T}\sigma^4, \text{for } (h \neq 0).
+        var[\tilde{\gamma} \left( h \right)] &= \frac{1}{n^2}\sum\limits_{i = 1}^{n} \mathbb{E}\left[ {\left( {{X_i} - \mu} \right)^2\left( {{X_{i + h}} - \mu} \right)^2}\right]\\
+        &= \frac{1}{n^2}\sum\limits_{i = 1}^{n} \mathbb{E}{\left( {{X_i} - \mu} \right)^2\mathbb{E}\left( {{X_{i + h}} - \mu} \right)^2}\\
+        &= \frac{1}{n}\sigma^4, \text{for } (h \neq 0).
     \end{aligned}
 \end{equation*}
 
@@ -178,8 +184,8 @@ Similarly, when $h = 0$, we have
 
 \begin{equation*}
     \begin{aligned}
-        var[\tilde{\gamma} \left( 0 \right)] &= \frac{1}{T^2}\mathbb{E}\left\{\left[\sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)^2}\right]^2\right\} - \frac{1}{T^2}\left[\mathbb{E}\sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)^2}\right]^2\\
-        &= \frac{2}{T}\sigma^4, \text{for } (h = 0).
+        var[\tilde{\gamma} \left( 0 \right)] &= \frac{1}{n^2}\mathbb{E}\left\{\left[\sum\limits_{t = 1}^{n} {\left( {{X_t} - \mu} \right)^2}\right]^2\right\} - \frac{1}{n^2}\left[\mathbb{E}\sum\limits_{t = 1}^{n} {\left( {{X_t} - \mu} \right)^2}\right]^2\\
+        &= \frac{2}{n}\sigma^4, \text{for } (h = 0).
     \end{aligned}
 \end{equation*}
 
@@ -188,7 +194,7 @@ Next, for $h \neq 0$,
     \begin{aligned}
         cov[\tilde{\gamma} \left( 0 \right), \tilde{\gamma} \left( h \right)] &= \mathbb{E}[\tilde{\gamma} \left( 0 \right) \tilde{\gamma} \left( h \right)] - \mathbb{E}[\tilde{\gamma} \left( 0 \right)] \mathbb{E}[\tilde{\gamma} \left( h \right)]\\
         &= \mathbb{E}[\tilde{\gamma} \left( 0 \right) \tilde{\gamma} \left( h \right)]\\
-        &= \mathbb{E}\left[\left[\sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)^2}\right]\left[\sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)}\right]\right]\\
+        &= \mathbb{E}\left[\left[\sum\limits_{t = 1}^{n} {\left( {{X_t} - \mu} \right)^2}\right]\left[\sum\limits_{t = 1}^{n} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)}\right]\right]\\
         &= 0.
     \end{aligned}
 \end{equation*}
@@ -196,7 +202,7 @@ Next, for $h \neq 0$,
 Therefore by Slutsky's Theorem we have,
 \begin{equation*}
     \begin{aligned}
-    \sqrt{T}\left\{
+    \sqrt{n}\left\{
         \begin{bmatrix}
          \hat{\gamma} \left( 0 \right) \\
          \hat{\gamma} \left( h \right)
@@ -205,7 +211,7 @@ Therefore by Slutsky's Theorem we have,
          \sigma^2 \\
          0
         \end{bmatrix} \right\}
-    &= \sqrt{T}\left\{
+    &= \sqrt{n}\left\{
         \begin{bmatrix}
          \tilde{\gamma} \left( 0 \right) \\
          \tilde{\gamma} \left( h \right)
@@ -214,7 +220,7 @@ Therefore by Slutsky's Theorem we have,
          \sigma^2 \\
          0
         \end{bmatrix} \right\}
-    + \underbrace{\sqrt{T}\left\{
+    + \underbrace{\sqrt{n}\left\{
         \begin{bmatrix}
          \hat{\gamma} \left( 0 \right) \\
          \hat{\gamma} \left( h \right)
@@ -245,8 +251,8 @@ Next, we set $g\left( \begin{bmatrix}
 Then by Delta method, we have for $h \neq 0$
 \begin{equation*}
     \begin{aligned}
-    \sqrt{T}\hat{\rho}(h) =
-    \sqrt{T}\left\{g\left(
+    \sqrt{n}\hat{\rho}(h) =
+    \sqrt{n}\left\{g\left(
         \begin{bmatrix}
          \hat{\gamma} \left( 0 \right) \\
          \hat{\gamma} \left( h \right)
