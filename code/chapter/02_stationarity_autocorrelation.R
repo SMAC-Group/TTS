@@ -21,7 +21,7 @@ model = AR1(phi = phi, sigma2 = sigma2)
 result = array(NA, c(B,2,20))
 
 # Start Monte-Carlo
-for (i in 1:B){
+for (i in seq_len(B)){
   # Simulate AR(1)
   Xt = gen.gts(model, N = n)
   
@@ -82,7 +82,7 @@ model = AR1(phi = phi, sigma2 = sigma2)
 result = array(NA, c(B,2,20))
 
 # Start Monte-Carlo
-for (i in 1:B){
+for (i in seq_len(B)){
   # Simulate AR(1)
   Xt = gen.gts(model, N = n)
   
@@ -129,12 +129,12 @@ phi = seq(from = 0.95, to = -0.95, length.out = 30)
 result = matrix(NA,B,length(phi))
 
 # Start simulation
-for (i in 1:length(phi)){
+for (i in seq_along(phi)){
   # Define model
   model = AR1(phi = phi[i], sigma2 = 1)
   
   # Monte-Carlo
-  for (j in 1:B){
+  for (j in seq_len(B)){
     # Simulate AR(1)
     Xt = gen.gts(model, N = n)
     
@@ -215,19 +215,19 @@ B = 10000
 h = 3
 
 # Sample size considered
-T = c(5,10,30,300)
+N = c(5,10,30,300)
 
 # Initialisation
-result = matrix(NA,B,length(T))
+result = matrix(NA,B,length(N))
 
 # Set seed
 set.seed(1)
 
 # Start Monte Carlo
-for (i in 1:B){
-  for (j in 1:length(T)){
+for (i in seq_len(B)){
+  for (j in seq_along(N)){
     # Simluate process
-    Xt = rnorm(T[j])
+    Xt = rnorm(N[j])
     
     # Save autocorrelation at lag h
     result[i,j] = acf(Xt, plot = FALSE)$acf[h+1]
@@ -235,10 +235,10 @@ for (i in 1:B){
 }
 
 # Plot results
-par(mfrow = c(1,length(T)))
-for (i in 1:length(T)){
+par(mfrow = c(1,length(N)))
+for (i in seq_along(N)){
   # Estimated empirical distribution
-  hist(result[,i], col = "lightgrey", main = paste("Sample size T =",T[i]), probability = TRUE, xlim = c(-1,1), xlab = " ")
+  hist(result[,i], col = "lightgrey", main = paste("Sample size T =",N[i]), probability = TRUE, xlim = c(-1,1), xlab = " ")
   
   # Asymptotic distribution
   xx = seq(from = -10, to = 10, length.out = 10^3)
@@ -257,7 +257,7 @@ n = 1000
 # Output matrix
 out = matrix(NA,B,n)
 
-for (i in 1:B){
+for (i in seq_len(B)){
   # Simulate random walk
   Xt = cumsum(rnorm(n))
   
@@ -268,7 +268,7 @@ for (i in 1:B){
 # Plot random walks
 plot(NA, xlim = c(1,n), ylim = range(out), xlab = "Time", ylab = " ")
 color = sample(topo.colors(B, alpha = 0.5))
-for (i in 1:B){
+for (i in seq_len(B)){
   lines(out[i,], col = color[i])
 }
 
