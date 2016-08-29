@@ -1,19 +1,23 @@
 # Proofs
 
-## Proof of Lemma 1
+## Proof of Theorem 1
 
-\begin{Lemma}
-Following the definition above, for linear process $X_t$ of the form $X_t = \mu + \sum\limits_{j = -\infty}^{\infty} \psi_j w_{t-j}$, where $w_t$ are i.i.d with mean 0 and variance $\sigma^2$, and the coefficients satisfy $\sum\limits_{j = -\infty}^{\infty}|\psi_j| < \infty$. We have
+Before provifing the proof of Theorem 1 we state and prove the following lemma:
+
+**Lemma A1:** Let 
+\begin{equation}
+X_t = \mu + \sum\limits_{j = -\infty}^{\infty} \psi_j W_{t-j},
+\end{equation}
+where $(W_t)$ is a strong white process with variance $\sigma^2$, and the coefficients satisfying $\sum \, |\psi_j| < \infty$. Then, we have
     \begin{equation*}
         T^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)] = o_p(1).
     \end{equation*}
-\end{Lemma}
 
-**Proof**
-By Markov inequality, we have:
+*Proof:* By Markov inequality, we have:
 
+<!-- I changed Markov inequ from < to <=, correct? -->
 \begin{equation*}
-\mathbb{P}\left( |T^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)]| \geq \epsilon \right) < \frac{\mathbb{E}|T^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)]|}{\epsilon},
+\mathbb{P}\left( |T^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)]| \geq \epsilon \right) \leq \frac{\mathbb{E}|T^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)]|}{\epsilon},
 \end{equation*}
 for any $\epsilon > 0$.
 
@@ -77,10 +81,7 @@ Thus we conclude that
 T^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)] = o_p(1).
 \end{equation*}
 
-
-## Proof of Theorem 1
-
-Let $X_t = W_t + \mu$, where $\mu < \infty$ and $(W_t)$ is a strong white noise process with variance $\sigma^2$ and finite fourth moment.
+Returning to the proof of Theorem 1, we let $X_t = W_t + \mu$, where $\mu < \infty$ and $(W_t)$ is a strong white noise process with variance $\sigma^2$ and finite fourth moment.
 
 Next, we consider the sample autocovariance function computed on $(X_t)$, i.e.
 
