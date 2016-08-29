@@ -13,9 +13,7 @@ where $(W_t)$ is a strong white process with variance $\sigma^2$, and the coeffi
         T^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)] = o_p(1).
     \end{equation*}
 
-*Proof:* By Markov inequality, we have:
-
-<!-- I changed Markov inequ from < to <=, correct? -->
+*Proof:* By Markov inequality, we have
 \begin{equation*}
 \mathbb{P}\left( |T^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)]| \geq \epsilon \right) \leq \frac{\mathbb{E}|T^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)]|}{\epsilon},
 \end{equation*}
@@ -61,7 +59,7 @@ The third term
 
 The fourth term
 \begin{equation*}
-\mathbb{E}[(\bar{X} - \mu)^2] = \frac{\sigma^2}{T} \sum_{i = -\infty}^{\infty}\psi_i^2.
+\mathbb{E}[(\bar{X} - \mu)^2] = \frac{1}{T^2} \sum_{t = 1}^{T} \sum_{i = -\infty}^{\infty} \psi_i^2 \mathbb{E}\left[ w_{t-i}^2 \right] = \frac{\sigma^2}{T} \sum_{i = -\infty}^{\infty}\psi_i^2.
 \end{equation*}
 
 Then the third term and the fourth term will be cancelled out, we have 
@@ -69,9 +67,10 @@ Then the third term and the fourth term will be cancelled out, we have
 \begin{equation*}
 \begin{aligned}
 \mathbb{E}|T^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)]| &\leq \frac{T^{\frac{1}{2}}}{T} \sum_{t = T-h+1}^{T} \mathbb{E}|(X_t - \mu)(X_{t+h} - \mu)|\\
-&+ \frac{T^{\frac{1}{2}}}{T} \sum_{t = 1}^{T-h} \left[\mathbb{E} |(\bar{X} - \mu)(X_{t+h} - \mu)|\right]\\
-&\leq \frac{T^{\frac{1}{2}}}{T} h \sigma^2 \sum_{i = -\infty}^{\infty}|\psi_i \psi_{i+h}| + \frac{T^{\frac{1}{2}}}{T^2} (T-h) \sigma^2 \sum_{i = -\infty}^{\infty}|\psi_i \psi_{i+h}|\\
-&= \frac{T^{\frac{1}{2}}}{T^2} (Th + T - h) \sigma^2 \sum_{i = -\infty}^{\infty}|\psi_i \psi_{i+h}| \to 0,
+&+ \frac{T^{\frac{1}{2}}}{T} \sum_{t = 1}^{T-h} \mathbb{E} |(\bar{X} - \mu)(X_{t+h} - \mu)|\\
+&\leq \frac{T^{\frac{1}{2}}}{T^2} Th \sigma^2 \sum_{i = -\infty}^{\infty}|\psi_i \psi_{i+h}| + \frac{T^{\frac{1}{2}}}{T^2} (T-h) \sigma^2 \sum_{i = -\infty}^{\infty}|\psi_i \psi_{i+h}|\\
+&= \frac{T^{\frac{1}{2}}}{T^2} (Th + T - h) \sigma^2 \sum_{i = -\infty}^{\infty}|\psi_i \psi_{i+h}|\\
+&< \frac{T^{\frac{1}{2}}}{T^2} (Th + T - h) \sigma^2 \left(\sum_{i = -\infty}^{\infty}|\psi_i|\right)^2 \to 0,
 \end{aligned}
 \end{equation*}
 as $T \to \infty$.
@@ -103,7 +102,30 @@ which is easier to "handle" and show that $\hat \gamma \left( h \right)$ and $\t
 
 Therefore $\tilde{\gamma} \left( h \right)$ and $\hat \gamma \left( h \right)$ have the same asymptotic distribution, it is suffice to show the asymptotic distribution of $\tilde{\gamma} \left( h \right)$.
 
-The expectation of $\tilde{\gamma} \left( h \right)$
+Since $\{\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)\}_1^T$ are iid, we can apply multivariate CLT to it, and have
+\begin{equation*}
+    \sqrt{T}\left\{
+        \begin{bmatrix}
+         \tilde{\gamma} \left( 0 \right) \\
+         \tilde{\gamma} \left( h \right)
+        \end{bmatrix}
+    - \mathbb{E}\begin{bmatrix}
+         \tilde{\gamma} \left( 0 \right) \\
+         \tilde{\gamma} \left( h \right)
+        \end{bmatrix} \right\}
+    = \frac{1}{\sqrt{T}}\begin{bmatrix}
+         \sum\limits_{t = 1}^{T}(X_t - \mu)^2 - \mathbb{E}\left[ \tilde{\gamma} \left( 0 \right) \right]\\
+         \sum\limits_{t = 1}^{T}\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right) - \mathbb{E}\left[ \tilde{\gamma} \left( h \right) \right]
+        \end{bmatrix} \overset{\mathcal{D}}{\to} 
+    \mathcal{N}\left(0, T\var \left(\begin{bmatrix}
+         \tilde{\gamma} \left( 0 \right) \\
+         \tilde{\gamma} \left( h \right)
+        \end{bmatrix} \right)\right)
+\end{equation*}
+
+
+
+The expectation of $\tilde{\gamma} \left( h \right)$,
 \begin{equation*}
     \mathbb{E}[\tilde{\gamma} \left( h \right)] = \frac{1}{T}\mathbb{E}\left[\sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)}\right].
 \end{equation*}
@@ -161,28 +183,91 @@ Similarly, when $h = 0$, we have
     \end{aligned}
 \end{equation*}
 
-Next, since $\{\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)\}_1^T$ are iid, we can apply CLT to it, and have
+Next, for $h \neq 0$,
 \begin{equation*}
-    \sqrt{T}\tilde{\gamma} \left( h \right) = \frac{1}{\sqrt{T}}\sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)} \overset{\mathcal{D}}{\to} 
-    \begin{cases}
-        N(\sigma^2, 2\sigma^4), & \text{for } h = 0\\
-        N(0, \sigma^4), & \text{for } h \neq 0
-    \end{cases}.
+    \begin{aligned}
+        \cov[\tilde{\gamma} \left( 0 \right), \tilde{\gamma} \left( h \right)] &= \mathbb{E}[\tilde{\gamma} \left( 0 \right) \tilde{\gamma} \left( h \right)] - \mathbb{E}[\tilde{\gamma} \left( 0 \right)] \mathbb{E}[\tilde{\gamma} \left( h \right)]\\
+        &= \mathbb{E}[\tilde{\gamma} \left( 0 \right) \tilde{\gamma} \left( h \right)]\\
+        &= \mathbb{E}\left[\left[\sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)^2}\right]\left[\sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)}\right]\right]\\
+        &= 0.
+    \end{aligned}
 \end{equation*}
 
-
-Therefore, we also have
+Therefore by Slutsky's Theorem we have,
 \begin{equation*}
-    \sqrt{T}\hat \gamma \left( h \right) \overset{\mathcal{D}}{\to} 
-    \begin{cases}
-        N(\sigma^2, 2\sigma^4), & \text{for } h = 0\\
-        N(0, \sigma^4), & \text{for } h \neq 0
-    \end{cases}.
+    \begin{aligned}
+    \sqrt{T}\left\{
+        \begin{bmatrix}
+         \hat{\gamma} \left( 0 \right) \\
+         \hat{\gamma} \left( h \right)
+        \end{bmatrix}
+    - \begin{bmatrix}
+         \sigma^2 \\
+         0
+        \end{bmatrix} \right\}
+    &= \sqrt{T}\left\{
+        \begin{bmatrix}
+         \tilde{\gamma} \left( 0 \right) \\
+         \tilde{\gamma} \left( h \right)
+        \end{bmatrix}
+    - \begin{bmatrix}
+         \sigma^2 \\
+         0
+        \end{bmatrix} \right\}
+    + \underbrace{\sqrt{T}\left\{
+        \begin{bmatrix}
+         \hat{\gamma} \left( 0 \right) \\
+         \hat{\gamma} \left( h \right)
+        \end{bmatrix}
+    - \begin{bmatrix}
+         \tilde{\gamma} \left( 0 \right) \\
+         \tilde{\gamma} \left( h \right)
+        \end{bmatrix} \right\}}_{\overset{p}{\to} 0}\\
+    &\overset{\mathcal{D}}{\to} 
+    \mathcal{N}\left(0, \begin{bmatrix}
+         2\sigma^2 & 0\\
+         0 & \sigma^2
+        \end{bmatrix} \right).
+    \end{aligned}
 \end{equation*}
 
-Since we can show that $\hat \gamma \left( 0 \right) \overset{p}{\to} \sigma^2$, by Slutsky Theorem, for $h \neq 0$
+Next, we set $g\left( \begin{bmatrix}
+         a \\
+         b
+        \end{bmatrix} \right) = b/a$, where $a \neq 0$. And we also have $\nabla g\left( \begin{bmatrix}
+         a \\
+         b
+        \end{bmatrix} \right) = \begin{bmatrix}
+         -\frac{b}{a^2} \\
+         \frac{1}{a}
+        \end{bmatrix}^{T}$
+
+Then by Delta method, we have for $h \neq 0$
 \begin{equation*}
-    \hat \rho \left( h \right) = \frac{ \hat \gamma \left( h \right)}{\hat \gamma \left( 0 \right)} \overset{\mathcal{D}}{\to} N(0, \frac{1}{T}).
+    \begin{aligned}
+    \sqrt{T}\hat{\rho}(h) =
+    \sqrt{T}\left\{g\left(
+        \begin{bmatrix}
+         \hat{\gamma} \left( 0 \right) \\
+         \hat{\gamma} \left( h \right)
+        \end{bmatrix} \right)
+    - g\left(\begin{bmatrix}
+         \sigma^2 \\
+         0
+        \end{bmatrix} \right) \right\}
+    &\overset{\mathcal{D}}{\to} 
+    \mathcal{N}\left(0, \nabla g\left(\begin{bmatrix}
+         \sigma^2 \\
+         0
+        \end{bmatrix} \right) \begin{bmatrix}
+         2\sigma^2 & 0\\
+         0 & \sigma^2
+        \end{bmatrix} \nabla g\left(\begin{bmatrix}
+         \sigma^2 \\
+         0
+        \end{bmatrix} \right)^{T} \right)\\
+    &=  \mathcal{N}(0, 1)  .
+    \end{aligned}
 \end{equation*}
 
 
