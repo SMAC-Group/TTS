@@ -114,10 +114,10 @@ Since $\{\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)\}_1^T$ a
          \tilde{\gamma} \left( h \right)
         \end{bmatrix} \right\}
     = \frac{1}{\sqrt{T}}\begin{bmatrix}
-         \sum\limits_{t = 1}^{T}(X_t - \mu)^2 - \mathbb{E}\left[ \tilde{\gamma} \left( 0 \right) \right]\\
-         \sum\limits_{t = 1}^{T}\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right) - \mathbb{E}\left[ \tilde{\gamma} \left( h \right) \right]
+         \sum\limits_{t = 1}^{T}(X_t - \mu)^2 - T\mathbb{E}\left[ \tilde{\gamma} \left( 0 \right) \right]\\
+         \sum\limits_{t = 1}^{T}\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right) - T\mathbb{E}\left[ \tilde{\gamma} \left( h \right) \right]
         \end{bmatrix} \overset{\mathcal{D}}{\to} 
-    \mathcal{N}\left(0, T\var \left(\begin{bmatrix}
+    \mathcal{N}\left(0, T \cdot var \left(\begin{bmatrix}
          \tilde{\gamma} \left( 0 \right) \\
          \tilde{\gamma} \left( h \right)
         \end{bmatrix} \right)\right)
@@ -130,7 +130,7 @@ The expectation of $\tilde{\gamma} \left( h \right)$,
     \mathbb{E}[\tilde{\gamma} \left( h \right)] = \frac{1}{T}\mathbb{E}\left[\sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)}\right].
 \end{equation*}
 
-By Cauchy–Schwarz inequality and $\var(X_t) = \sigma^2$, we have
+By Cauchy–Schwarz inequality and $var(X_t) = \sigma^2$, we have
 \begin{equation*}
     \sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)} \leq \sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)^2} \sum\limits_{t = 1}^{T} {\left( {{X_{t + h}} - \mu} \right)^2} < \infty.
 \end{equation*}
@@ -151,7 +151,7 @@ The variance of $\tilde{\gamma} \left( h \right)$,
 when $h \neq 0$,
 \begin{equation*}
     \begin{aligned}
-        \var[\tilde{\gamma} \left( h \right)] &= \frac{1}{T^2}\mathbb{E}\left\{\left[\sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)}\right]^2\right\}\\
+        var[\tilde{\gamma} \left( h \right)] &= \frac{1}{T^2}\mathbb{E}\left\{\left[\sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)}\right]^2\right\}\\
         &= \frac{1}{T^2}\mathbb{E}\left\{\left[\sum\limits_{i = 1}^{T} {\left( {{X_i} - \mu} \right)\left( {{X_{i + h}} - \mu} \right)}\right] \left[\sum\limits_{j = 1}^{T} {\left( {{X_j} - \mu} \right)\left( {{X_{j + h}} - \mu} \right)}\right]\right\}\\
         &= \frac{1}{T^2}\mathbb{E}\left[\sum\limits_{i = 1}^{T}\sum\limits_{j = 1}^{T} {\left( {{X_i} - \mu} \right)\left( {{X_{i + h}} - \mu} \right)}{\left( {{X_j} - \mu} \right)\left( {{X_{j + h}} - \mu} \right)}\right].
     \end{aligned}
@@ -168,7 +168,7 @@ only when $i = j$.
 Therefore,
 \begin{equation*}
     \begin{aligned}
-        \var[\tilde{\gamma} \left( h \right)] &= \frac{1}{T^2}\sum\limits_{i = 1}^{T} \mathbb{E}\left[ {\left( {{X_i} - \mu} \right)^2\left( {{X_{i + h}} - \mu} \right)^2}\right]\\
+        var[\tilde{\gamma} \left( h \right)] &= \frac{1}{T^2}\sum\limits_{i = 1}^{T} \mathbb{E}\left[ {\left( {{X_i} - \mu} \right)^2\left( {{X_{i + h}} - \mu} \right)^2}\right]\\
         &= \frac{1}{T^2}\sum\limits_{i = 1}^{T} \mathbb{E}{\left( {{X_i} - \mu} \right)^2\mathbb{E}\left( {{X_{i + h}} - \mu} \right)^2}\\
         &= \frac{1}{T}\sigma^4, \text{for } (h \neq 0).
     \end{aligned}
@@ -178,7 +178,7 @@ Similarly, when $h = 0$, we have
 
 \begin{equation*}
     \begin{aligned}
-        \var[\tilde{\gamma} \left( 0 \right)] &= \frac{1}{T^2}\mathbb{E}\left\{\left[\sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)^2}\right]^2\right\} - \frac{1}{T^2}\left[\mathbb{E}\sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)^2}\right]^2\\
+        var[\tilde{\gamma} \left( 0 \right)] &= \frac{1}{T^2}\mathbb{E}\left\{\left[\sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)^2}\right]^2\right\} - \frac{1}{T^2}\left[\mathbb{E}\sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)^2}\right]^2\\
         &= \frac{2}{T}\sigma^4, \text{for } (h = 0).
     \end{aligned}
 \end{equation*}
@@ -186,7 +186,7 @@ Similarly, when $h = 0$, we have
 Next, for $h \neq 0$,
 \begin{equation*}
     \begin{aligned}
-        \cov[\tilde{\gamma} \left( 0 \right), \tilde{\gamma} \left( h \right)] &= \mathbb{E}[\tilde{\gamma} \left( 0 \right) \tilde{\gamma} \left( h \right)] - \mathbb{E}[\tilde{\gamma} \left( 0 \right)] \mathbb{E}[\tilde{\gamma} \left( h \right)]\\
+        cov[\tilde{\gamma} \left( 0 \right), \tilde{\gamma} \left( h \right)] &= \mathbb{E}[\tilde{\gamma} \left( 0 \right) \tilde{\gamma} \left( h \right)] - \mathbb{E}[\tilde{\gamma} \left( 0 \right)] \mathbb{E}[\tilde{\gamma} \left( h \right)]\\
         &= \mathbb{E}[\tilde{\gamma} \left( 0 \right) \tilde{\gamma} \left( h \right)]\\
         &= \mathbb{E}\left[\left[\sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)^2}\right]\left[\sum\limits_{t = 1}^{T} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)}\right]\right]\\
         &= 0.
