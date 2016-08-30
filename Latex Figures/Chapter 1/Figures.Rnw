@@ -1,0 +1,136 @@
+\documentclass{article}
+\usepackage{tikz}
+\usepackage[active,tightpage,psfixbb]{preview}
+\PreviewEnvironment{pgfpicture}
+\setlength\PreviewBorder{0pt}
+\usepackage{amssymb}
+
+\begin{document}
+
+<<JJ_ex>>=
+library(gmwm)
+library(tikzDevice)
+library(astsa)
+
+# Load data
+data(jj, package = "astsa")
+
+# Construct gts object
+jj = gts(jj, start = 1960, freq = 4, name = 'Johnson and Johnson Quarterly Earnings', 
+         unit = "year")
+
+# Plot time series
+## I need the amssymb package because I use \mathcal and \mathbb
+tikz("JJ.tex", width = 6, height = 3.8)
+autoplot(jj) + ylab("Quarterly Earnings per Share (\\$)")
+dev.off()
+@
+
+<<HYDRO_ex>>=
+library(gmwm)
+library(tikzDevice)
+
+## @knitr example_hydro
+# Load data
+hydro = read.csv("/Users/stephane/Documents/Time series book/ITS/data/precipitation.csv", header=T, sep=";")
+
+# Construct gts object
+hydro = gts(hydro[,2], start = 1907, freq = 12, name = 'Precipitation Data', 
+            unit = "month")
+
+# Plot data
+tikz("HYDRO.tex", width = 6, height = 3.8)
+autoplot(hydro)  +  ylab("Mean Monthly Precipitation (mm)")
+dev.off()
+@
+
+<<SB_ex>>=
+## @knitr example_Starbucks
+library(gmwm)
+library(tikzDevice)
+library(timeDate)
+library(highfrequency)
+
+# Load "high-frequency" Starbucks returns for Jul 01 2011
+data(sbux.xts, package = "highfrequency")
+
+tikz("SB.tex", width = 6, height = 3.8)
+# Plot returns
+par(mfrow = c(1,2))
+plot(sbux.xts[1:89], main = " ", ylab = "Returns")
+plot(sbux.xts, main = " ", ylab = "Returns")
+dev.off()
+@
+
+<<IMU_ex>>=
+## @knitr example_IMU
+# Load packages
+library(gmwm)
+library(imudata)
+
+# Load IMU data
+data(imu6, package = "imudata")
+
+# Trim data
+yt = imu6[,1] - mean(imu6[,1])
+xt = rep(NA, floor(length(yt)/100))
+counter = 0
+for (i in 1:length(yt)){
+  if (i %% 100 == 0){
+    counter = counter + 1
+    inter_max = max(yt[((i-100)+1):i])
+    inter_min = min(yt[((i-100)+1):i])
+    
+    if (inter_max > abs(inter_min)){
+      xt[counter] = inter_max
+    }else{
+      xt[counter] = inter_min
+    }
+  }
+}
+xt = xt + mean(imu6[,1])
+
+# Construct gst object
+Xt = gts(xt, name = "Gyroscope data", unit = "hour", freq = 60*60)
+
+# Plot time series
+tikz("IMU.tex", width = 6, height = 3.8)
+autoplot(Xt) + ylab("Error (rad/s$^2$)")
+dev.off()
+@
+
+<<PSR_ex>>=
+# Saving Rates
+saving = read.csv("/Users/stephane/Documents/Time series book/ITS/data//PSAVERT.csv", sep=",")
+
+# Construct gts object
+saving = gts(saving$VALUE, start = 1959, freq = 12, name = 'US Personal Saving Rates', 
+    unit = "month")
+
+# Plot time series
+tikz("PSR.tex", width = 6, height = 3.8)
+autoplot(saving) + ylab("US Personal Saving Rates (\\%)")
+dev.off()
+@
+
+\begin{figure}
+\input{JJ.tex}
+\end{figure}
+
+\begin{figure}
+\input{HYDRO.tex}
+\end{figure}
+
+\begin{figure}
+\input{SB.tex}
+\end{figure}
+
+\begin{figure}
+\input{IMU.tex}
+\end{figure}
+
+\begin{figure}
+\input{PSR.tex}
+\end{figure}
+
+\end{document}
