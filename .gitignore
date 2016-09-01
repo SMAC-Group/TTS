@@ -11,3 +11,9 @@ tts_files
 tts.Rmd
 *.html
 libs
+*.aux
+*.fdb_latexmk
+*.log
+*-tikzDictionary
+*-concordance.tex
+*.synctex.gz
