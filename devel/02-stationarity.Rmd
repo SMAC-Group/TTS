@@ -34,47 +34,6 @@ implying that the autocorrelation (or autocovariance) is a function only of the 
 
 Note that several other metrics have been introduced in the litterature to assess the degree of "dependence" of two random variables but this goes beyond the material discussed in this text.
 
-<!--
-However, the methods, covariance and correlation, that we will be using are specific to measuring linear dependence. As a result, these tools are less helpful to measure monotonic dependence and they are much less helpful to measure nonlinearly dependence.
-
-## Dependency
-
-
-
-Generally speaking, there is a dependence that within the sequence of random variables.
-
-Recall the difference between independent and dependent data:
-
-*Definition:* **Independence**
-
-$X_1, X_2, \ldots, X_T$ are independent and identically distributed if and only if
-
-\begin{equation}
-P\left(X_1 \le x_1, X_2 \le x_2,\ldots, X_{T} \le x_T \right) = P\left(X_1 \le x_1\right) P\left(X_2 \le x_2\right) \cdots P\left(X_{T} \le x_T \right) \label{eq:independent}
-\end{equation}
-
-for any $T \ge 2$ and $x_1, \ldots, x_T \in \mathbb{R}$.
-
-*Definition:* **Dependence**
-
-$X_1, X_2, \ldots, X_T$ are identically distributed but dependent, then 
-
-\begin{equation}
-\left| {P\left( {{X_1} < {x_1},{X_2} < {x_2}, \ldots ,{X_T} < {x_T}} \right) - P\left( {{X_1} < {x_1}} \right)P\left( {{X_2} < {x_2}} \right) \cdots P\left( {{X_T} < {x_T}} \right)} \right| \ne 0 \label{eq:dependent}
-\end{equation}
-
-for some $x_1, \ldots, x_T \in \mathbb{R}$.
-
-### Measuring (Linear) Dependence
-
-There are many forms of dependency...
-
-![dependency](images/1280px-Correlation_examples2.png)
-
-However, the methods, covariance and correlation, that we will be using are specific to measuring linear dependence. As a result, these tools are less helpful to measure monotonic dependence and they are much less helpful to measure nonlinearly dependence.
-
--->
-
 ## The Autocorrelation and Autocovariance Functions 
 
 <!--
@@ -87,26 +46,33 @@ points, the covariance between $X_t$ and $X_{t+h}$ is defined as the Autocovaria
 
 The *autocovariance function* of a series $(X_t)$ is defined as 
 
-\[{\gamma_x}\left( {t,t+h} \right) = \operatorname{cov} \left( {{x_t},{x_{t+h}}} \right).\]
+\[{\gamma_x}\left( {t,t+h} \right) = \cov \left( {{x_t},{x_{t+h}}} \right).\]
+
+
+where the definition of covariance is given by:
+
+\[\begin{aligned}
+  \cov \left( {{X_t},{X_{t+h}}} \right) &= E\left[ {{X_t}{X_{t+h}}} \right] - E\left[ {{X_t}} \right]E\left[ {{X_{t+h}}} \right]
+\end{aligned} \]
+  
+Similarly, the expectations are defined to be:
+
+\[\begin{aligned}
+  E\left[ {{X_t}} \right] &= \int\limits_{ - \infty }^\infty  {x \cdot {f_x}\left( x \right)dx}  \\
+  E\left[ {{X_t}{X_{t+h}}} \right] &= \int\limits_{ - \infty }^\infty  {\int\limits_{ - \infty }^\infty  {{x_1}{x_2} \cdot f\left( {{x_1},{x_2}} \right)d{x_1}d{x_2}} } 
+\end{aligned} \]
 
 Since we generally consider stochastic processes with constant zero mean we often have
 
 \[{\gamma_x}\left( {t,t+h} \right) = E\left[X_t X_{t+h} \right]. \]
 
-<!--  The notation used above corresponds to:
-
-\[\begin{aligned}
-  \operatorname{cov} \left( {{X_t},{X_{t+h}}} \right) &= E\left[ {{X_t}{X_{t+h}}} \right] - E\left[ {{X_t}} \right]E\left[ {{X_{t+h}}} \right] \\
-  E\left[ {{X_t}} \right] &= \int\limits_{ - \infty }^\infty  {x \cdot {f_x}\left( x \right)dx}  \\
-  E\left[ {{X_t}{X_{t+h}}} \right] &= \int\limits_{ - \infty }^\infty  {\int\limits_{ - \infty }^\infty  {{x_1}{x_2} \cdot f\left( {{x_1},{x_2}} \right)d{x_1}d{x_2}} }  \\ 
-\end{aligned} \] -->
 
 We normally drop the subscript referring to the time series if it is clear from the context which time series the autocovariance refers to. For example, we generally use ${\gamma}\left( {t,t+h} \right)$ instead of ${\gamma_x}\left( {t,t+h} \right)$. Moreover, the notation is even further simplified when the covariance of $X_t$ and $X_{t+h}$ is the same as that of $X_{t+j}$ and $X_{t+h+j}$ (for $j \in \mathbb{Z}$), i.e. the covariance depends only on the time between observations and not on the specific time $t$. This is an important property called *stationarity*, which will be discuss in the next section. In this case, we simply use to following notation:
-\[\gamma \left( {h} \right) = \operatorname{cov} \left( X_t , X_{t+h} \right). \]
+\[\gamma \left( {h} \right) = \cov \left( X_t , X_{t+h} \right). \]
 
 A few other remarks: 
 
-1. The covariance function is **symmetric**. That is, ${\gamma}\left( {h} \right) = {\gamma}\left( -h \right)$ since $\operatorname{cov} \left( {{X_t},{X_{t+h}}} \right) = \operatorname{cov} \left( X_{t+h},X_{t} \right)$.
+1. The covariance function is **symmetric**. That is, ${\gamma}\left( {h} \right) = {\gamma}\left( -h \right)$ since $\cov \left( {{X_t},{X_{t+h}}} \right) = \cov \left( X_{t+h},X_{t} \right)$.
 2. Note that $\var \left( X_{t} \right) = {\gamma}\left( 0 \right)$.
 3. We have that $|\gamma(h)| \leq \gamma(0)$ for all $h$. The proof of this inequality follows from the Cauchy-Schwarz inequality, i.e.
 \[ \begin{aligned}
@@ -221,7 +187,7 @@ Therefore, the restrictions on the autocorrelation are very complicated thereby 
 
 Consider two time series, say $\left(X_t \right)$ and $\left(Y_t \right)$. Then, the cross-covariance function between two series $\left(X_t \right)$ and $\left(Y_t \right)$ is:
 
-\[{\gamma _{XY}}\left( {t,t + h} \right) = \operatorname{cov} \left( {{X_t},{Y_{t + h}}} \right) = E\left[ {\left( {{X_t} - E\left[ {{X_t}} \right]} \right)\left( {{Y_{t + h}} - E\left[ {{Y_{t + h}}} \right]} \right)} \right].\]
+\[{\gamma _{XY}}\left( {t,t + h} \right) = \cov \left( {{X_t},{Y_{t + h}}} \right) = E\left[ {\left( {{X_t} - E\left[ {{X_t}} \right]} \right)\left( {{Y_{t + h}} - E\left[ {{Y_{t + h}}} \right]} \right)} \right].\]
 
 The cross-correlation function is given by
 \[{\rho _{XY}}\left( {t,t + h} \right) = Corr\left( {{X_t},{Y_{t + h}}} \right) = \frac{{{\gamma _{XY}}\left( {t,t + h} \right)}}{{{\sigma _{{X_t}}}{\sigma _{{Y_{t + h}}}}}}.\] 
@@ -232,7 +198,7 @@ These ideas can extended beyond the bivariate case to a general multivariate set
 
 ## Stationarity
 
-###Definitions
+### Definitions
 
 There are two kinds of stationarity that are commonly used. They are defined below:
 
@@ -246,7 +212,7 @@ A few remarks:
 - As mentioned earlier, strong stationarity *does not imply* weak stationarity. *Example*: an iid Cauchy process is strongly but not weakly stationary.
 - Weak stationarity *does not imply* strong stationarity. *Example*: Consider the following weak white noise process: $X_{2t} = U_{2t}, X_{2t+1} = V_{2t+1}$, for $t = 1,..., n$ where ${U_t}\mathop \sim \limits^{iid} N\left( {1,1} \right)$ and ${V_t}\mathop \sim \limits^{iid} Exponential\left( 1 \right)$ is weakly stationary but *not* strongly stationary.
 - Strong stationarity combined with bounded values of $E[X_t]$ and $E[X_t^2]$ *implies* weak stationarity
-- Weak stationarity combined with normalityof the process *implies* strong stationarity.
+- Weak stationarity combined with normality of the process *implies* strong stationarity.
 
 <!-- With this being said, here are a few examples of stationarity:
 
@@ -288,15 +254,15 @@ We obtain these properties through:
   {\left( {\gamma \left( h \right)} \right)^2} &\le {\left( {\gamma \left( 0 \right)} \right)^2}  \\
   \left| {\gamma \left( h \right)} \right| &\le \gamma \left( 0 \right) 
 \end{aligned}\]
-
 -->
+
 ### Assessing Weak Stationarity of Time Series Models
 
 It is important to understand how to verify if a postulated model is (weakly) stationary. In order to do so, we must ensure that the model satisfies three properties, i.e.
 
 1. $E\left[X_t \right] = \mu_t = \mu < \infty$,
 2. $\var\left[X_t \right] = \sigma^2_t = \sigma^2 < \infty$,
-3. $\operatorname{cov}\left(X_t, X_{t+h} \right) = \gamma \left(h\right)$.
+3. $\cov\left(X_t, X_{t+h} \right) = \gamma \left(h\right)$.
 
 In the following examples we evaluate the stationarity of the processes introduced in Section \@ref(basic-time-series-models).
 
@@ -308,13 +274,15 @@ In the following examples we evaluate the stationarity of the processes introduc
 
 **Example: Random Walk** To evaluate the stationarity of this process we first derive its properties:
 
-1. \[\begin{aligned}
+1. We begin by calculating the expectation of the process
+\[\begin{aligned}
   E\left[ {{X_t}} \right] &= E\left[ {{X_{t - 1}} + {W_t}} \right] 
    = E\left[ {\sum\limits_{i = 1}^t {{W_t}}  + {X_0}} \right] \\
    &= E\left[ {\sum\limits_{i = 1}^t {{W_t}} } \right] + {c} 
    = c \\ 
-\end{aligned} \] Note that the mean here is constant since it depends only on the value of the first term in the sequence.
-2. \[\begin{aligned}
+\end{aligned} \] Observe that the mean obtained is constant since it depends only on the value of the first term in the sequence.
+2. Next, after finding the mean to be constant, we calculate the variance to check stationarity:
+\[\begin{aligned}
   \var\left( {{X_t}} \right) &= \var\left( {\sum\limits_{i = 1}^t {{W_t}}  + {X_0}} \right) 
    = \var\left( {\sum\limits_{i = 1}^t {{w_t}} } \right) + \underbrace {\var\left( {{X_0}} \right)}_{= 0} \\
    &= \sum\limits_{i = 1}^t {Var\left( {{w_t}} \right)} 
@@ -350,7 +318,7 @@ In the following simulated example, we illustrate the non-stationary feature of 
 
 In the plot, two hundred simulated random walks are plotted along with the theoretical 95\% confidence intervals (red-dashed lines). The relationship between time and variance can clearly be observed (i.e. the variance of the process increases with the time).
 
-**Example: MA(1)** Similarly to our previous examples, we attempt to verify the stationary properties for the MA(1) model defined in \@ref(eq:defMA1) **REF NOT WORKING**:
+**Example: MA(1)** Similarly to our previous examples, we attempt to verify the stationary properties for the MA(1) model defined in Section \@ref(moving-average-process-of-order-1):
   
 1. \[ 
   E\left[ {{X_t}} \right] = E\left[ {{\theta_1}{W_{t - 1}} + {W_t}} \right] 
@@ -365,23 +333,16 @@ In the plot, two hundred simulated random walks are plotted along with the theor
   
    It is easy to see that $E\left[ {{W_t}{W_{t + h}}} \right] = {\boldsymbol{1}_{\left\{ {h = 0} \right\}}}\sigma _w^2$ and therefore, we obtain
    
-   \[\cov \left( {{X_t},{X_{t + h}}} \right) = \left( {\theta^2{ \boldsymbol{1}_{\left\{ {h = 0} \right\}}} + {\theta}{\boldsymbol{1}_{\left\{ {h = 1} \right\}}} + {\theta}{\boldsymbol{1}_{\left\{ {h =  - 1} \right\}}} + {\boldsymbol{1}_{\left\{ {h = 0} \right\}}}} \right)\sigma _w^2\] 
+\[\cov \left( {{X_t},{X_{t + h}}} \right) = \left( {\theta^2{ \boldsymbol{1}_{\left\{ {h = 0} \right\}}} + {\theta}{\boldsymbol{1}_{\left\{ {h = 1} \right\}}} + {\theta}{\boldsymbol{1}_{\left\{ {h =  - 1} \right\}}} + {\boldsymbol{1}_{\left\{ {h = 0} \right\}}}} \right)\sigma _w^2\] 
    
-   implying the following autocovariance function:
+implying the following autocovariance function:
    
-   \[\gamma \left( h \right) = \left\{ {\begin{array}{*{20}{c}}
+\[\gamma \left( h \right) = \left\{ {\begin{array}{*{20}{c}}
   {\left( {\theta^2 + 1} \right)\sigma _w^2}&{h = 0} \\ 
   {{\theta}\sigma _w^2}&{\left| h \right| = 1} \\ 
   0&{\left| h \right| > 1} 
   \end{array}} \right. .\]
   
-   
- <!--  \\
-   \\
-   &\Rightarrow 
- 
- 
--->
 Therefore, an MA(1) process is weakly stationary since both the mean and variance are constant over time and its covariance function is only a function of the lag $h$. Finally, we can easily obtain the autocorrelation for this process, which is given by
 
 $$\Rightarrow \rho \left( h \right) = \left\{ {\begin{array}{*{20}{c}}
@@ -487,7 +448,7 @@ This estimator is clearly unbiased and has the following variance:
   {\gamma \left( 1 \right)}&{\gamma \left( 0 \right)}&{}& \vdots  \\
    \vdots &{}& \ddots & \vdots  \\
   {\gamma \left( {n - 1} \right)}& \cdots & \cdots &{\gamma \left( 0 \right)}
-\end{array}} \right]{\left[ {\begin{array}{*{20}{c}}
+\end{array}} \right]_{n \times n}{\left[ {\begin{array}{*{20}{c}}
   1 \\
    \vdots  \\
   1
@@ -515,7 +476,7 @@ Alternatively, simulation methods can also be employed. The figure generated by 
 ```{r estimXbar, cache = TRUE}
 ```
 
-<!-- TO DO: comment grpah a little -->
+<!-- TO DO: comment graph a little -->
 
 ## Sample Autocovariance and Autocorrelation Functions
 
