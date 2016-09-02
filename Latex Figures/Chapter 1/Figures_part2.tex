@@ -1,0 +1,479 @@
+\documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage{tikz}
+\usepackage[active,tightpage,psfixbb]{preview}
+\PreviewEnvironment{pgfpicture}
+\setlength\PreviewBorder{0pt}
+\usepackage{amssymb}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Load package}
+\hlkwd{library}\hlstd{(}\hlstr{"gmwm"}\hlstd{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: ggplot2}}\begin{alltt}
+\hlkwd{library}\hlstd{(}\hlstr{"tikzDevice"}\hlstd{)}
+
+\hlcom{# Simulate 100 observation from a Gaussian white noise}
+\hlkwd{set.seed}\hlstd{(}\hlnum{1}\hlstd{)}
+\hlstd{Xt} \hlkwb{=} \hlkwd{gen.gts}\hlstd{(}\hlkwd{WN}\hlstd{(}\hlkwc{sigma2} \hlstd{=} \hlnum{1}\hlstd{),} \hlkwc{N} \hlstd{=} \hlnum{100}\hlstd{)}
+
+\hlcom{# Compute autocorrelation}
+\hlstd{acf_Xt} \hlkwb{=} \hlkwd{ACF}\hlstd{(Xt)}
+
+\hlcom{# Plot autocorrelation}
+\hlkwd{tikz}\hlstd{(}\hlstr{"acf1.tex"}\hlstd{,} \hlkwc{width} \hlstd{=} \hlnum{6}\hlstd{,} \hlkwc{height} \hlstd{=} \hlnum{4}\hlstd{)}
+\hlkwd{plot}\hlstd{(acf_Xt,} \hlkwc{show.ci} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+\hlkwd{dev.off}\hlstd{()}
+\end{alltt}
+\begin{verbatim}
+## pdf 
+##   2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Load package}
+\hlkwd{library}\hlstd{(}\hlstr{"gmwm"}\hlstd{)}
+\hlkwd{library}\hlstd{(}\hlstr{"tikzDevice"}\hlstd{)}
+
+\hlcom{# Plot autocorrelation}
+\hlkwd{tikz}\hlstd{(}\hlstr{"acf2.tex"}\hlstd{,} \hlkwc{width} \hlstd{=} \hlnum{6}\hlstd{,} \hlkwc{height} \hlstd{=} \hlnum{4}\hlstd{)}
+\hlkwd{plot}\hlstd{(acf_Xt)}
+\hlkwd{dev.off}\hlstd{()}
+\end{alltt}
+\begin{verbatim}
+## pdf 
+##   2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(gmwm)}
+\hlkwd{library}\hlstd{(tikzDevice)}
+\hlkwd{library}\hlstd{(gridExtra)}
+
+\hlcom{## @knitr example_hydro}
+\hlcom{# Load data}
+\hlstd{hydro} \hlkwb{=} \hlkwd{read.csv}\hlstd{(}\hlstr{"/Users/stephane/Documents/Time series book/ITS/data/precipitation.csv"}\hlstd{,} \hlkwc{header}\hlstd{=T,} \hlkwc{sep}\hlstd{=}\hlstr{";"}\hlstd{)}
+
+\hlcom{# Construct gts object}
+\hlstd{hydro} \hlkwb{=} \hlkwd{gts}\hlstd{(}\hlkwd{na.omit}\hlstd{(hydro[,}\hlnum{2}\hlstd{]),} \hlkwc{start} \hlstd{=} \hlnum{1907}\hlstd{,} \hlkwc{freq} \hlstd{=} \hlnum{12}\hlstd{,} \hlkwc{name} \hlstd{=} \hlstr{'Precipitation Data'}\hlstd{,}
+            \hlkwc{unit} \hlstd{=} \hlstr{"month"}\hlstd{)}
+
+\hlcom{# Plot data}
+\hlkwd{tikz}\hlstd{(}\hlstr{"HYDRO2.tex"}\hlstd{,} \hlkwc{width} \hlstd{=} \hlnum{8}\hlstd{,} \hlkwc{height} \hlstd{=} \hlnum{4}\hlstd{)}
+\hlstd{a} \hlkwb{=} \hlkwd{autoplot}\hlstd{(hydro)}  \hlopt{+}  \hlkwd{ylab}\hlstd{(}\hlstr{"Mean Monthly Precipitation (mm)"}\hlstd{)}
+\hlstd{b} \hlkwb{=} \hlkwd{plot}\hlstd{(}\hlkwd{ACF}\hlstd{(hydro))}
+\hlkwd{grid.arrange}\hlstd{(a, b,} \hlkwc{nrow} \hlstd{=} \hlnum{1}\hlstd{)}
+\hlkwd{dev.off}\hlstd{()}
+\end{alltt}
+\begin{verbatim}
+## pdf 
+##   2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(gmwm)}
+\hlkwd{library}\hlstd{(tikzDevice)}
+\hlkwd{library}\hlstd{(gridExtra)}
+
+\hlcom{## @knitr example_hydro}
+\hlcom{# Load data}
+\hlstd{hydro} \hlkwb{=} \hlkwd{read.csv}\hlstd{(}\hlstr{"/Users/stephane/Documents/Time series book/ITS/data/precipitation.csv"}\hlstd{,} \hlkwc{header}\hlstd{=T,} \hlkwc{sep}\hlstd{=}\hlstr{";"}\hlstd{)}
+
+\hlcom{# Construct gts object}
+\hlstd{hydro} \hlkwb{=} \hlkwd{gts}\hlstd{(}\hlkwd{na.omit}\hlstd{(hydro[,}\hlnum{2}\hlstd{]),} \hlkwc{start} \hlstd{=} \hlnum{1907}\hlstd{,} \hlkwc{freq} \hlstd{=} \hlnum{12}\hlstd{,} \hlkwc{name} \hlstd{=} \hlstr{'Precipitation Data'}\hlstd{,}
+            \hlkwc{unit} \hlstd{=} \hlstr{"month"}\hlstd{)}
+
+\hlcom{# Compute p-values for varying lags}
+\hlstd{lags} \hlkwb{=} \hlnum{7}\hlopt{:}\hlnum{30}
+\hlstd{pval} \hlkwb{=} \hlkwd{rep}\hlstd{(}\hlnum{NA}\hlstd{,} \hlkwd{length}\hlstd{(lags))}
+\hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(lags))\{}
+  \hlstd{pval[i]} \hlkwb{=} \hlkwd{Box.test}\hlstd{(hydro,} \hlkwc{lag} \hlstd{= lags[i])}\hlopt{$}\hlstd{p.val}
+\hlstd{\}}
+
+\hlcom{# Plot data}
+\hlkwd{tikz}\hlstd{(}\hlstr{"HYDRO3.tex"}\hlstd{,} \hlkwc{width} \hlstd{=} \hlnum{6}\hlstd{,} \hlkwc{height} \hlstd{=} \hlnum{4}\hlstd{)}
+\hlkwd{plot}\hlstd{(}\hlnum{NA}\hlstd{,} \hlkwc{xlim} \hlstd{=} \hlkwd{range}\hlstd{(lags),} \hlkwc{ylim} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,} \hlkwd{max}\hlstd{(pval)),} \hlkwc{xlab} \hlstd{=} \hlstr{"$h$"}\hlstd{,} \hlkwc{ylab} \hlstd{=} \hlstr{"P-value"}\hlstd{)}
+\hlkwd{grid}\hlstd{()}
+\hlkwd{abline}\hlstd{(}\hlkwc{h}\hlstd{=}\hlnum{0.05}\hlstd{,} \hlkwc{lwd} \hlstd{=} \hlnum{2}\hlstd{,} \hlkwc{col} \hlstd{=} \hlstr{"red"}\hlstd{)}
+\hlkwd{points}\hlstd{(lags, pval,} \hlkwc{pch} \hlstd{=} \hlnum{16}\hlstd{,} \hlkwc{col} \hlstd{=} \hlstr{"blue"}\hlstd{,} \hlkwc{lty} \hlstd{=} \hlnum{2}\hlstd{,} \hlkwc{type} \hlstd{=} \hlstr{"b"}\hlstd{)}
+\hlkwd{dev.off}\hlstd{()}
+\end{alltt}
+\begin{verbatim}
+## pdf 
+##   2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(gmwm)}
+\hlkwd{library}\hlstd{(tikzDevice)}
+\hlkwd{library}\hlstd{(gridExtra)}
+
+\hlcom{# Simulate Xt}
+\hlkwd{set.seed}\hlstd{(}\hlnum{1}\hlstd{)}
+\hlstd{model} \hlkwb{=} \hlkwd{AR1}\hlstd{(}\hlkwc{phi} \hlstd{=} \hlnum{0.9}\hlstd{,} \hlkwc{sigma2} \hlstd{=} \hlnum{1}\hlstd{)}
+\hlstd{Xt} \hlkwb{=} \hlkwd{gen.gts}\hlstd{(model)}
+
+\hlcom{# Construct Yt}
+\hlstd{epsilon} \hlkwb{=} \hlnum{0.01}
+\hlstd{nb_outlier} \hlkwb{=} \hlkwd{rbinom}\hlstd{(}\hlnum{1}\hlstd{,}\hlkwd{length}\hlstd{(Xt),epsilon)}
+\hlstd{Yt} \hlkwb{=} \hlstd{Xt}
+\hlstd{Yt[}\hlkwd{sample}\hlstd{(}\hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(Xt),nb_outlier)]} \hlkwb{=} \hlkwd{rnorm}\hlstd{(nb_outlier,}\hlnum{0}\hlstd{,}\hlnum{10}\hlstd{)}
+
+\hlcom{# Add names}
+\hlstd{Xt} \hlkwb{=} \hlkwd{gts}\hlstd{(Xt,} \hlkwc{name} \hlstd{=} \hlstr{"$(X_t)$"}\hlstd{)}
+\hlstd{Yt} \hlkwb{=} \hlkwd{gts}\hlstd{(Yt,} \hlkwc{name} \hlstd{=} \hlstr{"$(Y_t)$"}\hlstd{)}
+
+\hlcom{# Plot data}
+\hlkwd{tikz}\hlstd{(}\hlstr{"rob1.tex"}\hlstd{,} \hlkwc{width} \hlstd{=} \hlnum{8}\hlstd{,} \hlkwc{height} \hlstd{=} \hlnum{6}\hlstd{)}
+\hlstd{a} \hlkwb{=} \hlkwd{autoplot}\hlstd{(Xt)} \hlopt{+} \hlkwd{ylim}\hlstd{(}\hlkwd{range}\hlstd{(Yt))} \hlopt{+} \hlkwd{ylab}\hlstd{(}\hlstr{"$(X_t)$"}\hlstd{)}
+\hlstd{b} \hlkwb{=} \hlkwd{autoplot}\hlstd{(Yt)} \hlopt{+} \hlkwd{ylab}\hlstd{(}\hlstr{"$(Y_t)$"}\hlstd{)}
+\hlkwd{grid.arrange}\hlstd{(a, b,} \hlkwc{nrow} \hlstd{=} \hlnum{2}\hlstd{)}
+\hlkwd{dev.off}\hlstd{()}
+\end{alltt}
+\begin{verbatim}
+## pdf 
+##   2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(gmwm)}
+\hlkwd{library}\hlstd{(tikzDevice)}
+\hlkwd{library}\hlstd{(gridExtra)}
+
+\hlcom{# Plot autocorrelation}
+\hlkwd{tikz}\hlstd{(}\hlstr{"rob2.tex"}\hlstd{,} \hlkwc{width} \hlstd{=} \hlnum{8}\hlstd{,} \hlkwc{height} \hlstd{=} \hlnum{4}\hlstd{)}
+\hlstd{a} \hlkwb{=} \hlkwd{plot}\hlstd{(}\hlkwd{ACF}\hlstd{(Xt))}
+\hlstd{b} \hlkwb{=} \hlkwd{plot}\hlstd{(}\hlkwd{ACF}\hlstd{(Yt))}
+\hlkwd{grid.arrange}\hlstd{(a, b,} \hlkwc{nrow} \hlstd{=} \hlnum{1}\hlstd{)}
+\hlkwd{dev.off}\hlstd{()}
+\end{alltt}
+\begin{verbatim}
+## pdf 
+##   2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(gmwm)}
+\hlkwd{library}\hlstd{(tikzDevice)}
+\hlkwd{library}\hlstd{(gridExtra)}
+\hlkwd{library}\hlstd{(robcor)}
+
+\hlstd{ACF.Xt} \hlkwb{=} \hlkwd{ACF}\hlstd{(Xt)}
+\hlstd{ACF.Yt} \hlkwb{=} \hlkwd{ACF}\hlstd{(Yt)}
+
+\hlstd{ACF.Xt[,,]} \hlkwb{=} \hlkwd{robacf}\hlstd{(Xt,} \hlkwc{plot}\hlstd{=}\hlnum{FALSE}\hlstd{)}\hlopt{$}\hlstd{acf}
+\hlstd{ACF.Yt[,,]} \hlkwb{=} \hlkwd{robacf}\hlstd{(Yt,} \hlkwc{plot}\hlstd{=}\hlnum{FALSE}\hlstd{)}\hlopt{$}\hlstd{acf}
+
+\hlcom{# Plot autocorrelation}
+\hlkwd{tikz}\hlstd{(}\hlstr{"rob3.tex"}\hlstd{,} \hlkwc{width} \hlstd{=} \hlnum{8}\hlstd{,} \hlkwc{height} \hlstd{=} \hlnum{4}\hlstd{)}
+\hlstd{a} \hlkwb{=} \hlkwd{plot}\hlstd{(ACF.Xt)}
+\hlstd{b} \hlkwb{=} \hlkwd{plot}\hlstd{(ACF.Yt)}
+\hlkwd{grid.arrange}\hlstd{(a, b,} \hlkwc{nrow} \hlstd{=} \hlnum{1}\hlstd{)}
+\hlkwd{dev.off}\hlstd{()}
+\end{alltt}
+\begin{verbatim}
+## pdf 
+##   2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(gmwm)}
+\hlkwd{library}\hlstd{(tikzDevice)}
+\hlkwd{library}\hlstd{(gridExtra)}
+
+\hlcom{# Load packages}
+\hlkwd{library}\hlstd{(}\hlstr{"robcor"}\hlstd{)}
+
+\hlcom{# Define sample size}
+\hlstd{n} \hlkwb{=} \hlnum{1000}
+
+\hlcom{# Define proportion of "extreme" observation}
+\hlstd{alpha} \hlkwb{=} \hlnum{0.01}
+
+\hlcom{# Extreme observation are generated from N(0,sigma2.cont)}
+\hlstd{sigma2.cont} \hlkwb{=} \hlnum{10}
+
+\hlcom{# Number of Monte-Carlo replications}
+\hlstd{B} \hlkwb{=} \hlnum{1000}
+
+\hlcom{# Define model AR(1)}
+\hlstd{phi} \hlkwb{=} \hlnum{0.9}
+\hlstd{sigma2} \hlkwb{=} \hlnum{1}
+\hlstd{model} \hlkwb{=} \hlkwd{AR1}\hlstd{(}\hlkwc{phi} \hlstd{= phi,} \hlkwc{sigma2} \hlstd{= sigma2)}
+
+\hlcom{# Initialization of result array}
+\hlstd{result} \hlkwb{=} \hlkwd{array}\hlstd{(}\hlnum{NA}\hlstd{,} \hlkwd{c}\hlstd{(B,}\hlnum{2}\hlstd{,}\hlnum{20}\hlstd{))}
+
+\hlcom{# Start Monte-Carlo}
+\hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlstd{B)\{}
+  \hlcom{# Simulate AR(1)}
+  \hlstd{Xt} \hlkwb{=} \hlkwd{gen.gts}\hlstd{(model,} \hlkwc{N} \hlstd{= n)}
+
+  \hlcom{# Compute standard and robust ACF of Xt and Yt}
+  \hlstd{acf} \hlkwb{=} \hlkwd{ACF}\hlstd{(Xt)}
+  \hlstd{rob_acf} \hlkwb{=} \hlkwd{robacf}\hlstd{(Xt,} \hlkwc{plot}\hlstd{=}\hlnum{FALSE}\hlstd{)}\hlopt{$}\hlstd{acf}
+
+  \hlcom{# Store ACFs}
+  \hlstd{result[i,}\hlnum{1}\hlstd{,]} \hlkwb{=} \hlstd{acf[}\hlnum{1}\hlopt{:}\hlnum{20}\hlstd{]}
+  \hlstd{result[i,}\hlnum{2}\hlstd{,]} \hlkwb{=} \hlstd{rob_acf[}\hlnum{1}\hlopt{:}\hlnum{20}\hlstd{]}
+\hlstd{\}}
+
+
+\hlcom{# Compare empirical distribution of standard and robust ACF based on Xt}
+
+\hlcom{# Vector of lags considered (h <= 20)}
+\hlstd{lags} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{,}\hlnum{5}\hlstd{,}\hlnum{10}\hlstd{)} \hlopt{+} \hlnum{1}
+
+\hlkwd{tikz}\hlstd{(}\hlstr{"rob4.tex"}\hlstd{,} \hlkwc{width} \hlstd{=} \hlnum{8}\hlstd{,} \hlkwc{height} \hlstd{=} \hlnum{6}\hlstd{)}
+\hlcom{# Make graph}
+\hlkwd{par}\hlstd{(}\hlkwc{mfrow} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{2}\hlstd{))}
+
+\hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{4}\hlstd{)\{}
+  \hlkwd{boxplot}\hlstd{(result[,}\hlnum{1}\hlstd{,lags[i]], result[,}\hlnum{2}\hlstd{,lags[i]],} \hlkwc{col} \hlstd{=} \hlstr{"lightgrey"}\hlstd{,}
+          \hlkwc{names} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"Standard"}\hlstd{,}\hlstr{"Robust"}\hlstd{),} \hlkwc{main} \hlstd{=} \hlkwd{paste}\hlstd{(}\hlstr{"lag: h = "}\hlstd{, lags[i]}\hlopt{-}\hlnum{1}\hlstd{),}
+          \hlkwc{ylab} \hlstd{=} \hlstr{"Sample autocorrelation"}\hlstd{)}
+  \hlkwd{abline}\hlstd{(}\hlkwc{h} \hlstd{= phi}\hlopt{^}\hlstd{(lags[i]}\hlopt{-}\hlnum{1}\hlstd{),} \hlkwc{col} \hlstd{=} \hlnum{2}\hlstd{,} \hlkwc{lwd} \hlstd{=} \hlnum{2}\hlstd{)}
+\hlstd{\}}
+\hlkwd{dev.off}\hlstd{()}
+\end{alltt}
+\begin{verbatim}
+## pdf 
+##   2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(gmwm)}
+\hlkwd{library}\hlstd{(tikzDevice)}
+\hlkwd{library}\hlstd{(gridExtra)}
+
+\hlcom{# Load packages}
+\hlkwd{library}\hlstd{(}\hlstr{"robcor"}\hlstd{)}
+
+\hlcom{# Define sample size}
+\hlstd{n} \hlkwb{=} \hlnum{1000}
+
+\hlcom{# Define proportion of "extreme" observation}
+\hlstd{alpha} \hlkwb{=} \hlnum{0.01}
+
+\hlcom{# Extreme observation are generated from N(0,sigma2.cont)}
+\hlstd{sigma2.cont} \hlkwb{=} \hlnum{10}
+
+\hlcom{# Number of Monte-Carlo replications}
+\hlstd{B} \hlkwb{=} \hlnum{1000}
+
+\hlcom{# Define model AR(1)}
+\hlstd{phi} \hlkwb{=} \hlnum{0.9}
+\hlstd{sigma2} \hlkwb{=} \hlnum{1}
+\hlstd{model} \hlkwb{=} \hlkwd{AR1}\hlstd{(}\hlkwc{phi} \hlstd{= phi,} \hlkwc{sigma2} \hlstd{= sigma2)}
+
+\hlcom{# Initialization of result array}
+\hlstd{result} \hlkwb{=} \hlkwd{array}\hlstd{(}\hlnum{NA}\hlstd{,} \hlkwd{c}\hlstd{(B,}\hlnum{2}\hlstd{,}\hlnum{20}\hlstd{))}
+
+\hlcom{# Start Monte-Carlo}
+\hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlstd{B)\{}
+  \hlcom{# Simulate AR(1)}
+  \hlstd{Xt} \hlkwb{=} \hlkwd{gen.gts}\hlstd{(model,} \hlkwc{N} \hlstd{= n)}
+
+  \hlcom{# Add a proportion alpha of extreme observations to Yt}
+  \hlstd{Xt[}\hlkwd{sample}\hlstd{(}\hlnum{1}\hlopt{:}\hlstd{n,}\hlkwd{round}\hlstd{(alpha}\hlopt{*}\hlstd{n))]} \hlkwb{=} \hlkwd{rnorm}\hlstd{(}\hlkwd{round}\hlstd{(alpha}\hlopt{*}\hlstd{n),} \hlnum{0}\hlstd{, sigma2.cont)}
+
+  \hlcom{# Compute standard and robust ACF of Xt and Yt}
+  \hlstd{acf} \hlkwb{=} \hlkwd{ACF}\hlstd{(Xt)}
+  \hlstd{rob_acf} \hlkwb{=} \hlkwd{robacf}\hlstd{(Xt,} \hlkwc{plot}\hlstd{=}\hlnum{FALSE}\hlstd{)}\hlopt{$}\hlstd{acf}
+
+  \hlcom{# Store ACFs}
+  \hlstd{result[i,}\hlnum{1}\hlstd{,]} \hlkwb{=} \hlstd{acf[}\hlnum{1}\hlopt{:}\hlnum{20}\hlstd{]}
+  \hlstd{result[i,}\hlnum{2}\hlstd{,]} \hlkwb{=} \hlstd{rob_acf[}\hlnum{1}\hlopt{:}\hlnum{20}\hlstd{]}
+\hlstd{\}}
+
+
+\hlcom{# Compare empirical distribution of standard and robust ACF based on Xt}
+
+\hlcom{# Vector of lags considered (h <= 20)}
+\hlstd{lags} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{,}\hlnum{5}\hlstd{,}\hlnum{10}\hlstd{)} \hlopt{+} \hlnum{1}
+
+\hlkwd{tikz}\hlstd{(}\hlstr{"rob5.tex"}\hlstd{,} \hlkwc{width} \hlstd{=} \hlnum{8}\hlstd{,} \hlkwc{height} \hlstd{=} \hlnum{6}\hlstd{)}
+\hlcom{# Make graph}
+\hlkwd{par}\hlstd{(}\hlkwc{mfrow} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{2}\hlstd{))}
+
+\hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{4}\hlstd{)\{}
+  \hlkwd{boxplot}\hlstd{(result[,}\hlnum{1}\hlstd{,lags[i]], result[,}\hlnum{2}\hlstd{,lags[i]],} \hlkwc{col} \hlstd{=} \hlstr{"lightgrey"}\hlstd{,}
+          \hlkwc{names} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"Standard"}\hlstd{,}\hlstr{"Robust"}\hlstd{),} \hlkwc{main} \hlstd{=} \hlkwd{paste}\hlstd{(}\hlstr{"lag: h = "}\hlstd{, lags[i]}\hlopt{-}\hlnum{1}\hlstd{),}
+          \hlkwc{ylab} \hlstd{=} \hlstr{"Sample autocorrelation"}\hlstd{)}
+  \hlkwd{abline}\hlstd{(}\hlkwc{h} \hlstd{= phi}\hlopt{^}\hlstd{(lags[i]}\hlopt{-}\hlnum{1}\hlstd{),} \hlkwc{col} \hlstd{=} \hlnum{2}\hlstd{,} \hlkwc{lwd} \hlstd{=} \hlnum{2}\hlstd{)}
+\hlstd{\}}
+\hlkwd{dev.off}\hlstd{()}
+\end{alltt}
+\begin{verbatim}
+## pdf 
+##   2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(gmwm)}
+\hlkwd{library}\hlstd{(tikzDevice)}
+\hlkwd{library}\hlstd{(gridExtra)}
+
+\hlcom{## @knitr example_hydro}
+\hlcom{# Load data}
+\hlstd{hydro} \hlkwb{=} \hlkwd{read.csv}\hlstd{(}\hlstr{"/Users/stephane/Documents/Time series book/ITS/data/precipitation.csv"}\hlstd{,} \hlkwc{header}\hlstd{=T,} \hlkwc{sep}\hlstd{=}\hlstr{";"}\hlstd{)}
+
+\hlcom{# Construct gts object}
+\hlstd{hydro1} \hlkwb{=} \hlkwd{gts}\hlstd{(}\hlkwd{na.omit}\hlstd{(hydro[,}\hlnum{2}\hlstd{]),} \hlkwc{start} \hlstd{=} \hlnum{1907}\hlstd{,} \hlkwc{freq} \hlstd{=} \hlnum{12}\hlstd{,} \hlkwc{name} \hlstd{=} \hlstr{'Non-robust Estimator'}\hlstd{,}
+            \hlkwc{unit} \hlstd{=} \hlstr{"month"}\hlstd{)}
+\hlstd{hydro2} \hlkwb{=} \hlkwd{gts}\hlstd{(}\hlkwd{na.omit}\hlstd{(hydro[,}\hlnum{2}\hlstd{]),} \hlkwc{start} \hlstd{=} \hlnum{1907}\hlstd{,} \hlkwc{freq} \hlstd{=} \hlnum{12}\hlstd{,} \hlkwc{name} \hlstd{=} \hlstr{'Robust Estimator'}\hlstd{,}
+            \hlkwc{unit} \hlstd{=} \hlstr{"month"}\hlstd{)}
+
+\hlcom{# Plot data}
+\hlkwd{tikz}\hlstd{(}\hlstr{"HYDRO4.tex"}\hlstd{,} \hlkwc{width} \hlstd{=} \hlnum{8}\hlstd{,} \hlkwc{height} \hlstd{=} \hlnum{4}\hlstd{)}
+\hlstd{a} \hlkwb{=} \hlkwd{plot}\hlstd{(}\hlkwd{ACF}\hlstd{(hydro1))}
+\hlstd{inter} \hlkwb{=} \hlkwd{ACF}\hlstd{(hydro2)}
+\hlstd{inter[,,]} \hlkwb{=} \hlkwd{robacf}\hlstd{(hydro2,} \hlkwc{plot}\hlstd{=}\hlnum{FALSE}\hlstd{)}\hlopt{$}\hlstd{acf}
+\hlstd{b} \hlkwb{=} \hlkwd{plot}\hlstd{(inter)}
+\hlkwd{grid.arrange}\hlstd{(a, b,} \hlkwc{nrow} \hlstd{=} \hlnum{1}\hlstd{)}
+\hlkwd{dev.off}\hlstd{()}
+\end{alltt}
+\begin{verbatim}
+## pdf 
+##   2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+\begin{figure}
+\input{acf1.tex}
+\end{figure}
+
+\begin{figure}
+\input{acf2.tex}
+\end{figure}
+
+\begin{figure}
+\input{HYDRO2.tex}
+\end{figure}
+
+\begin{figure}
+\input{HYDRO3.tex}
+\end{figure}
+
+\begin{figure}
+\input{rob1.tex}
+\end{figure}
+
+\begin{figure}
+\input{rob2.tex}
+\end{figure}
+
+\begin{figure}
+\input{rob3.tex}
+\end{figure}
+
+\begin{figure}
+\input{rob4.tex}
+\end{figure}
+
+\begin{figure}
+\input{rob5.tex}
+\end{figure}
+
+\begin{figure}
+\input{HYDRO4.tex}
+\end{figure}
+
+\end{document}

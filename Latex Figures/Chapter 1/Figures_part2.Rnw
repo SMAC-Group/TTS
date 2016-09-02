@@ -1,0 +1,345 @@
+\documentclass{article}
+\usepackage{tikz}
+\usepackage[active,tightpage,psfixbb]{preview}
+\PreviewEnvironment{pgfpicture}
+\setlength\PreviewBorder{0pt}
+\usepackage{amssymb}
+
+\begin{document}
+
+<<acf1_ex>>=
+# Load package
+library("gmwm")
+library("tikzDevice")
+
+# Simulate 100 observation from a Gaussian white noise
+set.seed(1)
+Xt = gen.gts(WN(sigma2 = 1), N = 100)
+
+# Compute autocorrelation
+acf_Xt = ACF(Xt)
+
+# Plot autocorrelation
+tikz("acf1.tex", width = 6, height = 4)
+plot(acf_Xt, show.ci = FALSE)
+dev.off()
+@
+
+<<acf2_ex>>=
+# Load package
+library("gmwm")
+library("tikzDevice")
+
+# Plot autocorrelation
+tikz("acf2.tex", width = 6, height = 4)
+plot(acf_Xt)
+dev.off()
+@
+
+
+<<HYDRO2_ex>>=
+library(gmwm)
+library(tikzDevice)
+library(gridExtra)
+
+## @knitr example_hydro
+# Load data
+hydro = read.csv("/Users/stephane/Documents/Time series book/ITS/data/precipitation.csv", header=T, sep=";")
+
+# Construct gts object
+hydro = gts(na.omit(hydro[,2]), start = 1907, freq = 12, name = 'Precipitation Data', 
+            unit = "month")
+
+# Plot data
+tikz("HYDRO2.tex", width = 8, height = 4)
+a = autoplot(hydro)  +  ylab("Mean Monthly Precipitation (mm)")
+b = plot(ACF(hydro))
+grid.arrange(a, b, nrow = 1)
+dev.off()
+@
+
+
+<<HYDRO3_ex>>=
+library(gmwm)
+library(tikzDevice)
+library(gridExtra)
+
+## @knitr example_hydro
+# Load data
+hydro = read.csv("/Users/stephane/Documents/Time series book/ITS/data/precipitation.csv", header=T, sep=";")
+
+# Construct gts object
+hydro = gts(na.omit(hydro[,2]), start = 1907, freq = 12, name = 'Precipitation Data', 
+            unit = "month")
+
+# Compute p-values for varying lags
+lags = 7:30
+pval = rep(NA, length(lags))
+for (i in 1:length(lags)){
+  pval[i] = Box.test(hydro, lag = lags[i])$p.val
+}
+
+# Plot data
+tikz("HYDRO3.tex", width = 6, height = 4)
+plot(NA, xlim = range(lags), ylim = c(0, max(pval)), xlab = "$h$", ylab = "P-value")
+grid()
+abline(h=0.05, lwd = 2, col = "red")
+points(lags, pval, pch = 16, col = "blue", lty = 2, type = "b")
+dev.off()
+@
+
+
+<<robust_ex>>=
+library(gmwm)
+library(tikzDevice)
+library(gridExtra)
+
+# Simulate Xt
+set.seed(1)
+model = AR1(phi = 0.9, sigma2 = 1)
+Xt = gen.gts(model)
+
+# Construct Yt
+epsilon = 0.01
+nb_outlier = rbinom(1,length(Xt),epsilon)
+Yt = Xt
+Yt[sample(1:length(Xt),nb_outlier)] = rnorm(nb_outlier,0,10)
+
+# Add names
+Xt = gts(Xt, name = "$(X_t)$")
+Yt = gts(Yt, name = "$(Y_t)$")
+
+# Plot data
+tikz("rob1.tex", width = 8, height = 6)
+a = autoplot(Xt) + ylim(range(Yt)) + ylab("$(X_t)$")
+b = autoplot(Yt) + ylab("$(Y_t)$")
+grid.arrange(a, b, nrow = 2)
+dev.off()
+@
+
+<<robust2_ex>>=
+library(gmwm)
+library(tikzDevice)
+library(gridExtra)
+
+# Plot autocorrelation
+tikz("rob2.tex", width = 8, height = 4)
+a = plot(ACF(Xt)) 
+b = plot(ACF(Yt)) 
+grid.arrange(a, b, nrow = 1)
+dev.off()
+@
+
+
+<<robust3_ex>>=
+library(gmwm)
+library(tikzDevice)
+library(gridExtra)
+library(robcor)
+
+ACF.Xt = ACF(Xt)
+ACF.Yt = ACF(Yt)
+
+ACF.Xt[,,] = robacf(Xt, plot=FALSE)$acf
+ACF.Yt[,,] = robacf(Yt, plot=FALSE)$acf
+
+# Plot autocorrelation
+tikz("rob3.tex", width = 8, height = 4)
+a = plot(ACF.Xt) 
+b = plot(ACF.Yt) 
+grid.arrange(a, b, nrow = 1)
+dev.off()
+@
+
+<<robust4_ex>>=
+library(gmwm)
+library(tikzDevice)
+library(gridExtra)
+
+# Load packages
+library("robcor")
+
+# Define sample size
+n = 1000
+
+# Define proportion of "extreme" observation
+alpha = 0.01
+
+# Extreme observation are generated from N(0,sigma2.cont)
+sigma2.cont = 10
+
+# Number of Monte-Carlo replications
+B = 1000
+
+# Define model AR(1)
+phi = 0.9
+sigma2 = 1
+model = AR1(phi = phi, sigma2 = sigma2)
+
+# Initialization of result array
+result = array(NA, c(B,2,20))
+
+# Start Monte-Carlo
+for (i in 1:B){
+  # Simulate AR(1)
+  Xt = gen.gts(model, N = n)
+
+  # Compute standard and robust ACF of Xt and Yt
+  acf = ACF(Xt)
+  rob_acf = robacf(Xt, plot=FALSE)$acf
+  
+  # Store ACFs
+  result[i,1,] = acf[1:20]
+  result[i,2,] = rob_acf[1:20]
+}
+
+
+# Compare empirical distribution of standard and robust ACF based on Xt
+
+# Vector of lags considered (h <= 20)
+lags = c(1,2,5,10) + 1
+
+tikz("rob4.tex", width = 8, height = 6)
+# Make graph
+par(mfrow = c(2,2))
+
+for (i in 1:4){
+  boxplot(result[,1,lags[i]], result[,2,lags[i]], col = "lightgrey",
+          names = c("Standard","Robust"), main = paste("lag: h = ", lags[i]-1),
+          ylab = "Sample autocorrelation")
+  abline(h = phi^(lags[i]-1), col = 2, lwd = 2)
+}
+dev.off()
+@
+
+<<robust5_ex>>=
+library(gmwm)
+library(tikzDevice)
+library(gridExtra)
+
+# Load packages
+library("robcor")
+
+# Define sample size
+n = 1000
+
+# Define proportion of "extreme" observation
+alpha = 0.01
+
+# Extreme observation are generated from N(0,sigma2.cont)
+sigma2.cont = 10
+
+# Number of Monte-Carlo replications
+B = 1000
+
+# Define model AR(1)
+phi = 0.9
+sigma2 = 1
+model = AR1(phi = phi, sigma2 = sigma2)
+
+# Initialization of result array
+result = array(NA, c(B,2,20))
+
+# Start Monte-Carlo
+for (i in 1:B){
+  # Simulate AR(1)
+  Xt = gen.gts(model, N = n)
+  
+  # Add a proportion alpha of extreme observations to Yt
+  Xt[sample(1:n,round(alpha*n))] = rnorm(round(alpha*n), 0, sigma2.cont)
+  
+  # Compute standard and robust ACF of Xt and Yt
+  acf = ACF(Xt)
+  rob_acf = robacf(Xt, plot=FALSE)$acf
+  
+  # Store ACFs
+  result[i,1,] = acf[1:20]
+  result[i,2,] = rob_acf[1:20]
+}
+
+
+# Compare empirical distribution of standard and robust ACF based on Xt
+
+# Vector of lags considered (h <= 20)
+lags = c(1,2,5,10) + 1
+
+tikz("rob5.tex", width = 8, height = 6)
+# Make graph
+par(mfrow = c(2,2))
+
+for (i in 1:4){
+  boxplot(result[,1,lags[i]], result[,2,lags[i]], col = "lightgrey",
+          names = c("Standard","Robust"), main = paste("lag: h = ", lags[i]-1),
+          ylab = "Sample autocorrelation")
+  abline(h = phi^(lags[i]-1), col = 2, lwd = 2)
+}
+dev.off()
+@
+
+<<HYDRO4_ex>>=
+library(gmwm)
+library(tikzDevice)
+library(gridExtra)
+
+## @knitr example_hydro
+# Load data
+hydro = read.csv("/Users/stephane/Documents/Time series book/ITS/data/precipitation.csv", header=T, sep=";")
+
+# Construct gts object
+hydro1 = gts(na.omit(hydro[,2]), start = 1907, freq = 12, name = 'Non-robust Estimator', 
+            unit = "month")
+hydro2 = gts(na.omit(hydro[,2]), start = 1907, freq = 12, name = 'Robust Estimator', 
+            unit = "month")
+
+# Plot data
+tikz("HYDRO4.tex", width = 8, height = 4)
+a = plot(ACF(hydro1))
+inter = ACF(hydro2)
+inter[,,] = robacf(hydro2, plot=FALSE)$acf
+b = plot(inter)
+grid.arrange(a, b, nrow = 1)
+dev.off()
+@
+
+
+\begin{figure}
+\input{acf1.tex}
+\end{figure}
+
+\begin{figure}
+\input{acf2.tex}
+\end{figure}
+
+\begin{figure}
+\input{HYDRO2.tex}
+\end{figure}
+
+\begin{figure}
+\input{HYDRO3.tex}
+\end{figure}
+
+\begin{figure}
+\input{rob1.tex}
+\end{figure}
+
+\begin{figure}
+\input{rob2.tex}
+\end{figure}
+
+\begin{figure}
+\input{rob3.tex}
+\end{figure}
+
+\begin{figure}
+\input{rob4.tex}
+\end{figure}
+
+\begin{figure}
+\input{rob5.tex}
+\end{figure}
+
+\begin{figure}
+\input{HYDRO4.tex}
+\end{figure}
+
+\end{document}

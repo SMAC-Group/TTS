@@ -133,7 +133,7 @@ vibrations observed before, during and after an earthquake.
 the company Johnson and Johson. In the figure below, we present these earnings
 between 1960 and 1980:
 
-```{r example_jj, echo = FALSE, fig.height = 4, fig.width = 7, cache = TRUE}
+```{r example_JJ, fig.height = 4, fig.width = 7, cache = TRUE}
 ```
 
 One trait that the graph makes evident is that the data contains a non-linear
@@ -153,7 +153,7 @@ evaluate if some of the following phenomena occur:
 **Example:** In the figure below, we present an example of displacement recorded
 during an earthquake as well as an explosion.
 
-```{r example_eq, echo = FALSE, fig.height = 4, fig.width = 7, cache = TRUE}
+```{r example_EQ, fig.height = 4, fig.width = 7, cache = TRUE}
 ```
 
 From the graph, it can be observed that the statistical properties of the time
@@ -165,6 +165,13 @@ $t = 50, \cdots, 250$ and then again from $t = 1200, \cdots, 1500$. Even within
 these windows, there are "spikes" that could be considered as outliers most
 notably around $t = 1200$ for explosion series.
 
+Extreme observations or outliers are commonly observed in real time series data, this is illustrated in the following example. 
+
+**Example:** We consider here a data set coming from the domain of hydrology. The data concerns monthly precipitation (in mm) over a certain period of time (1907 to 1972) and is interesting for scientists in order to study water cycles. The data are presented in the graph below:
+
+```{r example_hydro, fig.height = 4, fig.width = 7, cache = TRUE, message = FALSE, warning = FALSE}
+```
+
 Next, we consider an example coming from high-frequency finance to illustrate
 the limitations our current framework.
 
@@ -173,7 +180,7 @@ the limitations our current framework.
 July 1, 2011 for about 150 seconds (left panel) and about 400 minutes
 (right panel). 
 
-```{r example_highfreq, fig.height = 4, fig.width = 7, cache = TRUE, message = FALSE}
+```{r example_Starbucks, fig.height = 4, fig.width = 7, cache = TRUE, message = FALSE}
 ```
 
 It can be observed on the left panel that observations are not equally spaced.
@@ -200,9 +207,7 @@ The signals coming from these instruments are measured at
 high frequencies over a long time and are often characterized by linear trends
 and numerous underlying stochastic processes. If you have never heard 
 
-
-The code below retrieves some 
-data from an IMU and plots it directly:
+The code below retrieves some data from an IMU and plots it directly:
 
 <!--
 Complete example on IMU to show the limit for such graph when n is too big.
@@ -269,7 +274,7 @@ a Student distribution with $t+2$ degrees of freedom. Assuming the sequence $(Y_
 
 The code below presents an example of how to simulate a Gaussian white noise process
 
-```{r example_WN, fig.height = 3, fig.width = 7, cache = TRUE}
+```{r example_WN, fig.height = 4, fig.width = 7, cache = TRUE}
 ```
 
 ### Random Walk Processes {rw}
@@ -309,7 +314,7 @@ where $W_t$ is a Gaussian white noise and with initial condition $X_0 = c$
 
 The code below presents an example of how to simulate a such process
 
-```{r example_RW, fig.height = 5, cache=TRUE}
+```{r example_RW, fig.height = 4, fig.width = 7, cache=TRUE}
 ```
 
 ### Autoregressive Process of Order 1 {ar1}
@@ -356,7 +361,7 @@ since $\operatorname{lim}_{i \to \infty} \; {\phi^i}{X_{t-i}} = 0$.
 
 The code below presents an example of how an AR(1) can be simulated
 
-```{r example_AR1, fig.height = 3, cache=TRUE}
+```{r example_AR1, fig.height = 4, fig.width = 7, cache=TRUE}
 ```
 
 ### Moving Average Process of Order 1 {ma1}
@@ -374,7 +379,7 @@ version of an AR(1). It is defined as
 where (again) $W_t$ denotes a Gaussian white noise process. An example on how to
 generate an MA(1) is given below:
 
-```{r example_MA1, fig.height = 3, cache=TRUE}
+```{r example_MA1, fig.height = 4, fig.width = 7, cache=TRUE}
 ```
 
   
@@ -399,11 +404,11 @@ $\omega$ and intercept $c$.
 
 A drift can simply be generated using the code below:
 
-```{r example_DR, fig.height = 3, cache=TRUE}
+```{r example_Drift, fig.height = 4, fig.width = 7, cache=TRUE}
 ```
 
 
-### Composite Stochastic Processes
+## Composite Stochastic Processes
 
 A composite stochastic process can be defined as the sum of underlying 
 (or latent) stochastic processes. In this text, we will use the term
@@ -445,9 +450,16 @@ X_t &= R_t + S_t + Z_t,
 where $R_t$, $S_t$ and $Z_t$ denote, respectively, a random walk,
 a drift and a white noise. The code below can be used to simulate such data:
 
-```{r example_ecolo, fig.height = 6, cache=TRUE}
+```{r example_composite, fig.height = 6, fig.width = 7, cache=TRUE}
 ```
 
 In the above graph, the first three plots represent the latent (unobserved)
 processes (i.e. white noise, random walk and drift) and the last one represents
 the sum of the three (i.e. $(X_t)$).
+
+Let us consider a real example where these latent processes are useful to describe (and predict) the behavior of economic variables such as Personal Saving Rates (PSR). A process that is used for these settings is the "random-walk-plus-noise" model, meaning that the data can be explained by a random walk process in addition to which we observe some other process (e.g. a white noise model, an autoregressive model such as an AR(1), etc.). The PSR taken from the Federal Reserve of St. Louis from January 1, 1959, to  May 1, 2015, is presented in the following plot:
+
+```{r example_PSR, fig.height = 4, fig.width = 7, cache=TRUE}
+```
+
+It can be observed that the mean of the process seems to vary over time, suggesting that a random walk can indeed be considered as a possible model to explain this data. In addition, aside from some "spikes" and occasional sudden changes, the observations appear to gradually change from one time point to the other, suggesting that some other form of dependence between them could exist.

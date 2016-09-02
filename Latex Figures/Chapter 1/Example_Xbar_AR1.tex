@@ -1,0 +1,131 @@
+\documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage{tikz}
+\usepackage[active,tightpage,psfixbb]{preview}
+\PreviewEnvironment{pgfpicture}
+\setlength\PreviewBorder{0pt}
+\usepackage{amssymb}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(gmwm)}
+\end{alltt}
+
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: ggplot2}}\begin{alltt}
+\hlkwd{library}\hlstd{(tikzDevice)}
+
+\hlcom{# Define sample size}
+\hlstd{n} \hlkwb{=} \hlnum{10}
+
+\hlcom{# Number of Monte-Carlo replications}
+\hlstd{B} \hlkwb{=} \hlnum{5000}
+
+\hlcom{# Define grid of values for phi}
+\hlstd{phi} \hlkwb{=} \hlkwd{seq}\hlstd{(}\hlkwc{from} \hlstd{=} \hlnum{0.95}\hlstd{,} \hlkwc{to} \hlstd{=} \hlopt{-}\hlnum{0.95}\hlstd{,} \hlkwc{length.out} \hlstd{=} \hlnum{30}\hlstd{)}
+
+\hlcom{# Define result matrix}
+\hlstd{result} \hlkwb{=} \hlkwd{matrix}\hlstd{(}\hlnum{NA}\hlstd{,B,}\hlkwd{length}\hlstd{(phi))}
+
+\hlcom{# Start simulation}
+\hlkwa{for} \hlstd{(i} \hlkwa{in} \hlkwd{seq_along}\hlstd{(phi))\{}
+  \hlcom{# Define model}
+  \hlstd{model} \hlkwb{=} \hlkwd{AR1}\hlstd{(}\hlkwc{phi} \hlstd{= phi[i],} \hlkwc{sigma2} \hlstd{=} \hlnum{1}\hlstd{)}
+
+  \hlcom{# Monte-Carlo}
+  \hlkwa{for} \hlstd{(j} \hlkwa{in} \hlkwd{seq_len}\hlstd{(B))\{}
+    \hlcom{# Simulate AR(1)}
+    \hlstd{Xt} \hlkwb{=} \hlkwd{gen.gts}\hlstd{(model,} \hlkwc{N} \hlstd{= n)}
+
+    \hlcom{# Estimate Xbar}
+    \hlstd{result[j,i]} \hlkwb{=} \hlkwd{mean}\hlstd{(Xt)}
+  \hlstd{\}}
+\hlstd{\}}
+
+\hlcom{# Estimate variance of Xbar}
+\hlstd{var.Xbar} \hlkwb{=} \hlkwd{apply}\hlstd{(result,}\hlnum{2}\hlstd{,var)}
+
+\hlcom{# Compute theoretical variance}
+\hlstd{var.theo} \hlkwb{=} \hlstd{(n} \hlopt{-} \hlnum{2}\hlopt{*}\hlstd{phi} \hlopt{-} \hlstd{n}\hlopt{*}\hlstd{phi}\hlopt{^}\hlnum{2} \hlopt{+} \hlnum{2}\hlopt{*}\hlstd{phi}\hlopt{^}\hlstd{(n}\hlopt{+}\hlnum{1}\hlstd{))}\hlopt{/}\hlstd{(n}\hlopt{^}\hlnum{2}\hlopt{*}\hlstd{(}\hlnum{1}\hlopt{-}\hlstd{phi}\hlopt{^}\hlnum{2}\hlstd{)}\hlopt{*}\hlstd{(}\hlnum{1}\hlopt{-}\hlstd{phi)}\hlopt{^}\hlnum{2}\hlstd{)}
+
+\hlcom{# Compute (approximate) vairance}
+\hlstd{var.approx} \hlkwb{=} \hlnum{1}\hlopt{/}\hlstd{(n}\hlopt{*}\hlstd{(}\hlnum{1}\hlopt{-}\hlstd{phi)}\hlopt{^}\hlnum{2}\hlstd{)}
+
+\hlcom{# Compare variance estimations}
+\hlkwd{tikz}\hlstd{(}\hlstr{"xBar.tex"}\hlstd{,} \hlkwc{width} \hlstd{=} \hlnum{6}\hlstd{,} \hlkwc{height} \hlstd{=} \hlnum{4.5}\hlstd{)}
+\hlkwd{plot}\hlstd{(}\hlnum{NA}\hlstd{,} \hlkwc{xlim} \hlstd{=} \hlkwd{c}\hlstd{(}\hlopt{-}\hlnum{1}\hlstd{,}\hlnum{1}\hlstd{),} \hlkwc{ylim} \hlstd{=} \hlkwd{range}\hlstd{(var.approx),} \hlkwc{log} \hlstd{=} \hlstr{"y"}\hlstd{,}
+     \hlkwc{ylab} \hlstd{=} \hlstr{"var ($\textbackslash{}\textbackslash{}bar\{X\}$)"}\hlstd{,}
+     \hlkwc{xlab}\hlstd{=} \hlstr{"$\textbackslash{}\textbackslash{}phi$"}\hlstd{,} \hlkwc{cex.lab} \hlstd{=} \hlnum{1.2}\hlstd{)}
+\hlkwd{grid}\hlstd{()}
+\hlkwd{lines}\hlstd{(phi,var.theo,} \hlkwc{col} \hlstd{=} \hlstr{"deepskyblue4"}\hlstd{)}
+\hlkwd{lines}\hlstd{(phi, var.Xbar,} \hlkwc{col} \hlstd{=} \hlstr{"firebrick3"}\hlstd{)}
+\hlkwd{lines}\hlstd{(phi,var.approx,} \hlkwc{col} \hlstd{=} \hlstr{"springgreen4"}\hlstd{)}
+\hlkwd{legend}\hlstd{(}\hlstr{"topleft"}\hlstd{,}\hlkwd{c}\hlstd{(}\hlstr{"Theoretical variance"}\hlstd{,}\hlstr{"Monte-Carlo variance"}\hlstd{,}\hlstr{"Approximate variance"}\hlstd{),}
+       \hlkwc{col} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"deepskyblue4"}\hlstd{,}\hlstr{"firebrick3"}\hlstd{,}\hlstr{"springgreen4"}\hlstd{),} \hlkwc{lty} \hlstd{=} \hlnum{1}\hlstd{,}
+       \hlkwc{bty} \hlstd{=} \hlstr{"n"}\hlstd{,}\hlkwc{bg} \hlstd{=} \hlstr{"white"}\hlstd{,} \hlkwc{box.col} \hlstd{=} \hlstr{"white"}\hlstd{,} \hlkwc{cex} \hlstd{=} \hlnum{1.2}\hlstd{)}
+\hlkwd{dev.off}\hlstd{()}
+\end{alltt}
+\begin{verbatim}
+## pdf 
+##   2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\begin{figure}
+\input{xBar.tex}
+\end{figure}
+
+\end{document}

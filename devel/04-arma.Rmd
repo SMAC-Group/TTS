@@ -58,11 +58,11 @@ If an ARMA(p, q) model is invertible, then the coefficients of the one-sided lin
     
 Thus, we have the following results for causality
 
-- An ARMA(p, q) is causal iff $\theta(z) \neq 0$ for $|z| \leq 1$,
-- An ARMA(p, q) is causal only when the roots of $\theta(z) = 0$ lie outside the unit circle, i.e. $|z| > 1$.
+- An ARMA(p, q) is invertible iff $\theta(z) \neq 0$ for $|z| \leq 1$,
+- An ARMA(p, q) is invertible only when the roots of $\theta(z) = 0$ lie outside the unit circle, i.e. $|z| > 1$.
 
 
-**Example: Causal Conditons for an AR(2) Process** We already know that an AR(1) is causal with the simple condition $|\phi_1| < 1$. It could seem natural to believe that an AR(2) should be stationary with the conditon: $|\phi_i| < 1, \, i = 1,2$, however, this is not the case. Indeed, an AR(1) can be expressed as
+**Example: Causal Conditons for an AR(2) Process** We already know that an AR(1) is causal with the simple condition $|\phi_1| < 1$. It could seem natural to believe that an AR(2) should be causal (implies stationary) with the conditon: $|\phi_i| < 1, \, i = 1,2$, however, this is not the case. Indeed, an AR(2) can be expressed as
 
 \[X_t = \phi_1 X_{t-1} + \phi_2 X_{t-2} + W_t = \phi_1 B X_t + \phi_2 B^2 X_t + W_t,\]
 
@@ -114,6 +114,50 @@ Since $z_2 = \frac{\phi_1 - \sqrt{\phi_1^2 + 4\phi_2}}{-2 \phi_2}$ and $\phi_2-1
 ```{r causalAR2, cache = TRUE}
 ```
 
+Now we know the causal condition for an AR(2) model, the following example will show you how to convert a causal AR(2) into a linear process.
+
+**Example: Convert AR(2) into a linear process**
+Given an AR(2) model: $X_t = 1.3X_{t-1} - 0.4X_{t-2} + W_t$. 
+
+Step 1. The AR polynomial can be written as:
+
+\[\phi(z) = 1 - 1.3z + 0.4z^2 = (1 - 0.5z)(1 - 0.8z) ,\]
+
+it has roots $2 > 1$ and $1.25 > 1$. Thus we are able to covert it into linear process.
+
+Step 2. If an AR process $\phi(B)X_t = W_t$ is causal, we can write it as $X_t = \phi^{-1}(B)W_t$. This step is to inverse $\phi(B)$.
+
+\[\phi^{-1}(z) = \frac{1}{(1 - 0.5z)(1 - 0.8z)} = \frac{C_1}{(1 - 0.5z)} + \frac{C_2}{(1 - 0.8z)} = \frac{C_2(1 - 0.5z) + C_1(1 - 0.8z)}{(1 - 0.5z)(1 - 0.8z)} ,\]
+
+Since we can think of the above equation is valid for any z, we will solve the following equations to get $C_1$ and $C_2$,
+
+\[\begin{cases}
+        C_1 + C_2 &= 1\\
+        -0.5C_2 - 0.8C_1 &< 1
+\end{cases}
+\implies 
+\begin{cases}
+        C_1 &= -\frac{5}{3}\\
+        C_2 &= \frac{8}{3}
+\end{cases}.
+\]
+
+Thus,
+\[\phi^{-1}(z) = \frac{-5}{3(1 - 0.5z)} + \frac{8}{3(1 - 0.8z)} .\]
+
+Step 3. Using Geometric series: $a \sum_{k = 0}^{\infty}r^k = \frac{a}{1-r}, \mbox{ if } |r| < 1$.
+
+\[\begin{cases}
+      \frac{-5}{3(1 - 0.5z)} &= \frac{-5}{3} \sum_{j = 0}^{\infty}0.5^jz^j , \mbox{ if } |z| < 2\\
+      \frac{8}{3(1 - 0.8z)} &= \frac{8}{3} \sum_{j = 0}^{\infty}0.8^jz^j , \mbox{ if } |z| < 1.25
+\end{cases}.\]
+
+So,
+\[\phi^{-1}(z) = \sum_{j = 0}^{\infty} \left[ \frac{-5}{3} (0.5)^j + \frac{8}{3} (0.8)^j \right] z^j, \mbox{ if } |z| < 1.25 .\]
+
+Step 4.
+\[X_t = \phi^{-1}(B)W_t = \sum_{j = 0}^{\infty} \left[ \frac{-5}{3} (0.5)^j + \frac{8}{3} (0.8)^j \right] B^j W_t = \sum_{j = 0}^{\infty} \left[ \frac{-5}{3} (0.5)^j + \frac{8}{3} (0.8)^j \right] W_{t-j} .
+\]
 
 
 ## Estimation of Parameters
