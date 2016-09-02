@@ -17,6 +17,7 @@ Imports:
   zoo,
   gmwm,
   imudata,
+  datapkg,
   highfrequency,
   timeDate,
   gridExtra,
@@ -25,4 +26,5 @@ Remotes:
   sinhrks/ggfortify,
   rstudio/bookdown,
   SMAC-Group/gmwm,
-  SMAC-Group/imudata
+  SMAC-Group/imudata,
+  SMAC-Group/datapkg
