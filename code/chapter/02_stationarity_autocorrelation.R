@@ -5,15 +5,11 @@
 library(robcor)
 
 # Load data
-hydro = read.csv("../data/mean-monthly-precipitation-1907-.csv", header=T, sep=";")
-hydro=ts(as.numeric(hydro[,2][!is.na(hydro[,2])]), start = 1907, end = 1972, frequency = 12)
-
+data("hydro", package = "datapkg")
 # Compute ACFs
 par(mfrow=c(1,2))
 acf(hydro, main="Standard")
 robacf(hydro, main="Robust")
-
-
 
 ## @knitr simulationRobust
 
