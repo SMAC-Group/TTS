@@ -330,7 +330,7 @@ In the plot, two hundred simulated random walks are plotted along with the theor
    &= E\left[ {\theta^2{W_{t - 1}}{W_{t + h - 1}} + \theta {W_t}{W_{t + h}} + {\theta}{W_{t - 1}}{W_{t + h}} + {W_t}{W_{t + h}}} \right]. \\
   \end{aligned} \] 
   
-   It is easy to see that $E\left[ {{W_t}{W_{t + h}}} \right] = {\boldsymbol{1}_{\left\{ {h = 0} \right\}}}\sigma _w^2$ and therefore, we obtain
+It is easy to see that $E\left[ {{W_t}{W_{t + h}}} \right] = {\boldsymbol{1}_{\left\{ {h = 0} \right\}}}\sigma _w^2$ and therefore, we obtain
    
 \[\cov \left( {{X_t},{X_{t + h}}} \right) = \left( {\theta^2{ \boldsymbol{1}_{\left\{ {h = 0} \right\}}} + {\theta}{\boldsymbol{1}_{\left\{ {h = 1} \right\}}} + {\theta}{\boldsymbol{1}_{\left\{ {h =  - 1} \right\}}} + {\boldsymbol{1}_{\left\{ {h = 0} \right\}}}} \right)\sigma _w^2\] 
    
@@ -344,7 +344,7 @@ implying the following autocovariance function:
   
 Therefore, an MA(1) process is weakly stationary since both the mean and variance are constant over time and its covariance function is only a function of the lag $h$. Finally, we can easily obtain the autocorrelation for this process, which is given by
 
-$$\Rightarrow \rho \left( h \right) = \left\{ {\begin{array}{*{20}{c}}
+$$\rho \left( h \right) = \left\{ {\begin{array}{*{20}{c}}
   1&{h = 0} \\ 
   {\frac{{{\theta}\sigma _w^2}}{{\left( {\theta^2 + 1} \right)\sigma _w^2}} = \frac{{{\theta}}}{{\theta^2 + 1}}}&{\left| h \right| = 1} \\ 
   0&{\left| h \right| > 1} 
@@ -352,47 +352,72 @@ $$\Rightarrow \rho \left( h \right) = \left\{ {\begin{array}{*{20}{c}}
 
 Interestingly, we can note that $|\rho(1)| \leq 0.5$.
 
-**Example AR(1)** As another example, we shall verify the stationary properties for the AR(1) model defined in Section \@ref(ar1):
+**Example AR(1)** As another example, we shall verify the stationary properties for the AR(1) model defined in Section \@ref(ar1).
 
-**JAMES TO DO - USE MA(1) AS EXAMPLE, ADD DETAILS FROM HOMEWORK, CHANGE $\phi_1$ in $\phi$ and add ref to chap 1. Thanks**
-
-Consider the AR(1) process given by:
-$${y_t} = {\phi }{y_{t - 1}} + {w_t} \text{, where } {w_t}\mathop \sim \limits^{iid} WN\left( {0,\sigma _w^2} \right)$$
-
-It can be shown that this process simplifies to: 
-
-$$y_t = {\phi ^t}{y_0} + \sum\limits_{i = 0}^{t - 1} {\phi ^i{w_{t - i}}}.$$
-
-In addition, we add the requirement that $\left| \phi  \right| < 1$. This requirement allows the process to be stationary. If $\phi  \ge 1$, the process would not converge.  In this way the process can represented as a geometric series that converges:
-\[\sum\limits_{k = 0}^\infty  {{r^k}}  = \frac{1}{{1 - r}},{\text{ }}\left| r \right| < 1.\]
-
-Next, we demonstrate how crucial this property is: 
+Using the *backsubstitution* technique, we can rearrange the AR1 Process so that it is written in a more compact form.
 
 \[\begin{aligned}
-  \mathop {\lim }\limits_{t \to \infty } E\left[ {{y_t}} \right] &= \mathop {\lim }\limits_{t \to \infty } E\left[ {{\phi ^t}{y_0} + \sum\limits_{i = 0}^{t - 1} {\phi ^i{w_{t - i}}} } \right] \\
-   &= \mathop {\lim }\limits_{t \to \infty } \underbrace {{\phi ^t}{y_0}}_{= 0 \, \text{since} \, \left| \phi  \right| < 1 \, \text{and} \, t \to \infty} + \sum\limits_{i = 0}^{t - 1} {\phi ^i\underbrace {E\left[ {{w_{t - i}}} \right]}_{ = 0}}  \\
+  {Y_t} & =  {\phi }{Y_{t - 1}} + {W_t} = \phi \left[ {\phi {Y_{t - 2}} + {W_{t - 1}}} \right] + {W_t} \\
+   & =  {\phi ^2}{Y_{t - 2}} + \phi {W_{t - 1}} + {W_t}  \\
+   &  \vdots  \\
+   & =  {\phi ^k}{Y_{t-k}} + \sum\limits_{j = 0}^{k - 1} {{\phi ^j}{W_{t - j}}} 
+\end{aligned} \]
+
+In essence, if we let $k = t$, then we have transformed the AR(1) process into an MA($\infty$).
+
+In addition, we add the requirement that $\left| \phi  \right| < 1$. The origin of the requirement comes from needing to ensure that the characteristic polynomial solution for an AR1 lies outside of the unit circle. Subsequently, stability enables the process to be stationary. If $\phi  \ge 1$, the process would not converge. Under the requirement, the process can represented as a geometric series that converges:
+\[\sum\limits_{k = 0}^\infty  {{r^k}}  = \frac{1}{{1 - r}},{\text{ }}\left| r \right| < 1.\]
+
+With this setup, we demonstrate how crucial this property is by calculating each requirement for a stationary equation.
+
+1. First, we will check to see if the mean is stationary. In this case, we opt to use limits to derive the expectation.
+\[\begin{aligned}
+  \mathop {\lim }\limits_{t \to \infty } E\left[ {{Y_t}} \right] &= \mathop {\lim }\limits_{t \to \infty } E\left[ {{\phi ^t}{Y_0} + \sum\limits_{i = 0}^{t - 1} {\phi ^i{W_{t - i}}} } \right] \\
+   &= \mathop {\lim }\limits_{t \to \infty } \underbrace {{\phi ^t}{Y_0}}_{= 0} + \sum\limits_{i = 0}^{t - 1} {\phi ^i\underbrace {E\left[ {{W_{t - i}}} \right]}_{ = 0}}  \\
    &= 0 \\
-  \mathop {\lim }\limits_{t \to \infty } \var\left( {{y_t}} \right) &= \mathop {\lim }\limits_{t \to \infty } \var\left( {{\phi ^t}{y_0} + \sum\limits_{i = 0}^{t - 1} {\phi ^i{w_{t - i}}} } \right) \\
-   &= \mathop {\lim }\limits_{t \to \infty } \underbrace {\var\left( {{\phi ^t}{y_0}} \right)}_{ = 0{\text{ since constant}}} + \var\left( {\sum\limits_{i = 0}^{t - 1} {\phi ^i{w_{t - i}}} } \right) \\
-   &= \mathop {\lim }\limits_{t \to \infty } \sum\limits_{i = 0}^{t - 1} {\phi ^{2i}\var\left( {{w_{t - i}}} \right)}  \\
-   &= \mathop {\lim }\limits_{t \to \infty } \sigma _w^2\sum\limits_{i = 0}^{t - 1} {\phi ^{2i}}  \\
-   &= \sigma _w^2 \cdot  
+\end{aligned} \] As expected, the mean is zero and, hence, the first criteria for weak stationarity is satisfied. Note, we used the power of the limit to show that ${\phi ^t}{Y_0} = 0$ as $t \rightarrow \infty$ since $\left| \phi  \right| < 1$.
+2. Next, we opt to determine the variance of the process under limits.
+\[\begin{aligned}
+\mathop {\lim }\limits_{t \to \infty } \var\left( {{y_t}} \right) &= \mathop {\lim }\limits_{t \to \infty } \var\left( {{\phi ^t}{Y_0} + \sum\limits_{i = 0}^{t - 1} {\phi ^i{W_{t - i}}} } \right) \\
+   &= \mathop {\lim }\limits_{t \to \infty } \underbrace {\var\left( {{\phi ^t}{Y_0}} \right)}_{ = 0{\text{ since constant}}} + \var\left( {\sum\limits_{i = 0}^{t - 1} {\phi ^i{W_{t - i}}} } \right) \\
+   &= \mathop {\lim }\limits_{t \to \infty } \sum\limits_{i = 0}^{t - 1} {\phi ^{2i}\var\left( {{W_{t - i}}} \right)}  \\
+   &= \mathop {\lim }\limits_{t \to \infty } \sigma _W^2\sum\limits_{i = 0}^{t - 1} {\phi ^{2i}}  \\
+   &= \sigma _W^2 \cdot  
   \underbrace {\frac{1}{{1 - {\phi ^2}}}.}_{\begin{subarray}{l} 
   {\text{Geometric Series}} 
 \end{subarray}}
-\end{aligned} \]
-
-This leads us to conclude that the autocovariance function is:
+\end{aligned} \] Note, the above result only holds because we are able to use the geometric series convergence as a result of $\left| \phi  \right| < 1$.
+3. This leads us to conclude that the autocovariance function is:
 \[\begin{aligned}
-  \cov\left( {{y_t},{y_{t + h}}} \right) &= \cov\left( {{y_t},\phi {y_{t + h - 1}} + {w_{t + h}}} \right) \\
-   &= \cov\left( {{y_t},\phi {y_{t + h - 1}}} \right) \\
-   &= \cov\left( {{y_t},{\phi ^{\left| h \right|}}{y_t}} \right) \\
-   &= {\phi ^{\left| h \right|}}\cov\left( {{y_t},{y_t}} \right) \\
-   &= {\phi ^{\left| h \right|}}\var\left( {{y_t}} \right) \\
-   &= {\phi ^{\left| h \right|}}\frac{{\sigma _w^2}}{{1 - \phi ^2}}. \\ 
+  \cov\left( {{Y_t},{Y_{t + h}}} \right) &= \cov\left( {{Y_t},\phi {Y_{t + h - 1}} + {W_{t + h}}} \right) \\
+   &= \cov\left( {{Y_t},\phi {Y_{t + h - 1}}} \right) \\
+   &= \cov\left( {{Y_t},{\phi ^{\left| h \right|}}{Y_t}} \right) \\
+   &= {\phi ^{\left| h \right|}}\cov\left( {{Y_t},{Y_t}} \right) \\
+   &= {\phi ^{\left| h \right|}}\var\left( {{Y_t}} \right) \\
+   &= {\phi ^{\left| h \right|}}\frac{{\sigma _W^2}}{{1 - \phi ^2}}. \\ 
 \end{aligned} \]
 
-Both the mean and autocovariance function do not depend on time and, thus, the AR(1) process is stationary if $\left| \phi  \right| < 1$. 
+More formally, the autocovariance function can be viewed as a recursion of oneself. That is, we can define it
+in terms of its prior value.
+
+\[\begin{aligned}
+  \gamma \left( h \right) &= {\phi ^{\left| h \right|}}\frac{{\sigma _W^2}}{{1 - {\phi ^2}}} \hfill \\
+   &= \phi \gamma \left( {h - 1} \right) \hfill \\ 
+\end{aligned} \]
+
+
+Both the mean and variance do not depend on time in addition the autocovariance function can be viewed as function dependent on only lags and, thus, the AR(1) process is weakly stationary if $\left| \phi  \right| < 1$.  Lastly, we can obtain the autocorrelation for an AR(1) process. Before we arrive at the final form, note that in a similar vein the autocorrelation
+function can be written recursively.
+
+\[\rho \left( h \right) = \frac{{\gamma \left( h \right)}}{{\gamma \left( 0 \right)}} = \frac{{\phi \gamma \left( {h - 1} \right)}}{{\gamma \left( 0 \right)}} = \phi \rho \left( {h - 1} \right)\]
+
+After fully simplifying, we arrive at the autocorrelation function for an AR1 being:
+
+\[\rho \left( h \right) = {\phi ^h}\]
+
+Thus, the autocorrelation function for an AR(1) is a _geometric decay_. As in, the smaller the $\phi$, the faster the autocorrelation reaches zero. If $\phi$ is close to 1, then the decay rate is slower.
+
+<!--
 
 If we assume that the AR(1) process is stationary, we can derive the mean and variance in another way. Without loss of generality, we'll assume that $y_0 = 0$.
 
@@ -420,7 +445,7 @@ Therefore:
   \var\left( {{y_t}} \right) - \phi ^2\var\left( {{y_t}} \right) &= \sigma _w^2 \\
   \var\left( {{y_t}} \right)\left( {1 - \phi ^2} \right) &= \sigma _w^2 \\
   \var\left( {{y_t}} \right) &= \frac{{\sigma _w^2}}{{1 - \phi ^2}}. \\ 
-\end{aligned} \]
+\end{aligned} \] -->
 
 
 ## Estimation of the Mean Function
