@@ -102,7 +102,7 @@ Another example is given by Thomas Watson, president of IBM, who said in 1943:
 >
 
 
-## Exploratory Data Analysis for Time Series
+## Exploratory Data Analysis for Time Series {eda}
 
 When dealing with relatively small time series (e.g. a few thousands), it is
 often useful to look at a graph of the original data. These graphs can be
@@ -225,7 +225,7 @@ $t-1$, i.e.
 
 As we will see this compact notation is quite useful.
 
-### White noise processes
+### White noise processes {wn}
 
 The building block for most time series models is the Gaussian white noise
 process, which can be defined as
@@ -272,7 +272,7 @@ The code below presents an example of how to simulate a Gaussian white noise pro
 ```{r example_WN, fig.height = 3, fig.width = 7, cache = TRUE}
 ```
 
-### Random Walk Processes
+### Random Walk Processes {rw}
 
 The term *random walk* was first introduce by Karl Pearson in the early
 19 hundreds. As for the white noise, there exist a large range of random walk
@@ -312,7 +312,7 @@ The code below presents an example of how to simulate a such process
 ```{r example_RW, fig.height = 5, cache=TRUE}
 ```
 
-### Autoregressive Process of Order 1
+### Autoregressive Process of Order 1 {ar1}
 
 An autoregressive process of order 1 or AR(1) is a generalization of both
 the white noise and random walk processes which are both themselves special
@@ -359,7 +359,7 @@ The code below presents an example of how an AR(1) can be simulated
 ```{r example_AR1, fig.height = 3, cache=TRUE}
 ```
 
-### Moving Average Process of Order 1
+### Moving Average Process of Order 1 {ma1}
 
 As we have seen in the previous example, an AR(1) can be expressed as a linear
 combination of all past observations of $(W_t)$ while the next process, called
@@ -378,7 +378,7 @@ generate an MA(1) is given below:
 ```
 
   
-### Linear Drift
+### Linear Drift {drift}
 
 A linear drift is a very simple deterministic time series model which can be
 expressed as 
