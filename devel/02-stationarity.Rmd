@@ -317,7 +317,7 @@ In the following simulated example, we illustrate the non-stationary feature of 
 
 In the plot, two hundred simulated random walks are plotted along with the theoretical 95\% confidence intervals (red-dashed lines). The relationship between time and variance can clearly be observed (i.e. the variance of the process increases with the time).
 
-**Example: MA(1)** Similarly to our previous examples, we attempt to verify the stationary properties for the MA(1) model defined in Section \@ref(moving-average-process-of-order-1):
+**Example: MA(1)** Similarly to our previous examples, we attempt to verify the stationary properties for the MA(1) model defined in Section \@ref(ma1):
   
 1. \[ 
   E\left[ {{X_t}} \right] = E\left[ {{\theta_1}{W_{t - 1}} + {W_t}} \right] 
@@ -352,30 +352,30 @@ $$\Rightarrow \rho \left( h \right) = \left\{ {\begin{array}{*{20}{c}}
 
 Interestingly, we can note that $|\rho(1)| \leq 0.5$.
 
-**Example AR(1)** 
+**Example AR(1)** As another example, we shall verify the stationary properties for the AR(1) model defined in Section \@ref(ar1):
 
 **JAMES TO DO - USE MA(1) AS EXAMPLE, ADD DETAILS FROM HOMEWORK, CHANGE $\phi_1$ in $\phi$ and add ref to chap 1. Thanks**
 
 Consider the AR(1) process given by:
-$${y_t} = {\phi _1}{y_{t - 1}} + {w_t} \text{, where } {w_t}\mathop \sim \limits^{iid} WN\left( {0,\sigma _w^2} \right)$$
+$${y_t} = {\phi }{y_{t - 1}} + {w_t} \text{, where } {w_t}\mathop \sim \limits^{iid} WN\left( {0,\sigma _w^2} \right)$$
 
 It can be shown that this process simplifies to: 
 
-$$y_t = {\phi ^t}{y_0} + \sum\limits_{i = 0}^{t - 1} {\phi _1^i{w_{t - i}}}.$$
+$$y_t = {\phi ^t}{y_0} + \sum\limits_{i = 0}^{t - 1} {\phi ^i{w_{t - i}}}.$$
 
-In addition, we add the requirement that $\left| \phi _1 \right| < 1$. This requirement allows the process to be stationary. If $\phi _1 \ge 1$, the process would not converge.  In this way the process can represented as a geometric series that converges:
+In addition, we add the requirement that $\left| \phi  \right| < 1$. This requirement allows the process to be stationary. If $\phi  \ge 1$, the process would not converge.  In this way the process can represented as a geometric series that converges:
 \[\sum\limits_{k = 0}^\infty  {{r^k}}  = \frac{1}{{1 - r}},{\text{ }}\left| r \right| < 1.\]
 
 Next, we demonstrate how crucial this property is: 
 
 \[\begin{aligned}
-  \mathop {\lim }\limits_{t \to \infty } E\left[ {{y_t}} \right] &= \mathop {\lim }\limits_{t \to \infty } E\left[ {{\phi ^t}{y_0} + \sum\limits_{i = 0}^{t - 1} {\phi _1^i{w_{t - i}}} } \right] \\
-   &= \mathop {\lim }\limits_{t \to \infty } \underbrace {{\phi ^t}{y_0}}_{= 0 \, \text{since} \, \left| \phi  \right| < 1 \, \text{and} \, t \to \infty} + \sum\limits_{i = 0}^{t - 1} {\phi _1^i\underbrace {E\left[ {{w_{t - i}}} \right]}_{ = 0}}  \\
+  \mathop {\lim }\limits_{t \to \infty } E\left[ {{y_t}} \right] &= \mathop {\lim }\limits_{t \to \infty } E\left[ {{\phi ^t}{y_0} + \sum\limits_{i = 0}^{t - 1} {\phi ^i{w_{t - i}}} } \right] \\
+   &= \mathop {\lim }\limits_{t \to \infty } \underbrace {{\phi ^t}{y_0}}_{= 0 \, \text{since} \, \left| \phi  \right| < 1 \, \text{and} \, t \to \infty} + \sum\limits_{i = 0}^{t - 1} {\phi ^i\underbrace {E\left[ {{w_{t - i}}} \right]}_{ = 0}}  \\
    &= 0 \\
-  \mathop {\lim }\limits_{t \to \infty } \var\left( {{y_t}} \right) &= \mathop {\lim }\limits_{t \to \infty } \var\left( {{\phi ^t}{y_0} + \sum\limits_{i = 0}^{t - 1} {\phi _1^i{w_{t - i}}} } \right) \\
-   &= \mathop {\lim }\limits_{t \to \infty } \underbrace {\var\left( {{\phi ^t}{y_0}} \right)}_{ = 0{\text{ since constant}}} + \var\left( {\sum\limits_{i = 0}^{t - 1} {\phi _1^i{w_{t - i}}} } \right) \\
-   &= \mathop {\lim }\limits_{t \to \infty } \sum\limits_{i = 0}^{t - 1} {\phi _1^{2i}\var\left( {{w_{t - i}}} \right)}  \\
-   &= \mathop {\lim }\limits_{t \to \infty } \sigma _w^2\sum\limits_{i = 0}^{t - 1} {\phi _1^{2i}}  \\
+  \mathop {\lim }\limits_{t \to \infty } \var\left( {{y_t}} \right) &= \mathop {\lim }\limits_{t \to \infty } \var\left( {{\phi ^t}{y_0} + \sum\limits_{i = 0}^{t - 1} {\phi ^i{w_{t - i}}} } \right) \\
+   &= \mathop {\lim }\limits_{t \to \infty } \underbrace {\var\left( {{\phi ^t}{y_0}} \right)}_{ = 0{\text{ since constant}}} + \var\left( {\sum\limits_{i = 0}^{t - 1} {\phi ^i{w_{t - i}}} } \right) \\
+   &= \mathop {\lim }\limits_{t \to \infty } \sum\limits_{i = 0}^{t - 1} {\phi ^{2i}\var\left( {{w_{t - i}}} \right)}  \\
+   &= \mathop {\lim }\limits_{t \to \infty } \sigma _w^2\sum\limits_{i = 0}^{t - 1} {\phi ^{2i}}  \\
    &= \sigma _w^2 \cdot  
   \underbrace {\frac{1}{{1 - {\phi ^2}}}.}_{\begin{subarray}{l} 
   {\text{Geometric Series}} 
@@ -389,10 +389,10 @@ This leads us to conclude that the autocovariance function is:
    &= \cov\left( {{y_t},{\phi ^{\left| h \right|}}{y_t}} \right) \\
    &= {\phi ^{\left| h \right|}}\cov\left( {{y_t},{y_t}} \right) \\
    &= {\phi ^{\left| h \right|}}\var\left( {{y_t}} \right) \\
-   &= {\phi ^{\left| h \right|}}\frac{{\sigma _w^2}}{{1 - \phi _1^2}}. \\ 
+   &= {\phi ^{\left| h \right|}}\frac{{\sigma _w^2}}{{1 - \phi ^2}}. \\ 
 \end{aligned} \]
 
-Both the mean and autocovariance function do not depend on time and, thus, the AR(1) process is stationary if $\left| \phi _1 \right| < 1$. 
+Both the mean and autocovariance function do not depend on time and, thus, the AR(1) process is stationary if $\left| \phi  \right| < 1$. 
 
 If we assume that the AR(1) process is stationary, we can derive the mean and variance in another way. Without loss of generality, we'll assume that $y_0 = 0$.
 
@@ -400,26 +400,26 @@ Therefore:
 
 \[\begin{aligned}
   {y_t} &= {\phi _t}{y_{t - 1}} + {w_t} \\
-   &= {\phi _1}\left( {{\phi _1}{y_{t - 2}} + {w_{t - 1}}} \right) + {w_t} \\
-   &= \phi _1^2{y_{t - 2}} + {\phi _1}{w_{t - 1}} + {w_t} \\
+   &= {\phi }\left( {{\phi }{y_{t - 2}} + {w_{t - 1}}} \right) + {w_t} \\
+   &= \phi ^2{y_{t - 2}} + {\phi }{w_{t - 1}} + {w_t} \\
    &\vdots  \\
-   &= \sum\limits_{i = 0}^{t - 1} {\phi _1^i{w_{t - i}}}  \\
+   &= \sum\limits_{i = 0}^{t - 1} {\phi ^i{w_{t - i}}}  \\
    & \\
-  E\left[ {{y_t}} \right] &= E\left[ {\sum\limits_{i = 0}^{t - 1} {\phi _1^i{w_{t - i}}} } \right] \\
-   &= \sum\limits_{i = 0}^{t - 1} {\phi _1^i\underbrace {E\left[ {{w_{t - i}}} \right]}_{ = 0}}  \\
+  E\left[ {{y_t}} \right] &= E\left[ {\sum\limits_{i = 0}^{t - 1} {\phi ^i{w_{t - i}}} } \right] \\
+   &= \sum\limits_{i = 0}^{t - 1} {\phi ^i\underbrace {E\left[ {{w_{t - i}}} \right]}_{ = 0}}  \\
    &= 0 \\
    &\\
   \var\left( {{y_t}} \right) &= E\left[ {{{\left( {{y_t} - E\left[ {{y_t}} \right]} \right)}^2}} \right] \\
    &= E\left[ {y_t^2} \right] - {\left( {E\left[ {{y_t}} \right]} \right)^2} \\
    &= E\left[ {y_t^2} \right] \\
-   &= E\left[ {{{\left( {{\phi _1}{y_{t - 1}} + {w_t}} \right)}^2}} \right] \\
-   &= E\left[ {\phi _1^2y_{t - 1}^2 + w_t^2 + 2{\phi _1}{y_t}{w_t}} \right] \\
-   &= \phi _1^2E\left[ {y_{t - 1}^2} \right] + \underbrace {E\left[ {w_t^2} \right]}_{ = \sigma _w^2} + 2{\phi _1}\underbrace {E\left[ {{y_t}} \right]}_{ = 0}\underbrace {E\left[ {{w_t}} \right]}_{ = 0} \\
-   &= \underbrace {\phi _1^2\var\left( {{y_{t - 1}}} \right) + \sigma _w^2 = \phi _1^2\var\left( {{y_t}} \right) + \sigma _w^2}_{{\text{Assume stationarity}}} \\
-  \var\left( {{y_t}} \right) &= \phi _1^2\var\left( {{y_t}} \right) + \sigma _w^2 \\
-  \var\left( {{y_t}} \right) - \phi _1^2\var\left( {{y_t}} \right) &= \sigma _w^2 \\
-  \var\left( {{y_t}} \right)\left( {1 - \phi _1^2} \right) &= \sigma _w^2 \\
-  \var\left( {{y_t}} \right) &= \frac{{\sigma _w^2}}{{1 - \phi _1^2}}. \\ 
+   &= E\left[ {{{\left( {{\phi }{y_{t - 1}} + {w_t}} \right)}^2}} \right] \\
+   &= E\left[ {\phi ^2y_{t - 1}^2 + w_t^2 + 2{\phi }{y_t}{w_t}} \right] \\
+   &= \phi ^2E\left[ {y_{t - 1}^2} \right] + \underbrace {E\left[ {w_t^2} \right]}_{ = \sigma _w^2} + 2{\phi }\underbrace {E\left[ {{y_t}} \right]}_{ = 0}\underbrace {E\left[ {{w_t}} \right]}_{ = 0} \\
+   &= \underbrace {\phi ^2\var\left( {{y_{t - 1}}} \right) + \sigma _w^2 = \phi ^2\var\left( {{y_t}} \right) + \sigma _w^2}_{{\text{Assume stationarity}}} \\
+  \var\left( {{y_t}} \right) &= \phi ^2\var\left( {{y_t}} \right) + \sigma _w^2 \\
+  \var\left( {{y_t}} \right) - \phi ^2\var\left( {{y_t}} \right) &= \sigma _w^2 \\
+  \var\left( {{y_t}} \right)\left( {1 - \phi ^2} \right) &= \sigma _w^2 \\
+  \var\left( {{y_t}} \right) &= \frac{{\sigma _w^2}}{{1 - \phi ^2}}. \\ 
 \end{aligned} \]
 
 
@@ -515,17 +515,6 @@ It can clearly be observed that the asymptotic approximation is quite poor when 
 <!-- TO DO: ADD MORE DETAILS ON THE SIMULATION -->
 
 
-<!-- TO DO: JOINT STATIONARITY IS MISSING. 
-- Add content of class notes
-- Add simulated example 
-- Add real bivariate example
--->
-
-<!-- TO DO: ADD REAL DATA EXAMPLE -->
-
-
-
-<!--
 ## Joint Stationarity
 
 Two time series, say $\left(X_t \right)$ and $\left(Y_t\right)$, are said to be jointly stationary if they are each stationary, and the cross-covariance function
@@ -538,7 +527,17 @@ The cross-correlation function for jointly stationary times can be expressed as:
 
 \[{\rho _{XY}}\left( {t,t + h} \right) = \frac{{{\gamma _{XY}}\left( {t,t + h} \right)}}{{{\sigma _{{X_t}}}{\sigma _{{Y_{t + h}}}}}} = \frac{{{\gamma _{XY}}\left( h \right)}}{{{\sigma _{{X_t}}}{\sigma _{{Y_{t + h}}}}}} = {\rho _{XY}}\left( h \right)\]
 
+
+<!-- TO DO: JOINT STATIONARITY IS MISSING. 
+- Add content of class notes
+- Add simulated example 
+- Add real bivariate example
 -->
+
+<!-- TO DO: ADD REAL DATA EXAMPLE -->
+
+
+
 
 ## Robustness Issues
 
