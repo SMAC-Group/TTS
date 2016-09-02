@@ -1,6 +1,10 @@
 # Autocorrelation and Stationarity
 
+<<<<<<< Updated upstream
 ```{r autocorrelation_stationarity_code, echo = FALSE, message = FALSE, warning = FALSE}
+=======
+```{r autocorrelation_stationarity_code, echo = FALSE}
+>>>>>>> Stashed changes
 source("../code/init/chapter_start.R")
 knitr::read_chunk('../code/chapter/02_stationarity_autocorrelation.R')
 ```
