@@ -90,7 +90,7 @@ An important related statistic is the correlation of $X_t$ with $X_{t+h}$ or *au
 $$\rho \left(  h \right) = \operatorname{corr}\left( {{X_t},{X_{t + h}}} \right) = \frac{\gamma(h) }{\gamma(0)}.$$
 
 <!-- The more commonly used formulation for weakly stationary processes (more next section) is:
-\[\rho \left( {{X_t},{X_{t + h}}} \right) = \frac{{Cov\left( {{X_t},{X_{t + h}}} \right)}}{{{\sigma _{{X_t}}}{\sigma _{{X_{t + h}}}}}} = \frac{{\gamma \left( h \right)}}{{\gamma \left( 0 \right)}} = \rho \left( h \right)\] -->
+\[\rho \left( {{X_t},{X_{t + h}}} \right) = \frac{{\cov\left( {{X_t},{X_{t + h}}} \right)}}{{{\sigma _{{X_t}}}{\sigma _{{X_{t + h}}}}}} = \frac{{\gamma \left( h \right)}}{{\gamma \left( 0 \right)}} = \rho \left( h \right)\] -->
 
 Similarly to $\gamma(h)$, it is important to note that the above notation implies that the autocorrelation function is only a function of the lag $h$ between observations. Thus, autocovariances and autocorrelations are one possible way to describe the joint distribution of a time series. Indeed, the correlation of $X_t$ with $X_{t+1}$ is an obvious measure of how *persistent* a time series is. 
 
@@ -236,7 +236,7 @@ The autocovariance of weakly stationary processes has the following properties:
 
 We obtain these properties through:
 
-1. \[\gamma \left( 0 \right) = Var\left( {{x_t}} \right) = E\left[ {{{\left( {{x_t} - \mu } \right)}^2}} \right] = \sum\limits_{t = 1}^T {{p_t}{{\left( {{x_t} - \mu } \right)}^2}}  = {p_1}{\left( {{x_1} - \mu } \right)^2} +  \cdots  + {p_T}{\left( {{x_T} - \mu } \right)^2} \ge 0\]
+1. \[\gamma \left( 0 \right) = \var\left( {{x_t}} \right) = E\left[ {{{\left( {{x_t} - \mu } \right)}^2}} \right] = \sum\limits_{t = 1}^T {{p_t}{{\left( {{x_t} - \mu } \right)}^2}}  = {p_1}{\left( {{x_1} - \mu } \right)^2} +  \cdots  + {p_T}{\left( {{x_T} - \mu } \right)^2} \ge 0\]
 2. \[\begin{aligned}
   \gamma \left( h \right) &= \gamma \left( {t + h - t} \right) \\
    &= E\left[ {\left( {{x_{t + h}} - \mu } \right)\left( {{x_t} - \mu } \right)} \right] \\
@@ -284,7 +284,7 @@ In the following examples we evaluate the stationarity of the processes introduc
 \[\begin{aligned}
   \var\left( {{X_t}} \right) &= \var\left( {\sum\limits_{i = 1}^t {{W_t}}  + {X_0}} \right) 
    = \var\left( {\sum\limits_{i = 1}^t {{w_t}} } \right) + \underbrace {\var\left( {{X_0}} \right)}_{= 0} \\
-   &= \sum\limits_{i = 1}^t {Var\left( {{w_t}} \right)} 
+   &= \sum\limits_{i = 1}^t {\var\left( {{w_t}} \right)} 
    = t \sigma_w^2. 
 \end{aligned}\] 
 where $\sigma_w^2 = \var(W_t)$. Therefore, the variance depends on time ($t$) contradicting our second property. Moreover, we have:
@@ -293,9 +293,9 @@ This process is therefore not weakly stationary.
 
 3. Rgearding the autovariance of a random walk we have:
 \[\begin{aligned}
-  \gamma \left( h \right) &= Cov\left( {{X_t},{X_{t + h}}} \right) 
-   = Cov\left( {\sum\limits_{i = 1}^t {{W_i}} ,\sum\limits_{j = 1}^{t + h} {{W_j}} } \right) \\
-   &= Cov\left( {\sum\limits_{i = 1}^t {{W_i}} ,\sum\limits_{j = 1}^t {{W_j}} } \right) 
+  \gamma \left( h \right) &= \cov\left( {{X_t},{X_{t + h}}} \right) 
+   = \cov\left( {\sum\limits_{i = 1}^t {{W_i}} ,\sum\limits_{j = 1}^{t + h} {{W_j}} } \right) \\
+   &= \cov\left( {\sum\limits_{i = 1}^t {{W_i}} ,\sum\limits_{j = 1}^t {{W_j}} } \right) 
    = \min \left( {t,t + h} \right)\sigma _w^2 \\
    &= \left( {t + \min \left( {0,h} \right)} \right)\sigma _w^2,
 \end{aligned} \]
@@ -325,7 +325,7 @@ In the plot, two hundred simulated random walks are plotted along with the theor
    = 0. \] 
 2. \[\var \left( {{X_t}} \right) = \theta_1^2 \var \left( W_{t - 1}\right) + \var \left( W_{t}\right) = \left(1 + \theta^2 \right) \sigma^2_w.\]  
 3. \[\begin{aligned}
-  Cov\left( {{X_t},{X_{t + h}}} \right) &= E\left[ {\left( {{X_t} - E\left[ {{X_t}} \right]} \right)\left( {{X_{t + h}} - E\left[ {{X_{t + h}}} \right]} \right)} \right] = E\left[ {{X_t}{X_{t + h}}} \right] \\
+  \cov\left( {{X_t},{X_{t + h}}} \right) &= E\left[ {\left( {{X_t} - E\left[ {{X_t}} \right]} \right)\left( {{X_{t + h}} - E\left[ {{X_{t + h}}} \right]} \right)} \right] = E\left[ {{X_t}{X_{t + h}}} \right] \\
    &= E\left[ {\left( {{\theta}{W_{t - 1}} + {W_t}} \right)\left( {{\theta }{W_{t + h - 1}} + {W_{t + h}}} \right)} \right] \\
    &= E\left[ {\theta^2{W_{t - 1}}{W_{t + h - 1}} + \theta {W_t}{W_{t + h}} + {\theta}{W_{t - 1}}{W_{t + h}} + {W_t}{W_{t + h}}} \right]. \\
   \end{aligned} \] 
@@ -372,9 +372,9 @@ Next, we demonstrate how crucial this property is:
   \mathop {\lim }\limits_{t \to \infty } E\left[ {{y_t}} \right] &= \mathop {\lim }\limits_{t \to \infty } E\left[ {{\phi ^t}{y_0} + \sum\limits_{i = 0}^{t - 1} {\phi _1^i{w_{t - i}}} } \right] \\
    &= \mathop {\lim }\limits_{t \to \infty } \underbrace {{\phi ^t}{y_0}}_{= 0 \, \text{since} \, \left| \phi  \right| < 1 \, \text{and} \, t \to \infty} + \sum\limits_{i = 0}^{t - 1} {\phi _1^i\underbrace {E\left[ {{w_{t - i}}} \right]}_{ = 0}}  \\
    &= 0 \\
-  \mathop {\lim }\limits_{t \to \infty } Var\left( {{y_t}} \right) &= \mathop {\lim }\limits_{t \to \infty } Var\left( {{\phi ^t}{y_0} + \sum\limits_{i = 0}^{t - 1} {\phi _1^i{w_{t - i}}} } \right) \\
-   &= \mathop {\lim }\limits_{t \to \infty } \underbrace {Var\left( {{\phi ^t}{y_0}} \right)}_{ = 0{\text{ since constant}}} + Var\left( {\sum\limits_{i = 0}^{t - 1} {\phi _1^i{w_{t - i}}} } \right) \\
-   &= \mathop {\lim }\limits_{t \to \infty } \sum\limits_{i = 0}^{t - 1} {\phi _1^{2i}Var\left( {{w_{t - i}}} \right)}  \\
+  \mathop {\lim }\limits_{t \to \infty } \var\left( {{y_t}} \right) &= \mathop {\lim }\limits_{t \to \infty } \var\left( {{\phi ^t}{y_0} + \sum\limits_{i = 0}^{t - 1} {\phi _1^i{w_{t - i}}} } \right) \\
+   &= \mathop {\lim }\limits_{t \to \infty } \underbrace {\var\left( {{\phi ^t}{y_0}} \right)}_{ = 0{\text{ since constant}}} + \var\left( {\sum\limits_{i = 0}^{t - 1} {\phi _1^i{w_{t - i}}} } \right) \\
+   &= \mathop {\lim }\limits_{t \to \infty } \sum\limits_{i = 0}^{t - 1} {\phi _1^{2i}\var\left( {{w_{t - i}}} \right)}  \\
    &= \mathop {\lim }\limits_{t \to \infty } \sigma _w^2\sum\limits_{i = 0}^{t - 1} {\phi _1^{2i}}  \\
    &= \sigma _w^2 \cdot  
   \underbrace {\frac{1}{{1 - {\phi ^2}}}.}_{\begin{subarray}{l} 
@@ -384,11 +384,11 @@ Next, we demonstrate how crucial this property is:
 
 This leads us to conclude that the autocovariance function is:
 \[\begin{aligned}
-  Cov\left( {{y_t},{y_{t + h}}} \right) &= Cov\left( {{y_t},\phi {y_{t + h - 1}} + {w_{t + h}}} \right) \\
-   &= Cov\left( {{y_t},\phi {y_{t + h - 1}}} \right) \\
-   &= Cov\left( {{y_t},{\phi ^{\left| h \right|}}{y_t}} \right) \\
-   &= {\phi ^{\left| h \right|}}Cov\left( {{y_t},{y_t}} \right) \\
-   &= {\phi ^{\left| h \right|}}Var\left( {{y_t}} \right) \\
+  \cov\left( {{y_t},{y_{t + h}}} \right) &= \cov\left( {{y_t},\phi {y_{t + h - 1}} + {w_{t + h}}} \right) \\
+   &= \cov\left( {{y_t},\phi {y_{t + h - 1}}} \right) \\
+   &= \cov\left( {{y_t},{\phi ^{\left| h \right|}}{y_t}} \right) \\
+   &= {\phi ^{\left| h \right|}}\cov\left( {{y_t},{y_t}} \right) \\
+   &= {\phi ^{\left| h \right|}}\var\left( {{y_t}} \right) \\
    &= {\phi ^{\left| h \right|}}\frac{{\sigma _w^2}}{{1 - \phi _1^2}}. \\ 
 \end{aligned} \]
 
@@ -409,17 +409,17 @@ Therefore:
    &= \sum\limits_{i = 0}^{t - 1} {\phi _1^i\underbrace {E\left[ {{w_{t - i}}} \right]}_{ = 0}}  \\
    &= 0 \\
    &\\
-  Var\left( {{y_t}} \right) &= E\left[ {{{\left( {{y_t} - E\left[ {{y_t}} \right]} \right)}^2}} \right] \\
+  \var\left( {{y_t}} \right) &= E\left[ {{{\left( {{y_t} - E\left[ {{y_t}} \right]} \right)}^2}} \right] \\
    &= E\left[ {y_t^2} \right] - {\left( {E\left[ {{y_t}} \right]} \right)^2} \\
    &= E\left[ {y_t^2} \right] \\
    &= E\left[ {{{\left( {{\phi _1}{y_{t - 1}} + {w_t}} \right)}^2}} \right] \\
    &= E\left[ {\phi _1^2y_{t - 1}^2 + w_t^2 + 2{\phi _1}{y_t}{w_t}} \right] \\
    &= \phi _1^2E\left[ {y_{t - 1}^2} \right] + \underbrace {E\left[ {w_t^2} \right]}_{ = \sigma _w^2} + 2{\phi _1}\underbrace {E\left[ {{y_t}} \right]}_{ = 0}\underbrace {E\left[ {{w_t}} \right]}_{ = 0} \\
-   &= \underbrace {\phi _1^2Var\left( {{y_{t - 1}}} \right) + \sigma _w^2 = \phi _1^2Var\left( {{y_t}} \right) + \sigma _w^2}_{{\text{Assume stationarity}}} \\
-  Var\left( {{y_t}} \right) &= \phi _1^2Var\left( {{y_t}} \right) + \sigma _w^2 \\
-  Var\left( {{y_t}} \right) - \phi _1^2Var\left( {{y_t}} \right) &= \sigma _w^2 \\
-  Var\left( {{y_t}} \right)\left( {1 - \phi _1^2} \right) &= \sigma _w^2 \\
-  Var\left( {{y_t}} \right) &= \frac{{\sigma _w^2}}{{1 - \phi _1^2}}. \\ 
+   &= \underbrace {\phi _1^2\var\left( {{y_{t - 1}}} \right) + \sigma _w^2 = \phi _1^2\var\left( {{y_t}} \right) + \sigma _w^2}_{{\text{Assume stationarity}}} \\
+  \var\left( {{y_t}} \right) &= \phi _1^2\var\left( {{y_t}} \right) + \sigma _w^2 \\
+  \var\left( {{y_t}} \right) - \phi _1^2\var\left( {{y_t}} \right) &= \sigma _w^2 \\
+  \var\left( {{y_t}} \right)\left( {1 - \phi _1^2} \right) &= \sigma _w^2 \\
+  \var\left( {{y_t}} \right) &= \frac{{\sigma _w^2}}{{1 - \phi _1^2}}. \\ 
 \end{aligned} \]
 
 
@@ -530,7 +530,7 @@ It can clearly be observed that the asymptotic approximation is quite poor when 
 
 Two time series, say $\left(X_t \right)$ and $\left(Y_t\right)$, are said to be jointly stationary if they are each stationary, and the cross-covariance function
 
-\[{\gamma _{XY}}\left( {t,t + h} \right) = Cov\left( {{X_t},{Y_{t + h}}} \right) = {\gamma _{XY}}\left( h \right)\]
+\[{\gamma _{XY}}\left( {t,t + h} \right) = \cov\left( {{X_t},{Y_{t + h}}} \right) = {\gamma _{XY}}\left( h \right)\]
 
 is a function only of lag $h$.
 
