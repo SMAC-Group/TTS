@@ -1,6 +1,6 @@
 # Autocorrelation and Stationarity
 
-```{r autocorrelation_stationarity_code, echo = FALSE}
+```{r autocorrelation_stationarity_code, echo = FALSE, message = FALSE, warning = FALSE}
 source("../code/init/chapter_start.R")
 knitr::read_chunk('../code/chapter/02_stationarity_autocorrelation.R')
 ```
@@ -127,14 +127,14 @@ The first condition is obvious and simply reflects the fact that $|\rho \left( h
   \alpha_1
  \end{bmatrix} \geq 0. \]
  
- Thus, the matrix 
+Thus, the matrix 
  
  \[ \boldsymbol{A}_1 = \begin{bmatrix}
   1 & \rho_1\\
   \rho_1 & 1
  \end{bmatrix} \]
  
- must be positive semi-definite. Taking the determinant we have 
+must be positive semi-definite. Taking the determinant we have 
  
  \[\operatorname{det} \left(\boldsymbol{A}_1\right) = 1 - \rho_1^2 \]
 
@@ -160,7 +160,7 @@ Again, this implies that the matrix
   \rho_2 & \rho_1 & 1
  \end{bmatrix} \]
  
- must be positive semi-definite. It is easy to verify that
+must be positive semi-definite. It is easy to verify that
  
  \[\operatorname{det} \left(\boldsymbol{A}_2\right) = \left(1 - \rho_2 \right)\left(- 2 \rho_1^2 + \rho_2 + 1\right). \]
 
@@ -171,10 +171,9 @@ It implies that $|\rho_2| < 1$ as well as
 &\Rightarrow 1 > \frac{\rho_2 - \rho_1^2 }{1 - \rho_1^2} \geq -1,
 \end{aligned}\]
 
-imlying that $\rho_1$ and $\rho_2$ must lie in a parabolic shaped region defined by the above inequalities as illustrated in the figure below:
+imlying that $\rho_1$ and $\rho_2$ must lie in a parabolic shaped region defined by the above inequalities as illustrated in Figure \ref(fig:admissibility).
 
-
-```{r admissibility, cache=TRUE}
+```{r admissibility, cache=TRUE, fig.cap="Admissible autocorrelation functions", echo = FALSE}
 ```
 
 Therefore, the restrictions on the autocorrelation are very complicated thereby justifying the need for other forms of fundamental representation which will explore later in this text. Before moving on to the estimation of the autocorrelation and autocovariance functions, we first discuss the stationarity of $(X_t)$, which will provide a convenient framework in which $\gamma(h)$ and $\rho(h)$ can be used (rather that $\gamma(t,t+h)$ for example).
