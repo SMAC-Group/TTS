@@ -1,0 +1,87 @@
+\documentclass{article}
+\usepackage{tikz}
+\usepackage[active,tightpage,psfixbb]{preview}
+\PreviewEnvironment{pgfpicture}
+\setlength\PreviewBorder{0pt}
+\usepackage{amssymb}
+
+\begin{document}
+
+
+<<define_fun>>=
+mon.ACF.de.bonhomme = function(Xt, type = "ACF"){
+  # Inputs:
+  # Xt -> time series
+  # type -> type of graphs: "ACF", "ACF/PACF" or "RACF"
+  
+  # Compute ACF
+  Yt = gts(Xt, name = "ACF")
+  acf.graph = plot(ACF(Yt))
+  
+  if (type == "ACF"){
+    acf.graph
+  }else{
+    if (type == "ACF/PACF"){
+      # Compute PACF
+      Zt = gts(Xt, name = "PACF")
+      pacf = acf(Xt, type = "partial", plot = FALSE)
+      inter = ACF(Zt)
+      inter[,,] = c(NA,pacf$acf)
+      pacf.graph = plot(inter)
+      grid.arrange(acf.graph,pacf.graph, nrow = 1)
+    }else{
+      if (type == "RACF"){
+        Yt = gts(Xt, name = "Classical ACF")
+        acf.graph = plot(ACF(Yt))
+        
+        Wt = gts(Xt, name = "Robust ACF")
+        racf = robacf(Xt, plot=FALSE)$acf
+        inter = ACF(Wt)
+        inter[,,] = racf
+        racf.graph = plot(inter)
+        grid.arrange(acf.graph,racf.graph, nrow = 1)
+      }else{
+        cat("Error")
+      }
+    }
+  }
+}
+@
+
+<<example1>>=
+library(gmwm)
+library(tikzDevice)
+library(gridExtra)
+library(robcor)
+
+tikz("ex1.tex", width = 5, height = 4)
+Xt =gen.gts(AR1(phi = 0.6, sigma2 = 1))
+mon.ACF.de.bonhomme(Xt, type = "ACF")
+dev.off()
+@
+
+<<example2>>=
+tikz("ex2.tex", width = 8.5, height = 4)
+mon.ACF.de.bonhomme(Xt, type = "ACF/PACF")
+dev.off()
+@
+
+<<example3>>=
+tikz("ex3.tex", width = 8.5, height = 4)
+mon.ACF.de.bonhomme(Xt, type = "RACF")
+dev.off()
+@
+
+\begin{figure}
+\input{ex1.tex}
+\end{figure}
+
+\begin{figure}
+\input{ex2.tex}
+\end{figure}
+
+\begin{figure}
+\input{ex3.tex}
+\end{figure}
+
+\end{document}
