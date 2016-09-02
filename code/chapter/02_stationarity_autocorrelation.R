@@ -20,8 +20,11 @@ model = AR1(phi = phi, sigma2 = sigma2)
 # Initialization of result array
 result = array(NA, c(B,2,20))
 
+# Set seed for reproducibility
+set.seed(3298)
+
 # Start Monte-Carlo
-for (i in 1:B){
+for (i in seq_len(B)){
   # Simulate AR(1)
   Xt = gen.gts(model, N = n)
   
@@ -49,7 +52,7 @@ lags = c(1,2,5,10) + 1
 # Make graph
 par(mfrow = c(2,2))
 
-for (i in 1:4){
+for (i in seq_along(lags)){
   boxplot(result[,1,lags[i]], result[,2,lags[i]], col = "lightgrey",
           names = c("Uncont.","Cont."), main = paste("lag: h = ", lags[i]-1),
           ylab = "Sample autocorrelation")
@@ -81,8 +84,11 @@ model = AR1(phi = phi, sigma2 = sigma2)
 # Initialization of result array
 result = array(NA, c(B,2,20))
 
+# Set seed for reproducibility
+set.seed(5585)
+
 # Start Monte-Carlo
-for (i in 1:B){
+for (i in seq_len(B)){
   # Simulate AR(1)
   Xt = gen.gts(model, N = n)
   
@@ -107,7 +113,7 @@ lags = c(1,2,5,10) + 1
 # Make graph
 par(mfrow = c(2,2))
 
-for (i in 1:4){
+for (i in seq_along(lags)){
   boxplot(result[,1,lags[i]], result[,2,lags[i]], col = "lightgrey",
           names = c("Standard","Robust"), main = paste("lag: h = ", lags[i]-1),
           ylab = "Sample autocorrelation")
@@ -129,12 +135,12 @@ phi = seq(from = 0.95, to = -0.95, length.out = 30)
 result = matrix(NA,B,length(phi))
 
 # Start simulation
-for (i in 1:length(phi)){
+for (i in seq_along(phi)){
   # Define model
   model = AR1(phi = phi[i], sigma2 = 1)
   
   # Monte-Carlo
-  for (j in 1:B){
+  for (j in seq_len(B)){
     # Simulate AR(1)
     Xt = gen.gts(model, N = n)
     
@@ -192,6 +198,9 @@ text(0,0, c("Admissible Region"))
 # Load package
 library("gmwm")
 
+# Set seed for reproducibility
+set.seed(2241)
+
 # Simulate 100 observation from a Gaussian white noise
 Xt = gen.gts(WN(sigma2 = 1), N = 100)
 
@@ -215,19 +224,19 @@ B = 10000
 h = 3
 
 # Sample size considered
-T = c(5,10,30,300)
+N = c(5,10,30,300)
 
 # Initialisation
-result = matrix(NA,B,length(T))
+result = matrix(NA,B,length(N))
 
 # Set seed
 set.seed(1)
 
 # Start Monte Carlo
-for (i in 1:B){
-  for (j in 1:length(T)){
+for (i in seq_len(B)){
+  for (j in seq_along(N)){
     # Simluate process
-    Xt = rnorm(T[j])
+    Xt = rnorm(N[j])
     
     # Save autocorrelation at lag h
     result[i,j] = acf(Xt, plot = FALSE)$acf[h+1]
@@ -235,19 +244,20 @@ for (i in 1:B){
 }
 
 # Plot results
-par(mfrow = c(1,length(T)))
-for (i in 1:length(T)){
+par(mfrow = c(1,length(N)))
+for (i in seq_along(N)){
   # Estimated empirical distribution
-  hist(result[,i], col = "lightgrey", main = paste("Sample size T =",T[i]), probability = TRUE, xlim = c(-1,1), xlab = " ")
+  hist(result[,i], col = "lightgrey", main = paste("Sample size T =",N[i]), probability = TRUE, xlim = c(-1,1), xlab = " ")
   
   # Asymptotic distribution
   xx = seq(from = -10, to = 10, length.out = 10^3)
-  yy = dnorm(xx,0,1/sqrt(T[i]))
+  yy = dnorm(xx,0,1/sqrt(N[i]))
   lines(xx,yy, col = "red")
 }
 
 ## @knitr RW
 # In this example, we simulate a large number of random walks
+
 # Number of simulated processes
 B = 200
 
@@ -257,9 +267,13 @@ n = 1000
 # Output matrix
 out = matrix(NA,B,n)
 
-for (i in 1:B){
+# Set seed for reproducibility
+set.seed(6182)
+
+# Simulate Data
+for (i in seq_len(B)){
   # Simulate random walk
-  Xt = cumsum(rnorm(n))
+  Xt = gen.gts(RW(gamma=1), N = n)
   
   # Store process
   out[i,] = Xt
@@ -268,7 +282,7 @@ for (i in 1:B){
 # Plot random walks
 plot(NA, xlim = c(1,n), ylim = range(out), xlab = "Time", ylab = " ")
 color = sample(topo.colors(B, alpha = 0.5))
-for (i in 1:B){
+for (i in seq_len(B)){
   lines(out[i,], col = color[i])
 }
 
