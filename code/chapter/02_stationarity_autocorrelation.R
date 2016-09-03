@@ -1,7 +1,26 @@
+## @knitr GSPC
+# Load package
+library(quantmod)
+
+# Download S&P index
+getSymbols("^GSPC", from="1990-01-01", to = Sys.Date())
+
+# Compute returns
+GSPC.ret = ClCl(GSPC)
+
+# Plot index level and returns
+par(mfrow = c(1,2))
+plot(GSPC, main = " ", ylab = "Index level")
+plot(GSPC.ret, main = " ", ylab = "Daily returns")
+
+## @knitr GSPCacf
+sp500 = na.omit(GSPC.ret)
+names(sp500) = paste("S&P 500 (1990-01-01 - ",Sys.Date(),")", sep = "")
+plot(ACF(sp500))
 
 ## @knitr hydro_ACF
 
-# Load packages
+# Load package
 library(robcor)
 
 # Load data
@@ -175,12 +194,12 @@ var.approx = 1/(n*(1-phi)^2)
 # Compare variance estimations
 plot(NA, xlim = c(-1,1), ylim = range(var.approx), log = "y", 
      ylab = expression(paste("var(", bar(X), ")")),
-     xlab= expression(phi), cex.lab = 1.5)
+     xlab= expression(phi), cex.lab = 1)
 grid()
 lines(phi,var.theo, col = "deepskyblue4")
 lines(phi, var.Xbar, col = "firebrick3")
 lines(phi,var.approx, col = "springgreen4")
-legend("topleft",c("Theoretical variance","Estimated variance","Approximate variance"), 
+legend("topleft",c("Theoretical variance","Bootstrap variance","Approximate variance"), 
        col = c("deepskyblue4","firebrick3","springgreen4"), lty = 1,
        bty = "n",bg = "white", box.col = "white", cex = 1.2)
 
@@ -258,14 +277,16 @@ for (i in seq_len(B)){
 }
 
 # Plot results
-par(mfrow = c(1,length(N)))
+par(mfrow = c(2,length(N)/2))
 for (i in seq_along(N)){
   # Estimated empirical distribution
-  hist(result[,i], col = "lightgrey", main = paste("Sample size T =",N[i]), probability = TRUE, xlim = c(-1,1), xlab = " ")
+  hist(sqrt(N[i])*result[,i], col = "lightgrey", 
+       main = paste("Sample size n =",N[i]), probability = TRUE,
+       xlim = c(-4,4), xlab = " ")
   
   # Asymptotic distribution
   xx = seq(from = -10, to = 10, length.out = 10^3)
-  yy = dnorm(xx,0,1/sqrt(N[i]))
+  yy = dnorm(xx,0,1)
   lines(xx,yy, col = "red")
 }
 
@@ -295,6 +316,7 @@ for (i in seq_len(B)){
 
 # Plot random walks
 plot(NA, xlim = c(1,n), ylim = range(out), xlab = "Time", ylab = " ")
+grid()
 color = sample(topo.colors(B, alpha = 0.5))
 for (i in seq_len(B)){
   lines(out[i,], col = color[i])
