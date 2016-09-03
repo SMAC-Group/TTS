@@ -333,7 +333,7 @@ With this setup, we demonstrate how crucial this property is by calculating each
 3. Finally, we consider the autocovariance of an AR(1). For $h > 0$, we have
 \[\gamma \left( h \right) =  \cov\left( {{X_t},{X_{t + h}}} \right) = \phi \cov\left( {{X_t},{X_{t + h - 1}}} \right) = \phi \, \gamma \left( h-1 \right).\]
 Therefore, we using the symmetry of the autocovariance we have that
-\[\gamma \left( h \right) = |h| \, \gamma(0).\]
+\[\gamma \left( h \right) = \phi^{|h|} \, \gamma(0).\]
 
 Both the mean and variance do not depend on time in addition the autocovariance function can be viewed as function dependent on only lags and, thus, the AR(1) process is weakly stationary if $\left| \phi  \right| < 1$.  Lastly, we can obtain the autocorrelation for this process. Indeed, for $h > 0$, we have
 
@@ -345,3 +345,20 @@ After fully simplifying, we obtain
 
 Thus, the autocorrelation function for an AR(1) exhibits a _geometric decay_. As in, the smaller the $|\phi|$, the faster the autocorrelation reaches zero. If $|\phi|$ is close to 1, then the decay rate is slower.
 
+<!--
+## Exercises
+
+1. Given three random variables $X_1$, $X_2$, and $X_3$ such that $\mathbb{\mu}  = \left[ {\begin{array}{*{20}{c}} 1 \\ 0 \\ { - 2} \end{array}} \right]$ and $\mathbb{\Sigma} = \left[ {\begin{array}{*{20}{c}} 2&0&{ - 5} \\ 0&3&{4.5} \\ { - 5}&{4.5}&1 \end{array}} \right]$ compute:
+    - $\e{X_1 + X_3}$
+    - $\e{3X_1 - X_2 + 4X_3}$
+    - $\var(X_2 - X_3)$
+    - $\var(X_2 + X_3)$
+    - $\cov(4X_2 + X_1, 3X_1 - 2X_3)$
+    - $\corr(X_3 + X_2, 2X_2 - 3X_1)$
+1. Consider the time series of ${X_t} = {X_{t - 1}} + {W_t}$, where $W_t \sim N(0,\sigma ^2)$ and ${X_0} = 0$. Let $\bar X = \frac{1}{n}\sum\limits_{i = 1}^n {{X_i}}$. Derive the general form for $\var(\bar X)$. (Hint: $\sum\limits_{i = 1}^n {{i^2}}  = \frac{{n\left( {n + 1} \right)\left( {2n + 1} \right)}}{6}$)
+1. For each of the following first construct an example and then show that it has the correct properties:
+    - $(X_t)$ with constant mean but has a variance that is a function of time.
+    - $(W_t)$ white noise process that is not strongly stationary.
+    - $(Z_t)$ a stationary process that has an autocovariance function whose lag does not go to zero as $h > 0$.
+    - $(V_t)$ that is nonstationary with an autocovariance function that depends on the lag as $h > 0$.
+-->
