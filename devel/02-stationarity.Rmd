@@ -1,19 +1,19 @@
 # Autocorrelation and Stationarity
 
-<<<<<<< Updated upstream
 ```{r autocorrelation_stationarity_code, echo = FALSE, message = FALSE, warning = FALSE}
-=======
-```{r autocorrelation_stationarity_code, echo = FALSE}
->>>>>>> Stashed changes
 source("../code/init/chapter_start.R")
 knitr::read_chunk('../code/chapter/02_stationarity_autocorrelation.R')
 ```
-
 <!-- > "I have seen the future and it is very much like the present, only longer."
 >
 > --- Kehlog Albran, The Profit -->
 
+>
+> "*One of the first things taught in introductory statistics textbooks is that correlation is not causation. It is also one of the first things forgotten.*", Thomas Sowell
+>
+
 <!--
+
 After reading this chapter you will be able to:
 
 - Describe independent and dependent data
@@ -24,102 +24,90 @@ After reading this chapter you will be able to:
 
 -->
 
->
-> "*One of the first things taught in introductory statistics textbooks is that correlation is not causation. It is also one of the first things forgotten.*", Thomas Sowell
->
+In this chapter we will discuss and formalize how knowledge about $X_{t-1}$ (or more generally $\Omega_t$) can provide us with some information about the properties of $X_t$. In particular, we will consider the correlation (or covariance) of $(X_t)$ at different times such as $\corr \left(X_t, X_{t+h}\right)$. This "form" of correlation (covariance) is called the *autocorrelation* (*autocovariance*) and is a very useful tool in time series analysis. However, if we do not assume that a time series is characterized by a certain form of "stability", it would be rather difficult to estimate $\corr \left(X_t, X_{t+h}\right)$ as this quantity would depend on both $t$ and $h$ leading to more parameters to estimate than observations available. Therefore, the concept of *stationarity* is convenient in this context as it allows (among other things) to assume that
 
-In this chapter we will discuss and formalize a little how knowledge about $X_{t-1}$ (or $\Omega_t$) can provide us with some information about $X_t$. In particular, we will consisder the correlation (or covariance) of $(X_t)$ at different times such as $\corr \left(X_t, X_{t+h}\right)$. This "form" of correlation (covariance) is called the *autocorrelation* (*autocovariance*) and is a very usefull tool in time series analysis. Without assuming that a time series is characterized by a certain form of "stability", it would be rather difficult to estimate $\corr \left(X_t, X_{t+h}\right)$ as this quantity would depend on both $t$ and $h$ leading to far more parameters to estimate than observations available. Therefore, the concept of *stationarity* is conveniant in this context as it allows (among other things) to assume that
+\[\corr \left(X_t, X_{t+h}\right) = \corr \left(X_{t+j}, X_{t+h+j}\right), \;\;\; \text{for all $j$},\]
 
-\[\corr \left(X_t, X_{t+h}\right) = \corr \left(X_t+j, X_{t+h+j}\right),\]
+implying that the autocorrelation (or autocovariance) is only a function of the lag between observations (rather than time itself). These two concepts (i.e. autocorrelation and stationarity) will be discussed in this chapter. Before moving on, it is helpful to remember that correlation (or autocorrelation) is only appropriate to measure a very specific kind of dependence, i.e. the linear dependence. There are many other forms of dependence as illustrated in the bottom panels of the graph below, which all have a (true) zero correlation:
 
-implying that the autocorrelation (or autocovariance) is a function only of the lag between observations. These two concepts (autocorrelation and stationarity) will be discussed in this chapter. Before moving on, it is helpful to remind that correlation (or autocorrelation) is only approriate to measure a very spefic kind of dependence, i.e. linear dependence. There are many forms of dependence as illustrated in the bottom panels of the graph below, which all have a (true) zero correlation:
+```{r correxample, cache = TRUE, echo = FALSE, fig.cap="Different forms of dependence and their Pearson's r value", fig.align = 'center'}
+knitr::include_graphics("../images/corr_example.png")
+```
 
-![dependency](../images/1280px-Correlation_examples2.png)
-
-Note that several other metrics have been introduced in the litterature to assess the degree of "dependence" of two random variables but this goes beyond the material discussed in this text.
+Several other metrics have been introduced in the literature to assess the degree of "dependence" of two random variables however this goes beyond the material discussed in this chapter.
 
 ## The Autocorrelation and Autocovariance Functions 
-
-<!--
-Dependence between $T$ different RV is difficult to measure in one shot! So we consider just two random variables, $X_t$ and $X_{t+h}$. Then one
-(linear) measure of dependence is the covariance between $\left(X_t , X_{t+h}\right)$. Since $X$ is the same RV observed at two different time
-points, the covariance between $X_t$ and $X_{t+h}$ is defined as the Autocovariance.
--->
 
 ### Definitions
 
 The *autocovariance function* of a series $(X_t)$ is defined as 
 
-\[{\gamma_x}\left( {t,t+h} \right) = \cov \left( {{x_t},{x_{t+h}}} \right).\]
-
+\[{\gamma_x}\left( {t,t+h} \right) = \cov \left( {{X_t},{X_{t+h}}} \right),\]
 
 where the definition of covariance is given by:
 
-\[\begin{aligned}
-  \cov \left( {{X_t},{X_{t+h}}} \right) &= E\left[ {{X_t}{X_{t+h}}} \right] - E\left[ {{X_t}} \right]E\left[ {{X_{t+h}}} \right]
-\end{aligned} \]
+\[
+  \cov \left( {{X_t},{X_{t+h}}} \right) = \mathbb{E}\left[ {{X_t}{X_{t+h}}} \right] - \mathbb{E}\left[ {{X_t}} \right]\mathbb{E}\left[ {{X_{t+h}}} \right].
+ \]
   
-Similarly, the expectations are defined to be:
+Similarly, the above expectations are defined to be:
 
 \[\begin{aligned}
-  E\left[ {{X_t}} \right] &= \int\limits_{ - \infty }^\infty  {x \cdot {f_x}\left( x \right)dx}  \\
-  E\left[ {{X_t}{X_{t+h}}} \right] &= \int\limits_{ - \infty }^\infty  {\int\limits_{ - \infty }^\infty  {{x_1}{x_2} \cdot f\left( {{x_1},{x_2}} \right)d{x_1}d{x_2}} } 
+  \mathbb{E}\left[ {{X_t}} \right] &= \int\limits_{ - \infty }^\infty  {x \cdot {f_t}\left( x \right)dx},  \\
+  \mathbb{E}\left[ {{X_t}{X_{t+h}}} \right] &= \int\limits_{ - \infty }^\infty  {\int\limits_{ - \infty }^\infty  {{x_1}{x_2} \cdot f_{t,t+h}\left( {{x_1},{x_2}} \right)d{x_1}d{x_2}} } ,
 \end{aligned} \]
 
+where ${f_t}\left( x \right)$ and $f_{t,t+h}\left( {{x_1},{x_2}} \right)$ denote, respectively, the density of $X_t$ and the joint density of the pair $(X_t, X_{t+h})$.
 Since we generally consider stochastic processes with constant zero mean we often have
 
-\[{\gamma_x}\left( {t,t+h} \right) = E\left[X_t X_{t+h} \right]. \]
+\[{\gamma_x}\left( {t,t+h} \right) = \mathbb{E}\left[X_t X_{t+h} \right]. \]
 
-
-We normally drop the subscript referring to the time series if it is clear from the context which time series the autocovariance refers to. For example, we generally use ${\gamma}\left( {t,t+h} \right)$ instead of ${\gamma_x}\left( {t,t+h} \right)$. Moreover, the notation is even further simplified when the covariance of $X_t$ and $X_{t+h}$ is the same as that of $X_{t+j}$ and $X_{t+h+j}$ (for $j \in \mathbb{Z}$), i.e. the covariance depends only on the time between observations and not on the specific time $t$. This is an important property called *stationarity*, which will be discuss in the next section. In this case, we simply use to following notation:
+In addition, we normally drop the subscript referring to the time series (i.e. $x$ in this case) if it is clear from the context which time series the autocovariance refers to. For example, we generally use ${\gamma}\left( {t,t+h} \right)$ instead of ${\gamma_x}\left( {t,t+h} \right)$. Moreover, the notation is even further simplified when the covariance of $X_t$ and $X_{t+h}$ is the same as that of $X_{t+j}$ and $X_{t+h+j}$ (for all $j$), i.e. the covariance depends only on the time between observations and not on the specific time $t$. This is an important property called *stationarity*, which will be discuss in the next section. In this case, we simply use to following notation:
 \[\gamma \left( {h} \right) = \cov \left( X_t , X_{t+h} \right). \]
 
-A few other remarks: 
+This notation will generally be used throughout the text and implicitly assume certain properties (i.e. stationarity) on the process $(X_t)$. 
+Several remarks can be made on the autocovariance:
 
-1. The covariance function is **symmetric**. That is, ${\gamma}\left( {h} \right) = {\gamma}\left( -h \right)$ since $\cov \left( {{X_t},{X_{t+h}}} \right) = \cov \left( X_{t+h},X_{t} \right)$.
-2. Note that $\var \left( X_{t} \right) = {\gamma}\left( 0 \right)$.
-3. We have that $|\gamma(h)| \leq \gamma(0)$ for all $h$. The proof of this inequality follows from the Cauchy-Schwarz inequality, i.e.
+1. The autocovariance function is *symmetric*. That is, ${\gamma}\left( {h} \right) = {\gamma}\left( -h \right)$ since $\cov \left( {{X_t},{X_{t+h}}} \right) = \cov \left( X_{t+h},X_{t} \right)$.
+2. The autocovariance function "contains" the variance of the process as $\var \left( X_{t} \right) = {\gamma}\left( 0 \right)$.
+3. We have that $|\gamma(h)| \leq \gamma(0)$ for all $h$. The proof of this inequality is direct and follows from the Cauchy-Schwarz inequality, i.e.
 \[ \begin{aligned}
-\left(|\gamma(h)| \right)^2 &= \gamma(h)^2 = \left(E\left[\left(X_t - E[X_t] \right)\left(X_{t+h} - E[X_{t+h}] \right)\right]\right)^2\\
-&\leq E\left[\left(X_t - E[X_t] \right)^2 \right] E\left[\left(X_{t+h} - E[X_{t+h}] \right)^2 \right] =  \gamma(0)^2. 
+\left(|\gamma(h)| \right)^2 &= \gamma(h)^2 = \left(\mathbb{E}\left[\left(X_t - \mathbb{E}[X_t] \right)\left(X_{t+h} - \mathbb{E}[X_{t+h}] \right)\right]\right)^2\\
+&\leq \mathbb{E}\left[\left(X_t - \mathbb{E}[X_t] \right)^2 \right] \mathbb{E}\left[\left(X_{t+h} - \mathbb{E}[X_{t+h}] \right)^2 \right] =  \gamma(0)^2. 
 \end{aligned}
 \] 
 4. Just as any covariance, ${\gamma}\left( {h} \right)$ is "scale dependent" since ${\gamma}\left( {h} \right) \in \real$, or $-\infty \le {\gamma}\left( {h} \right) \le +\infty$. We therefore have:
     - if $\left| {\gamma}\left( {h} \right) \right|$ is "close" to zero, then $X_t$ and $X_{t+h}$ are "weakly" (linearly) dependent;
     - if $\left| {\gamma}\left( {h} \right) \right|$ is "far" from zero, then the two random variable present a "strong" (linear) dependence. However it is generally difficult to asses what "close" and "far" from zero means in this case. 
-5. ${\gamma}\left( {h} \right)=0$ does not imply that $X_t$ and $X_{t+h}$ are independent. This is only true in the jointly Gaussian case.
+5. ${\gamma}\left( {h} \right)=0$ does not imply that $X_t$ and $X_{t+h}$ are independent but simply $X_t$ and $X_{t+h}$ are uncorrelated. The independence is only implied by ${\gamma}\left( {h} \right)=0$ in the jointly Gaussian case.
 
-An important related statistic is the correlation of $X_t$ with $X_{t+h}$ or *autocorrelation* which is defined as
+As hinted in the introduction, an important related statistic is the correlation of $X_t$ with $X_{t+h}$ or *autocorrelation*, which is defined as
 
-$$\rho \left(  h \right) = \operatorname{corr}\left( {{X_t},{X_{t + h}}} \right) = \frac{\gamma(h) }{\gamma(0)}.$$
-
-<!-- The more commonly used formulation for weakly stationary processes (more next section) is:
-\[\rho \left( {{X_t},{X_{t + h}}} \right) = \frac{{\cov\left( {{X_t},{X_{t + h}}} \right)}}{{{\sigma _{{X_t}}}{\sigma _{{X_{t + h}}}}}} = \frac{{\gamma \left( h \right)}}{{\gamma \left( 0 \right)}} = \rho \left( h \right)\] -->
+$$\rho \left(  h \right) = \corr\left( {{X_t},{X_{t + h}}} \right) = \frac{{\cov\left( {{X_t},{X_{t + h}}} \right)}}{{{\sigma _{{X_t}}}{\sigma _{{X_{t + h}}}}}} = \frac{\gamma(h) }{\gamma(0)}.$$
 
 Similarly to $\gamma(h)$, it is important to note that the above notation implies that the autocorrelation function is only a function of the lag $h$ between observations. Thus, autocovariances and autocorrelations are one possible way to describe the joint distribution of a time series. Indeed, the correlation of $X_t$ with $X_{t+1}$ is an obvious measure of how *persistent* a time series is. 
 
 Remember that just as with any correlation:
 
 1. $\rho \left( h \right)$ is "scale free" so it is much easier to interpret than $\gamma(h)$.
-<!-- 2. $\rho \left( {{X_t},{X_{t + h}}} \right)$ is closer to $\pm 1 \Rightarrow \left({ X_t, X_{t+h} } \right)$ "more dependent." -->
 2. $|\rho \left( h \right)| \leq 1$ since $|\gamma(h)| \leq \gamma(0)$.
-3. Causation and correlation are two very different things!
+3. **Causation and correlation are two very different things!**
 
 ### A Fundamental Representation
 
 Autocovariances and autocorrelations also turn out to be a very useful tool because they are one of the *fundamental
-representations* of time series. Indeed, if we consider a zero mean normally distrbuted process, it is clear that its joint distribution is fully characterized by the autocariances $E[X_t X_{t+h}]$ (since the joint probability
+representations* of time series. Indeed, if we consider a zero mean normally distributed process, it is clear that its joint distribution is fully characterized by the autocariances $\mathbb{E}[X_t X_{t+h}]$ (since the joint probability
 density only depends of these covariances). Once we know the autocovariances we know *everything* there is to know about the process and therefore:
 *if two processes have the same autocovariance function, then they are the same process.*
 
-### Admissible autocorrelation functions
+### Admissible Autocorrelation Functions
 
-Since the autocorrelation is related to a fundamental representation of time series, it implies that one might be able to define a stochastic process by picking a set of autocorrelation values. However, it turns out that not every collection of numbers, say $\{\rho_1, \rho_2, ...\}$, can represent the autocorrelation of a process. Indeed, two conditions are required to ensure the validity of an autocorrelation sequence:
+Since the autocorrelation is related to a fundamental representation of time series, it implies that one might be able to define a stochastic process by picking a set of autocorrelation values (assuming for example that $\var(X_t) = 1$). However, it turns out that not every collection of numbers, say $\{\rho_1, \rho_2, ...\}$, can represent the autocorrelation of a process. Indeed, two conditions are required to ensure the validity of an autocorrelation sequence:
 
 1. $\operatorname{max}_j \; | \rho_j| \leq 1$.
-2. $\var \left[\sum_{j = 0}^\infty \alpha_j X_{t-j} \right] \geq 0$ for all $\{\alpha_0, \alpha_1, ...\}$.
+2. $\var \left[\sum_{j = 0}^\infty \alpha_j X_{t-j} \right] \geq 0 \;$ for all $\{\alpha_0, \alpha_1, ...\}$.
 
-The first condition is obvious and simply reflects the fact that $|\rho \left( h \right)| \leq 1$ but the second is more difficult to verify. Let $\alpha_j = 0$ for $j > 1$, then conditon 2 implies that
+The first condition is obvious and simply reflects the fact that $|\rho \left( h \right)| \leq 1$ but the second is far more difficult to verify. To further our understanding of the latter we let $\alpha_j = 0$ for $j > 1$, then condition 2 implies that
 
 \[\var \left[ \alpha_0 X_{t} + \alpha_1 X_{t-1}  \right] = \gamma_0 \begin{bmatrix}
   \alpha_0 & \alpha_1
@@ -164,40 +152,23 @@ Again, this implies that the matrix
   \rho_2 & \rho_1 & 1
  \end{bmatrix} \]
  
-must be positive semi-definite. It is easy to verify that
+must be positive semi-definite and it is easy to verify that
  
  \[\operatorname{det} \left(\boldsymbol{A}_2\right) = \left(1 - \rho_2 \right)\left(- 2 \rho_1^2 + \rho_2 + 1\right). \]
 
-It implies that $|\rho_2| < 1$ as well as 
+Thus, this implies that $|\rho_2| < 1$ as well as 
 
 \[\begin{aligned} &- 2 \rho_1^2 + \rho_2 + 1 \geq 0 \Rightarrow 1 > \rho_2 \geq 2 \rho_1^2 - 1 \\
 &\Rightarrow 1 - \rho_1^2 > \rho_2 - \rho_1^2 \geq -(1 - \rho_1^2)\\
-&\Rightarrow 1 > \frac{\rho_2 - \rho_1^2 }{1 - \rho_1^2} \geq -1,
+&\Rightarrow 1 > \frac{\rho_2 - \rho_1^2 }{1 - \rho_1^2} \geq -1.
 \end{aligned}\]
 
-imlying that $\rho_1$ and $\rho_2$ must lie in a parabolic shaped region defined by the above inequalities as illustrated in Figure \ref(fig:admissibility).
+Therefore, $\rho_1$ and $\rho_2$ must lie in a parabolic shaped region defined by the above inequalities as illustrated in Figure \@ref(fig:admissibility).
 
-```{r admissibility, cache=TRUE, fig.cap="Admissible autocorrelation functions", echo = FALSE}
+```{r admissibility, cache = TRUE, echo = FALSE, fig.cap = "Admissible autocorrelation functions", fig.align='center'}
 ```
 
-Therefore, the restrictions on the autocorrelation are very complicated thereby justifying the need for other forms of fundamental representation which will explore later in this text. Before moving on to the estimation of the autocorrelation and autocovariance functions, we first discuss the stationarity of $(X_t)$, which will provide a convenient framework in which $\gamma(h)$ and $\rho(h)$ can be used (rather that $\gamma(t,t+h)$ for example).
-
-<!-- Remember... When using correlation....
-
-![correlation_sillies](images/correlation-does-not-imply-causation.jpg) -->
-
-<!-- #### Cross dependency functions
-
-Consider two time series, say $\left(X_t \right)$ and $\left(Y_t \right)$. Then, the cross-covariance function between two series $\left(X_t \right)$ and $\left(Y_t \right)$ is:
-
-\[{\gamma _{XY}}\left( {t,t + h} \right) = \cov \left( {{X_t},{Y_{t + h}}} \right) = E\left[ {\left( {{X_t} - E\left[ {{X_t}} \right]} \right)\left( {{Y_{t + h}} - E\left[ {{Y_{t + h}}} \right]} \right)} \right].\]
-
-The cross-correlation function is given by
-\[{\rho _{XY}}\left( {t,t + h} \right) = Corr\left( {{X_t},{Y_{t + h}}} \right) = \frac{{{\gamma _{XY}}\left( {t,t + h} \right)}}{{{\sigma _{{X_t}}}{\sigma _{{Y_{t + h}}}}}}.\] 
-
-These ideas can extended beyond the bivariate case to a general multivariate setting. -->
-
-
+From our derivation it is clear that the restrictions on the autocorrelation are very complicated thereby justifying the need for other forms of fundamental representation which we will explore later in this text. Before moving on to the estimation of the autocorrelation and autocovariance functions, we must first discuss the stationarity of $(X_t)$, which will provide a convenient framework in which $\gamma(h)$ and $\rho(h)$ can be used (rather that $\gamma(t,t+h)$ for example) and (easily) estimated.
 
 ## Stationarity
 
@@ -555,6 +526,8 @@ is a function only of lag $h$.
 The cross-correlation function for jointly stationary times can be expressed as:
 
 \[{\rho _{XY}}\left( {t,t + h} \right) = \frac{{{\gamma _{XY}}\left( {t,t + h} \right)}}{{{\sigma _{{X_t}}}{\sigma _{{Y_{t + h}}}}}} = \frac{{{\gamma _{XY}}\left( h \right)}}{{{\sigma _{{X_t}}}{\sigma _{{Y_{t + h}}}}}} = {\rho _{XY}}\left( h \right)\]
+
+These ideas can extended beyond the bivariate case to a general multivariate setting. 
 
 
 <!-- TO DO: JOINT STATIONARITY IS MISSING. 
