@@ -317,8 +317,8 @@ With this setup, we demonstrate how crucial this property is by calculating each
 
 1. First, we will check to see if the mean is stationary. In this case, we opt to use limits to derive the expectation
 \[\begin{aligned}
-  \mathbb{E}\left[ {{X_t}} \right] &= \mathop {\lim }\limits_{k \to \infty } \mathbb{E}\left[ {{\phi^k}{X_{t-k}} + \sum\limits_{j = 0}^{k - 1} {\phi^j{W_{t - j}}} } \right] 
-   = \mathop {\lim }\limits_{k \to \infty } \, \underbrace {{\phi ^k}{\mathbb{E}[X_{t-k}]}}_{= 0} + \mathop {\lim }\limits_{k \to \infty } \, \sum\limits_{j = 0}^{k - 1} {\phi^j\underbrace {\mathbb{E}\left[ {{W_{t - j}}} \right]}_{ = 0}}
+  \mathbb{E}\left[ {{X_t}} \right] &= \mathop {\lim }\limits_{k \to \infty } \mathbb{E}\left[ {{\phi^k}{X_{t-k}} + \sum\limits_{j = 0}^{k - 1} {\phi^j{W_{t - j}}} } \right] \\
+   &= \mathop {\lim }\limits_{k \to \infty } \, \underbrace {{\phi ^k}{\mathbb{E}[X_{t-k}]}}_{= 0} + \mathop {\lim }\limits_{k \to \infty } \, \sum\limits_{j = 0}^{k - 1} {\phi^j\underbrace {\mathbb{E}\left[ {{W_{t - j}}} \right]}_{ = 0}}
    = 0.
 \end{aligned} \] As expected, the mean is zero and, hence, the first criteria for weak stationarity is satisfied. 
 2. Next, we opt to determine the variance of the process
@@ -345,3 +345,156 @@ After fully simplifying, we obtain
 
 Thus, the autocorrelation function for an AR(1) exhibits a _geometric decay_. As in, the smaller the $|\phi|$, the faster the autocorrelation reaches zero. If $|\phi|$ is close to 1, then the decay rate is slower.
 
+
+## Estimation of Moments of Stationary Processes
+
+In this section, we discuss how moments and related quantities of stationary process can be estimated. Informally speaking, the use of "averages" is meaningful for such processes suggesting that classical moments estimators can be employed. Indeed, suppose that one is interested in estimating $\alpha \equiv \mathbb{E}[m (X_t)]$, where $m(\cdot)$ is a known function of $X_t$. If $(X_t)$ is a strongly stationary process, we have
+
+\[\alpha = \int m(x) \, f(x) dx\]
+
+where $f(x)$ denotes the density of $(X_t), \; \forall t$. Replacing $f(x)$ by $f_n(x)$, the empirical density, we obtain the following estimator
+
+\[\hat{\alpha} = \frac{1}{n} \sum_{i = 1}^n m\left(x_i\right).\]
+
+In the next subsection, we examine how this simple idea can be used to estimate the mean, autocovariance and autocorrelation functions. Moreover, we discuss some of the properties of these estimators.
+
+
+### Estimation of the Mean Function
+
+If a time series is stationary, the mean function is constant and a possible estimator of this quantity is, as discussed above, given by
+
+\[\bar{X} = {\frac{1}{n}\sum\limits_{t = 1}^n {{X_t}} }.\]
+
+Naturally, the $k$-th moment, say $\beta_k \equiv \mathbb{E}[X_t^k]$ can be estimated by
+
+\[\hat{\beta}_k = {\frac{1}{n}\sum\limits_{t = 1}^n {{X_t^k}} }, \;\; k \in \left\{x \in \mathbb{N} : \, 0 < x < \infty  \right\}.\]
+
+The variance of such estimator can be derived as follows:
+
+\begin{equation}
+\begin{aligned}
+  \var \left( \hat{\beta}_k \right) &= \var \left( {\frac{1}{n}\sum\limits_{t = 1}^n {{X_t^k}} } \right)  \\
+   &= \frac{1}{{{n^2}}}\var \left( {{{\left[ {\begin{array}{*{20}{c}}
+  1& \cdots &1
+\end{array}} \right]}_{1 \times n}}{{\left[ {\begin{array}{*{20}{c}}
+  {{X_1^k}} \\
+   \vdots  \\
+  {{X_n^k}}
+\end{array}} \right]}_{n \times 1}}} \right)  \\
+   &= \frac{1}{{{n^2}}}{\left[ {\begin{array}{*{20}{c}}
+  1& \cdots &1
+\end{array}} \right]_{1 \times n}} \, \boldsymbol{\Sigma}(k) \, {\left[ {\begin{array}{*{20}{c}}
+  1 \\
+   \vdots  \\
+  1
+\end{array}} \right]_{n \times 1}}, 
+\end{aligned}
+\label{eq:chap2:var:moment}
+\end{equation}
+
+where $\boldsymbol{\Sigma}(k) \in \real^{n \times n}$ and its $i$th, $j$-th element is given by
+
+\[ \left(\boldsymbol{\Sigma}(k)\right)_{i,j} = \cov \left(X_i^k, X_j^k\right).\]
+
+In the case $k = 1$, (\@ref(eq:chap2:var:moment)) can easily be further simplified. Indeed, we have
+
+\[\begin{aligned}
+  \var \left( {\bar X} \right) &= \var \left( {\frac{1}{n}\sum\limits_{t = 1}^n {{X_t}} } \right)  \\
+   &= \frac{1}{{{n^2}}}{\left[ {\begin{array}{*{20}{c}}
+  1& \cdots &1
+\end{array}} \right]_{1 \times n}}\left[ {\begin{array}{*{20}{c}}
+  {\gamma \left( 0 \right)}&{\gamma \left( 1 \right)}& \cdots &{\gamma \left( {n - 1} \right)} \\
+  {\gamma \left( 1 \right)}&{\gamma \left( 0 \right)}&{}& \vdots  \\
+   \vdots &{}& \ddots & \vdots  \\
+  {\gamma \left( {n - 1} \right)}& \cdots & \cdots &{\gamma \left( 0 \right)}
+\end{array}} \right]_{n \times n}{\left[ {\begin{array}{*{20}{c}}
+  1 \\
+   \vdots  \\
+  1
+\end{array}} \right]_{n \times 1}}  \\
+   &= \frac{1}{{{n^2}}}\left( {n\gamma \left( 0 \right) + 2\left( {n - 1} \right)\gamma \left( 1 \right) + 2\left( {n - 2} \right)\gamma \left( 2 \right) +  \cdots  + 2\gamma \left( {n - 1} \right)} \right)  \\
+   &= \frac{1}{n}\sum\limits_{h =  - n}^n {\left( {1 - \frac{{\left| h \right|}}{n}} \right)\gamma \left( h \right)} .  \\
+\end{aligned} \]
+
+Obviously, when the $(X_t)$ is a white noise, the above formula reduces to the usual $\var \left( {\bar X} \right) = \sigma^2_w/n$. In the following example, we consider the case of an AR(1) process and discussed how $\var \left( {\bar X} \right)$ can be obtained or estimated.
+
+**Example:** For an AR(1) we have $\gamma(h) = \phi^h \sigma_w^2 \left(1 - \phi^2\right)^{-1}$, therefore, we obtain (after some computations):
+
+\begin{equation}
+\var \left( {\bar X} \right) = \frac{\sigma_w^2 \left( n - 2\phi - n \phi^2 + 2 \phi^{n + 1}\right)}{n^2\left(1-\phi^2\right)\left(1-\phi\right)^2}.
+\label{eq:chap2:exAR1}
+\end{equation}
+
+Unfortunately, deriving such an exact formula is often difficult when considering more complex models. However, asymptotic approximations are often employed to simplify the calculation. For example, in our case we have
+
+\[\mathop {\lim }\limits_{n \to \infty } \; n \var \left( {\bar X} \right) = \frac{\sigma_w^2}{\left(1-\phi\right)^2},\]
+
+providing the following approximate formula:
+
+\[\var \left( {\bar X} \right) \approx \frac{\sigma_w^2}{n \left(1-\phi\right)^2}.\]
+
+Alternatively, simulation methods can also be employed. For example, a possible strategy (i.e. parametric bootstrap) could be the following:
+
+1. Simulate a new sample under the postulated model, i.e. $X_t^* \sim F_{\btheta}$ (*note:* if $\btheta$ is unknown it can be replace by $\hat{\btheta}$, a suitable estimator).
+2. Compute the statistics of interest on the simulated sample $(X_t^*)$ (i.e. ${\bar{X}^*}$ in our example).
+3. Repeat Steps 1 and 2 $B$ times where $B$ is sufficiently "large" (typically $100 \leq B \leq 10000$).
+4. Compute the empirical variance of the statistics of interest based on the $B$ independent replications. In our example, we would have
+
+\[\hat{\sigma}^2_B = \frac{1}{B-1} \sum_{i = 1}^B \left(\bar{X}^*_i - \bar{X}^* \right)^2, \;\;\; \text{where} \;\;\; \bar{X}^* = \frac{1}{B} \sum_{i=1}^B \bar{X}^*_i,\]
+
+and where $\bar{X}^*_i$ denotes the value of the mean estimated on the $i$-th simulated sample.
+
+The figure below generated by the following code compares these three methods for $n = 10$, $B = 1000$, $\sigma^2 = 1$ and a grid of values for $\phi$ going from $-0.95$ to $0.95$:
+
+
+```{r estimXbar, cache = TRUE}
+```
+
+It can be observed that the variance of $\bar{X}$ typically increases with the $\phi$. As expected when $\phi = 0$ we have $\var(\bar{X}) = 1/n$ as in this case the process is a whote noise. Moreover, the bootstrap approach appears to (\@ref(eq:chap2:exAR1)) while the asymptotic formula provides a reasonable approximate for $\phi$ being between -0.5 and 0.5. Naturally, the quality of this approximation would be far better for larger sample size (here we consider $n = 10$ which a little "extreme").
+
+### Sample Autocovariance and Autocorrelation Functions
+
+A natural estimator of the *autocovariance function* is given by:
+
+\[\hat \gamma \left( h \right) = \frac{1}{T}\sum\limits_{t = 1}^{T - h} {\left( {{X_t} - \bar X} \right)\left( {{X_{t + h}} - \bar X} \right)} \]
+
+leading the following "plug-in" estimator of the *autocorrelation function*
+
+\[\hat \rho \left( h \right) = \frac{{\hat \gamma \left( h \right)}}{{\hat \gamma \left( 0 \right)}}.\]
+
+A graphical representation of the autocorrelation function is often the first step for any time series analysis (again assuming the process to be stationary). Consider the following simulated example:
+
+```{r basicACF, cache = TRUE}
+```
+
+In this example, the true autocorrelation is equal to zero at any lag $h \neq 0$ but obviously the estimated autocorrelations are random variables and are not equal to their true values. It would therefore be useful to have some knowledge about the variability of the sample autocorrelations (under some conditions) to assess whether the data comes from a completely random series or presents some significant correlation at some lags. The following result provides an asymptotic solution to this problem:
+
+**Theorem:** If $X_t$ is a strong white noise with finite fourth moment, then $\hat{\rho}(h)$ is approximately normally distributed with mean $0$ and variance $n^{-1}$ for all fixed $h$.
+
+The proof of this Theorem is given in Appendix \@ref(appendix-a).
+
+Using this result, we now have an approximate method to assess whether peaks in the sample autocorrelation are significant by determining whether the observed peak lies outside the interval $\pm 2/\sqrt{T}$ (i.e. an approximate 95%  confidence interval). Returning to our previous example and adding confidence bands in the previous graph, we obtain:
+
+```{r basicACF2, cache = TRUE}
+```
+
+It can now be observed that most peaks lie within the interval $\pm 2/\sqrt{T}$ suggesting that the true data generating process is uncorrelated.
+
+**Example:** To illustrate how the autocorrelation function can be used to reveal some "features" of a time series we download the index level of the Standard & Poor's 500, often abbreviated as the S&P 500. This financial index is based on the market capitalizations of 500 large companies having common stock listed on the New York Stock Exchange or the NASDAQ Stock Market. The graph below should the index level and daily returns from 1990.
+
+```{r GSPC, cache = TRUE, fig.height = 4, fig.width = 8, warnings = FALSE, message = FALSE}
+```
+
+From these graphs it is clear that the returns are not identically distributed as the variance seems to vary in time and clusters with either high or low volatility can be observed. These characteristic of financial time series is well known and the Chapter 5, we will discuss how the variance of such process can be approximated. Nevertheless, we compute the empirical autocorrelation function of the S&P 500 return to evaluate the degree of "linear" dependence between observation. The graph below presents the empirical autocorrelation.
+
+```{r GSPCacf, cache = TRUE, fig.height = 3.5, fig.width = 6, warning = FALSE}
+```
+
+As expected, the autocorrelation is small but it might be reasonable to believe that this sequence is not purely uncorrelated.
+
+Unfortunately, Theorem 1 is based on asymptotic argument and therefore the confidence bands constructed are also asymptotic and there are no "exact" tools that can be used in this case. To study the validity of this results when $n$ is "small" we performed a simulation. In the latter, we simulated processes following from a Gaussian white noise and examine the empirical distribution of $\hat{\rho}(3)$ with different sample sizes (i.e. $n$ is set to 5, 10, 30 and 300). Intuitively, the "quality" of of the approximation provided by Theorem should increase with the sample size $n$. The code below perform such simulation and compares the empirical distribution of $\sqrt{n} \hat{\rho}(3)$ with a normal distribution with mean 0 and variance 1, i.e. its asymptotic distribution.
+
+```{r simulationACF, cache = TRUE}
+```
+
+As expected, it can clearly be observed that the asymptotic approximation is quite poor when $n = 5$ but as the sample size increases the approximation improves and is very close when, for example, $n = 300$. This simulation could suggest that Theorem 1 provides a relatively "close" approximation of the distribution of $\hat{\rho}(h)$.
