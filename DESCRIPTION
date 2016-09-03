@@ -21,7 +21,8 @@ Imports:
   highfrequency,
   timeDate,
   gridExtra,
-  robcor
+  robcor,
+  quantmod
 Remotes:
   sinhrks/ggfortify,
   rstudio/bookdown,
