@@ -253,7 +253,7 @@ implying (for a fixed $h$) that
 
 In the following simulated example, we illustrate the non-stationary feature of such a process:
 
-```{r RW, cache = TRUE, fig.cap = "Two hundred simulated random walks.", fig.align='center'}
+```{r RWsim, cache = TRUE, fig.cap = "Two hundred simulated random walks.", fig.align='center'}
 ```
 
 In the plot, two hundred simulated random walks are plotted along with the theoretical 95\% confidence intervals (red-dashed lines). The relationship between time and variance can clearly be observed (i.e. the variance of the process increases with the time).

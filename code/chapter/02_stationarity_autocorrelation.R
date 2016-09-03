@@ -6,6 +6,7 @@ library(robcor)
 
 # Load data
 data("hydro", package = "datapkg")
+
 # Compute ACFs
 par(mfrow=c(1,2))
 acf(hydro, main="Standard")
@@ -268,7 +269,7 @@ for (i in seq_along(N)){
   lines(xx,yy, col = "red")
 }
 
-## @knitr RW
+## @knitr RWsim
 # In this example, we simulate a large number of random walks
 
 # Number of simulated processes
