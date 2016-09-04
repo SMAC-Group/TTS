@@ -133,7 +133,7 @@ Returning to the proof of Theorem 1, since $\{\left( {{X_t} - \mu} \right)\left(
 
 The expectation of $\tilde{\gamma} \left( h \right)$,
 \begin{equation*}
-    \mathbb{E}[\tilde{\gamma} \left( h \right)] = \frac{1}{n}\mathbb{E}\left[\sum\limits_{t = 1}^{n} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)}\right].
+    \mathbb{E}[\tilde{\gamma} \left( h \right)] = \mathbb{E}\left[\frac{1}{n}\sum\limits_{t = 1}^{n} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)}\right].
 \end{equation*}
 
 By Cauchy–Schwarz inequality and $var(X_t) = \sigma^2$, we have
@@ -144,7 +144,7 @@ By Cauchy–Schwarz inequality and $var(X_t) = \sigma^2$, we have
 Then by bounded convergence theorem and $\{X_t\}_1^n$ are independent, we have
 
 \begin{equation*}
-    \mathbb{E}[\tilde{\gamma} \left( h \right)] = \frac{1}{n}\left[\sum\limits_{t = 1}^{n} { \mathbb{E}\left( {{X_t} - \mu} \right)\mathbb{E}\left( {{X_{t + h}} - \mu} \right)}\right] =
+    \mathbb{E}[\tilde{\gamma} \left( h \right)] = { \mathbb{E}\left( {{X_t} - \mu} \right)\mathbb{E}\left( {{X_{t + h}} - \mu} \right)} =
     \begin{cases}
         \sigma^2, & \text{for } h = 0\\
         0, & \text{for } h \neq 0
