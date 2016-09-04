@@ -280,14 +280,14 @@ for (i in seq_len(B)){
 par(mfrow = c(2,length(N)/2))
 for (i in seq_along(N)){
   # Estimated empirical distribution
-  hist(sqrt(N[i])*result[,i], col = "lightgrey", 
+  hist(sqrt(N[i])*result[,i], col = "royalblue1", 
        main = paste("Sample size n =",N[i]), probability = TRUE,
        xlim = c(-4,4), xlab = " ")
   
   # Asymptotic distribution
   xx = seq(from = -10, to = 10, length.out = 10^3)
   yy = dnorm(xx,0,1)
-  lines(xx,yy, col = "red")
+  lines(xx,yy, col = "red", lwd = 2)
 }
 
 ## @knitr RWsim
