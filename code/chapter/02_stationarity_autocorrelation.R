@@ -306,7 +306,7 @@ var.Xbar = apply(result,2,var)
 # Compute theoretical variance
 var.theo = (n - 2*phi - n*phi^2 + 2*phi^(n+1))/(n^2*(1-phi^2)*(1-phi)^2)
 
-# Compute (approximate) vairance
+# Compute (approximate) variance
 var.approx = 1/(n*(1-phi)^2)
 
 # Compare variance estimations
