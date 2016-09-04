@@ -158,7 +158,7 @@ for (i in seq_along(lags)){
 # Define sample size
 n = 10
 
-# Number of Monte-Carlo replications
+# Number of Bootstrap replications
 B = 5000
 
 # Define grid of values for phi
@@ -292,6 +292,7 @@ for (i in seq_along(N)){
 
 ## @knitr RWsim
 # In this example, we simulate a large number of random walks
+library(gmwm)
 
 # Number of simulated processes
 B = 200
