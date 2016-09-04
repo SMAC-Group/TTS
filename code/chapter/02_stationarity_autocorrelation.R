@@ -34,8 +34,8 @@ Yt = Xt
 Yt[sample(1:length(Xt),nb_outlier)] = rnorm(nb_outlier,0,10)
 
 # Add names
-Xt = gts(Xt, name = "$(X_t)$")
-Yt = gts(Yt, name = "$(Y_t)$")
+Xt = gts(Xt, name = paste("(",expression(X[t]),")",sep = "")
+Yt = gts(Yt, name = "(Yt)")
 
 # Plot data
 a = autoplot(Xt) + ylim(range(Yt)) + ylab("$(X_t)$")
