@@ -24,7 +24,7 @@ library(gridExtra)
 
 # Simulate Xt
 set.seed(1)
-model = AR1(phi = 0.9, sigma2 = 1)
+model = AR1(phi = 0.5, sigma2 = 1)
 Xt = gen.gts(model)
 
 # Construct Yt
@@ -34,12 +34,12 @@ Yt = Xt
 Yt[sample(1:length(Xt),nb_outlier)] = rnorm(nb_outlier,0,10)
 
 # Add names
-Xt = gts(Xt, name = paste("(",expression(X[t]),")",sep = "")
-Yt = gts(Yt, name = "(Yt)")
+Xt = gts(Xt)
+Yt = gts(Yt, name = paste("(",expression(Y[t]),")",sep = ""))
 
 # Plot data
-a = autoplot(Xt) + ylim(range(Yt)) + ylab("$(X_t)$")
-b = autoplot(Yt) + ylab("$(Y_t)$")
+a = autoplot(Xt) + ylim(range(Yt)) + ylab("(Xt)")
+b = autoplot(Yt) + ylab("(Yt)")
 grid.arrange(a, b, nrow = 2)
 
 
