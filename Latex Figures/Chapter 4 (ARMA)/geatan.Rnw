@@ -48,6 +48,8 @@ mon.ACF.de.bonhomme = function(Xt, type = "ACF"){
 }
 @
 
+
+
 <<example1>>=
 library(gmwm)
 library(tikzDevice)
@@ -57,12 +59,14 @@ library(robcor)
 tikz("ex1.tex", width = 5, height = 4)
 model = ARMA(ar = c(0.43,.32, .15), ma = c(1.5, .89, .12), sigma2 = 1)
 Xt = gen.gts(model)
+plot.gts(Xt)
 fit = arima(Xt,order = c(1L,0L,1L))
 tikz("ex2.tex", width = 8.5, height = 4)
 mon.ACF.de.bonhomme(fit, type = "ACF/PACF")
-plot(resid(fit))
 dev.off()
 @
+
+
 
 
 %<<example3>>=

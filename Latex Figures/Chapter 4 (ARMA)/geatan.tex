@@ -102,6 +102,8 @@
 \end{kframe}
 \end{knitrout}
 
+
+
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -117,18 +119,14 @@
 \hlkwd{tikz}\hlstd{(}\hlstr{"ex1.tex"}\hlstd{,} \hlkwc{width} \hlstd{=} \hlnum{5}\hlstd{,} \hlkwc{height} \hlstd{=} \hlnum{4}\hlstd{)}
 \hlstd{model} \hlkwb{=} \hlkwd{ARMA}\hlstd{(}\hlkwc{ar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0.43}\hlstd{,}\hlnum{.32}\hlstd{,} \hlnum{.15}\hlstd{),} \hlkwc{ma} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1.5}\hlstd{,} \hlnum{.89}\hlstd{,} \hlnum{.12}\hlstd{),} \hlkwc{sigma2} \hlstd{=} \hlnum{1}\hlstd{)}
 \hlstd{Xt} \hlkwb{=} \hlkwd{gen.gts}\hlstd{(model)}
+\hlkwd{plot.gts}\hlstd{(Xt)}
 \hlstd{fit} \hlkwb{=} \hlkwd{arima}\hlstd{(Xt,}\hlkwc{order} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1L}\hlstd{,}\hlnum{0L}\hlstd{,}\hlnum{1L}\hlstd{))}
-\end{alltt}
-
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning in arima(Xt, order = c(1L, 0L, 1L)): possible convergence problem: optim gave code = 1}}\begin{alltt}
 \hlkwd{tikz}\hlstd{(}\hlstr{"ex2.tex"}\hlstd{,} \hlkwc{width} \hlstd{=} \hlnum{8.5}\hlstd{,} \hlkwc{height} \hlstd{=} \hlnum{4}\hlstd{)}
 \hlkwd{mon.ACF.de.bonhomme}\hlstd{(fit,} \hlkwc{type} \hlstd{=} \hlstr{"ACF/PACF"}\hlstd{)}
 \end{alltt}
 
 
 {\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in .acf(x2, lagmax, cor, demean): object 'x2' not found}}\begin{alltt}
-\hlkwd{plot}\hlstd{(}\hlkwd{resid}\hlstd{(fit))}
 \hlkwd{dev.off}\hlstd{()}
 \end{alltt}
 \begin{verbatim}
@@ -137,6 +135,8 @@
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
+
+
 
 
 %<<example3>>=
