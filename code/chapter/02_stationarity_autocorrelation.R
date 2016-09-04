@@ -398,7 +398,7 @@ for (i in seq_len(B)){
 par(mfrow = c(2,length(N)/2))
 for (i in seq_along(N)){
   # Estimated empirical distribution
-  hist(sqrt(N[i])*result[,i], col = "lightgrey", 
+  hist(sqrt(N[i])*result[,i], col = "royalblue1", 
        main = paste("Sample size n =",N[i]), probability = TRUE,
        xlim = c(-4,4), xlab = " ")
   
