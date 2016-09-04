@@ -63,7 +63,7 @@ library(gridExtra)
 library(robcor)
 
 # Load data
-data("hydro", package = "datapkg")
+data("hydro", package = "smacdata")
 
 # Construct gts objects
 hydro1 = gts(hydro, name = 'Non-robust Estimator')

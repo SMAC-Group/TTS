@@ -162,14 +162,10 @@ plot(Xt)
 
 ## @knitr example_PSR
 # Saving Rates
-saving = read.csv("data/PSAVERT.csv", sep=",")
-
-# Construct gts object
-saving = gts(saving$VALUE, start = 1959, freq = 12, name = 'US Personal Saving Rates', 
-    unit = "month")
+data("savingrt", package="smacdata")
 
 # Plot time series
-autoplot(saving) + ylab("US Personal Saving Rates (%)")
+autoplot(savingrt) + ylab("US Personal Saving Rates (%)")
 
 ## @knitr numberline
 number_line = function(named){

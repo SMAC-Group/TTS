@@ -9,4 +9,4 @@ if(length(inst_pkgs)) install.packages(inst_pkgs)
 devtools::install_github("SMAC-Group/imudata")
 
 # Install from github
-devtools::install_github("SMAC-Group/datapkg")
+devtools::install_github("SMAC-Group/smacdata")
