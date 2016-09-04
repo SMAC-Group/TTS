@@ -510,15 +510,15 @@ The data generating process delivers a theoretical autocorrelation (autocovarian
 
 The fact that the sample can suffer from outliers implies that the standard estimation of the autocorrelation (autocovariance) functions through the sample functions could be highly biased. The standard estimators presented in the previous section are therefore not "robust" and can behave badly when the sample suffers from contamination. To illustrate this limitation of classical estimator we consider the following two processes:
 
-	\begin{equation*}
-				\begin{aligned}
-					X_t &= \phi X_{t-1} + W_t, \;\;\; W_t \sim \mathcal{N}(0,\sigma_w^2) \\
-					Y_t &= \begin{cases}
+\begin{equation*}
+	\begin{aligned}
+		X_t &= \phi X_{t-1} + W_t, \;\;\; W_t \sim \mathcal{N}(0,\sigma_w^2) \\
+		Y_t &= \begin{cases}
 				    X_t       & \quad \text{with probability } 1 - \epsilon\\
 				    U_t  & \quad \text{with probability } \epsilon\\
 				  \end{cases}, \;\;\; U_t \sim \mathcal{N}(0,\sigma_u^2) 
-				\end{aligned}
-	\end{equation*}
+	\end{aligned}
+\end{equation*}
 	
 when $\epsilon$ is "small" and $\sigma_u^2 \gg \sigma_w^2$, the process $(Y_t)$ can be interpreted as a "contaminated" version of $(X_t)$. The figure below represents one relalization of the processes $(X_t)$ and $(Y_t)$ using the following setting: $n = 100$, $\sigma_u^2 = 10$, $\phi = 0,5$, $\sigma_w^2 = 1$ as well as $\alpha = 0.05$.
 
