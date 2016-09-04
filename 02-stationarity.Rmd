@@ -518,7 +518,6 @@ The fact that the sample can suffer from outliers implies that the standard esti
 				  \end{cases}, \;\;\; U_t \sim \mathcal{N}(0,\sigma_u^2),
 \end{aligned}
 \] 
-
 	
 when $\epsilon$ is "small" and $\sigma_u^2 \gg \sigma_w^2$, the process $(Y_t)$ can be interpreted as a "contaminated" version of $(X_t)$. The figure below represents one relalization of the processes $(X_t)$ and $(Y_t)$ using the following setting: $n = 100$, $\sigma_u^2 = 10$, $\phi = 0,5$, $\sigma_w^2 = 1$ as well as $\alpha = 0.05$.
 
@@ -561,7 +560,7 @@ It can be observed that both estimators are very similar. Nevertheless, some sma
 <!--
 ## Exercises
 
-1. Given three random variables $X_1$, $X_2$, and $X_3$ such that $\mathbb{\mu}  = \left[ {\begin{array}{*{20}{c}} 1 \\ 0 \\ { - 2} \end{array}} \right]$ and $\mathbb{\Sigma} = \left[ {\begin{array}{*{20}{c}} 2&0&{ - 5} \\ 0&3&{4.5} \\ { - 5}&{4.5}&1 \end{array}} \right]$ compute:
+1. Given three random variables $X_1$, $X_2$, and $X_3$ such that $\mathbb{\mu}  = \left[ {\begin{array}{*{20}{c}} 1 \\ 0 \\ { - 2} \end{array}} \right]$ and $\mathbb{\Sigma} = \left[ {\begin{array}{*{20}{c}} 2&0&{ - 1} \\ 0&3&{0.5} \\ { - 1}&{0.5}&1 \end{array}} \right]$ compute:
     - $\e{X_1 + X_3}$
     - $\e{3X_1 - X_2 + 4X_3}$
     - $\var(X_2 - X_3)$
