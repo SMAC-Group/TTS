@@ -1,0 +1,163 @@
+\documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage{tikz}
+\usepackage[active,tightpage,psfixbb]{preview}
+\PreviewEnvironment{pgfpicture}
+\setlength\PreviewBorder{0pt}
+\usepackage{amssymb}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{mon.ACF.de.bonhomme} \hlkwb{=} \hlkwa{function}\hlstd{(}\hlkwc{Xt}\hlstd{,} \hlkwc{type} \hlstd{=} \hlstr{"ACF"}\hlstd{)\{}
+  \hlcom{# Inputs:}
+  \hlcom{# Xt -> time series}
+  \hlcom{# type -> type of graphs: "ACF", "ACF/PACF" or "RACF"}
+
+  \hlcom{# Compute ACF}
+  \hlstd{Yt} \hlkwb{=} \hlkwd{gts}\hlstd{(Xt,} \hlkwc{name} \hlstd{=} \hlstr{"ACF"}\hlstd{)}
+  \hlstd{acf.graph} \hlkwb{=} \hlkwd{plot}\hlstd{(}\hlkwd{ACF}\hlstd{(Yt))}
+
+  \hlkwa{if} \hlstd{(type} \hlopt{==} \hlstr{"ACF"}\hlstd{)\{}
+    \hlstd{acf.graph}
+  \hlstd{\}}\hlkwa{else}\hlstd{\{}
+    \hlkwa{if} \hlstd{(type} \hlopt{==} \hlstr{"ACF/PACF"}\hlstd{)\{}
+      \hlcom{# Compute PACF}
+      \hlstd{Zt} \hlkwb{=} \hlkwd{gts}\hlstd{(Xt,} \hlkwc{name} \hlstd{=} \hlstr{"PACF"}\hlstd{)}
+      \hlstd{pacf} \hlkwb{=} \hlkwd{acf}\hlstd{(Xt,} \hlkwc{type} \hlstd{=} \hlstr{"partial"}\hlstd{,} \hlkwc{plot} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+      \hlstd{inter} \hlkwb{=} \hlkwd{ACF}\hlstd{(Zt)}
+      \hlstd{inter[,,]} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlnum{NA}\hlstd{,pacf}\hlopt{$}\hlstd{acf)}
+      \hlstd{pacf.graph} \hlkwb{=} \hlkwd{plot}\hlstd{(inter)}
+      \hlkwd{grid.arrange}\hlstd{(acf.graph,pacf.graph,} \hlkwc{nrow} \hlstd{=} \hlnum{1}\hlstd{)}
+    \hlstd{\}}\hlkwa{else}\hlstd{\{}
+      \hlkwa{if} \hlstd{(type} \hlopt{==} \hlstr{"RACF"}\hlstd{)\{}
+        \hlstd{Yt} \hlkwb{=} \hlkwd{gts}\hlstd{(Xt,} \hlkwc{name} \hlstd{=} \hlstr{"Classical ACF"}\hlstd{)}
+        \hlstd{acf.graph} \hlkwb{=} \hlkwd{plot}\hlstd{(}\hlkwd{ACF}\hlstd{(Yt))}
+
+        \hlstd{Wt} \hlkwb{=} \hlkwd{gts}\hlstd{(Xt,} \hlkwc{name} \hlstd{=} \hlstr{"Robust ACF"}\hlstd{)}
+        \hlstd{racf} \hlkwb{=} \hlkwd{robacf}\hlstd{(Xt,} \hlkwc{plot}\hlstd{=}\hlnum{FALSE}\hlstd{)}\hlopt{$}\hlstd{acf}
+        \hlstd{inter} \hlkwb{=} \hlkwd{ACF}\hlstd{(Wt)}
+        \hlstd{inter[,,]} \hlkwb{=} \hlstd{racf}
+        \hlstd{racf.graph} \hlkwb{=} \hlkwd{plot}\hlstd{(inter)}
+        \hlkwd{grid.arrange}\hlstd{(acf.graph,racf.graph,} \hlkwc{nrow} \hlstd{=} \hlnum{1}\hlstd{)}
+      \hlstd{\}}\hlkwa{else}\hlstd{\{}
+        \hlkwd{cat}\hlstd{(}\hlstr{"Error"}\hlstd{)}
+      \hlstd{\}}
+    \hlstd{\}}
+  \hlstd{\}}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(gmwm)}
+\end{alltt}
+
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: ggplot2}}\begin{alltt}
+\hlkwd{library}\hlstd{(tikzDevice)}
+\hlkwd{library}\hlstd{(gridExtra)}
+\hlkwd{library}\hlstd{(robcor)}
+
+\hlkwd{tikz}\hlstd{(}\hlstr{"ex1.tex"}\hlstd{,} \hlkwc{width} \hlstd{=} \hlnum{5}\hlstd{,} \hlkwc{height} \hlstd{=} \hlnum{4}\hlstd{)}
+\hlstd{model} \hlkwb{=} \hlkwd{ARMA}\hlstd{(}\hlkwc{ar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0.43}\hlstd{,}\hlnum{.32}\hlstd{,} \hlnum{.15}\hlstd{),} \hlkwc{ma} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1.5}\hlstd{,} \hlnum{.89}\hlstd{,} \hlnum{.12}\hlstd{),} \hlkwc{sigma2} \hlstd{=} \hlnum{1}\hlstd{)}
+\hlstd{Xt} \hlkwb{=} \hlkwd{gen.gts}\hlstd{(model)}
+\hlstd{fit} \hlkwb{=} \hlkwd{arima}\hlstd{(Xt,}\hlkwc{order} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1L}\hlstd{,}\hlnum{0L}\hlstd{,}\hlnum{1L}\hlstd{))}
+\end{alltt}
+
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning in arima(Xt, order = c(1L, 0L, 1L)): possible convergence problem: optim gave code = 1}}\begin{alltt}
+\hlkwd{tikz}\hlstd{(}\hlstr{"ex2.tex"}\hlstd{,} \hlkwc{width} \hlstd{=} \hlnum{8.5}\hlstd{,} \hlkwc{height} \hlstd{=} \hlnum{4}\hlstd{)}
+\hlkwd{mon.ACF.de.bonhomme}\hlstd{(fit,} \hlkwc{type} \hlstd{=} \hlstr{"ACF/PACF"}\hlstd{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in .acf(x2, lagmax, cor, demean): object 'x2' not found}}\begin{alltt}
+\hlkwd{plot}\hlstd{(}\hlkwd{resid}\hlstd{(fit))}
+\hlkwd{dev.off}\hlstd{()}
+\end{alltt}
+\begin{verbatim}
+## pdf 
+##   2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+%<<example3>>=
+
+%tikz("ex3.tex", width = 8.5, height = 4)
+%mon.ACF.de.bonhomme(Xt, type = "RACF")
+%dev.off()
+@
+
+
+
+
+
+\begin{figure}
+\input{ex1.tex}
+\end{figure}
+
+\begin{figure}
+\input{ex2.tex}
+\end{figure}
+
+
+
+\end{document}
