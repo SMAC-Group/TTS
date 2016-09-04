@@ -18,6 +18,30 @@ sp500 = na.omit(GSPC.ret)
 names(sp500) = paste("S&P 500 (1990-01-01 - ",Sys.Date(),")", sep = "")
 plot(ACF(sp500))
 
+## @knitr XtYt
+library(gmwm)
+library(gridExtra)
+
+# Simulate Xt
+set.seed(1)
+model = AR1(phi = 0.9, sigma2 = 1)
+Xt = gen.gts(model)
+
+# Construct Yt
+epsilon = 0.01
+nb_outlier = rbinom(1,length(Xt),epsilon)
+Yt = Xt
+Yt[sample(1:length(Xt),nb_outlier)] = rnorm(nb_outlier,0,10)
+
+# Add names
+Xt = gts(Xt, name = "$(X_t)$")
+Yt = gts(Yt, name = "$(Y_t)$")
+
+# Plot data
+a = autoplot(Xt) + ylim(range(Yt)) + ylab("$(X_t)$")
+b = autoplot(Yt) + ylab("$(Y_t)$")
+grid.arrange(a, b, nrow = 2)
+
 
 ## @knitr GSPCracf
 # Construct gts objects

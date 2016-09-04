@@ -518,11 +518,12 @@ The fact that the sample can suffer from outliers implies that the standard esti
 				\end{aligned}
 	\end{equation*}
 	
-when $\epsilon$ is "small" and $\sigma_u^2 \gg \sigma_w^2$, the process $(Y_t)$ can be interpreted as a "contaminated" version of $(X_t)$. The 
+when $\epsilon$ is "small" and $\sigma_u^2 \gg \sigma_w^2$, the process $(Y_t)$ can be interpreted as a "contaminated" version of $(X_t)$. The figure below represents one relalization of the processes $(X_t)$ and $(Y_t)$ using the following setting: $n = 100$, $\sigma_u^2 = 10$, $\phi = 0,5$, $\sigma_w^2 = 1$ as well as $\alpha = 0.05$.
 
+```{r XtYt, cache = TRUE, fig.height = 8, fig.width = 7}
+```
 
-
-In the following simulated example we highlight how the performance of the "classical" autocorrelation can deteriorate if the sample is contaminated (i.e. what is the impact of using $(Y_t)$ instead of $(X_t)$, the "uncontaminated" process). In this simulation, we used $n = 100$, $\sigma_u^2 = 10$, $\phi = 0,5$, $\sigma_w^2 = 1$ as well as $\alpha = 0.05$ and consider $B = 10^3$ bootstrap replications.
+Next, we consider a simulated example to highlight how the performance of the "classical" autocorrelation can deteriorate if the sample is contaminated (i.e. what is the impact of using $(Y_t)$ instead of $(X_t)$, the "uncontaminated" process). In this simulation, we used the setting presented above and consider $B = 10^3$ bootstrap replications.
 
 ```{r simulationRobust, cache = TRUE, fig.height = 5.5, fig.width = 7}
 ```
