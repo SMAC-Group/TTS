@@ -138,7 +138,7 @@ The expectation of $\tilde{\gamma} \left( h \right)$,
 
 By Cauchy–Schwarz inequality and $var(X_t) = \sigma^2$, we have
 \begin{equation*}
-    \sum\limits_{t = 1}^{n} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)} \leq \sqrt{\sum\limits_{t = 1}^{n} {\left( {{X_t} - \mu} \right)^2} \sum\limits_{t = 1}^{n} {\left( {{X_{t + h}} - \mu} \right)^2}} < \infty.
+    \frac{1}{n}\sum\limits_{t = 1}^{n} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)} \leq \sqrt{\frac{1}{n}\sum\limits_{t = 1}^{n} {\left( {{X_t} - \mu} \right)^2} \frac{1}{n}\sum\limits_{t = 1}^{n} {\left( {{X_{t + h}} - \mu} \right)^2}} < \infty.
 \end{equation*}
 
 Then by bounded convergence theorem and $\{X_t\}_1^n$ are independent, we have
