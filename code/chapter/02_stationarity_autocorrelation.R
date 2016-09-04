@@ -18,18 +18,63 @@ sp500 = na.omit(GSPC.ret)
 names(sp500) = paste("S&P 500 (1990-01-01 - ",Sys.Date(),")", sep = "")
 plot(ACF(sp500))
 
+## @knitr XtYt
+library(gmwm)
+library(gridExtra)
+
+# Simulate Xt
+set.seed(1)
+model = AR1(phi = 0.5, sigma2 = 1)
+Xt = gen.gts(model)
+
+# Construct Yt
+epsilon = 0.01
+nb_outlier = rbinom(1,length(Xt),epsilon)
+Yt = Xt
+Yt[sample(1:length(Xt),nb_outlier)] = rnorm(nb_outlier,0,10)
+
+# Add names
+Xt = gts(Xt)
+Yt = gts(Yt, name = paste("(",expression(Y[t]),")",sep = ""))
+
+# Plot data
+a = autoplot(Xt) + ylim(range(Yt)) + ylab("(Xt)")
+b = autoplot(Yt) + ylab("(Yt)")
+grid.arrange(a, b, nrow = 2)
+
+
+## @knitr GSPCracf
+# Construct gts objects
+sp500c = gts(sp500, name = 'Non-robust Estimator')
+sp500r = gts(sp500, name = 'Robust Estimator')
+
+# Plot data
+a = plot(ACF(sp500c))
+inter = ACF(sp500r)
+inter[,,] = robacf(sp500r, plot=FALSE)$acf
+b = plot(inter)
+grid.arrange(a, b, nrow = 1)
+
 ## @knitr hydro_ACF
 
-# Load package
+# Load packages
+library(gmwm)
+library(gridExtra)
 library(robcor)
 
 # Load data
 data("hydro", package = "datapkg")
 
-# Compute ACFs
-par(mfrow=c(1,2))
-acf(hydro, main="Standard")
-robacf(hydro, main="Robust")
+# Construct gts objects
+hydro1 = gts(hydro, name = 'Non-robust Estimator')
+hydro2 = gts(hydro, name = 'Robust Estimator')
+
+# Plot data
+a = plot(ACF(hydro1))
+inter = ACF(hydro2)
+inter[,,] = robacf(hydro2, plot=FALSE)$acf
+b = plot(inter)
+grid.arrange(a, b, nrow = 1)
 
 ## @knitr simulationRobust
 
@@ -153,12 +198,85 @@ for (i in seq_along(lags)){
   abline(h = phi^(lags[i]-1), col = 2, lwd = 2)
 }
 
+
+
+
+
+
+
+
+## @knitr simulationRobust3
+
+# Load packages
+library("robcor")
+
+# Define sample size
+n = 100
+
+# Define proportion of "extreme" observation
+alpha = 0
+
+# Extreme observation are generated from N(0,sigma2.cont)
+sigma2.cont = 10
+
+# Number of Monte-Carlo replications
+B = 1000
+
+# Define model AR(1)
+phi = 0.5
+sigma2 = 1
+model = AR1(phi = phi, sigma2 = sigma2)
+
+# Initialization of result array
+result = array(NA, c(B,2,20))
+
+# Set seed for reproducibility
+set.seed(5585)
+
+# Start Monte-Carlo
+for (i in seq_len(B)){
+  # Simulate AR(1)
+  Xt = gen.gts(model, N = n)
+  
+  # Add a proportion alpha of extreme observations to Yt
+  Xt[sample(1:n,round(alpha*n))] = rnorm(round(alpha*n), 0, sigma2.cont)
+  
+  # Compute standard and robust ACF of Xt and Yt
+  acf = ACF(Xt)
+  rob_acf = robacf(Xt, plot=FALSE)$acf
+  
+  # Store ACFs
+  result[i,1,] = acf[1:20]
+  result[i,2,] = rob_acf[1:20]
+}
+
+
+# Compare empirical distribution of standard and robust ACF based on Xt
+
+# Vector of lags considered (h <= 20)
+lags = c(1,2,5,10) + 1
+
+# Make graph
+par(mfrow = c(2,2))
+
+for (i in seq_along(lags)){
+  boxplot(result[,1,lags[i]], result[,2,lags[i]], col = "lightgrey",
+          names = c("Standard","Robust"), main = paste("lag: h = ", lags[i]-1),
+          ylab = "Sample autocorrelation")
+  abline(h = phi^(lags[i]-1), col = 2, lwd = 2)
+}
+
+
+
+
+
+
 ## @knitr estimXbar
 
 # Define sample size
 n = 10
 
-# Number of Bootstrap replications
+# Number of Monte-Carlo replications
 B = 5000
 
 # Define grid of values for phi
@@ -280,19 +398,18 @@ for (i in seq_len(B)){
 par(mfrow = c(2,length(N)/2))
 for (i in seq_along(N)){
   # Estimated empirical distribution
-  hist(sqrt(N[i])*result[,i], col = "royalblue1", 
+  hist(sqrt(N[i])*result[,i], col = "lightgrey", 
        main = paste("Sample size n =",N[i]), probability = TRUE,
        xlim = c(-4,4), xlab = " ")
   
   # Asymptotic distribution
   xx = seq(from = -10, to = 10, length.out = 10^3)
   yy = dnorm(xx,0,1)
-  lines(xx,yy, col = "red", lwd = 2)
+  lines(xx,yy, col = "red")
 }
 
 ## @knitr RWsim
 # In this example, we simulate a large number of random walks
-library(gmwm)
 
 # Number of simulated processes
 B = 200

@@ -57,6 +57,7 @@ library(gridExtra)
 library(robcor)
 
 tikz("ex1.tex", width = 5, height = 4)
+<<<<<<< HEAD
 model = ARMA(ar = c(0.43,.32, .15), ma = c(1.5, .89, .12), sigma2 = 1)
 Xt = gen.gts(model)
 plot.gts(Xt)
@@ -74,11 +75,24 @@ dev.off()
 %tikz("ex3.tex", width = 8.5, height = 4)
 %mon.ACF.de.bonhomme(Xt, type = "RACF")
 %dev.off()
+=======
+Xt =gen.gts(AR1(phi = 0.6, sigma2 = 1))
+mon.ACF.de.bonhomme(Xt, type = "ACF")
+dev.off()
 @
 
+<<example2>>=
+tikz("ex2.tex", width = 8.5, height = 4)
+mon.ACF.de.bonhomme(Xt, type = "ACF/PACF")
+dev.off()
+>>>>>>> origin/master
+@
 
-
-
+<<example3>>=
+tikz("ex3.tex", width = 8.5, height = 4)
+mon.ACF.de.bonhomme(Xt, type = "RACF")
+dev.off()
+@
 
 \begin{figure}
 \input{ex1.tex}
@@ -88,6 +102,8 @@ dev.off()
 \input{ex2.tex}
 \end{figure}
 
-
+\begin{figure}
+\input{ex3.tex}
+\end{figure}
 
 \end{document}
