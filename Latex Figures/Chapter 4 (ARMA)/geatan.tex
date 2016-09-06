@@ -136,11 +136,10 @@
 \hlcom{# dev.off()}
 \hlcom{# @}
 
-\hlkwd{tikz}\hlstd{(}\hlstr{"ex2.tex"}\hlstd{,} \hlkwc{width} \hlstd{=} \hlnum{8.5}\hlstd{,} \hlkwc{height} \hlstd{=} \hlnum{4}\hlstd{)}
+\hlkwd{tikz}\hlstd{(}\hlstr{"ex1.tex"}\hlstd{,} \hlkwc{width} \hlstd{=} \hlnum{8.5}\hlstd{,} \hlkwc{height} \hlstd{=} \hlnum{4}\hlstd{)}
 \hlstd{m1} \hlkwb{=} \hlkwd{ARMA}\hlstd{(}\hlkwc{ar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0.43}\hlstd{,}\hlnum{.32}\hlstd{,} \hlnum{.15}\hlstd{,} \hlnum{.04}\hlstd{),} \hlkwc{ma} \hlstd{=} \hlkwd{c}\hlstd{() ,}\hlkwc{sigma2} \hlstd{=} \hlnum{1}\hlstd{)}
 \hlstd{Wt} \hlkwb{=} \hlkwd{gen.gts}\hlstd{(m1)}
 
-\hlkwd{plot.gts}\hlstd{(Wt)}
 \hlstd{fit4} \hlkwb{=} \hlkwd{arima}\hlstd{(Wt,}\hlkwc{order} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{3L}\hlstd{,}\hlnum{0L}\hlstd{,}\hlnum{0L}\hlstd{))}
 \hlkwd{mon.ACF.de.bonhomme} \hlstd{(Wt,} \hlkwc{type} \hlstd{=} \hlstr{"ACF/PACF"}\hlstd{)}
 \end{alltt}
