@@ -81,6 +81,7 @@ m1 = ARMA(ar = c(0.43,.32, .15, .04), ma = c() ,sigma2 = 1)
 Wt = gen.gts(m1)
 
 fit4 = arima(Wt,order = c(3L,0L,0L))
+tikz("ex2.tex", width = 8.5, height = 4)
 mon.ACF.de.bonhomme (Wt, type = "ACF/PACF")
 # Diagnostic plot
 dev.off()
@@ -90,9 +91,9 @@ dev.off()
 \input{ex1.tex}
 \end{figure}
 
-% \begin{figure}
-% \input{ex2.tex}
-% \end{figure}
+\begin{figure}
+\input{ex2.tex}
+\end{figure}
 
 % \begin{figure}
 % \input{ex3.tex}

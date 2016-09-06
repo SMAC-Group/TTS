@@ -141,6 +141,7 @@
 \hlstd{Wt} \hlkwb{=} \hlkwd{gen.gts}\hlstd{(m1)}
 
 \hlstd{fit4} \hlkwb{=} \hlkwd{arima}\hlstd{(Wt,}\hlkwc{order} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{3L}\hlstd{,}\hlnum{0L}\hlstd{,}\hlnum{0L}\hlstd{))}
+\hlkwd{tikz}\hlstd{(}\hlstr{"ex2.tex"}\hlstd{,} \hlkwc{width} \hlstd{=} \hlnum{8.5}\hlstd{,} \hlkwc{height} \hlstd{=} \hlnum{4}\hlstd{)}
 \hlkwd{mon.ACF.de.bonhomme} \hlstd{(Wt,} \hlkwc{type} \hlstd{=} \hlstr{"ACF/PACF"}\hlstd{)}
 \end{alltt}
 
@@ -160,9 +161,9 @@
 \input{ex1.tex}
 \end{figure}
 
-% \begin{figure}
-% \input{ex2.tex}
-% \end{figure}
+\begin{figure}
+\input{ex2.tex}
+\end{figure}
 
 % \begin{figure}
 % \input{ex3.tex}
