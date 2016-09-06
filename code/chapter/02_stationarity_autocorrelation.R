@@ -436,6 +436,7 @@ for (i in seq_len(B)){
 plot(NA, xlim = c(1,n), ylim = range(out), xlab = "Time", ylab = " ")
 grid()
 color = sample(topo.colors(B, alpha = 0.5))
+grid()
 for (i in seq_len(B)){
   lines(out[i,], col = color[i])
 }

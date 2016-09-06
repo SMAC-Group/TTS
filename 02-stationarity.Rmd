@@ -131,7 +131,7 @@ must be positive semi-definite. Taking the determinant we have
  
  \[\operatorname{det} \left(\boldsymbol{A}_1\right) = 1 - \rho_1^2 \]
 
-implying that the condition $|\rho_1| < 1$ must be respected. Now, let $\alpha_j = 0$ for $j > 2$, then we must verify that:
+implying that the condition $|\rho_1| \leq 1$ must be respected. Now, let $\alpha_j = 0$ for $j > 2$, then we must verify that:
 
 \[\var \left[ \alpha_0 X_{t} + \alpha_1 X_{t-1}  + \alpha_2 X_{t-2} \right] = \gamma_0 \begin{bmatrix}
   \alpha_0 & \alpha_1 &\alpha_2
@@ -157,11 +157,11 @@ must be positive semi-definite and it is easy to verify that
  
  \[\operatorname{det} \left(\boldsymbol{A}_2\right) = \left(1 - \rho_2 \right)\left(- 2 \rho_1^2 + \rho_2 + 1\right). \]
 
-Thus, this implies that $|\rho_2| < 1$ as well as 
+Thus, this implies that 
 
-\[\begin{aligned} &- 2 \rho_1^2 + \rho_2 + 1 \geq 0 \Rightarrow 1 > \rho_2 \geq 2 \rho_1^2 - 1 \\
-&\Rightarrow 1 - \rho_1^2 > \rho_2 - \rho_1^2 \geq -(1 - \rho_1^2)\\
-&\Rightarrow 1 > \frac{\rho_2 - \rho_1^2 }{1 - \rho_1^2} \geq -1.
+\[\begin{aligned} &- 2 \rho_1^2 + \rho_2 + 1 \geq 0 \Rightarrow 1 \geq \rho_2 \geq 2 \rho_1^2 - 1 \\
+&\Rightarrow 1 - \rho_1^2 \geq \rho_2 - \rho_1^2 \geq -(1 - \rho_1^2)\\
+&\Rightarrow 1 \geq \frac{\rho_2 - \rho_1^2 }{1 - \rho_1^2} \geq -1.
 \end{aligned}\]
 
 Therefore, $\rho_1$ and $\rho_2$ must lie in a parabolic shaped region defined by the above inequalities as illustrated in Figure \@ref(fig:admissibility).
