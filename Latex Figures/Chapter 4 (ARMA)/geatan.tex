@@ -116,17 +116,38 @@
 \hlkwd{library}\hlstd{(gridExtra)}
 \hlkwd{library}\hlstd{(robcor)}
 
-\hlkwd{tikz}\hlstd{(}\hlstr{"ex1.tex"}\hlstd{,} \hlkwc{width} \hlstd{=} \hlnum{5}\hlstd{,} \hlkwc{height} \hlstd{=} \hlnum{4}\hlstd{)}
-\hlstd{model} \hlkwb{=} \hlkwd{ARMA}\hlstd{(}\hlkwc{ar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0.43}\hlstd{,}\hlnum{.32}\hlstd{,} \hlnum{.15}\hlstd{),} \hlkwc{ma} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1.5}\hlstd{,} \hlnum{.89}\hlstd{,} \hlnum{.12}\hlstd{),} \hlkwc{sigma2} \hlstd{=} \hlnum{1}\hlstd{)}
-\hlstd{Xt} \hlkwb{=} \hlkwd{gen.gts}\hlstd{(model)}
-\hlkwd{plot.gts}\hlstd{(Xt)}
-\hlstd{fit} \hlkwb{=} \hlkwd{arima}\hlstd{(Xt,}\hlkwc{order} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1L}\hlstd{,}\hlnum{0L}\hlstd{,}\hlnum{1L}\hlstd{))}
+\hlcom{# tikz("ex1.tex", width = 5, height = 4)}
+\hlcom{# }
+\hlcom{# #model = ARMA(ar = c(0.43,.32, .15), ma = c(.7, .18, .12),sigma2 = 1)}
+\hlcom{# model = MA(theta = .5)}
+\hlcom{# model1 = MA(theta = c(1.5,.2))}
+\hlcom{# model2 = MA(theta = c(1.2,.6,.1))}
+\hlcom{# }
+\hlcom{# Xt = gen.gts(model)}
+\hlcom{# Yt = gen.gts(model1)}
+\hlcom{# Zt = gen.gts(model2)}
+\hlcom{# }
+\hlcom{# #plot.gts(Xt)}
+\hlcom{# fit = arima(Xt,order = c(1L,0L,0L))}
+\hlcom{# tikz("ex2.tex", width = 8.5, height = 4)}
+\hlcom{# mon.ACF.de.bonhomme(Xt, type = "ACF/PACF")}
+\hlcom{# mon.ACF.de.bonhomme(Yt, type = "ACF/PACF")}
+\hlcom{# mon.ACF.de.bonhomme(Zt, type = "ACF/PACF")}
+\hlcom{# dev.off()}
+\hlcom{# @}
+
 \hlkwd{tikz}\hlstd{(}\hlstr{"ex2.tex"}\hlstd{,} \hlkwc{width} \hlstd{=} \hlnum{8.5}\hlstd{,} \hlkwc{height} \hlstd{=} \hlnum{4}\hlstd{)}
-\hlkwd{mon.ACF.de.bonhomme}\hlstd{(fit,} \hlkwc{type} \hlstd{=} \hlstr{"ACF/PACF"}\hlstd{)}
+\hlstd{m1} \hlkwb{=} \hlkwd{ARMA}\hlstd{(}\hlkwc{ar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0.43}\hlstd{,}\hlnum{.32}\hlstd{,} \hlnum{.15}\hlstd{,} \hlnum{.04}\hlstd{),} \hlkwc{ma} \hlstd{=} \hlkwd{c}\hlstd{() ,}\hlkwc{sigma2} \hlstd{=} \hlnum{1}\hlstd{)}
+\hlstd{Wt} \hlkwb{=} \hlkwd{gen.gts}\hlstd{(m1)}
+
+\hlkwd{plot.gts}\hlstd{(Wt)}
+\hlstd{fit4} \hlkwb{=} \hlkwd{arima}\hlstd{(Wt,}\hlkwc{order} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{3L}\hlstd{,}\hlnum{0L}\hlstd{,}\hlnum{0L}\hlstd{))}
+\hlkwd{mon.ACF.de.bonhomme} \hlstd{(Wt,} \hlkwc{type} \hlstd{=} \hlstr{"ACF/PACF"}\hlstd{)}
 \end{alltt}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in .acf(x2, lagmax, cor, demean): object 'x2' not found}}\begin{alltt}
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Removed 1 rows containing missing values (geom\_segment).}}\begin{alltt}
+\hlcom{# Diagnostic plot}
 \hlkwd{dev.off}\hlstd{()}
 \end{alltt}
 \begin{verbatim}
@@ -136,28 +157,16 @@
 \end{kframe}
 \end{knitrout}
 
-
-
-
-%<<example3>>=
-
-%tikz("ex3.tex", width = 8.5, height = 4)
-%mon.ACF.de.bonhomme(Xt, type = "RACF")
-%dev.off()
-@
-
-
-
-
-
 \begin{figure}
 \input{ex1.tex}
 \end{figure}
 
-\begin{figure}
-\input{ex2.tex}
-\end{figure}
+% \begin{figure}
+% \input{ex2.tex}
+% \end{figure}
 
-
+% \begin{figure}
+% \input{ex3.tex}
+% \end{figure}
 
 \end{document}
