@@ -56,34 +56,25 @@ library(tikzDevice)
 library(gridExtra)
 library(robcor)
 
-# tikz("ex1.tex", width = 5, height = 4)
+tikz("ex1.tex", width = 5, height = 4)
 # 
-# #model = ARMA(ar = c(0.43,.32, .15), ma = c(.7, .18, .12),sigma2 = 1)
-# model = MA(theta = .5)
-# model1 = MA(theta = c(1.5,.2))
-# model2 = MA(theta = c(1.2,.6,.1))
-# 
-# Xt = gen.gts(model)
-# Yt = gen.gts(model1)
-# Zt = gen.gts(model2)
-# 
-# #plot.gts(Xt)
-# fit = arima(Xt,order = c(1L,0L,0L))
-# tikz("ex2.tex", width = 8.5, height = 4)
-# mon.ACF.de.bonhomme(Xt, type = "ACF/PACF")
-# mon.ACF.de.bonhomme(Yt, type = "ACF/PACF")
-# mon.ACF.de.bonhomme(Zt, type = "ACF/PACF")
-# dev.off()
-# @
+model = MA(theta = -1.5)
+model2 = MA(theta = c(1.3,-.8))
+model3 = MA(theta = c(.32,.59,1.2,-.3))
+model4 = MA(theta = c(.78,-.58,1))
 
-tikz("ex1.tex", width = 8.5, height = 4)
-m1 = ARMA(ar = c(0.43,.32, .15, .04), ma = c() ,sigma2 = 1)
-Wt = gen.gts(m1)
 
-fit4 = arima(Wt,order = c(3L,0L,0L))
+
+Xt = gen.gts(model)
+Xt2 = gen.gts(model2)
+Xt3 = gen.gts(model3)
+Xt4 = gen.gts(model4)
+
 tikz("ex2.tex", width = 8.5, height = 4)
-mon.ACF.de.bonhomme (Wt, type = "ACF/PACF")
-# Diagnostic plot
+mon.ACF.de.bonhomme(Xt, type = "ACF/PACF")
+mon.ACF.de.bonhomme(Xt2, type = "ACF/PACF")
+mon.ACF.de.bonhomme(Xt3, type = "ACF/PACF")
+mon.ACF.de.bonhomme(Xt4, type = "ACF/PACF")
 dev.off()
 @
 

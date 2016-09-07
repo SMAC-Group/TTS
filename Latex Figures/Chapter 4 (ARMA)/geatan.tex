@@ -116,38 +116,41 @@
 \hlkwd{library}\hlstd{(gridExtra)}
 \hlkwd{library}\hlstd{(robcor)}
 
-\hlcom{# tikz("ex1.tex", width = 5, height = 4)}
+\hlkwd{tikz}\hlstd{(}\hlstr{"ex1.tex"}\hlstd{,} \hlkwc{width} \hlstd{=} \hlnum{5}\hlstd{,} \hlkwc{height} \hlstd{=} \hlnum{4}\hlstd{)}
 \hlcom{# }
-\hlcom{# #model = ARMA(ar = c(0.43,.32, .15), ma = c(.7, .18, .12),sigma2 = 1)}
-\hlcom{# model = MA(theta = .5)}
-\hlcom{# model1 = MA(theta = c(1.5,.2))}
-\hlcom{# model2 = MA(theta = c(1.2,.6,.1))}
-\hlcom{# }
-\hlcom{# Xt = gen.gts(model)}
-\hlcom{# Yt = gen.gts(model1)}
-\hlcom{# Zt = gen.gts(model2)}
-\hlcom{# }
-\hlcom{# #plot.gts(Xt)}
-\hlcom{# fit = arima(Xt,order = c(1L,0L,0L))}
-\hlcom{# tikz("ex2.tex", width = 8.5, height = 4)}
-\hlcom{# mon.ACF.de.bonhomme(Xt, type = "ACF/PACF")}
-\hlcom{# mon.ACF.de.bonhomme(Yt, type = "ACF/PACF")}
-\hlcom{# mon.ACF.de.bonhomme(Zt, type = "ACF/PACF")}
-\hlcom{# dev.off()}
-\hlcom{# @}
+\hlstd{model} \hlkwb{=} \hlkwd{MA}\hlstd{(}\hlkwc{theta} \hlstd{=} \hlopt{-}\hlnum{1.5}\hlstd{)}
+\hlstd{model2} \hlkwb{=} \hlkwd{MA}\hlstd{(}\hlkwc{theta} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1.3}\hlstd{,}\hlopt{-}\hlnum{.8}\hlstd{))}
+\hlstd{model3} \hlkwb{=} \hlkwd{MA}\hlstd{(}\hlkwc{theta} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{.32}\hlstd{,}\hlnum{.59}\hlstd{,}\hlnum{1.2}\hlstd{,}\hlopt{-}\hlnum{.3}\hlstd{))}
+\hlstd{model4} \hlkwb{=} \hlkwd{MA}\hlstd{(}\hlkwc{theta} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{.78}\hlstd{,}\hlopt{-}\hlnum{.58}\hlstd{,}\hlnum{1}\hlstd{))}
 
-\hlkwd{tikz}\hlstd{(}\hlstr{"ex1.tex"}\hlstd{,} \hlkwc{width} \hlstd{=} \hlnum{8.5}\hlstd{,} \hlkwc{height} \hlstd{=} \hlnum{4}\hlstd{)}
-\hlstd{m1} \hlkwb{=} \hlkwd{ARMA}\hlstd{(}\hlkwc{ar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0.43}\hlstd{,}\hlnum{.32}\hlstd{,} \hlnum{.15}\hlstd{,} \hlnum{.04}\hlstd{),} \hlkwc{ma} \hlstd{=} \hlkwd{c}\hlstd{() ,}\hlkwc{sigma2} \hlstd{=} \hlnum{1}\hlstd{)}
-\hlstd{Wt} \hlkwb{=} \hlkwd{gen.gts}\hlstd{(m1)}
 
-\hlstd{fit4} \hlkwb{=} \hlkwd{arima}\hlstd{(Wt,}\hlkwc{order} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{3L}\hlstd{,}\hlnum{0L}\hlstd{,}\hlnum{0L}\hlstd{))}
+
+\hlstd{Xt} \hlkwb{=} \hlkwd{gen.gts}\hlstd{(model)}
+\hlstd{Xt2} \hlkwb{=} \hlkwd{gen.gts}\hlstd{(model2)}
+\hlstd{Xt3} \hlkwb{=} \hlkwd{gen.gts}\hlstd{(model3)}
+\hlstd{Xt4} \hlkwb{=} \hlkwd{gen.gts}\hlstd{(model4)}
+
 \hlkwd{tikz}\hlstd{(}\hlstr{"ex2.tex"}\hlstd{,} \hlkwc{width} \hlstd{=} \hlnum{8.5}\hlstd{,} \hlkwc{height} \hlstd{=} \hlnum{4}\hlstd{)}
-\hlkwd{mon.ACF.de.bonhomme} \hlstd{(Wt,} \hlkwc{type} \hlstd{=} \hlstr{"ACF/PACF"}\hlstd{)}
+\hlkwd{mon.ACF.de.bonhomme}\hlstd{(Xt,} \hlkwc{type} \hlstd{=} \hlstr{"ACF/PACF"}\hlstd{)}
 \end{alltt}
 
 
 {\ttfamily\noindent\color{warningcolor}{\#\# Warning: Removed 1 rows containing missing values (geom\_segment).}}\begin{alltt}
-\hlcom{# Diagnostic plot}
+\hlkwd{mon.ACF.de.bonhomme}\hlstd{(Xt2,} \hlkwc{type} \hlstd{=} \hlstr{"ACF/PACF"}\hlstd{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Removed 1 rows containing missing values (geom\_segment).}}\begin{alltt}
+\hlkwd{mon.ACF.de.bonhomme}\hlstd{(Xt3,} \hlkwc{type} \hlstd{=} \hlstr{"ACF/PACF"}\hlstd{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Removed 1 rows containing missing values (geom\_segment).}}\begin{alltt}
+\hlkwd{mon.ACF.de.bonhomme}\hlstd{(Xt4,} \hlkwc{type} \hlstd{=} \hlstr{"ACF/PACF"}\hlstd{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Removed 1 rows containing missing values (geom\_segment).}}\begin{alltt}
 \hlkwd{dev.off}\hlstd{()}
 \end{alltt}
 \begin{verbatim}
