@@ -46,6 +46,23 @@ mon.ACF.de.bonhomme = function(Xt, type = "ACF"){
     }
   }
 }
+
+make.theo.acf.pacf = function(ar, ma){
+ ACF.theo = ARMAacf(ar = ar, ma = ma, lag.max = 30)
+ PACF.theo = ARMAacf(ar = ar, ma = ma, lag.max = 30, pacf = TRUE)
+ Xt = gen.gts((WN(sigma2 = 1)), n = 10^2)
+ Yt = gts(Xt, name = "ACF")
+ inter = ACF(Yt,)
+ inter[,,] = ACF.theo
+ acf.graph = plot(inter, show.ci = FALSE)
+ Zt = gts(Xt, name = "PACF")
+ pacf = acf(Xt, type = "partial", plot = FALSE)
+ inter = ACF(Zt)
+ inter[,,] = c(NA,PACF.theo)
+ pacf.graph = plot(inter, show.ci = FALSE)
+ grid.arrange(acf.graph,pacf.graph, nrow = 1)
+}
+
 @
 
 
@@ -55,39 +72,58 @@ library(gmwm)
 library(tikzDevice)
 library(gridExtra)
 library(robcor)
+library(astsa)
 
-tikz("ex1.tex", width = 5, height = 4)
+
+# tikz("ex1.tex", width = 5, height = 4)
+# #
 # 
-model = MA(theta = -1.5)
-model2 = MA(theta = c(1.3,-.8))
-model3 = MA(theta = c(.32,.59,1.2,-.3))
-model4 = MA(theta = c(.78,-.58,1))
+# model = ARMA(ar = c(.5, .25, .125) ,ma = c(.32,.59,1.2,-.3))
+# model2 = ARMA(ar = c(1.5, -.75) ,ma = c(.78,-.58,1))
+# 
+# make.theo.acf.pacf(ar = ar.coef, ma = ma.coef)
+# make.theo.acf.pacf(ar = ar.coef2, ma = ma.coef)
+# 
+# Xt = gen.gts(model)
+# Xt2 = gen.gts(model2)
+# 
+# 
+# tikz("ex2.tex", width = 8.5, height = 4)
+# mon.ACF.de.bonhomme(Xt, type = "ACF/PACF")
+# mon.ACF.de.bonhomme(Xt2, type = "ACF/PACF")
 
 
+tikz("ex3.tex", width = 8.5, height = 4)
+ar.coef = c(.5, .25, .125)
+ar.coef2 = c(1.5, -.75)
+ma.coef1 = c(.32,.59,1.2,-.3)
+ma.coef2 = c(.78,-.58,1)
+make.theo.acf.pacf(ar = ar.coef, ma = ma.coef1)
+make.theo.acf.pacf(ar = ar.coef2, ma = ma.coef2)
 
-Xt = gen.gts(model)
-Xt2 = gen.gts(model2)
-Xt3 = gen.gts(model3)
-Xt4 = gen.gts(model4)
 
-tikz("ex2.tex", width = 8.5, height = 4)
-mon.ACF.de.bonhomme(Xt, type = "ACF/PACF")
-mon.ACF.de.bonhomme(Xt2, type = "ACF/PACF")
-mon.ACF.de.bonhomme(Xt3, type = "ACF/PACF")
-mon.ACF.de.bonhomme(Xt4, type = "ACF/PACF")
+# tikz("ex1.tex", width = 5, height = 4)
+# # 
+# Xt = na.omit(diff(log(gnp)))
+# 
+# tikz("ex2.tex", width = 8.5, height = 4)
+# mon.ACF.de.bonhomme(Xt, type = "ACF/PACF")
+# 
+
+
 dev.off()
 @
 
-\begin{figure}
-\input{ex1.tex}
-\end{figure}
-
-\begin{figure}
-\input{ex2.tex}
-\end{figure}
-
 % \begin{figure}
-% \input{ex3.tex}
+% \input{ex1.tex}
 % \end{figure}
+% 
+% \begin{figure}
+% \input{ex2.tex}
+% \end{figure}
+% 
+\begin{figure}
+\input{ex3.tex}
+\end{figure}
 
 \end{document}

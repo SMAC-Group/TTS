@@ -98,6 +98,22 @@
     \hlstd{\}}
   \hlstd{\}}
 \hlstd{\}}
+
+\hlstd{make.theo.acf.pacf} \hlkwb{=} \hlkwa{function}\hlstd{(}\hlkwc{ar}\hlstd{,} \hlkwc{ma}\hlstd{)\{}
+ \hlstd{ACF.theo} \hlkwb{=} \hlkwd{ARMAacf}\hlstd{(}\hlkwc{ar} \hlstd{= ar,} \hlkwc{ma} \hlstd{= ma,} \hlkwc{lag.max} \hlstd{=} \hlnum{30}\hlstd{)}
+ \hlstd{PACF.theo} \hlkwb{=} \hlkwd{ARMAacf}\hlstd{(}\hlkwc{ar} \hlstd{= ar,} \hlkwc{ma} \hlstd{= ma,} \hlkwc{lag.max} \hlstd{=} \hlnum{30}\hlstd{,} \hlkwc{pacf} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+ \hlstd{Xt} \hlkwb{=} \hlkwd{gen.gts}\hlstd{((}\hlkwd{WN}\hlstd{(}\hlkwc{sigma2} \hlstd{=} \hlnum{1}\hlstd{)),} \hlkwc{n} \hlstd{=} \hlnum{10}\hlopt{^}\hlnum{2}\hlstd{)}
+ \hlstd{Yt} \hlkwb{=} \hlkwd{gts}\hlstd{(Xt,} \hlkwc{name} \hlstd{=} \hlstr{"ACF"}\hlstd{)}
+ \hlstd{inter} \hlkwb{=} \hlkwd{ACF}\hlstd{(Yt,)}
+ \hlstd{inter[,,]} \hlkwb{=} \hlstd{ACF.theo}
+ \hlstd{acf.graph} \hlkwb{=} \hlkwd{plot}\hlstd{(inter,} \hlkwc{show.ci} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+ \hlstd{Zt} \hlkwb{=} \hlkwd{gts}\hlstd{(Xt,} \hlkwc{name} \hlstd{=} \hlstr{"PACF"}\hlstd{)}
+ \hlstd{pacf} \hlkwb{=} \hlkwd{acf}\hlstd{(Xt,} \hlkwc{type} \hlstd{=} \hlstr{"partial"}\hlstd{,} \hlkwc{plot} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+ \hlstd{inter} \hlkwb{=} \hlkwd{ACF}\hlstd{(Zt)}
+ \hlstd{inter[,,]} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlnum{NA}\hlstd{,PACF.theo)}
+ \hlstd{pacf.graph} \hlkwb{=} \hlkwd{plot}\hlstd{(inter,} \hlkwc{show.ci} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+ \hlkwd{grid.arrange}\hlstd{(acf.graph,pacf.graph,} \hlkwc{nrow} \hlstd{=} \hlnum{1}\hlstd{)}
+\hlstd{\}}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -115,42 +131,51 @@
 \hlkwd{library}\hlstd{(tikzDevice)}
 \hlkwd{library}\hlstd{(gridExtra)}
 \hlkwd{library}\hlstd{(robcor)}
+\hlkwd{library}\hlstd{(astsa)}
 
-\hlkwd{tikz}\hlstd{(}\hlstr{"ex1.tex"}\hlstd{,} \hlkwc{width} \hlstd{=} \hlnum{5}\hlstd{,} \hlkwc{height} \hlstd{=} \hlnum{4}\hlstd{)}
+
+\hlcom{# tikz("ex1.tex", width = 5, height = 4)}
+\hlcom{# #}
 \hlcom{# }
-\hlstd{model} \hlkwb{=} \hlkwd{MA}\hlstd{(}\hlkwc{theta} \hlstd{=} \hlopt{-}\hlnum{1.5}\hlstd{)}
-\hlstd{model2} \hlkwb{=} \hlkwd{MA}\hlstd{(}\hlkwc{theta} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1.3}\hlstd{,}\hlopt{-}\hlnum{.8}\hlstd{))}
-\hlstd{model3} \hlkwb{=} \hlkwd{MA}\hlstd{(}\hlkwc{theta} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{.32}\hlstd{,}\hlnum{.59}\hlstd{,}\hlnum{1.2}\hlstd{,}\hlopt{-}\hlnum{.3}\hlstd{))}
-\hlstd{model4} \hlkwb{=} \hlkwd{MA}\hlstd{(}\hlkwc{theta} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{.78}\hlstd{,}\hlopt{-}\hlnum{.58}\hlstd{,}\hlnum{1}\hlstd{))}
+\hlcom{# model = ARMA(ar = c(.5, .25, .125) ,ma = c(.32,.59,1.2,-.3))}
+\hlcom{# model2 = ARMA(ar = c(1.5, -.75) ,ma = c(.78,-.58,1))}
+\hlcom{# }
+\hlcom{# make.theo.acf.pacf(ar = ar.coef, ma = ma.coef)}
+\hlcom{# make.theo.acf.pacf(ar = ar.coef2, ma = ma.coef)}
+\hlcom{# }
+\hlcom{# Xt = gen.gts(model)}
+\hlcom{# Xt2 = gen.gts(model2)}
+\hlcom{# }
+\hlcom{# }
+\hlcom{# tikz("ex2.tex", width = 8.5, height = 4)}
+\hlcom{# mon.ACF.de.bonhomme(Xt, type = "ACF/PACF")}
+\hlcom{# mon.ACF.de.bonhomme(Xt2, type = "ACF/PACF")}
 
 
-
-\hlstd{Xt} \hlkwb{=} \hlkwd{gen.gts}\hlstd{(model)}
-\hlstd{Xt2} \hlkwb{=} \hlkwd{gen.gts}\hlstd{(model2)}
-\hlstd{Xt3} \hlkwb{=} \hlkwd{gen.gts}\hlstd{(model3)}
-\hlstd{Xt4} \hlkwb{=} \hlkwd{gen.gts}\hlstd{(model4)}
-
-\hlkwd{tikz}\hlstd{(}\hlstr{"ex2.tex"}\hlstd{,} \hlkwc{width} \hlstd{=} \hlnum{8.5}\hlstd{,} \hlkwc{height} \hlstd{=} \hlnum{4}\hlstd{)}
-\hlkwd{mon.ACF.de.bonhomme}\hlstd{(Xt,} \hlkwc{type} \hlstd{=} \hlstr{"ACF/PACF"}\hlstd{)}
+\hlkwd{tikz}\hlstd{(}\hlstr{"ex3.tex"}\hlstd{,} \hlkwc{width} \hlstd{=} \hlnum{8.5}\hlstd{,} \hlkwc{height} \hlstd{=} \hlnum{4}\hlstd{)}
+\hlstd{ar.coef} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlnum{.5}\hlstd{,} \hlnum{.25}\hlstd{,} \hlnum{.125}\hlstd{)}
+\hlstd{ar.coef2} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlnum{1.5}\hlstd{,} \hlopt{-}\hlnum{.75}\hlstd{)}
+\hlstd{ma.coef1} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlnum{.32}\hlstd{,}\hlnum{.59}\hlstd{,}\hlnum{1.2}\hlstd{,}\hlopt{-}\hlnum{.3}\hlstd{)}
+\hlstd{ma.coef2} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlnum{.78}\hlstd{,}\hlopt{-}\hlnum{.58}\hlstd{,}\hlnum{1}\hlstd{)}
+\hlkwd{make.theo.acf.pacf}\hlstd{(}\hlkwc{ar} \hlstd{= ar.coef,} \hlkwc{ma} \hlstd{= ma.coef1)}
 \end{alltt}
 
 
 {\ttfamily\noindent\color{warningcolor}{\#\# Warning: Removed 1 rows containing missing values (geom\_segment).}}\begin{alltt}
-\hlkwd{mon.ACF.de.bonhomme}\hlstd{(Xt2,} \hlkwc{type} \hlstd{=} \hlstr{"ACF/PACF"}\hlstd{)}
+\hlkwd{make.theo.acf.pacf}\hlstd{(}\hlkwc{ar} \hlstd{= ar.coef2,} \hlkwc{ma} \hlstd{= ma.coef2)}
 \end{alltt}
 
 
 {\ttfamily\noindent\color{warningcolor}{\#\# Warning: Removed 1 rows containing missing values (geom\_segment).}}\begin{alltt}
-\hlkwd{mon.ACF.de.bonhomme}\hlstd{(Xt3,} \hlkwc{type} \hlstd{=} \hlstr{"ACF/PACF"}\hlstd{)}
-\end{alltt}
+\hlcom{# tikz("ex1.tex", width = 5, height = 4)}
+\hlcom{# # }
+\hlcom{# Xt = na.omit(diff(log(gnp)))}
+\hlcom{# }
+\hlcom{# tikz("ex2.tex", width = 8.5, height = 4)}
+\hlcom{# mon.ACF.de.bonhomme(Xt, type = "ACF/PACF")}
+\hlcom{# }
 
 
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Removed 1 rows containing missing values (geom\_segment).}}\begin{alltt}
-\hlkwd{mon.ACF.de.bonhomme}\hlstd{(Xt4,} \hlkwc{type} \hlstd{=} \hlstr{"ACF/PACF"}\hlstd{)}
-\end{alltt}
-
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Removed 1 rows containing missing values (geom\_segment).}}\begin{alltt}
 \hlkwd{dev.off}\hlstd{()}
 \end{alltt}
 \begin{verbatim}
@@ -160,16 +185,16 @@
 \end{kframe}
 \end{knitrout}
 
-\begin{figure}
-\input{ex1.tex}
-\end{figure}
-
-\begin{figure}
-\input{ex2.tex}
-\end{figure}
-
 % \begin{figure}
-% \input{ex3.tex}
+% \input{ex1.tex}
 % \end{figure}
+% 
+% \begin{figure}
+% \input{ex2.tex}
+% \end{figure}
+% 
+\begin{figure}
+\input{ex3.tex}
+\end{figure}
 
 \end{document}
