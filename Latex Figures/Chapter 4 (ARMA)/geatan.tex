@@ -131,18 +131,40 @@
 \hlkwd{library}\hlstd{(tikzDevice)}
 \hlkwd{library}\hlstd{(gridExtra)}
 \hlkwd{library}\hlstd{(robcor)}
-\hlkwd{library}\hlstd{(astsa)}
+\hlkwd{library}\hlstd{(quantmod)}
+\end{alltt}
 
 
-\hlcom{# tikz("ex1.tex", width = 5, height = 4)}
-\hlcom{# #}
-\hlcom{# }
-\hlcom{# model = ARMA(ar = c(.5, .25, .125) ,ma = c(.32,.59,1.2,-.3))}
-\hlcom{# model2 = ARMA(ar = c(1.5, -.75) ,ma = c(.78,-.58,1))}
-\hlcom{# }
-\hlcom{# make.theo.acf.pacf(ar = ar.coef, ma = ma.coef)}
-\hlcom{# make.theo.acf.pacf(ar = ar.coef2, ma = ma.coef)}
-\hlcom{# }
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: xts}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: zoo}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# \\\#\# Attaching package: 'zoo'}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# The following objects are masked from 'package:base':\\\#\# \\\#\#\ \ \ \  as.Date, as.Date.numeric}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: TTR}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Version 0.4-0 included new data defaults. See ?getSymbols.}}\begin{alltt}
+\hlkwd{tikz}\hlstd{(}\hlstr{"ex1.tex"}\hlstd{,} \hlkwc{width} \hlstd{=} \hlnum{8.5}\hlstd{,} \hlkwc{height} \hlstd{=} \hlnum{4}\hlstd{)}
+\hlcom{#}
+
+\hlstd{model} \hlkwb{=} \hlkwd{ARMA}\hlstd{(}\hlkwc{ar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{.5}\hlstd{,} \hlnum{.25}\hlstd{,} \hlnum{.125}\hlstd{) ,}\hlkwc{ma} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{.32}\hlstd{,}\hlnum{.59}\hlstd{,}\hlnum{1.2}\hlstd{,}\hlopt{-}\hlnum{.3}\hlstd{))}
+\hlstd{model2} \hlkwb{=} \hlkwd{ARMA}\hlstd{(}\hlkwc{ar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1.5}\hlstd{,} \hlopt{-}\hlnum{.75}\hlstd{) ,}\hlkwc{ma} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{.78}\hlstd{,}\hlopt{-}\hlnum{.58}\hlstd{,}\hlnum{1}\hlstd{))}
+
+\hlstd{ar.coef} \hlkwb{=} \hlnum{.5}
+\hlstd{ma.coef} \hlkwb{=} \hlopt{-}\hlnum{.8}
+
+\hlkwd{make.theo.acf.pacf}\hlstd{(}\hlkwc{ar} \hlstd{= ar.coef,} \hlkwc{ma} \hlstd{= ma.coef)}
+\end{alltt}
+
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Removed 1 rows containing missing values (geom\_segment).}}\begin{alltt}
+\hlkwd{make.theo.acf.pacf}\hlstd{(}\hlkwc{ar} \hlstd{= ar.coef2,} \hlkwc{ma} \hlstd{= ma.coef)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in ARMAacf(ar = ar, ma = ma, lag.max = 30): object 'ar.coef2' not found}}\begin{alltt}
 \hlcom{# Xt = gen.gts(model)}
 \hlcom{# Xt2 = gen.gts(model2)}
 \hlcom{# }
@@ -150,31 +172,21 @@
 \hlcom{# tikz("ex2.tex", width = 8.5, height = 4)}
 \hlcom{# mon.ACF.de.bonhomme(Xt, type = "ACF/PACF")}
 \hlcom{# mon.ACF.de.bonhomme(Xt2, type = "ACF/PACF")}
-
-
-\hlkwd{tikz}\hlstd{(}\hlstr{"ex3.tex"}\hlstd{,} \hlkwc{width} \hlstd{=} \hlnum{8.5}\hlstd{,} \hlkwc{height} \hlstd{=} \hlnum{4}\hlstd{)}
-\hlstd{ar.coef} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlnum{.5}\hlstd{,} \hlnum{.25}\hlstd{,} \hlnum{.125}\hlstd{)}
-\hlstd{ar.coef2} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlnum{1.5}\hlstd{,} \hlopt{-}\hlnum{.75}\hlstd{)}
-\hlstd{ma.coef1} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlnum{.32}\hlstd{,}\hlnum{.59}\hlstd{,}\hlnum{1.2}\hlstd{,}\hlopt{-}\hlnum{.3}\hlstd{)}
-\hlstd{ma.coef2} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlnum{.78}\hlstd{,}\hlopt{-}\hlnum{.58}\hlstd{,}\hlnum{1}\hlstd{)}
-\hlkwd{make.theo.acf.pacf}\hlstd{(}\hlkwc{ar} \hlstd{= ar.coef,} \hlkwc{ma} \hlstd{= ma.coef1)}
-\end{alltt}
-
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Removed 1 rows containing missing values (geom\_segment).}}\begin{alltt}
-\hlkwd{make.theo.acf.pacf}\hlstd{(}\hlkwc{ar} \hlstd{= ar.coef2,} \hlkwc{ma} \hlstd{= ma.coef2)}
-\end{alltt}
-
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Removed 1 rows containing missing values (geom\_segment).}}\begin{alltt}
+\hlcom{# }
+\hlcom{# }
 \hlcom{# tikz("ex1.tex", width = 5, height = 4)}
-\hlcom{# # }
-\hlcom{# Xt = na.omit(diff(log(gnp)))}
+\hlcom{# getSymbols('PAYNSA',src='FRED')}
+\hlcom{# #}
+\hlcom{# }
+\hlcom{# }
+\hlcom{# Xt = na.omit(diff(log(PAYNSA)))}
+\hlcom{# Xt = gen.gts(Xt)}
+\hlcom{# plot.gts(Xt)}
 \hlcom{# }
 \hlcom{# tikz("ex2.tex", width = 8.5, height = 4)}
 \hlcom{# mon.ACF.de.bonhomme(Xt, type = "ACF/PACF")}
 \hlcom{# }
-
+\hlcom{# }
 
 \hlkwd{dev.off}\hlstd{()}
 \end{alltt}
@@ -185,16 +197,16 @@
 \end{kframe}
 \end{knitrout}
 
-% \begin{figure}
-% \input{ex1.tex}
-% \end{figure}
-% 
+\begin{figure}
+\input{ex1.tex}
+\end{figure}
+
 % \begin{figure}
 % \input{ex2.tex}
 % \end{figure}
-% 
-\begin{figure}
-\input{ex3.tex}
-\end{figure}
+
+% \begin{figure}
+% \input{ex3.tex}
+% \end{figure}
 
 \end{document}

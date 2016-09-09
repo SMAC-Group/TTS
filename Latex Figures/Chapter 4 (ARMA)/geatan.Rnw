@@ -72,18 +72,21 @@ library(gmwm)
 library(tikzDevice)
 library(gridExtra)
 library(robcor)
-library(astsa)
+library(quantmod)
 
 
-# tikz("ex1.tex", width = 5, height = 4)
-# #
-# 
-# model = ARMA(ar = c(.5, .25, .125) ,ma = c(.32,.59,1.2,-.3))
-# model2 = ARMA(ar = c(1.5, -.75) ,ma = c(.78,-.58,1))
-# 
-# make.theo.acf.pacf(ar = ar.coef, ma = ma.coef)
-# make.theo.acf.pacf(ar = ar.coef2, ma = ma.coef)
-# 
+tikz("ex1.tex", width = 8.5, height = 4)
+#
+
+model = ARMA(ar = c(.5, .25, .125) ,ma = c(.32,.59,1.2,-.3))
+model2 = ARMA(ar = c(1.5, -.75) ,ma = c(.78,-.58,1))
+
+ar.coef = .5
+ma.coef = -.8
+
+make.theo.acf.pacf(ar = ar.coef, ma = ma.coef)
+make.theo.acf.pacf(ar = ar.coef2, ma = ma.coef)
+
 # Xt = gen.gts(model)
 # Xt2 = gen.gts(model2)
 # 
@@ -91,39 +94,35 @@ library(astsa)
 # tikz("ex2.tex", width = 8.5, height = 4)
 # mon.ACF.de.bonhomme(Xt, type = "ACF/PACF")
 # mon.ACF.de.bonhomme(Xt2, type = "ACF/PACF")
-
-
-tikz("ex3.tex", width = 8.5, height = 4)
-ar.coef = c(.5, .25, .125)
-ar.coef2 = c(1.5, -.75)
-ma.coef1 = c(.32,.59,1.2,-.3)
-ma.coef2 = c(.78,-.58,1)
-make.theo.acf.pacf(ar = ar.coef, ma = ma.coef1)
-make.theo.acf.pacf(ar = ar.coef2, ma = ma.coef2)
-
-
+# 
+# 
 # tikz("ex1.tex", width = 5, height = 4)
-# # 
-# Xt = na.omit(diff(log(gnp)))
+# getSymbols('PAYNSA',src='FRED')
+# #
+# 
+# 
+# Xt = na.omit(diff(log(PAYNSA)))
+# Xt = gen.gts(Xt)
+# plot.gts(Xt)
 # 
 # tikz("ex2.tex", width = 8.5, height = 4)
 # mon.ACF.de.bonhomme(Xt, type = "ACF/PACF")
 # 
-
+# 
 
 dev.off()
 @
 
-% \begin{figure}
-% \input{ex1.tex}
-% \end{figure}
-% 
+\begin{figure}
+\input{ex1.tex}
+\end{figure}
+
 % \begin{figure}
 % \input{ex2.tex}
 % \end{figure}
-% 
-\begin{figure}
-\input{ex3.tex}
-\end{figure}
+
+% \begin{figure}
+% \input{ex3.tex}
+% \end{figure}
 
 \end{document}
