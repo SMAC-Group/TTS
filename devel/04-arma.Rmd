@@ -10,26 +10,9 @@ knitr::read_chunk('../code/chapter/04_arma.R')
 
 ## MA / AR Operators
 
-## Redundancy
+We define the *AR and MA polynomials*, which will be used often through this chapter.
 
-## Causal + Invertible
-
-### Definitions
-(Def. 3.7, p.94). An ARMA(p, q) model is *causal*, if the time series $\{ X_t \}_{-\infty}^{\infty}$ can be written as a one-sided linear process:
-\begin{equation}
-    X_t = \sum_{j = 0}^{\infty} \psi_j \omega_{t-j} = \psi(B) \omega_t,
-    \label{eq:causal}
-\end{equation}
-where $\psi(B) = \sum_{j = 0}^{\infty} \psi_j B^j$, and $\sum_{j=0}^{\infty}|\psi_j| < \infty$; we set $\psi_0 = 1$.
-
-(Def. 3.8, p.95). An ARMA(p, q) model is *invertible*, if the time series $\{ X_t \}_{-\infty}^{\infty}$ can be written as
-\begin{equation}
-    \pi(B)X_t = \sum_{j = 0}^{\infty} \pi_j X_{t-j} = \omega_t,
-    \label{eq:invertible}
-\end{equation}
-where $\pi(B) = \sum_{j = 0}^{\infty} \pi_j B^j$, and $\sum_{j=0}^{\infty}|\pi_j| < \infty$; we set $\pi_0 = 1$.
-
-It might be difficult and not obvious to show the causality or the invertibility of an ARMA process (especially the higher order process) by using these definitions directly, thus the following properties are useful in practice. Define the *AR and MA polynomials* respectively as
+Define the *AR and MA polynomials* respectively as
 \begin{equation*}
     \phi(z) = 1 - \phi_1 z - ... - \phi_p z^p, \mbox{ } \phi_p \neq 0,
 \end{equation*}
@@ -38,6 +21,57 @@ and
     \theta(z) = 1 + \theta_1 z + ... + \theta_p z^p, \mbox{ } \theta_p \neq 0,
 \end{equation*}
 where $z$ is a complex number.
+
+
+## Redundancy
+
+Parameter redundancy is a problem which makes an ARMA(p, q) model has more parameters than necessary. Especially when we want to estimate parameters of a proposed ARMA(p, q) model, if this model has parameter redundancy, then it is not *Identifiable* (i.e. parameters of this model are not unique). In addition, *Causality* and *Invertibility* can only be assessed for ARMA(p, q) models without parameter redundancy.
+
+Parameter redundancy can be checked by using *AR and MA polynomials*. A sufficient condition for parameter redundancy is *AR and MA polynomials* have common factors.
+
+**Example: Redundancy** Consider the following model
+\begin{equation}
+    X_t = 0.4X_{t-1} + 0.45X_{t-2} + W_t + W_{t-1} + 0.25W_{t-2},
+\end{equation}
+rewrite it with backshift operator,
+\begin{equation}
+    (1 - 0.4B - 0.45B^2)X_t = (1 + B + 0.25B^2)W_t,
+\end{equation}
+it looks like an ARMA(2, 2), but since
+\begin{equation}
+    (1 + 0.5B)(1 - 0.9B)X_t = (1 + 0.5B)^2W_t,
+\end{equation}
+the AR polynomials
+\begin{equation*}
+    \phi(z) = (1 + 0.5z)(1 - 0.9z),
+\end{equation*}
+and the MA polynomials
+\begin{equation*}
+    \theta(z) = (1 + 0.5z)^2,
+\end{equation*}
+have common factor, there is an issue of redundancy. By removing the common factor, we can obtain an actual ARMA(1, 1) model,
+\begin{equation}
+    (1 - 0.9B)X_t = (1 + 0.5B)W_t.
+\end{equation}
+
+## Causal + Invertible
+
+### Definitions
+(Def. 3.7, p.94). An ARMA(p, q) model is *causal*, if the time series $\{ X_t \}_{-\infty}^{\infty}$ can be written as a one-sided linear process:
+\begin{equation}
+    X_t = \sum_{j = 0}^{\infty} \psi_j W_{t-j} = \psi(B) W_t,
+    \label{eq:causal}
+\end{equation}
+where $\psi(B) = \sum_{j = 0}^{\infty} \psi_j B^j$, and $\sum_{j=0}^{\infty}|\psi_j| < \infty$; we set $\psi_0 = 1$.
+
+(Def. 3.8, p.95). An ARMA(p, q) model is *invertible*, if the time series $\{ X_t \}_{-\infty}^{\infty}$ can be written as
+\begin{equation}
+    \pi(B)X_t = \sum_{j = 0}^{\infty} \pi_j X_{t-j} = W_t,
+    \label{eq:invertible}
+\end{equation}
+where $\pi(B) = \sum_{j = 0}^{\infty} \pi_j B^j$, and $\sum_{j=0}^{\infty}|\pi_j| < \infty$; we set $\pi_0 = 1$.
+
+It might be difficult and not obvious to show the causality or the invertibility of an ARMA process (especially the higher order process) by using these definitions directly, thus the following properties are useful in practice. 
 
 **Property: Causality**
 If an ARMA(p, q) model is causal, then the coefficients of the one-sided linear process given in (\@ref(eq:causal)) can be obtained by
