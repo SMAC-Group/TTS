@@ -444,3 +444,68 @@ for (i in seq_len(B)){
 # Add 95% confidence region
 lines(1:n, 1.96*sqrt(1:n), col = 2, lwd = 2, lty = 2)
 lines(1:n, -1.96*sqrt(1:n), col = 2, lwd = 2, lty = 2)
+
+
+## @knitr dist_null_portmanteau
+library(gmwm)
+
+# set seed
+set.seed(1345)
+
+# Specify models
+model = WN(sigma2 = 1) # WN
+
+B = 1000 # number of parametric bootstrap
+BP.obs = rep(NA, B)
+LB.obs = rep(NA, B)
+
+for (j in seq_len(B)){
+  x = gen.gts(model, N = 1000)
+  BP.obs[j] = Box.test(x, lag = 10, "Box-Pierce", fitdf = 0)$statistic
+  LB.obs[j] = Box.test(x, lag = 10, "Ljung-Box", fitdf = 0)$statistic
+}
+
+sim_results = data.frame(sim = c(BP.obs, LB.obs),
+                         simtype = c(rep("Box-Pierce",B), rep("Ljung-Box",B)))
+
+ggplot(data = sim_results, aes(x = sim)) + 
+  geom_histogram(aes(y = ..density.., fill = simtype),
+                 binwidth = 1, color = "black") +
+  stat_function(fun = dchisq, args = list(df = 10)) +
+  facet_wrap( ~ simtype) + ylim(0, 0.12) + 
+  labs(fill = "Statistic", title = "Histogram of the Observed Test Statistics",
+       y = "Density", x = "Observed Test Statistic")
+
+## @knitr alternatives_port
+# set seed
+set.seed(1234)
+
+# Specify models
+model1 = WN(sigma2 = 1)                         # WN
+model2 = AR(phi = 0.3, sigma2 = 1)              # AR(1)
+model3 = AR(phi = c(rep(0,9), 0.3), sigma2 = 1) # seasonal AR(10)
+
+B = 1000 # number of parametric bootstrap
+LB.pvalue = matrix(NA, nrow = B, ncol = 6)
+
+for (i in 1:3){
+  for (j in seq_len(B)){
+    x = gen.gts(get(paste0("model", i)), N = 1000)
+    LB.pvalue[j,2*i-1] = Box.test(x, lag = 1, "Ljung-Box", fitdf = 0)$p.value
+    LB.pvalue[j,2*i] = Box.test(x, lag = 10, "Ljung-Box", fitdf = 0)$p.value
+  }
+}
+
+para_1 = data.frame(lag = 1, LB.pvalue[,c(1,3,5)])
+para_2 = data.frame(lag = 2, LB.pvalue[,c(2,4,6)])
+para = rbind(para_1, para_2)
+
+colnames(para)[2:4] = c("WN", "AR(1)", "Seasonal AR(10)")
+
+library("reshape2")
+para.melt = melt(para, id.vars = "lag")
+
+ggplot(data = para.melt, aes(x=variable, y=value)) + 
+  geom_boxplot(aes(fill=factor(lag))) + facet_wrap( ~ variable, scales="free") +
+  ggtitle("Simulated P-value") +
+  scale_fill_hue(name="Specified m", breaks = c(1,2) , labels = c("m=1", "m=10"))

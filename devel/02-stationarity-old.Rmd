@@ -543,3 +543,17 @@ Then on 1978, Ljung and Box improved Box-Pierce test by standardizing each $\hat
 It can also be shown that $Q_{LB} \overset{\mathcal{D}}{\to} \chi^2_{m - m^{\prime}}$ under the null. However, compared to $Q_{BP}$, the distribution of $Q_{BP}$ under the null is closer to $\chi^2_{m - m^{\prime}}$, when $n$ is finite.
 
 In the above two examples, the test statistic contains a user specified parameter $m$. And for different $m$, the power of the test would be different. Thus many work has been done to either select the optimal $m$, or propose a new test statistic without user specified parameters. Moreover, testing white noise can also be done by checking PACF, or by checking the spectral density in the frequency domain. Therefore these lead to many different Portmanteau tests.
+
+Take for an example the following use of a Portmanteau test to show the distribution of test statistics under the null:
+
+```{r dist_null_portmanteau, cache = TRUE}
+```
+
+From the histogram, we can see that under the null the distribution of both BP
+and LB are close to Chi-square distribution, but LP is slightly better.
+
+To show the distribution of P-values under different alternatives and
+show that the test depends on specified $m$.
+
+```{r alternatives_port, cache = TRUE}
+```

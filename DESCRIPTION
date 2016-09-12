@@ -22,7 +22,8 @@ Imports:
   timeDate,
   gridExtra,
   robcor,
-  quantmod
+  quantmod,
+  reshape2
 Remotes:
   sinhrks/ggfortify,
   rstudio/bookdown,
