@@ -75,17 +75,27 @@ library(robcor)
 library(quantmod)
 
 
-tikz("ex1.tex", width = 8.5, height = 4)
+tikz("ex1.tex", width = 6, height = 6)
 #
 
-model = ARMA(ar = c(.5, .25, .125) ,ma = c(.32,.59,1.2,-.3))
-model2 = ARMA(ar = c(1.5, -.75) ,ma = c(.78,-.58,1))
+model = ARMA(ar = c(0, 0, 0, .9) , ma = 0)
+model2 = ARMA(ar = c(0, 0, 0, .9) ,ma = c(.5))
 
-ar.coef = .5
-ma.coef = -.8
+Xt = gen.gts(model,N = 300)
+set.seed(3052)
+Yt = gen.gts(model2, N = 300)
 
-make.theo.acf.pacf(ar = ar.coef, ma = ma.coef)
-make.theo.acf.pacf(ar = ar.coef2, ma = ma.coef)
+a1 = autoplot(Xt) 
+a2 = autoplot(Yt) 
+
+grid.arrange(a1, a2, nrow = 2)
+
+
+tikz("ex2.tex", width = 8.5, height = 4)
+make.theo.acf.pacf(ar = c(0, 0, 0, .9), ma = 0)
+make.theo.acf.pacf(ar = c(0, 0, 0, .9), ma =  c(.5))
+
+dev.off()
 
 # Xt = gen.gts(model)
 # Xt2 = gen.gts(model2)
@@ -117,9 +127,9 @@ dev.off()
 \input{ex1.tex}
 \end{figure}
 
-% \begin{figure}
-% \input{ex2.tex}
-% \end{figure}
+\begin{figure}
+\input{ex2.tex}
+\end{figure}
 
 % \begin{figure}
 % \input{ex3.tex}

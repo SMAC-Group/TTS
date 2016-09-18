@@ -146,25 +146,40 @@
 {\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: TTR}}
 
 {\ttfamily\noindent\itshape\color{messagecolor}{\#\# Version 0.4-0 included new data defaults. See ?getSymbols.}}\begin{alltt}
-\hlkwd{tikz}\hlstd{(}\hlstr{"ex1.tex"}\hlstd{,} \hlkwc{width} \hlstd{=} \hlnum{8.5}\hlstd{,} \hlkwc{height} \hlstd{=} \hlnum{4}\hlstd{)}
+\hlkwd{tikz}\hlstd{(}\hlstr{"ex1.tex"}\hlstd{,} \hlkwc{width} \hlstd{=} \hlnum{6}\hlstd{,} \hlkwc{height} \hlstd{=} \hlnum{6}\hlstd{)}
 \hlcom{#}
 
-\hlstd{model} \hlkwb{=} \hlkwd{ARMA}\hlstd{(}\hlkwc{ar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{.5}\hlstd{,} \hlnum{.25}\hlstd{,} \hlnum{.125}\hlstd{) ,}\hlkwc{ma} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{.32}\hlstd{,}\hlnum{.59}\hlstd{,}\hlnum{1.2}\hlstd{,}\hlopt{-}\hlnum{.3}\hlstd{))}
-\hlstd{model2} \hlkwb{=} \hlkwd{ARMA}\hlstd{(}\hlkwc{ar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1.5}\hlstd{,} \hlopt{-}\hlnum{.75}\hlstd{) ,}\hlkwc{ma} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{.78}\hlstd{,}\hlopt{-}\hlnum{.58}\hlstd{,}\hlnum{1}\hlstd{))}
+\hlstd{model} \hlkwb{=} \hlkwd{ARMA}\hlstd{(}\hlkwc{ar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{.9}\hlstd{) ,} \hlkwc{ma} \hlstd{=} \hlnum{0}\hlstd{)}
+\hlstd{model2} \hlkwb{=} \hlkwd{ARMA}\hlstd{(}\hlkwc{ar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{.9}\hlstd{) ,}\hlkwc{ma} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{.5}\hlstd{))}
 
-\hlstd{ar.coef} \hlkwb{=} \hlnum{.5}
-\hlstd{ma.coef} \hlkwb{=} \hlopt{-}\hlnum{.8}
+\hlstd{Xt} \hlkwb{=} \hlkwd{gen.gts}\hlstd{(model,}\hlkwc{N} \hlstd{=} \hlnum{300}\hlstd{)}
+\hlkwd{set.seed}\hlstd{(}\hlnum{3052}\hlstd{)}
+\hlstd{Yt} \hlkwb{=} \hlkwd{gen.gts}\hlstd{(model2,} \hlkwc{N} \hlstd{=} \hlnum{300}\hlstd{)}
 
-\hlkwd{make.theo.acf.pacf}\hlstd{(}\hlkwc{ar} \hlstd{= ar.coef,} \hlkwc{ma} \hlstd{= ma.coef)}
+\hlstd{a1} \hlkwb{=} \hlkwd{autoplot}\hlstd{(Xt)}
+\hlstd{a2} \hlkwb{=} \hlkwd{autoplot}\hlstd{(Yt)}
+
+\hlkwd{grid.arrange}\hlstd{(a1, a2,} \hlkwc{nrow} \hlstd{=} \hlnum{2}\hlstd{)}
+
+
+\hlkwd{tikz}\hlstd{(}\hlstr{"ex2.tex"}\hlstd{,} \hlkwc{width} \hlstd{=} \hlnum{8.5}\hlstd{,} \hlkwc{height} \hlstd{=} \hlnum{4}\hlstd{)}
+\hlkwd{make.theo.acf.pacf}\hlstd{(}\hlkwc{ar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{.9}\hlstd{),} \hlkwc{ma} \hlstd{=} \hlnum{0}\hlstd{)}
 \end{alltt}
 
 
 {\ttfamily\noindent\color{warningcolor}{\#\# Warning: Removed 1 rows containing missing values (geom\_segment).}}\begin{alltt}
-\hlkwd{make.theo.acf.pacf}\hlstd{(}\hlkwc{ar} \hlstd{= ar.coef2,} \hlkwc{ma} \hlstd{= ma.coef)}
+\hlkwd{make.theo.acf.pacf}\hlstd{(}\hlkwc{ar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{.9}\hlstd{),} \hlkwc{ma} \hlstd{=}  \hlkwd{c}\hlstd{(}\hlnum{.5}\hlstd{))}
 \end{alltt}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in ARMAacf(ar = ar, ma = ma, lag.max = 30): object 'ar.coef2' not found}}\begin{alltt}
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Removed 1 rows containing missing values (geom\_segment).}}\begin{alltt}
+\hlkwd{dev.off}\hlstd{()}
+\end{alltt}
+\begin{verbatim}
+## pdf 
+##   2
+\end{verbatim}
+\begin{alltt}
 \hlcom{# Xt = gen.gts(model)}
 \hlcom{# Xt2 = gen.gts(model2)}
 \hlcom{# }
@@ -191,8 +206,8 @@
 \hlkwd{dev.off}\hlstd{()}
 \end{alltt}
 \begin{verbatim}
-## pdf 
-##   2
+## tikz output 
+##           3
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -201,9 +216,9 @@
 \input{ex1.tex}
 \end{figure}
 
-% \begin{figure}
-% \input{ex2.tex}
-% \end{figure}
+\begin{figure}
+\input{ex2.tex}
+\end{figure}
 
 % \begin{figure}
 % \input{ex3.tex}
