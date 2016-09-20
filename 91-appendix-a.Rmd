@@ -285,7 +285,7 @@ where
 
 \begin{equation*} 
 \begin{aligned}
-{\mu} &= \nabla g\left(\begin{bmatrix}
+{\mu} &= g\left(\begin{bmatrix}
          \sigma^2 & 0
         \end{bmatrix} \right) = 0,\\
 \sigma_r^2 &= \nabla g\left(\begin{bmatrix}
