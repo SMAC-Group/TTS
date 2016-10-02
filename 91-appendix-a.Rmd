@@ -5,7 +5,7 @@
 We let $X_t = W_t + \mu$, where $\mu < \infty$ and $(W_t)$ is a strong white noise process with variance $\sigma^2$ and finite fourth moment (i.e. $\mathbb{E} [W_t^4] < \infty$). 
 
 Next, we consider the sample autocovariance function computed on $(X_t)$, i.e.
-
+ 
 \begin{equation*}
     \hat \gamma \left( h \right) = \frac{1}{n}\sum\limits_{t = 1}^{n - h} {\left( {{X_t} - \bar X} \right)\left( {{X_{t + h}} - \bar X} \right)}.
 \end{equation*} 
