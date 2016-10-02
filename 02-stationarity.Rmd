@@ -674,6 +674,40 @@ Both of the above estimators are again only symmetric under the above index
 and lag transformation.
 
 
+## Portmanteau test
+In this section we give a brief introduction to Portmanteau tests used in time series analysis. In linear regression, we always need to do diagnostic test for residuals after building our model, to check whether our assumptions are satisfied. If there is no evidence to reject any of the assumptions, we can say that the linear model we built is adequate. Otherwise, the linear models are not adequate, some modifications or transformations need to be done either for the previous model or for the data. This rule also applies to time series modeling. In time series analysis, a wide variety of Portmanteau tests can be used to check the white noise residuals assumption. We will introduce two of them as follows, which are based on the ACF of residuals, in order to illustrate some of ideas of this kind of tests.
+
+Dating back to 1970, Box and Pierce proposed the well-known Box-Pierce test statistic as the following form:
+\begin{equation*}
+    Q_{BP} = n\sum_{h =1}^m \hat{\rho}_h^2,
+\end{equation*}
+where the empirical autocorrelation of residuals at lag $h$ is defined as $\hat{\rho}_h = \frac{\hat{\gamma}(h)}{\hat{\gamma}(0)}$. It is obvious that under alternative hypothesis, $\hat{\rho}_h$ would be deviate from $0$, thus a large $Q_{BP}$ gives us the evidence to reject the null. And under null hypothesis that the residuals are white noise (or equivalently the time series are adequate), it can be shown that when $n \to \infty$, we have
+\begin{equation*}
+    Q_{BP} \overset{\mathcal{D}}{\to} \chi^2_{m - m^{\prime}},
+\end{equation*}
+where $m^{\prime}$ is the number of parameters in the time series model.
+
+Then on 1978, Ljung and Box improved Box-Pierce test by standardizing each $\hat{\rho}_h$ by its asymptotic variance. The Ljung and Box test statistic is
+\begin{equation*}
+    Q_{LB} = n\sum_{h =1}^m \frac{n+2}{n-h}\hat{\rho}_h^2.
+\end{equation*}
+It can also be shown that $Q_{LB} \overset{\mathcal{D}}{\to} \chi^2_{m - m^{\prime}}$ under the null. However, compared to $Q_{BP}$, the distribution of $Q_{BP}$ under the null is closer to $\chi^2_{m - m^{\prime}}$, when $n$ is finite.
+
+In the above two examples, the test statistic contains a user specified parameter $m$. And for different $m$, the power of the test would be different. Thus many work has been done to either select the optimal $m$, or propose a new test statistic without user specified parameters. Moreover, testing white noise can also be done by checking PACF, or by checking the spectral density in the frequency domain. Therefore these lead to many different Portmanteau tests.
+
+Take for an example the following use of a Portmanteau test to show the distribution of test statistics under the null:
+
+```{r dist_null_portmanteau, cache = TRUE}
+```
+
+From the histogram, we can see that under the null the distribution of both BP
+and LB are close to Chi-square distribution, but LP is slightly better.
+
+To show the distribution of P-values under different alternatives and
+show that the test depends on specified $m$.
+
+```{r alternatives_port, cache = TRUE}
+```
 
 <!--
 ## Exercises
