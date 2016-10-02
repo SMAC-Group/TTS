@@ -1,4 +1,4 @@
-# Proofs
+# Proofs {#appendixa}
 
 ## Proof of Theorem 1
 
