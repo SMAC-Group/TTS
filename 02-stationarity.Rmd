@@ -389,14 +389,14 @@ The variance of such estimator can be derived as follows:
   1
 \end{array}} \right]_{n \times 1}}, 
 \end{aligned}
-(\#eq:chap2_var_moment)
+(\#eq:chap2VarMoment)
 \end{equation}
 
 where $\boldsymbol{\Sigma}(k) \in \real^{n \times n}$ and its $i$th, $j$-th element is given by
 
 \[ \left(\boldsymbol{\Sigma}(k)\right)_{i,j} = \cov \left(X_i^k, X_j^k\right).\]
 
-In the case $k = 1$, (\@ref(eq:chap2_var_moment)) can easily be further simplified. Indeed, we have
+In the case $k = 1$, (\@ref(eq:chap2VarMoment)) can easily be further simplified. Indeed, we have
 
 \[\begin{aligned}
   \var \left( {\bar X} \right) &= \var \left( {\frac{1}{n}\sum\limits_{t = 1}^n {{X_t}} } \right)  \\
@@ -422,7 +422,6 @@ Obviously, when the $(X_t)$ is a white noise, the above formula reduces to the u
 
 \begin{equation}
 \var \left( {\bar X} \right) = \frac{\sigma_w^2 \left( n - 2\phi - n \phi^2 + 2 \phi^{n + 1}\right)}{n^2\left(1-\phi^2\right)\left(1-\phi\right)^2}.
-(\#eq:chap2_exAR1)
 \end{equation}
 
 Unfortunately, deriving such an exact formula is often difficult when considering more complex models. However, asymptotic approximations are often employed to simplify the calculation. For example, in our case we have
