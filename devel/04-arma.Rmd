@@ -5,8 +5,10 @@ source("../code/init/chapter_start.R")
 knitr::read_chunk('../code/chapter/04_arma.R')
 ```
 
+The objective behind this chapter is to talk about *A*uto*R*egressive *M*oving
+*A*verage (ARMA) models.
 
-## Definition
+## ARMA Definition
 
 ## MA / AR Operators
 
@@ -30,38 +32,48 @@ Parameter redundancy is a problem which makes an ARMA(p, q) model has more param
 Parameter redundancy can be checked by using *AR and MA polynomials*. A sufficient condition for parameter redundancy is *AR and MA polynomials* have common factors.
 
 **Example: Redundancy** Consider the following model
-\begin{equation}
+
+$$\begin{equation}
     X_t = 0.4X_{t-1} + 0.45X_{t-2} + W_t + W_{t-1} + 0.25W_{t-2},
-\end{equation}
+\end{equation}$$
 rewrite it with backshift operator,
-\begin{equation}
+
+$$\begin{equation}
     (1 - 0.4B - 0.45B^2)X_t = (1 + B + 0.25B^2)W_t,
-\end{equation}
+\end{equation}$$
+
 it looks like an ARMA(2, 2), but since
-\begin{equation}
+
+$$\begin{equation}
     (1 + 0.5B)(1 - 0.9B)X_t = (1 + 0.5B)^2W_t,
-\end{equation}
+\end{equation}$$
+
 the AR polynomials
-\begin{equation*}
+
+$$\begin{equation*}
     \phi(z) = (1 + 0.5z)(1 - 0.9z),
-\end{equation*}
+\end{equation*}$$
+
 and the MA polynomials
-\begin{equation*}
+
+$$\begin{equation*}
     \theta(z) = (1 + 0.5z)^2,
-\end{equation*}
+\end{equation*}$$
 have common factor, there is an issue of redundancy. By removing the common factor, we can obtain an actual ARMA(1, 1) model,
-\begin{equation}
+
+$$\begin{equation}
     (1 - 0.9B)X_t = (1 + 0.5B)W_t.
-\end{equation}
+\end{equation}$$
+
 
 ## Causal + Invertible
 
 ### Definitions
 (Def. 3.7, p.94). An ARMA(p, q) model is *causal*, if the time series $\{ X_t \}_{-\infty}^{\infty}$ can be written as a one-sided linear process:
-\begin{equation}
+$$\begin{equation}
     X_t = \sum_{j = 0}^{\infty} \psi_j W_{t-j} = \psi(B) W_t,
     \label{eq:causal}
-\end{equation}
+\end{equation}$$
 where $\psi(B) = \sum_{j = 0}^{\infty} \psi_j B^j$, and $\sum_{j=0}^{\infty}|\psi_j| < \infty$; we set $\psi_0 = 1$.
 
 (Def. 3.8, p.95). An ARMA(p, q) model is *invertible*, if the time series $\{ X_t \}_{-\infty}^{\infty}$ can be written as
@@ -120,16 +132,16 @@ Thus we can represent $\phi_1$ and $\phi_2$ by $z_1$ and $z_2$,
 
 Moreover we have the following equivalent condition for causality:
 
-\begin{cases}
+$$\begin{cases}
         |z_1| &< 1\\
         |z_2| &< 1
-\end{cases}
+\end{cases}$$
 if and only if
-\begin{cases}
+$$\begin{cases}
         \phi_1 + \phi_2 &< 1\\
         \phi_2 - \phi_1 &< 1\\
         |\phi_2| &< 1
-\end{cases}
+\end{cases}$$
 
 We can show "if"
 
