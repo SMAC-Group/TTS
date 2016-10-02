@@ -557,6 +557,124 @@ Finally, we return to S&P 500 returns and compare the classical and robust autoc
 
 It can be observed that both estimators are very similar. Nevertheless, some small discrepancies can be observed, in particular, the robust estimators seems to indicate an absence of linear dependence while a slightly different interpretation might be achieved with the classical estimator.
 
+
+## Joint Stationarity
+
+The notion of joint stationarity implies that the time series under
+investigation is bivariate in nature, e.g. $\left(X_t \right)$ and 
+$\left(Y_t\right)$ are two distinct time series with matching time points.
+In order to fulfill bivariate stationarity, both processes
+must be considered to be weakly stationary (constant mean and autocovariance
+depends on lag $h$) as well as a cross-covariance function depend only on lag $h$.
+The ideas discussed next can extended beyond the bivariate case to a general multivariate setting.
+
+### Definition: Cross-Covariance
+
+The **cross-covariance** function of two jointly stationary processes
+$\left\{X_t\right\}$ and $\left\{Y_t\right\}$ is given by:
+
+\[{\gamma _{XY}}\left( {t + h,t} \right) = \cov\left( {{X_{t+h}},{Y_{t}}} \right) =
+\e{\left( {{X_{t + h}} - {\mu _X}} \right)\left( {{Y_t} - {\mu _Y}} \right)} = {\gamma _{XY}}\left( h \right)\]
+
+Unlike the symmetry found in the autocovariance function of a stationary process $\left\{X_t\right\}$, e.g. $\gamma_X(h) = \gamma_X(-h)$, the cross-covariance
+function is only equal when $\gamma_{XY}(h) = \gamma_{YX}(-h)$. Notice the
+switch in indices and negative lag change.
+
+### Definition: Cross-Correlation
+
+The *cross-correlation* function for two jointly stationary time series
+$\left\{X_t\right\}$ and $\left\{Y_t\right\}$ can be expressed as:
+
+\[{\rho _{XY}}\left( {t+h,t} \right) = \frac{{{\gamma _{XY}}\left( {t + h,t} \right)}}{{\sqrt {{\gamma _X}\left( 0 \right)} \sqrt {{\gamma _Y}\left( 0 \right)} }} = \frac{{{\gamma _{XY}}\left( h \right)}}{{{\sigma _{{X_{t+h}}}}{\sigma _{{Y_{t}}}}}} = {\rho _{XY}}\left( h \right)\]
+
+Due to the previously discussed symmetry regarding the cross-covariance function,
+note that the cross-correlation function also only has equality when 
+$\rho_{XY}(h) = \rho_{YX}(-h)$. Thus, note that $\rho_{XY}(h) \neq \rho_{XY}(h)$.
+
+### Example
+
+Consider two time series processes given by:
+
+\[\begin{aligned}
+  {X_t} &= {W_t} - {W_{t-1}} \\
+  {Y_t} &= {W_t} + {W_{t-1}} \\ 
+\end{aligned} \]
+
+where $W_t \sim WN(0, \sigma^2_W)$.
+
+First check to see if $\left\{X_t\right\}$ and $\left\{Y_t\right\}$ are weakly stationary.
+
+The means of both time series are evident to be
+\[\begin{aligned}
+  E\left[ {{X_t}} \right] &= E\left[ {{Y_t}} \right] = 0 \\
+\end{aligned} \]
+
+The autocovariance for $\left\{X_t\right\}$ is given as:
+
+\[\begin{aligned}
+  {\gamma _X}\left( h \right) &= \cov \left( {{X_{t + h}},{X_t}} \right) \\
+   &= \cov \left( {{W_{t + h}} - {W_{t + h - 1}},{W_t} - {W_{t - 1}}} \right) \\
+   &= {1_{\left\{ {h = 0} \right\}}}2{\sigma ^2} + {1_{\left\{ {h =  - 1} \right\}}}{-\sigma ^2} + {1_{\left\{ {h = 1} \right\}}}{-\sigma ^2} \\
+   &= \begin{cases}
+   2\sigma^2_W, &\text{if} h = 0 \\
+   -\sigma^2_W, &\text{if} \left|h\right| = 1 \\
+   0, &\text{if} \left|h\right| \ge 1 
+   \end{cases} 
+\end{aligned} \]
+
+Similarly, the autocovariance for $\left\{Y_t\right\}$ is calculated to be:
+
+\[\begin{aligned}
+  {\gamma _Y}\left( h \right) &= \cov \left( {{Y_{t + h}},{Y_t}} \right) \\
+   &= \cov \left( {{W_{t + h}} + {W_{t + h - 1}},{W_t} + {W_{t - 1}}} \right) \\
+   &= {1_{\left\{ {h = 0} \right\}}}2{\sigma ^2} + {1_{\left\{ {h =  - 1} \right\}}}{\sigma ^2} + {1_{\left\{ {h = 1} \right\}}}{\sigma ^2} \\ 
+   &= \begin{cases}
+   2\sigma^2_W, &\text{if} h = 0 \\
+   \sigma^2_W, &\text{if} \left|h\right| = 1 \\
+   0, &\text{if} \left|h\right| \ge 1 
+   \end{cases} 
+\end{aligned} \]
+
+Next, the cross-covariance for $\left\{X_t\right\}$ and $\left\{Y_t\right\}$:
+
+\[\begin{aligned}
+{\gamma _{XY}}\left( h \right) &= \cov \left( {{X_{t + h}},{Y_t}} \right) \\
+   &= \cov \left( {{W_{t + h}} - {W_{t + h - 1}},{W_t} + {W_{t-1}}} \right)  \\ 
+   &= \begin{cases}
+   0, &\text{if } h = 0 \\
+   -\sigma^2_W, &\text{if } h = 1 \\
+   \sigma^2_W, &\text{if } h = -1 \\
+    0, &\text{if } h \ge 2
+   \end{cases}
+\end{aligned}\]
+
+Therefore, based on obtain the weak stationarity for each process and obtain a cross-covariance function that only depends on the lag $h$, the process is joint stationary. 
+
+Furthermore, we also have the cross-correlation function as:
+
+\[{\rho _{XY}}\left( {{X_{t + h}},{Y_t}} \right) = \frac{{{\gamma _{XY}}\left( h \right)}}{{{\sigma _X}{\sigma _Y}}} = \frac{{{\gamma _{XY}}\left( h \right)}}{{\sqrt {{\gamma _x}\left( 0 \right)} \sqrt {{\gamma _y}\left( 0 \right)} }} = \frac{{{\gamma _{XY}}\left( h \right)}}{{{\gamma _X}\left( 0 \right)}} = \begin{cases}
+   0, &\text{if } h = 0 \\
+   -\frac{1}{2}, &\text{if } h = 1 \\
+   \frac{1}{2}, &\text{if } h = -1 \\
+    0, &\text{if } h \ge 2
+   \end{cases}\]
+
+### Sample Cross-Covariance and Cross-Correlation Functions
+
+A natural estimator of the *cross-covariance function* is given by:
+
+\[{{\hat \gamma }_{XY}}\left( h \right) = \frac{1}{T}\sum\limits_{t = 1}^{T - h} {\left( {{X_{t + h}} - \bar X} \right)\left( {{Y_t} - \bar Y} \right)} \]
+
+With this in mind, the "plug-in" estimator for the *cross-correlation function*
+follows:
+
+\[{{\hat \rho }_{XY}}\left( h \right) = \frac{{{{\hat \gamma }_{XY}}\left( h \right)}}{{\sqrt {{{\hat \gamma }_X}\left( 0 \right)} \sqrt {{{\hat \gamma }_Y}\left( 0 \right)} }}\]
+
+Both of the above estimators are again only symmetric under the above index
+and lag transformation.
+
+
+
 <!--
 ## Exercises
 
