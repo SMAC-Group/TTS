@@ -26,7 +26,6 @@ Imports:
   reshape2
 Remotes:
   sinhrks/ggfortify,
-  rstudio/bookdown,
   SMAC-Group/gmwm,
   SMAC-Group/imudata,
   SMAC-Group/smacdata
