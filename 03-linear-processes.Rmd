@@ -130,8 +130,8 @@ The white noise process $\left\{X_t\right\}$, defined in \@ref(wn),
 can be expressed as a linear process under:
 
 \[\psi _j = \begin{cases}
-      \frac{1}{{2q + 1}} , &\mbox{ if } -q \le j \le q\\
-      0 , &\mbox{ if } |j| > q
+      1 , &\mbox{ if } j = 0\\
+      0 , &\mbox{ if } |j| \ge 1
 \end{cases}.\]
 
 and $\mu = 0$.
