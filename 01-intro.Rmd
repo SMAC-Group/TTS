@@ -373,7 +373,6 @@ version of an AR(1). It is defined as
 
 \begin{equation} 
   X_t = \theta W_{t-1} + W_t,
- (\#eq:defMA1)
 \end{equation}
  
 where (again) $W_t$ denotes a Gaussian white noise process. An example on how to
