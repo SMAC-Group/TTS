@@ -588,7 +588,7 @@ $\left\{X_t\right\}$ and $\left\{Y_t\right\}$ can be expressed as:
 
 Due to the previously discussed symmetry regarding the cross-covariance function,
 note that the cross-correlation function also only has equality when 
-$\rho_{XY}(h) = \rho_{YX}(-h)$. Thus, note that $\rho_{XY}(h) \neq \rho_{XY}(h)$.
+$\rho_{XY}(h) = \rho_{YX}(-h)$. Thus, note that $\rho_{XY}(h) \neq \rho_{XY}(-h)$.
 
 ### Example
 
