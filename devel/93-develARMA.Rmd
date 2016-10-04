@@ -1,0 +1,654 @@
+
+
+To illustrate these models further, let us consider a simple AR(1) process and carry out the following iterative exercise
+
+\[\begin{aligned}
+  {y_t} &= {\phi _1}{y_{t - 1}} + {w_t} \\
+   &= {\phi _1}({\phi _1}{y_{t - 2}} + {w_{t-1}}) + {w_t} \\
+   &= {\phi _1^2}{y_{t - 2}} + {\phi _1}{w_{t-1}} + {w_t} \\
+   &= ... \\
+   &= {\phi _1^h}{y_{t - h}} + \sum_{i=0}^{h-1}{\phi _1^i}w_{t-i}
+\end{aligned}\].
+
+If we suppose that $|\phi_1| < 1$, then continuing the iteration to infinity would lead us to
+$$y_t = \sum_{i=0}^{\infty}{\phi _1^i}w_{t-i}$$,
+which has $\mathbb{E}[y_t] = 0$ and autocovariance function
+$$\gamma(h) = \frac{\phi_1^h}{1-\phi_1^2}\sigma _w^2$$
+where $\sigma _w^2$ is the variance of the white noise process $(w_t)$. It must be noted that if $\phi_1 = 1$ then the AR(1) becomes a random walk process (non-stationary) whereas if $|\phi_1| < 1$ the process is stationary.
+
+For these kind of models, the ACF and PACF can give meaningful insight into the order of the autoregressive model. The following plots show the ACF and PACF of an AR(1) with $\phi_1 = 0.8$ indicating that the ACF of an AR process decays exponentially while its PACF cuts off after the lag corresponding to the order of the autoregressive process.
+
+INSERT R CODE FOR ACF AND PACF OF SIMULATED AR(1)
+
+The condition for the stationarity of an AR(1) model have been partially discussed above. However, the condition of $|\phi_1| < 1$ is not the only one that guarantees that the AR(1) is stationary. Indeed, so-called explosive AR(1) models with $|\phi_1| > 1$ can be re-expressed, using the same kind of iterative argument above, as a stationary process. Nevertheless this iterative procedure makes use of future values of the series $(y_t)$ and therefore is not a so-called "causal" process. Generally speaking, by causal process we mean a process whose current values are only explained by its past values and not by its future ones.
+
+DISCUSS CAUSALITY MORE IN DEPTH ALSO OF AR(p)
+
+## Moving Average Models (MA(q))
+
+A moving average model can be interpreted in a similar way to an AR(p) model, except that in this case the time series is the result of a linear operation on the innovation process rather than on the time series itself. More specifically, an MA(q) model can be defined as follows
+$${y_t} = \theta_1 w_{t-1} + ... + \theta_q w_{t-q} + w_t$$.
+Following the same logic as for the AR(p) models and using the backshift operator as before, we can re-express these moving average processes as follows
+$$y_t = \theta(B)w_t$$
+where $\theta(B) = 1 + \theta_1B + ... + \theta_qB^q$.
+
+These processes are always stationary, no matter the values that $\theta_q$ takes. However, the MA(q) processes may not be identifiable through their autocovariance functions. By the latter we mean that different parameteres for a same order MA(q) model can deliver the exact same autocovariance function and it would therefore be impossible to retrieve the parameters of the model by only looking at the autocovariance function.
+
+DICUSS INVERTIBILITY
+
+## AutoRegressive Moving Average Models (ARMA(p,q))
+
+The objective behind this chapter is to talk about *A*uto*R*egressive *M*oving
+*A*verage (ARMA) models.
+
+## ARMA Definition
+
+## MA / AR Operators
+
+We define the *AR and MA polynomials*, which will be used often through this chapter.
+
+Define the *AR and MA polynomials* respectively as
+\begin{equation*}
+    \phi(z) = 1 - \phi_1 z - ... - \phi_p z^p, \mbox{ } \phi_p \neq 0,
+\end{equation*}
+and
+\begin{equation*}
+    \theta(z) = 1 + \theta_1 z + ... + \theta_p z^p, \mbox{ } \theta_p \neq 0,
+\end{equation*}
+where $z$ is a complex number.
+
+
+## Redundancy
+
+Parameter redundancy is a problem which makes an ARMA(p, q) model has more parameters than necessary. Especially when we want to estimate parameters of a proposed ARMA(p, q) model, if this model has parameter redundancy, then it is not *Identifiable* (i.e. parameters of this model are not unique). In addition, *Causality* and *Invertibility* can only be assessed for ARMA(p, q) models without parameter redundancy.
+
+Parameter redundancy can be checked by using *AR and MA polynomials*. A sufficient condition for parameter redundancy is *AR and MA polynomials* have common factors.
+
+**Example: Redundancy** Consider the following model
+
+$$\begin{equation}
+    X_t = 0.4X_{t-1} + 0.45X_{t-2} + W_t + W_{t-1} + 0.25W_{t-2},
+\end{equation}$$
+rewrite it with backshift operator,
+
+$$\begin{equation}
+    (1 - 0.4B - 0.45B^2)X_t = (1 + B + 0.25B^2)W_t,
+\end{equation}$$
+
+it looks like an ARMA(2, 2), but since
+
+$$\begin{equation}
+    (1 + 0.5B)(1 - 0.9B)X_t = (1 + 0.5B)^2W_t,
+\end{equation}$$
+
+the AR polynomials
+
+$$\begin{equation*}
+    \phi(z) = (1 + 0.5z)(1 - 0.9z),
+\end{equation*}$$
+
+and the MA polynomials
+
+$$\begin{equation*}
+    \theta(z) = (1 + 0.5z)^2,
+\end{equation*}$$
+have common factor, there is an issue of redundancy. By removing the common factor, we can obtain an actual ARMA(1, 1) model,
+
+$$\begin{equation}
+    (1 - 0.9B)X_t = (1 + 0.5B)W_t.
+\end{equation}$$
+
+
+## Causal + Invertible
+
+### Definitions
+(Def. 3.7, p.94). An ARMA(p, q) model is *causal*, if the time series $\{ X_t \}_{-\infty}^{\infty}$ can be written as a one-sided linear process:
+$$\begin{equation}
+    X_t = \sum_{j = 0}^{\infty} \psi_j W_{t-j} = \psi(B) W_t,
+    \label{eq:causal}
+\end{equation}$$
+where $\psi(B) = \sum_{j = 0}^{\infty} \psi_j B^j$, and $\sum_{j=0}^{\infty}|\psi_j| < \infty$; we set $\psi_0 = 1$.
+
+(Def. 3.8, p.95). An ARMA(p, q) model is *invertible*, if the time series $\{ X_t \}_{-\infty}^{\infty}$ can be written as
+\begin{equation}
+    \pi(B)X_t = \sum_{j = 0}^{\infty} \pi_j X_{t-j} = W_t,
+    \label{eq:invertible}
+\end{equation}
+where $\pi(B) = \sum_{j = 0}^{\infty} \pi_j B^j$, and $\sum_{j=0}^{\infty}|\pi_j| < \infty$; we set $\pi_0 = 1$.
+
+It might be difficult and not obvious to show the causality or the invertibility of an ARMA process (especially the higher order process) by using these definitions directly, thus the following properties are useful in practice. 
+
+**Property: Causality**
+If an ARMA(p, q) model is causal, then the coefficients of the one-sided linear process given in (\@ref(eq:causal)) can be obtained by
+\begin{equation*}
+    \psi(z) = \sum_{j=0}^{\infty} \psi_j z^j = \frac{\theta(z)}{\phi(z)}, \mbox{ } |z| \leq 1.
+\end{equation*}
+    
+Thus, we have the following results for causality
+
+- An ARMA(p, q) is causal iff $\phi(z) \neq 0$ for $|z| \leq 1$,
+- An ARMA(p, q) is causal only when the roots of $\phi(z) = 0$ lie outside the unit circle, i.e. $|z| > 1$.
+
+**Property: Invertibility**
+If an ARMA(p, q) model is invertible, then the coefficients of the one-sided linear process given in (\@ref(eq:invertible)) can be obtained by
+\begin{equation*}
+    \pi(z) = \sum_{j=0}^{\infty} \pi_j z^j = \frac{\phi(z)}{\theta(z)}, \mbox{ } |z| \leq 1.
+\end{equation*}
+    
+Thus, we have the following results for causality
+
+- An ARMA(p, q) is invertible iff $\theta(z) \neq 0$ for $|z| \leq 1$,
+- An ARMA(p, q) is invertible only when the roots of $\theta(z) = 0$ lie outside the unit circle, i.e. $|z| > 1$.
+
+
+**Example: Causal Conditons for an AR(2) Process** We already know that an AR(1) is causal with the simple condition $|\phi_1| < 1$. It could seem natural to believe that an AR(2) should be causal (implies stationary) with the conditon: $|\phi_i| < 1, \, i = 1,2$, however, this is not the case. Indeed, an AR(2) can be expressed as
+
+\[X_t = \phi_1 X_{t-1} + \phi_2 X_{t-2} + W_t = \phi_1 B X_t + \phi_2 B^2 X_t + W_t,\]
+
+corresponding to the following autoregressive operator:
+
+\[\phi(z) = 1 - \phi_1 z - \phi_2 z^2.\]
+
+Therefore, the process is causal when the roots of $\phi(z)$ lies outside of the unit circle. Letting $z_1$ and $z_2$ denote those roots, we impose the following constraints to ensure the causality of the model:
+
+\[\begin{aligned}
+|z_1| &> 1, \;\;\;\; \text{where} \;\; &z_1 = \frac{\phi_1 + \sqrt{\phi_1^2 + 4\phi_2}}{-2 \phi_2},\\
+|z_2| &> 1, \;\;\;\; \text{where} \;\; &z_2 = \frac{\phi_1 - \sqrt{\phi_1^2 + 4\phi_2}}{-2 \phi_2},
+\end{aligned}\]
+note that $z_1$ and $z_2$ can be complex values.
+
+Thus we can represent $\phi_1$ and $\phi_2$ by $z_1$ and $z_2$,
+\[\begin{aligned}
+\phi_1 = (z_1^{-1} + z_2^{-1}),\\
+\phi_2 = -(z_1 z_2)^{-1}.
+\end{aligned}\]
+
+Moreover we have the following equivalent condition for causality:
+
+$$\begin{cases}
+        |z_1| &< 1\\
+        |z_2| &< 1
+\end{cases}$$
+if and only if
+$$\begin{cases}
+        \phi_1 + \phi_2 &< 1\\
+        \phi_2 - \phi_1 &< 1\\
+        |\phi_2| &< 1
+\end{cases}$$
+
+We can show "if"
+
+$\phi_1 + \phi_2 = \frac{1}{z_1} + \frac{1}{z_2} - \frac{1}{z_1z_2} = \frac{1}{z_1}\left( 1 - \frac{1}{z_2} \right) + \frac{1}{z_2} < 1 - \frac{1}{z_2} + \frac{1}{z_2} = 1$, (since $\left( 1 - \frac{1}{z_2} \right) > 0$)
+
+$\phi_2 - \phi_1 = - \frac{1}{z_1z_2} - \frac{1}{z_1} - \frac{1}{z_2} = - \frac{1}{z_1}\left( \frac{1}{z_2} + 1 \right) - \frac{1}{z_2} < \frac{1}{z_2} + 1 - \frac{1}{z_2} = 1$, (since $\left( \frac{1}{z_2} + 1 \right) > 0$)
+
+$|\phi_2| = \frac{1}{|z_1||z_2|} < 1$
+
+We can also show "only if"
+
+Since $z_1 = \frac{\phi_1 + \sqrt{\phi_1^2 + 4\phi_2}}{-2 \phi_2}$ and $\phi_2-1 < \phi_1 < 1-\phi_2$, then $z_1^2 = \frac{\left(\phi_1 + \sqrt{\phi_1^2 + 4\phi_2}\right)^2}{4 \phi_2^2} < \frac{\left((1-\phi_2) + \sqrt{(1-\phi_2)^2 + 4\phi_2}\right)^2}{4 \phi_2^2} = \frac{4}{4 \phi_2^2} \leq 1$.
+
+Since $z_2 = \frac{\phi_1 - \sqrt{\phi_1^2 + 4\phi_2}}{-2 \phi_2}$ and $\phi_2-1 < \phi_1 < 1-\phi_2$, then $z_2^2 = \frac{\left(\phi_1 - \sqrt{\phi_1^2 + 4\phi_2}\right)^2}{4 \phi_2^2} < \frac{\left((\phi_2-1) + \sqrt{(\phi_2-1)^2 + 4\phi_2}\right)^2}{4 \phi_2^2} = \frac{4 \phi_2^2}{4 \phi_2^2} = 1$.
+
+```{r causalAR2, cache = TRUE}
+```
+
+Now we know the causal condition for an AR(2) model, the following example will show you how to convert a causal AR(2) into a linear process.
+
+**Example: Convert AR(2) into a linear process**
+Given an AR(2) model: $X_t = 1.3X_{t-1} - 0.4X_{t-2} + W_t$. 
+
+Step 1. The AR polynomial can be written as:
+
+\[\phi(z) = 1 - 1.3z + 0.4z^2 = (1 - 0.5z)(1 - 0.8z) ,\]
+
+it has roots $2 > 1$ and $1.25 > 1$. Thus we are able to covert it into linear process.
+
+Step 2. If an AR process $\phi(B)X_t = W_t$ is causal, we can write it as $X_t = \phi^{-1}(B)W_t$. This step is to inverse $\phi(B)$.
+
+\[\phi^{-1}(z) = \frac{1}{(1 - 0.5z)(1 - 0.8z)} = \frac{C_1}{(1 - 0.5z)} + \frac{C_2}{(1 - 0.8z)} = \frac{C_2(1 - 0.5z) + C_1(1 - 0.8z)}{(1 - 0.5z)(1 - 0.8z)} ,\]
+
+Since we can think of the above equation is valid for any z, we will solve the following equations to get $C_1$ and $C_2$,
+
+\[\begin{cases}
+        C_1 + C_2 &= 1\\
+        -0.5C_2 - 0.8C_1 &< 1
+\end{cases}
+\implies 
+\begin{cases}
+        C_1 &= -\frac{5}{3}\\
+        C_2 &= \frac{8}{3}
+\end{cases}.
+\]
+
+Thus,
+\[\phi^{-1}(z) = \frac{-5}{3(1 - 0.5z)} + \frac{8}{3(1 - 0.8z)} .\]
+
+Step 3. Using Geometric series: $a \sum_{k = 0}^{\infty}r^k = \frac{a}{1-r}, \mbox{ if } |r| < 1$.
+
+\[\begin{cases}
+      \frac{-5}{3(1 - 0.5z)} &= \frac{-5}{3} \sum_{j = 0}^{\infty}0.5^jz^j , \mbox{ if } |z| < 2\\
+      \frac{8}{3(1 - 0.8z)} &= \frac{8}{3} \sum_{j = 0}^{\infty}0.8^jz^j , \mbox{ if } |z| < 1.25
+\end{cases}.\]
+
+So,
+\[\phi^{-1}(z) = \sum_{j = 0}^{\infty} \left[ \frac{-5}{3} (0.5)^j + \frac{8}{3} (0.8)^j \right] z^j, \mbox{ if } |z| < 1.25 .\]
+
+Step 4.
+\[X_t = \phi^{-1}(B)W_t = \sum_{j = 0}^{\infty} \left[ \frac{-5}{3} (0.5)^j + \frac{8}{3} (0.8)^j \right] B^j W_t = \sum_{j = 0}^{\infty} \left[ \frac{-5}{3} (0.5)^j + \frac{8}{3} (0.8)^j \right] W_{t-j} .
+\]
+
+
+## Estimation of Parameters
+
+Consider a time series given by $x_t \sim ARMA(p,q)$. This gives us with a paramter space $\Omega$ that looks like so: 
+
+\[\vec \varphi  = \left[ {\begin{array}{*{20}{c}}
+  {{\phi _1}} \\ 
+   \vdots  \\ 
+  {{\phi _p}} \\ 
+  {{\theta _1}} \\ 
+   \vdots  \\ 
+  {{\theta _q}} \\ 
+  {{\sigma ^2}} 
+\end{array}} \right]\]
+
+In order to estimate this parameter space, we must assume the following three conditions:
+
+1. The process is casual
+1. The process is invertible
+1. The process has Gaussian innovations.
+
+**Innovations** are a time series equivalent to residuals. That is, an innovation is given by ${x_t} - \hat x_t^{t - 1}$, where $\hat x_t^{t - 1}$ is the prediction at time $t$ given $t-1$ observations and ${x_t}$ is the true value observed at time $t$.
+
+There are two main ways of performing such an estimation of the parameter space.
+
+1. Maximum Likelihood / Least Squares Estimation [MLE / LSE]
+1. Method of Moments (MoM)
+
+To begin, we'll explore using the MLE to perform the estimation.
+
+### Maximum Likelihood Estimation
+
+**Definition** 
+Consider $X_n = (X_1, X_2, \ldots, X_n)$ with the joint density $f(X_1, X_2, \ldots, X_n ; \theta)$ where $\theta \in \Theta$. Given $X_1 = x_1, X_2 = x_2, \ldots, X_n = x_n$ is observed, we have the likelihood function of $\theta$ as
+
+$$L(\theta) = L(\theta|x_1,x_2, \ldots, x_n) = f(x_1,x_2, \ldots, x_n | \theta)$$
+
+If the $X_i$ are iid, then the likelihood simplifies to: 
+
+\[L(\theta) = \prod\limits_{i = 1}^n {f\left( {{x_i}|\theta } \right)} \]
+
+However, that's a bit painful to maximize with calculus. So, we opt to use the log of the function since derivatives are easier and the logarithmic function is always increasing. Thus, we traditionally use:
+
+\[l\left( \theta  \right) = \log \left( {L\left( \theta  \right)} \right) = \sum\limits_{i = 1}^n {\log \left( {f\left( {{x_i}|\theta } \right)} \right)} \]
+
+From maximizes the likelihood function $L(\theta)$, we get the **maximum likelihood estimate (MLE)** of $\theta$. So, we end up with a value that makes the observed data the "most probable."
+
+Note: The likelihood function is **not** a probability density function.
+
+#### $AR(1)$ with mean $\mu$
+
+Consider an $AR(1)$ process given as $y_t = \phi y_{t-1} + w_t$, ${w_t}\mathop  \sim \limits^{iid} N\left( {0,{\sigma ^2}} \right)$, with $E\left[ {{y_t}} \right] = 0$, $\left| \phi  \right| < 1$.
+
+Let $x_t = y_t + \mu$, so that $E\left[ {{x_t}} \right] = \mu$.
+
+Then, ${x_t} - \mu  = {y_t}$. Substituting in for $y_t$, we get:
+
+\[\begin{aligned}
+y_t &= \phi y_{t-1} + w_t \\
+\underbrace {\left( {{x_t} - \mu } \right)}_{ = {y_t}} &= \phi \underbrace {\left( {{x_{t - 1}} - \mu } \right)}_{ = {y_t}} + {w_t} \\
+{x_t} &= \mu  + \phi \left( {{x_{t - 1}} - \mu } \right) + {w_t}
+\end{aligned}\]
+
+In this case, $x_t$ is an $AR(1)$ process with mean $\mu$. 
+
+This means that we have:
+
+1. $E\left[ {{x_t}} \right] = \mu$
+1. \[\begin{aligned}
+  Var\left( {{x_t}} \right) &= Var\left( {{x_t} - \mu } \right) \hfill \\
+   &= Var\left( {{y_t}} \right) \hfill \\
+   &= Var\left( {\sum\limits_{j = 0}^\infty  {{\phi ^j}{w_{t - j}}} } \right) \hfill \\
+   &= \sum\limits_{j = 0}^\infty  {{\phi ^{2j}}Var\left( {{w_{t - j}}} \right)}  \hfill \\
+   &= {\sigma ^2}\sum\limits_{j = 0}^\infty  {{\phi ^{2j}}}  \hfill \\
+   &= \frac{{{\sigma ^2}}}{{1 - {\phi ^2}}},{\text{  since }}\left| \phi  \right| < 1{\text{ and }}\sum\limits_{k = 0}^n {a{r^k}}  = \frac{a}{{1 - r}} \hfill \\ 
+\end{aligned} \]
+
+So, $x_t \sim N\left({ \mu, \frac{{{\sigma ^2}}}{{1 - {\phi ^2}}} }\right)$.
+
+Note that the distribution of $x_t$ is normal and, thus, the density function of $x_t$ is given by:
+\[\begin{aligned}
+  f\left( {{x_t}} \right) &= \sqrt {\frac{{1 - {\phi ^2}}}{{2\pi {\sigma ^2}}}} \exp \left( { - \frac{1}{2} \cdot \frac{{1 - {\phi ^2}}}{{{\sigma ^2}}} \cdot {{\left( {{x_t} - \mu } \right)}^2}} \right) \hfill \\
+   &= {\left( {2\pi } \right)^{ - \frac{1}{2}}}{\left( {{\sigma ^2}} \right)^{ - \frac{1}{2}}}{\left( {1 - {\phi ^2}} \right)^{\frac{1}{2}}}\exp \left( { - \frac{1}{2} \cdot \frac{{1 - {\phi ^2}}}{{{\sigma ^2}}} \cdot {{\left( {{x_t} - \mu } \right)}^2}} \right) \textrm{           [1]}  \\ 
+\end{aligned} \]
+
+We'll call the last equation [1].
+
+#### Conditioning time $x_t | x_{t-1}$
+
+Now, consider $x_t | x_{t-1}$ for $t > 1$.
+
+The mean is given by:
+
+\[\begin{aligned}
+  E\left[ {{x_t}|{x_{t - 1}}} \right] &= E\left[ {\mu  + \phi \left( {{x_{t - 1}} - \mu } \right) + {w_t}|{x_{t - 1}}} \right] \nonumber \\
+   &= \mu  + \phi \left( {{x_{t - 1}} - \mu } \right)
+\end{aligned} \]
+
+This is the case since $E\left[ {{x_{t - 1}}|{x_{t - 1}}} \right] = {x_{t - 1}}$ and $E\left[ {{w_t}|{x_{t - 1}}} \right] = 0$
+
+Now, the variance is:
+
+\[\begin{aligned}
+  Var\left( {{x_t}|{x_{t - 1}}} \right) &= Var\left( {\mu  + \phi \left( {{x_{t - 1}} - \mu } \right) + {w_t}|{x_{t - 1}}} \right) \hfill \\
+   &= \underbrace {Var\left( {\mu  + \phi \left( {{x_{t - 1}} - \mu } \right)|{x_{t - 1}}} \right)}_{ = 0} + Var\left( {{w_t}|{x_{t - 1}}} \right) \hfill \\
+   &= Var\left( {{w_t}} \right) \hfill \\
+   &= {\sigma ^2} \hfill \\ 
+\end{aligned} \]
+
+Thus, we have: ${x_t}\sim N\left( {\mu  + \phi \left( {{x_{t - 1}} - \mu } \right),{\sigma ^2}} \right)$.
+
+Again, note that the distribution of $x_t$ is normal and, thus, the density function of $x_t$ is given by:
+\[\begin{aligned}
+  f\left( {{x_t}} \right) &= \sqrt {\frac{1}{{2\pi {\sigma ^2}}}} \exp \left( { - \frac{1}{{2{\sigma ^2}}} \cdot {{\left[ {\left( {{x_t} - \mu } \right) - \phi \left( {{x_{t - 1}} - \mu } \right)} \right]}^2}} \right) \hfill \\
+   &= {\left( {2\pi } \right)^{ - \frac{1}{2}}}{\left( {{\sigma ^2}} \right)^{ - \frac{1}{2}}}\exp \left( { - \frac{1}{{2{\sigma ^2}}} \cdot {{\left[ {\left( {{x_t} - \mu } \right) - \phi \left( {{x_{t - 1}} - \mu } \right)} \right]}^2}} \right) \textrm{           [2]} \\ 
+\end{aligned} \]
+
+And for this equation we'll call it [2].
+
+### MLE for $\sigma ^2$ on $AR(1)$ with mean $\mu$
+
+*Whew*, with all of the above said, we're now ready to obtain an MLE estimate on an $AR(1)$.
+
+Let $\vec{\theta}  = \left[ {\begin{array}{*{20}{c}}
+  \mu  \\ 
+  \phi  \\ 
+  {{\sigma ^2}} 
+\end{array}} \right]$, then the likelihood of $\vec{\theta}$ is given by $x_1, \ldots , x_T$ is:
+
+\[\begin{aligned}
+  L\left( {\vec \theta |{x_1}, \ldots ,{x_T}} \right) &= f\left( {{x_1}, \ldots ,{x_T}|\vec \theta } \right) \hfill \\
+   &= f\left( {{x_1}} \right) \cdot \prod\limits_{t = 2}^T {f\left( {{x_t}|{x_{t - 1}}} \right)}
+\end{aligned} \]
+
+The last equality is the result of us using a lag 1 of "memory." Also, note that $x_t | x_{t-1}$ must have $t > 1 \in \mathbb{N}$. Furthermore, we have dropped the parameters in the densities, e.g. $\vec{\theta}$ in $f(\cdot)$, to ease notation. 
+
+Using equations [1] and [2], we have:
+
+\[L\left( {\vec \theta |{x_1}, \ldots ,{x_T}} \right) = {\left( {2\pi } \right)^{ - \frac{T}{2}}}{\left( {{\sigma ^2}} \right)^{ - \frac{T}{2}}}{\left( {1 - {\phi ^2}} \right)^{\frac{1}{2}}}\exp \left( { - \frac{1}{{2{\sigma ^2}}}\left[ {\left( {1 - {\phi ^2}} \right){{\left( {{x_t} - \mu } \right)}^2} + \sum\limits_{t = 2}^T {{{\left[ {\left( {{x_t} - \mu } \right) - \phi \left( {{x_{t - 1}} - \mu } \right)} \right]}^2}} } \right]} \right)\]
+
+For convenience, we'll define:
+
+\[S\left( {\mu ,\phi } \right) = \left( {1 - {\phi ^2}} \right){\left( {{x_t} - \mu } \right)^2} + \sum\limits_{t = 2}^T {{{\left[ {\left( {{x_t} - \mu } \right) - \phi \left( {{x_{t - 1}} - \mu } \right)} \right]}^2}} \]
+
+Fun fact, this is called the "**unconditional** sum of squares."
+
+Thus, we will operate on:
+
+\[L\left( {\vec \theta |{x_1}, \ldots ,{x_T}} \right) = {\left( {2\pi } \right)^{ - \frac{T}{2}}}{\left( {{\sigma ^2}} \right)^{ - \frac{T}{2}}}{\left( {1 - {\phi ^2}} \right)^{\frac{1}{2}}}\exp \left( { - \frac{1}{{2{\sigma ^2}}}S\left( {\mu ,\phi } \right)} \right)\]
+
+Taking the log of this yields:
+
+\[\begin{aligned}
+  l\left( {\vec \theta |{x_1}, \ldots ,{x_T}} \right) &= \log \left( {L\left( {\vec \theta |{x_1}, \ldots ,{x_T}} \right)} \right) \hfill \\
+   &=  - \frac{T}{2}\log \left( {2\pi } \right) - \frac{T}{2}\log \left( {{\sigma ^2}} \right) + \frac{1}{2}\left( {1 - {\phi ^2}} \right) - \frac{1}{{2{\sigma ^2}}}S\left( {\mu ,\phi } \right) \hfill \\ 
+\end{aligned} \]
+
+Now, taking the derivative and solving for the maximized point gives:
+
+\[\begin{aligned}
+  \frac{\partial }{{\partial {\sigma ^2}}}l\left( {\vec \theta |{x_1}, \ldots ,{x_T}} \right) &=  - \frac{T}{{2{\sigma ^2}}} + \frac{1}{{2{\sigma ^4}}}S\left( {\mu ,\phi } \right) \hfill \\
+  0 &=  - \frac{T}{{2{\sigma ^2}}} + \frac{1}{{2{\sigma ^4}}}S\left( {\mu ,\phi } \right) \hfill \\
+  \frac{T}{{2{\sigma ^2}}} &= \frac{1}{{2{\sigma ^4}}}S\left( {\mu ,\phi } \right) \hfill \\
+  {{ \sigma }^2} &= \frac{1}{T}S\left( {\mu ,\phi } \right) \hfill \\ 
+\end{aligned} \]
+
+Thus, the MLE for ${\hat \sigma }^2 = \frac{1}{T}S\left( {\hat \mu ,\hat \phi } \right)$, where $\hat \mu$ and $\hat \phi$ are the MLEs for $\mu , \phi$ that are obtained numerically via either *Newton Raphson* or a *Scoring Algorithm*. (More details in a numerical recipe book.)
+
+#### Conditional MLE on $AR(1)$ with mean $\mu$
+
+A common strategy to reduce the dependency on numerical recipes is to simplify $l\left( {\vec \theta |{x_1}, \ldots ,{x_T}} \right)$ by using ${l^*}\left( {\vec \theta |{x_1}, \ldots ,{x_T}} \right)$:
+
+\[\begin{aligned}
+  {l^*}\left( {\vec \theta |{x_1}, \ldots ,{x_T}} \right) &= \prod\limits_{t = 2}^T {\log \left( {f\left( {{x_t}|{x_{t - 1}}} \right)} \right)}  \hfill \\
+   &= \prod\limits_{t = 2}^T {\log \left( {{{\left( {2\pi } \right)}^{ - \frac{1}{2}}}{{\left( {{\sigma ^2}} \right)}^{ - \frac{1}{2}}}\exp \left( { - \frac{1}{{2{\sigma ^2}}} \cdot {{\left[ {\left( {{x_t} - \mu } \right) - \phi \left( {{x_{t - 1}} - \mu } \right)} \right]}^2}} \right)} \right)}  \hfill \\
+   &=  - \frac{{\left( {T - 1} \right)}}{2}\log \left( {2\pi } \right) - \frac{{\left( {T - 1} \right)}}{2}\log \left( {{\sigma ^2}} \right) - \frac{1}{{2{\sigma ^2}}}\sum\limits_{t = 2}^T {{{\left[ {\left( {{x_t} - \mu } \right) - \phi \left( {{x_{t - 1}} - \mu } \right)} \right]}^2}}  \hfill \\ 
+\end{aligned} \]
+
+Again, for convenience, we'll define:
+
+\[{S_c}\left( {\mu ,\phi } \right) = \sum\limits_{t = 2}^T {{{\left[ {\left( {{x_t} - \mu } \right) - \phi \left( {{x_{t - 1}} - \mu } \right)} \right]}^2}} \]
+
+Fun fact, this is called the "**conditional** sum of squares."
+
+So, we will use:
+
+\[{l^*}\left( {\vec \theta |{x_1}, \ldots ,{x_T}} \right) =  - \frac{{\left( {T - 1} \right)}}{2}\log \left( {2\pi } \right) - \frac{{\left( {T - 1} \right)}}{2}\log \left( {{\sigma ^2}} \right) - \frac{1}{{2{\sigma ^2}}}{S_c}\left( {\mu ,\phi } \right)\]
+
+Taking the derivative with respect to $\mu$ gives:
+
+\[\begin{aligned}
+  \frac{\partial }{{\partial \mu }}{l^*}\left( {\vec \theta |{x_1}, \ldots ,{x_T}} \right) &=  - \frac{1}{{2{\sigma ^2}}}\sum\limits_{t = 2}^T {2\left[ {\left( {{x_t} - \mu } \right) - \phi \left( {{x_{t - 1}} - \mu } \right)} \right]\left( {\phi  - 1} \right)}  \hfill \\
+   &= \frac{{1 - \phi }}{{{\sigma ^2}}}\sum\limits_{t = 2}^T {\left[ {\left( {{x_t} - \mu } \right) - \phi \left( {{x_{t - 1}} - \mu } \right)} \right]}  \hfill \\
+   &= \frac{{1 - \phi }}{{{\sigma ^2}}}\sum\limits_{t = 2}^T {\left( {{x_t} - \phi {x_{t - 1}} - \mu \left( {1 - \phi } \right)} \right)}  \hfill \\
+   &= -\frac{{{{\left( {1 - \phi } \right)}^2}}}{{{\sigma ^2}}}\mu \left( {T - 1} \right) + \frac{{\left( {1 - \phi } \right)}}{{{\sigma ^2}}}\sum\limits_{t = 2}^T {\left( {{x_t} - \phi {x_{t - 1}}} \right)}  \hfill \\ 
+\end{aligned} \]
+
+Solving for $\mu^{*}$ gives:
+
+\[\begin{aligned}
+  0 &= \frac{\partial }{{\partial \mu }}{l^*}\left( {\vec \theta |{x_1}, \ldots ,{x_t}} \right) \hfill \\
+  0 &=  - \frac{{{{\left( {1 - \phi } \right)}^2}}}{{{\sigma ^2}}}{\mu ^*}\left( {T - 1} \right) + \frac{{\left( {1 - {\phi ^*}} \right)}}{{\sigma _*^2}}\sum\limits_{t = 2}^T {\left( {{x_t} - {\phi ^*}{x_{t - 1}}} \right)}  \hfill \\
+  \frac{{{{\left( {1 - {\phi ^*}} \right)}^2}}}{{\sigma _*^2}}{\mu ^*}\left( {T - 1} \right) &= \frac{{\left( {1 - {\phi ^*}} \right)}}{{\sigma _*^2}}\sum\limits_{t = 2}^T {\left( {{x_t} - {\phi ^*}{x_{t - 1}}} \right)}  \hfill \\
+  {\mu ^*}\left( {1 - {\phi ^*}} \right)\left( {T - 1} \right) &= \sum\limits_{t = 2}^T {\left( {{x_t} - {\phi ^*}{x_{t - 1}}} \right)}  \hfill \\
+  {\mu ^*} &= \frac{1}{{\left( {1 - {\phi ^*}} \right)\left( {T - 1} \right)}}\sum\limits_{t = 2}^T {\left( {{x_t} - {\phi ^*}{x_{t - 1}}} \right)}  \hfill \\
+  {\mu ^*} &= \frac{1}{{1 - {\phi ^*}}}\left[ {\underbrace {\frac{1}{{T - 1}}\sum\limits_{t = 2}^T {{x_t}} }_{ = {{\bar x}_{\left( 2 \right)}}} - \underbrace {\frac{{{\phi ^*}}}{{T - 1}}\sum\limits_{t = 2}^T {{x_{t - 1}}} }_{ = {{\bar x}_{\left( 1 \right)}}}} \right] \hfill \\
+  {{\hat \mu }^*} &= \frac{1}{{1 - {\phi ^*}}}\left( {{{\bar x}_{\left( 2 \right)}} - \phi {{\bar x}_{\left( 1 \right)}}} \right) \hfill \\ 
+\end{aligned} \]
+
+When $T$ is large, we have the following:
+
+\[\begin{aligned}
+  {{\bar x}_{\left( 1 \right)}} \approx \bar x &,{{\bar x}_{\left( 2 \right)}} \approx \bar x \hfill \\
+   \hfill \\
+  {{\hat \mu }^*} &= \frac{1}{{1 - {\phi ^*}}}\left( {\bar x - {\phi ^*}\bar x} \right) \hfill \\
+   &= \frac{{\bar x}}{{1 - {\phi ^*}}}\left( {1 - {\phi ^*}} \right) \hfill \\
+   &= \bar x \hfill \\ 
+\end{aligned} \]
+
+
+Taking the derivative with respect to $\sigma^2$ and solving for $\sigma^2$ gives:
+\[\begin{aligned}
+  \frac{\partial }{{\partial {\sigma ^2}}}{l^*}\left( {\vec \theta |{x_1}, \ldots ,{x_T}} \right) &=  - \frac{{\left( {T - 1} \right)}}{{2\sigma _*^2}} + \frac{1}{{2\sigma _*^4}}{S_c}\left( {\mu ,\phi } \right) \hfill \\
+  0 &=  - \frac{{\left( {T - 1} \right)}}{{2\sigma _*^2}} + \frac{1}{{2\sigma _*^4}}{S_c}\left( {\mu ,\phi } \right) \hfill \\
+  \frac{{\left( {T - 1} \right)}}{{2\sigma _*^2}} &= \frac{1}{{2\sigma _*^4}}{S_c}\left( {\mu ,\phi } \right) \hfill \\
+  \hat \sigma _*^2 &= \frac{1}{{T - 1}}{S_c}\left( {{{\hat \mu }^*},{{\hat \phi }^*}} \right) \hfill \\ 
+\end{aligned} \]
+
+
+Taking the derivative with respect to $\phi$ gives:
+\[\begin{aligned}
+  \frac{\partial }{{\partial \phi }}{l^*}\left( {\vec \theta |{x_1}, \ldots ,{x_T}} \right) &=  - \frac{1}{{2{\sigma ^2}}}\sum\limits_{t = 2}^T { - 2\left[ {\left( {{x_t} - \mu } \right) - \phi \left( {{x_{t - 1}} - \mu } \right)} \right]\left( {{x_{t - 1}} - \mu } \right)}  \hfill \\
+   &= \frac{1}{{{\sigma ^2}}}\sum\limits_{t = 2}^T {\left[ {{x_t} - \phi {x_{t - 1}} - \mu \left( {1 - \phi } \right)} \right]\left( {{x_{t - 1}} - \mu } \right)}  \hfill \\
+   &= \frac{1}{{{\sigma ^2}}}\sum\limits_{t = 2}^T {\left[ {{x_t}{x_{t - 1}} - \phi x_{t - 1}^2 - \mu \left( {1 - \phi } \right){x_{t - 1}} - \mu {x_t} + \mu \phi {x_{t - 1}} + {\mu ^2}\left( {1 - \phi } \right)} \right]}  \hfill \\
+   &= \frac{1}{{{\sigma ^2}}}\left[ \begin{gathered}
+  \sum\limits_{t = 2}^T {{x_t}{x_{t - 1}}}  - \phi \sum\limits_{t = 2}^T {x_{t - 1}^2}  - \mu \left( {1 - \phi } \right)\left( {T - 1} \right){{\bar x}_{\left( 1 \right)}} \hfill \\
+   - \mu \left( {T - 1} \right){{\bar x}_{\left( 2 \right)}} + \phi \mu \left( {T - 1} \right){{\bar x}_{\left( 1 \right)}} + {\mu ^2}\left( {1 - \phi } \right)\left( {T - 1} \right) \hfill \\ 
+\end{gathered}  \right] 
+\end{aligned}\]
+
+Solving for $\phi$ gives:
+\[\begin{aligned}
+  0 &= \frac{\partial }{{\partial \phi }}{l^*}\left( {\vec \theta |{x_1}, \ldots ,{x_T}} \right) \hfill \\
+  0 &= \sum\limits_{t = 2}^T {{x_t}{x_{t - 1}}}  - {{\hat \phi }^*}\sum\limits_{t = 2}^T {x_{t - 1}^2}  - \left( {{{\bar x}_{\left( 2 \right)}} - {{\hat \phi }^*}{{\bar x}_{\left( 1 \right)}}} \right)\left( {T - 1} \right){{\bar x}_{\left( 1 \right)}} - \frac{{{{\bar x}_{\left( 2 \right)}} - {{\hat \phi }^*}{{\bar x}_{\left( 1 \right)}}}}{{1 - {{\hat \phi }^*}}}\left( {T - 1} \right){{\bar x}_{\left( 2 \right)}} \\
+  &+ {{\hat \phi }^*}\frac{{{{\bar x}_{\left( 2 \right)}} - {{\hat \phi }^*}{{\bar x}_{\left( 1 \right)}}}}{{1 - {{\hat \phi }^*}}}\left( {T - 1} \right){{\bar x}_{\left( 1 \right)}} + {\left( {\frac{{{{\bar x}_{\left( 2 \right)}} - {{\hat \phi }^*}{{\bar x}_{\left( 1 \right)}}}}{{1 - {{\hat \phi }^*}}}} \right)^2}\left( {1 - {{\hat \phi }^*}} \right)\left( {T - 1} \right)  \hfill \\
+   &\vdots  \hfill \\
+  &{\text{Magic}} \hfill \\
+   &\vdots  \hfill \\
+  {{\hat \phi }^*} &= \frac{{\sum\limits_{t = 2}^T {\left( {{x_t} - {{\bar x}_{\left( 2 \right)}}} \right)\left( {{x_{t-1}} - {{\bar x}_{\left( 1 \right)}}} \right)} }}{{\sum\limits_{t = 2}^T {{{\left( {{x_{t - 1}} - {{\bar x}_{\left( 1 \right)}}} \right)}^2}} }} \hfill \\ 
+\end{aligned} \]
+
+When $T$ is large, we have: 
+
+\[\begin{aligned}
+  \sum\limits_{t = 2}^T {\left( {{x_t} - {{\bar x}_{\left( 2 \right)}}} \right)\left( {{x_t} - {{\bar x}_{\left( 1 \right)}}} \right)}  &\approx \sum\limits_{t = 2}^T {\left( {{x_t} - \bar x} \right)\left( {{x_{t - 1}} - \bar x} \right)}  \hfill \\
+  \sum\limits_{t = 2}^T {{{\left( {{x_{t - 1}} - {{\bar x}_{\left( 1 \right)}}} \right)}^2}}  &\approx \sum\limits_{t = 1}^T {{{\left( {{x_t} - \bar x} \right)}^2}}  \hfill \\
+   \hfill \\
+  {{\hat \phi }^*} &= \frac{{\sum\limits_{t = 2}^T {\left( {{x_t} - {{\bar x}_{\left( 2 \right)}}} \right)\left( {{x_t} - {{\bar x}_{\left( 1 \right)}}} \right)} }}{{\sum\limits_{t = 2}^T {{{\left( {{x_{t - 1}} - {{\bar x}_{\left( 1 \right)}}} \right)}^2}} }} \approx \frac{{\sum\limits_{t = 2}^T {\left( {{x_t} - \bar x} \right)\left( {{x_{t - 1}} - \bar x} \right)} }}{{\sum\limits_{t = 1}^T {{{\left( {{x_t} - \bar x} \right)}^2}} }} = \hat \rho \left( 1 \right) \hfill \\ 
+\end{aligned} \]
+
+
+## Method of Moments
+
+The goal behind the estimation with Method of Moments is to match the theoretical moment (e.g. $E\left[ {x_t^k} \right]$) with the sample moment (e.g $\frac{1}{n}\sum\limits_{i = 1}^n {x_i^k}$), where $k$ denotes the moment.
+
+This method often leads to suboptimal estimates for general ARMA models. However, it is quite optimal for $AR(p)$.
+
+### Method of Moments - AR(p)
+
+Consider an $AR(p)$ process represented by: 
+\[{x_t} = {\phi _1}{x_{t - 1}} +  \cdots  + {\phi _p}{x_{t - p}} + {w_t}\] 
+where $w_t \sim N(0,\sigma^2)$ 
+
+To begin, we find the Covariance of the process when $h > 0$:
+\[\begin{aligned}
+  Cov\left( {{x_{t + h}},{x_t}} \right) &\mathop = \limits^{\left( {h > 0} \right)} Cov\left( {{\phi _1}{x_{t + h - 1}} +  \cdots  + {\phi _p}{x_{t + h - p}} + {w_{t + h}},{x_t}} \right) \hfill \\
+   &= {\phi _1}Cov\left( {{x_{t + h - 1}},{x_t}} \right) +  \cdots  + {\phi _p}Cov\left( {{x_{t + h - p}},{x_t}} \right) + Cov\left( {{w_{t + h}},{x_t}} \right) \hfill \\
+   &= {\phi _1}\gamma \left( {h - 1} \right) +  \cdots  + {\phi _p}\gamma \left( {h - p} \right) \hfill \\ 
+\end{aligned} \]
+
+Now, we turn our attention to the variance of the process:
+
+\[\begin{aligned}
+  Var\left( {{w_t}} \right) &= Cov\left( {{w_t},{w_t}} \right) \hfill \\
+   &= Cov\left( {{w_t},{w_t}} \right) + \underbrace {Cov\left( {{\phi _1}{x_{t - 1}},{w_t}} \right)}_{ = 0} +  \cdots  + \underbrace {Cov\left( {{\phi _p}{x_{t - p}},{w_t}} \right)}_{ = 0} \hfill \\
+   &= Cov\left( {\underbrace {{\phi _1}{x_{t - 1}} +  \cdots  + {\phi _p}{x_p} + {w_t}}_{ = {x_t}},{w_t}} \right) \hfill \\
+   &= Cov\left( {{x_t},{w_t}} \right) \hfill \\
+   &= Cov\left( {{x_t},{x_t} - {\phi _1}{x_{t - 1}} -  \cdots  - {\phi _p}{x_p}} \right) \hfill \\
+   &= Cov\left( {{x_t},{x_t}} \right) - {\phi _1}Cov\left( {{x_t},{x_{t - 1}}} \right) -  \cdots  - {\phi _p}Cov\left( {{x_t},{x_{t - p}}} \right) \hfill \\
+   &= \gamma \left( 0 \right) - {\phi _1}\gamma \left( 1 \right) -  \cdots  - {\phi _p}\gamma \left( p \right) \hfill \\ 
+\end{aligned} \]
+
+Together, these equations are known as the **Yule-Walker** equations.
+
+### Yule-Walker
+
+**Definition** 
+
+Equation form:
+
+\[\begin{aligned}
+  \gamma \left( h \right) &= {\phi _1}\gamma \left( {h - 1} \right) -  \cdots  - {\phi _p}\gamma \left( {h - p} \right) \hfill \\
+  {\sigma ^2} &= \gamma \left( 0 \right) - {\phi _1}\gamma \left( 1 \right) -  \cdots  - {\phi _p}\gamma \left( p \right) \hfill \\ 
+  h & = 1, \ldots, p
+\end{aligned} \]
+
+Matrix form:
+\[\begin{aligned}
+  \Gamma \vec \phi  &= \vec \gamma  \hfill \\
+  {\sigma ^2} &= \gamma \left( 0 \right) - {{\vec \phi }^T}\vec \gamma  \hfill \\
+   \hfill \\
+  \vec \phi  &= \left[ {\begin{array}{*{20}{c}}
+  {{\phi _1}} \\ 
+   \vdots  \\ 
+  {{\phi _p}} 
+\end{array}} \right]_{p \times 1},\vec \gamma = \left[ {\begin{array}{*{20}{c}}
+  {\gamma \left( 1 \right)} \\ 
+   \vdots  \\ 
+  {\gamma \left( p \right)} 
+\end{array}} \right]_{p \times 1},\Gamma  = \left\{ {\gamma \left( {k - j} \right)} \right\}_{j,k = 1}^p  \\ 
+\end{aligned} \]
+
+More aptly, the structure of $\Gamma$ looks like the following: 
+$$\Gamma = {\left[ {\begin{array}{*{20}{c}}
+  {\gamma \left( 0 \right)}&{\gamma \left( { - 1} \right)}&{\gamma \left( { - 2} \right)}& \cdots &{\gamma \left( {1 - p} \right)} \\ 
+  {\gamma \left( 1 \right)}&{\gamma \left( 0 \right)}&{\gamma \left( { - 1} \right)}& \cdots &{\gamma \left( {2 - p} \right)} \\ 
+  {\gamma \left( 2 \right)}&{\gamma \left( 1 \right)}&{\gamma \left( 0 \right)}& \cdots &{\gamma \left( {3 - p} \right)} \\ 
+   \vdots & \vdots & \vdots & \ddots & \vdots  \\ 
+  {\gamma \left( {p - 1} \right)}&{\gamma \left( {p - 2} \right)}&{\gamma \left( {p - 3} \right)}& \cdots &{\gamma \left( 0 \right)} 
+\end{array}} \right]_{p \times p}}$$ 
+
+Note, that we are able to use the above equations to effectively estimate $\vec \phi$ and $\sigma ^2$.
+
+\[\left[ \begin{aligned}
+  \hat{\vec{\phi}}  &= {{\hat \Gamma }^{ - 1}}\hat{\vec{\gamma}}  \hfill \\
+  {{\hat \sigma }^2} &= \hat \gamma \left( 0 \right) - {{\hat{\vec{\gamma}}}^T}{{\hat \Gamma }^{ - 1}}\hat{\vec{\gamma}} \hfill \\ 
+\end{aligned}  \right. \to {\text{Yule - Walker Estimates}}\]
+
+For the second equation, we are effectively substituting in the first equation for $\hat{\vec{\phi}}$, hence the quadratic form ${{\hat{\vec{\gamma}}}^T}{{\hat \Gamma }^{ - 1}}\hat{\vec{\gamma}}$.
+
+With this being said, there are a few nice asymptotic properties that we obtain for an $AR(p)$.
+
+1. $\sqrt T \left( {\hat{\vec{\phi}}  - \vec \phi } \right)\mathop  \to \limits_{t \to \infty }^L N\left( {\vec 0,{\sigma ^2}{\Gamma ^{ - 1}}} \right)$
+1. ${\hat \sigma ^2}\mathop  \to \limits^p {\sigma ^2}$
+
+Yule-Walker estimates are optimal in the sense that they have the smallest asymptotic variance i.e. \[Var\left( {\sqrt{T} \hat{\vec{\phi}} } \right) = {\sigma ^2}{\Gamma ^{ - 1}}\] **However, they are not necessarily optimal with small sample sizes.**
+
+Conceptually, the reason for this optimality result is a consequence from the linear dependence between moments and variables. 
+
+This is not true for MA or ARMA, which are both nonlinear and suboptimal.
+
+### Estimates
+
+Consider $x_t$ as an $MA(1)$ process: ${x_t} = \theta {w_{t - 1}} + {w_t},{w_t}\mathop  \sim \limits^{i.i.d} N\left( {0,{\sigma ^2}} \right)$
+
+Finding the covariance when $h = 1$ gives:
+\[\begin{aligned}
+  Cov\left( {{x_t},{x_{t - 1}}} \right) &= Cov\left( {\theta {w_{t - 1}} + {w_t},\theta {w_{t - 2}} + {w_{t - 1}}} \right) \hfill \\
+   &= Cov\left( {\theta {w_{t - 1}},{w_{t - 1}}} \right) \hfill \\
+   &= \theta {\sigma ^2} \hfill \\
+\end{aligned} \]
+
+Finding the variance (e.g. $h=0$) gives:
+\[\begin{aligned}
+  Cov\left( {{x_t},{x_t}} \right) &= Cov\left( {\theta {w_{t - 1}} + {w_t},\theta {w_{t - 1}} + {w_t}} \right) \hfill \\
+   &= {\theta ^2}Cov\left( {{w_{t - 1}},{w_{t - 1}}} \right) + \underbrace {2\theta Cov\left( {{w_{t - 1}},{w_t}} \right)}_{ = 0} + Cov\left( {{w_t},{w_t}} \right) \hfill \\
+   &= {\theta ^2}{\sigma ^2} + {\sigma ^2} \hfill \\
+   &= {\sigma ^2}\left( {1 + {\theta ^2}} \right) \hfill \\ 
+\end{aligned} \]
+
+This gives us the MA(1) ACF of:
+\[\rho \left( h \right) = \left\{ {\begin{array}{*{20}{c}}
+  1&{h = 0} \\ 
+  {\frac{\theta }{{{\theta ^2} + 1}}}&{h =  \pm 1} 
+\end{array}} \right.\]
+
+With this in mind, let's solve for possible $\theta$ values:
+\[\begin{aligned}
+  \rho \left( 1 \right) &= \frac{\theta }{{{\theta ^2} + 1}} \hfill \\
+   \Rightarrow \theta  &= \left( {{\theta ^2} + 1} \right)\rho \left( 1 \right) \hfill \\
+  \theta  &= \rho \left( 1 \right){\theta ^2} + \rho \left( 1 \right) \hfill \\
+  0 &= \rho \left( 1 \right){\theta ^2} - \theta  + \rho \left( 1 \right) \hfill \\ 
+\end{aligned} \]
+
+Yuck, that looks nasty. Let's dig out an ol' friend from middle school known as the quadratic formula:
+
+\[\theta  = \frac{{ - b \pm \sqrt {{b^2} - 4ac} }}{{2a}}\]
+
+Applying the quadratic formula leads to:
+
+\[\begin{aligned}
+  a &= \rho \left( h \right), b = -1, c = \rho \left( h \right) \\
+  \theta  &= \frac{{1 \pm \sqrt {{1^2} - 4\rho \left( h \right)\rho \left( h \right)} }}{{2\rho \left( h \right)}} \hfill \\
+  \theta  &= \frac{{1 \pm \sqrt {1 - 4{{\left[ {\rho \left( h \right)} \right]}^2}} }}{{2\rho \left( h \right)}} \hfill \\
+\end{aligned} \]
+
+Thus, we have two possibilities:
+\[\begin{aligned}
+  {\theta _1} &= \frac{{1 + \sqrt {1 - 4{{\left[ {\rho \left( h \right)} \right]}^2}} }}{{2\rho \left( h \right)}} \hfill \\
+  {\theta _2} &= \frac{{1 - \sqrt {1 - 4{{\left[ {\rho \left( h \right)} \right]}^2}} }}{{2\rho \left( h \right)}} \hfill \\ 
+  \end{aligned}\]
+  
+To ensure invertibility, we mandate that $\left| {\rho \left( 1 \right)} \right| < \frac{1}{2}$. Thus, we opt for ${\theta _2}$.
+
+So, our estimator is: \[\hat \theta  = \frac{{1 - \sqrt {1 - 4{{\left[ {\hat \rho \left( 1 \right)} \right]}^2}} }}{{2\hat \rho \left( 1 \right)}}\]
+
+Furthermore, it can be shown that:
+
+\[\sqrt T \left( {\hat \theta  - \theta } \right)\mathop  \to \limits_{T \to \infty }^L N\left( {0 ,\frac{{1 + {\theta ^2} + 4{\theta ^4} + {\theta ^6} + {\theta ^8}}}{{{{\left( {1 - {\theta ^2}} \right)}^2}}}} \right)\]
+
+So, this is not a really optimal estimator...
+
+## Prediction (Forecast)
+
