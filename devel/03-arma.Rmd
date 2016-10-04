@@ -1,13 +1,8 @@
----
-output:
-  pdf_document: default
-  html_document: default
----
 # Autoregressive Moving Average Models
 
 ```{r arma_code, echo = FALSE}
 source("../code/init/chapter_start.R")
-knitr::read_chunk('../code/chapter/04_arma.R')
+knitr::read_chunk('../code/chapter/03_arma.R')
 ```
 
 
