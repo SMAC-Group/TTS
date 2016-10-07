@@ -129,9 +129,12 @@ over a segment of time, known as a "window", that change the statistical
 properties of a time series. A common example of such trends is given by the
 vibrations observed before, during and after an earthquake.
 
-**Example:** A traditional example of a time series is the quarterly earnings of
+
+```{example, label="jjquarterly"}
+A traditional example of a time series is the quarterly earnings of
 the company Johnson and Johson. In the figure below, we present these earnings
-between 1960 and 1980:
+between 1960 and 1980
+```
 
 ```{r example_JJ, fig.height = 4, fig.width = 7, cache = TRUE}
 ```
@@ -150,8 +153,10 @@ evaluate if some of the following phenomena occur:
 3. **Change in State:** Does the time series appear to change between "states" having distinct statistical properties?
 4. **Outliers** Does the time series contain some "extreme" observations? Note that this is typically difficult to assess visually.
 
-**Example:** In the figure below, we present an example of displacement recorded
+```{example, label="earthquake"}
+In the figure below, we present an example of displacement recorded
 during an earthquake as well as an explosion.
+```
 
 ```{r example_EQ, fig.height = 4, fig.width = 7, cache = TRUE}
 ```
@@ -167,7 +172,9 @@ notably around $t = 1200$ for explosion series.
 
 Extreme observations or outliers are commonly observed in real time series data, this is illustrated in the following example. 
 
-**Example:** We consider here a data set coming from the domain of hydrology. The data concerns monthly precipitation (in mm) over a certain period of time (1907 to 1972) and is interesting for scientists in order to study water cycles. The data are presented in the graph below:
+```{example, label="percipitation"}
+We consider here a data set coming from the domain of hydrology. The data concerns monthly precipitation (in mm) over a certain period of time (1907 to 1972) and is interesting for scientists in order to study water cycles. The data are presented in the graph below:
+```
 
 ```{r example_hydro, fig.height = 4, fig.width = 7, cache = TRUE, message = FALSE, warning = FALSE}
 ```
@@ -175,10 +182,12 @@ Extreme observations or outliers are commonly observed in real time series data,
 Next, we consider an example coming from high-frequency finance to illustrate
 the limitations our current framework.
 
-**Example:** The figure below presents the returns or price innovations
+```{example, label="stocks-starbucks"}
+The figure below presents the returns or price innovations
 (i.e. informally speaking the changes in price from one observation to the other) for the Starbuck's stock on
 July 1, 2011 for about 150 seconds (left panel) and about 400 minutes
 (right panel). 
+```
 
 ```{r example_Starbucks, fig.height = 4, fig.width = 7, cache = TRUE, message = FALSE}
 ```
@@ -200,18 +209,15 @@ a direct plotting of the data will probably result in an uninformative
 aggregation of points between which it is unable to distinguish anything. This is
 illustrated in the following example.
 
-**Example:** We consider here the data coming from the calibration procedure of
+```{example, label="large-imu"}
+We consider here the data coming from the calibration procedure of
 an Inertial Measurement Unit (IMU) which, in general terms, is used to enhance
 navigation precision or reconstruct three dimensional movements (see e.g. [link](https://www.youtube.com/watch?v=htoBvSq8jLA)). These sensors are used in a very wide range of applications such as robotics, virtual reality, vehicle stability control, human and animal motion capture and so forth (see e.g. [link](https://www.youtube.com/watch?v=g4tgtPA54_Y)).
 The signals coming from these instruments are measured at
 high frequencies over a long time and are often characterized by linear trends
 and numerous underlying stochastic processes. If you have never heard 
-
+```
 The code below retrieves some data from an IMU and plots it directly:
-
-<!--
-Complete example on IMU to show the limit for such graph when n is too big.
--->
 
 ```{r example_IMU, fig.height = 4, fig.width = 7, cache = TRUE, message = FALSE, dev='png'}
 ```
@@ -265,12 +271,16 @@ It is clear from these definitions that if a process is a strong white noise
 it is also a weak white noise. However, the converse is not true as shown in
 the following example:
 
-**Example**: Let $Y_t \mathop \sim F_{t+2}$, where $F_{t+2}$ denotes
+```{example, label="weaknotstrong"}
+
+Let $Y_t \mathop \sim F_{t+2}$, where $F_{t+2}$ denotes
 a Student distribution with $t+2$ degrees of freedom. Assuming the sequence $(Y_1, \ldots, Y_n)$ to be independent, we let $X_t = \sqrt{\frac{t}{t+2}} Y_t$. Then, the process $(X_t)$ is obviously not a strong white noise as the distribution of $X_t$ changes with $t$. However, this process is a weak white noise since we have:
 
 - $E[X_t] = \sqrt{\frac{t}{t+2}} E[Y_t] = 0$ for all $t$.
 - $\var(X_t) = \frac{t}{t+2} \var(Y_t) = \frac{t}{t+2} \frac{t+2}{t} = 1$ for all $t$.
 - $\cov(X_t, X_{t+h}) = 0$ (by independence), for all $t$, and for all $h \neq 0$.
+
+```
 
 The code below presents an example of how to simulate a Gaussian white noise process
 
@@ -296,7 +306,7 @@ Such processes inspired Karl Pearson's famous quote that
 > 
 
 Empirical evidence of this phenomenon is not too hard to find on a Friday night
-in Champaign. In this class, we only consider one very specific form of
+in Champaign. In this text, we only consider one very specific form of
 random walk, namely the Gaussian random walk which can be defined as:
 
 $$X_t = X_{t-1} + W_t,$$
@@ -317,6 +327,8 @@ The code below presents an example of how to simulate a such process
 ```{r example_RW, fig.height = 4, fig.width = 7, cache=TRUE}
 ```
 
+
+
 ### Autoregressive Process of Order 1 {#ar1}
 
 An autoregressive process of order 1 or AR(1) is a generalization of both
@@ -328,7 +340,8 @@ cases of an AR(1). A (Gaussian) AR(1) process can be defined as
 where $W_t$ is a Gaussian white noise. Clearly, an AR(1) with $\phi = 0$ is
 a Gaussian white noise and when $\phi = 1$ the process becomes a random walk. 
 
-**Remark:** We generally assume that an AR(1), as well as other time series
+```{remark, label="ar1mean"}
+We generally assume that an AR(1), as well as other time series
 models, have zero mean. The reason for this assumption is only to simplfy the
 notation but it is easy to consider an AR(1) process around an
 arbitrary mean $\mu$, i.e.
@@ -341,8 +354,10 @@ which is of course equivalent to
 
 Thus, we will generally only work with zero mean processes since adding means
 is simple.
+```
 
-**Remark:** An AR(1) is in fact a linear combination of the past realisations of
+```{remark, label="ar1realizations"}
+An AR(1) is in fact a linear combination of the past realisations of
 the white noise $W_t$. Indeed, we have
 
 \[\begin{aligned}
@@ -358,6 +373,7 @@ we obtain
 \[X_t = \sum\limits_{i = 0}^{\infty} {\phi^i {W_{t - i}}},\]
 
 since $\operatorname{lim}_{i \to \infty} \; {\phi^i}{X_{t-i}} = 0$.
+```
 
 The code below presents an example of how an AR(1) can be simulated
 

@@ -1,6 +1,6 @@
 Package: tts
 Title: A Tour of Time Series Analysis with R
-Version: 0.0.1
+Version: 0.0.1.3
 Authors@R: c(
   person("James", "Balamuta" , "balamut2@illinois.edu", c("aut", "cre")),
   person("Stephane", "Guerrier" , "stephane@illinois.edu", c("aut")),
@@ -25,6 +25,7 @@ Imports:
   quantmod,
   reshape2
 Remotes:
+  rstudio/bookdown,
   sinhrks/ggfortify,
   SMAC-Group/gmwm,
   SMAC-Group/imudata,

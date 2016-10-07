@@ -47,8 +47,37 @@
 \newenvironment{rmdwarning}
   {\begin{rmdblock}{warning}}
   {\end{rmdblock}}
-  
-  
+
+
+
+% Use the theorem package
+\usepackage{amsthm}
+
+\makeatletter
+\def\thm@space@setup{%
+  \thm@preskip=8pt plus 2pt minus 4pt
+  \thm@postskip=\thm@preskip
+}
+\makeatother  
+
+\newtheorem{theorem}{Theorem}
+
+\newtheorem{example}{Example}
+\let\oldexample\example
+\renewcommand{\example}{\oldexample\normalfont}
+
+\newtheorem{remark}{Remark}
+\let\oldremark\remark
+\renewcommand{\remark}{\oldremark\normalfont}
+
+\newtheorem{lemma}{Lemma}
+
+\newtheorem{corollary}{Corollary}
+
+\newtheorem{proposition}{Proposition}
+\newtheorem{definition}{Definition}
+
+
 \newcommand{\notimplies}{%
   \mathrel{{\ooalign{\hidewidth$\not\phantom{=}$\hidewidth\cr$\implies$}}}}
 

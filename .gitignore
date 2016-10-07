@@ -21,3 +21,4 @@ libs
 *.Rnw
 *.pdf
 .DS_Store
+*.md

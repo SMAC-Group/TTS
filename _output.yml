@@ -1,5 +1,6 @@
 bookdown::gitbook:
   css: styling/style.css
+  split_by: section
   includes:
       in_header: styling/mathjax-config.html
   config:
@@ -8,11 +9,21 @@ bookdown::gitbook:
         <li><a href="./">A Tour of Time Series Analysis with R</a></li>
       after: |
         <li><a href="https://github.com/SMAC-Group/TTS" target="blank">&copy; 2016 Balamuta, Guerrier, Molinari, Xu</a></li>
+    download: [pdf, epub, mobi]
     edit:
       link: https://github.com/SMAC-Group/TTS/edit/master/%s
+bookdown::html_chapters:
+  css: [styling/style.css]
+  includes:
+      in_header: styling/mathjax-config.html
 bookdown::pdf_book:
   includes:
     in_header: preamble.tex
+  dev: "cairo_pdf"
   latex_engine: xelatex
   citation_package: natbib
+  pandoc_args: --chapters
+  toc_depth: 3
+  toc_unnumbered: no
+  toc_appendix: yes
 bookdown::epub_book: default
