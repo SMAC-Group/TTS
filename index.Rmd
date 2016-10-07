@@ -7,6 +7,9 @@ documentclass: book
 bibliography: [book.bib]
 biblio-style: apalike
 link-citations: yes
+colorlinks: yes
+lot: yes
+lof: yes
 site: bookdown::bookdown_site
 description: ""
 url: 'https\://tts.smac-group.com/'
