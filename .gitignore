@@ -17,4 +17,7 @@ libs
 *-tikzDictionary
 *-concordance.tex
 *.synctex.gz
+*.tex
+*.Rnw
+*.pdf
 .DS_Store
