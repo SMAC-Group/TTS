@@ -39,11 +39,11 @@ Several other metrics have been introduced in the literature to assess the degre
 
 ## The Autocorrelation and Autocovariance Functions 
 
-### Definitions
-
+```{definition, label="acvf"}
 The *autocovariance function* of a series $(X_t)$ is defined as 
 
 \[{\gamma_x}\left( {t,t+h} \right) = \cov \left( {{X_t},{X_{t+h}}} \right),\]
+```
 
 where the definition of covariance is given by:
 
@@ -176,17 +176,30 @@ From our derivation it is clear that the restrictions on the autocorrelation are
 
 ### Definitions
 
-There are two kinds of stationarity that are commonly used. They are defined below:
+There are two kinds of stationarity that are commonly used. They are defined as follows:
 
-- A process $(X_t)$ is *strongly stationary* or *strictly stationary* if the joint probability distribution of $(X_{t-h}, ..., X_t, ..., X_{t+h})$ is independent of $t$ for all $h$.
-- A process $(X_t)$ is *weakly stationary*, *covariance stationary* or *second order stationary* if $\mathbb{E}[X_t]$, $\mathbb{E}[X_t^2]$ are finite and $\mathbb{E}[X_t X_{t-h}]$ depends only on $h$ and not on $t$.
+```{definition, label="strongstationarity"}
+A process $(X_t)$ is *strongly stationary* or *strictly stationary* if the joint probability distribution of $(X_{t-h}, ..., X_t, ..., X_{t+h})$ is independent of $t$ for all $h$.
+```
+
+```{definition, label="weakstationarity"}
+A process $(X_t)$ is *weakly stationary*, *covariance stationary* or *second order stationary* if $\mathbb{E}[X_t]$, $\mathbb{E}[X_t^2]$ are finite and $\mathbb{E}[X_t X_{t-h}]$ depends only on $h$ and not on $t$.
+```
 
 These types of stationarity are *not equivalent* and the presence of one kind of stationarity does not imply the other. That is, a time series can be strongly stationary but not weakly stationary and vice versa. In some cases, a time series can be both strongly and weakly stationary and this is occurs, for example, in the (jointly) Gaussian case. Stationarity of $(X_t)$ matters because *it provides the framework in which averaging dependent data makes sense* thereby allowing to easily estimate quantities such as the autocorrelation function.
 
 Several remarks and comments can be made on these definitions:
 
-- As mentioned earlier, strong stationarity *does not imply* weak stationarity. *Example*: an iid Cauchy process is strongly but not weakly stationary.
-- Weak stationarity *does not imply* strong stationarity. *Example*: Consider the following weak white noise process:
+- As mentioned earlier, strong stationarity *does not imply* weak stationarity. 
+
+```{example, label="strongnotweak"}
+an iid Cauchy process is strongly but not weakly stationary.
+```
+
+- Weak stationarity *does not imply* strong stationarity. 
+
+```{example, label="weaksplit"}
+Consider the following weak white noise process:
 \begin{equation*}
 X_t = \begin{cases}
     U_{t}      & \quad \text{if } t \in \{2k:\, k\in \mathbb{Z} \}, \\
@@ -194,6 +207,8 @@ X_t = \begin{cases}
   \end{cases}
 \end{equation*}
 where ${U_t} \mathop \sim \limits^{iid} N\left( {1,1} \right)$ and ${V_t}\mathop \sim \limits^{iid} \mathcal{E}\left( 1 \right)$ is a weakly stationary process that is *not* strongly stationary.
+```
+
 - Strong stationarity combined with bounded values of $\mathbb{E}[X_t]$ and $\mathbb{E}[X_t^2]$ *implies* weak stationarity
 - Weak stationarity combined with normality distributed processes *implies* strong stationarity.
 
@@ -207,13 +222,17 @@ It is important to understand how to verify if a postulated model is (weakly) st
 
 In the following examples we evaluate the stationarity of the processes introduced in Section \@ref(basic-time-series-models).
 
-**Example: Gaussian White Noise** It is easy to verify that this process is stationary. Indeed, we have:
+```{example, label="gwn", name = "Gaussian White Noise"} 
+It is easy to verify that this process is stationary. Indeed, we have:
 
 1. $\mathbb{E}\left[ {{X_t}} \right] = 0$,
 2. $\gamma(0) = \sigma^2 < \infty$,  
 3. $\gamma(h) = 0$ for $|h| > 0$.
 
-**Example: Random Walk** To evaluate the stationarity of this process we first derive its properties:
+```
+
+```{example, label="srw", name = "Random Walk"}
+To evaluate the stationarity of this process we first derive its properties:
 
 1. We begin by calculating the expectation of the process
 \[
@@ -251,6 +270,7 @@ Moreover, the autocorrelation of this process is given by
 implying (for a fixed $h$) that
 
 \[\mathop {\lim }\limits_{t \to \infty } \; \rho(h) = 1.\]
+```
 
 In the following simulated example, we illustrate the non-stationary feature of such a process:
 
@@ -259,7 +279,9 @@ In the following simulated example, we illustrate the non-stationary feature of 
 
 In the plot, two hundred simulated random walks are plotted along with the theoretical 95\% confidence intervals (red-dashed lines). The relationship between time and variance can clearly be observed (i.e. the variance of the process increases with the time).
 
-**Example: MA(1)** Similarly to our previous examples, we attempt to verify the stationary properties for the MA(1) model defined in Section \@ref(ma1):
+```{example, label="exma1", name = "Moving Average of Order 1"}
+
+Similarly to our previous examples, we attempt to verify the stationary properties for the MA(1) model defined in Section \@ref(ma1):
   
 1. \[ 
   \mathbb{E}\left[ {{X_t}} \right] = \mathbb{E}\left[ {{\theta_1}{W_{t - 1}} + {W_t}} \right] 
@@ -288,7 +310,10 @@ $$\rho \left( h \right) = \left\{ {\begin{array}{*{20}{c}}
 \end{array}} \right. .$$
 Interestingly, we can note that $|\rho(1)| \leq 0.5$.
 
-**Example AR(1)** As another example, we shall verify the stationary properties for the AR(1) model defined in Section \@ref(ar1).
+```
+
+```{example, label="exar1", name = "Autoregressive of Order 1"}
+As another example, we shall verify the stationary properties for the AR(1) model defined in Section \@ref(ar1).
 
 Using the *backsubstitution* technique, we can rearrange an AR(1) process so that it is written in a more compact form, i.e.
 
@@ -345,6 +370,7 @@ After fully simplifying, we obtain
 \[\rho \left( h \right) = {\phi^{|h|}}.\]
 
 Thus, the autocorrelation function for an AR(1) exhibits a _geometric decay_, meaning, the smaller the $|\phi|$, the faster the autocorrelation reaches zero. If $|\phi|$ is close to 1, then the decay rate is slower.
+```
 
 ## Estimation of Moments of Stationary Processes
 
@@ -389,7 +415,7 @@ The variance of such estimator can be derived as follows:
   1
 \end{array}} \right]_{n \times 1}}, 
 \end{aligned}
-\label{eq:chap2VarMoment}
+(\#eq:chap2VarMoment)
 \end{equation}
 
 where $\boldsymbol{\Sigma}(k) \in \real^{n \times n}$ and its $i$th, $j$-th element is given by
@@ -418,7 +444,8 @@ In the case $k = 1$, (\@ref(eq:chap2VarMoment)) can easily be further simplified
 
 Obviously, when the $(X_t)$ is a white noise, the above formula reduces to the usual $\var \left( {\bar X} \right) = \sigma^2_w/n$. In the following example, we consider the case of an AR(1) process and discussed how $\var \left( {\bar X} \right)$ can be obtained or estimated.
 
-**Example:** For an AR(1) we have $\gamma(h) = \phi^h \sigma_w^2 \left(1 - \phi^2\right)^{-1}$, therefore, we obtain (after some computations):
+```{example, label="exactvbootstrap"}
+For an AR(1) we have $\gamma(h) = \phi^h \sigma_w^2 \left(1 - \phi^2\right)^{-1}$, therefore, we obtain (after some computations):
 
 \begin{equation}
 \var \left( {\bar X} \right) = \frac{\sigma_w^2 \left( n - 2\phi - n \phi^2 + 2 \phi^{n + 1}\right)}{n^2\left(1-\phi^2\right)\left(1-\phi\right)^2}.
@@ -442,6 +469,7 @@ Alternatively, simulation methods can also be employed. For example, a possible 
 \[\hat{\sigma}^2_B = \frac{1}{B-1} \sum_{i = 1}^B \left(\bar{X}^*_i - \bar{X}^* \right)^2, \;\;\; \text{where} \;\;\; \bar{X}^* = \frac{1}{B} \sum_{i=1}^B \bar{X}^*_i,\]
 
 and where $\bar{X}^*_i$ denotes the value of the mean estimated on the $i$-th simulated sample.
+```
 
 The figure below generated by the following code compares these three methods for $n = 10$, $B = 1000$, $\sigma^2 = 1$ and a grid of values for $\phi$ going from $-0.95$ to $0.95$:
 
@@ -468,7 +496,9 @@ A graphical representation of the autocorrelation function is often the first st
 
 In this example, the true autocorrelation is equal to zero at any lag $h \neq 0$ but obviously the estimated autocorrelations are random variables and are not equal to their true values. It would therefore be useful to have some knowledge about the variability of the sample autocorrelations (under some conditions) to assess whether the data comes from a completely random series or presents some significant correlation at some lags. The following result provides an asymptotic solution to this problem:
 
-**Theorem:** If $X_t$ is a strong white noise with finite fourth moment, then $\hat{\rho}(h)$ is approximately normally distributed with mean $0$ and variance $n^{-1}$ for all fixed $h$.
+```{theorem, label="approxnormal"}
+If $X_t$ is a strong white noise with finite fourth moment, then $\hat{\rho}(h)$ is approximately normally distributed with mean $0$ and variance $n^{-1}$ for all fixed $h$.
+```
 
 The proof of this Theorem is given in Appendix \@ref(appendixa).
 
@@ -479,7 +509,9 @@ Using this result, we now have an approximate method to assess whether peaks in 
 
 It can now be observed that most peaks lie within the interval $\pm 2/\sqrt{T}$ suggesting that the true data generating process is uncorrelated.
 
-**Example:** To illustrate how the autocorrelation function can be used to reveal some "features" of a time series we download the level of the Standard & Poor's 500 index, often abbreviated as the S&P 500. This financial index is based on the market capitalization of 500 large companies having common stock listed on the New York Stock Exchange or the NASDAQ Stock Market. The graph below shows the index level and daily returns from 1990.
+```{example, label = "acffeatures"}
+To illustrate how the autocorrelation function can be used to reveal some "features" of a time series we download the level of the Standard & Poor's 500 index, often abbreviated as the S&P 500. This financial index is based on the market capitalization of 500 large companies having common stock listed on the New York Stock Exchange or the NASDAQ Stock Market. The graph below shows the index level and daily returns from 1990.
+```
 
 ```{r GSPC, cache = TRUE, fig.height = 4, fig.width = 8, warnings = FALSE, message = FALSE}
 ```
@@ -567,31 +599,30 @@ must be considered to be weakly stationary (constant mean and autocovariance
 depends on lag $h$) as well as a cross-covariance function depend only on lag $h$.
 The ideas discussed next can extended beyond the bivariate case to a general multivariate setting.
 
-### Definition: Cross-Covariance
-
+```{definition, label="crosscov"}
 The **cross-covariance** function of two jointly stationary processes
 $\left\{X_t\right\}$ and $\left\{Y_t\right\}$ is given by:
 
 \[{\gamma _{XY}}\left( {t + h,t} \right) = \cov\left( {{X_{t+h}},{Y_{t}}} \right) =
 \e{\left( {{X_{t + h}} - {\mu _X}} \right)\left( {{Y_t} - {\mu _Y}} \right)} = {\gamma _{XY}}\left( h \right)\]
+```
 
 Unlike the symmetry found in the autocovariance function of a stationary process $\left\{X_t\right\}$, e.g. $\gamma_X(h) = \gamma_X(-h)$, the cross-covariance
 function is only equal when $\gamma_{XY}(h) = \gamma_{YX}(-h)$. Notice the
 switch in indices and negative lag change.
 
-### Definition: Cross-Correlation
-
+```{definition, label="crosscorr"}
 The *cross-correlation* function for two jointly stationary time series
 $\left\{X_t\right\}$ and $\left\{Y_t\right\}$ can be expressed as:
 
 \[{\rho _{XY}}\left( {t+h,t} \right) = \frac{{{\gamma _{XY}}\left( {t + h,t} \right)}}{{\sqrt {{\gamma _X}\left( 0 \right)} \sqrt {{\gamma _Y}\left( 0 \right)} }} = \frac{{{\gamma _{XY}}\left( h \right)}}{{{\sigma _{{X_{t+h}}}}{\sigma _{{Y_{t}}}}}} = {\rho _{XY}}\left( h \right)\]
+```
 
 Due to the previously discussed symmetry regarding the cross-covariance function,
 note that the cross-correlation function also only has equality when 
 $\rho_{XY}(h) = \rho_{YX}(-h)$. Thus, note that $\rho_{XY}(h) \neq \rho_{XY}(-h)$.
 
-### Example
-
+```{example, label="ccfjs"}
 Consider two time series processes given by:
 
 \[\begin{aligned}
@@ -657,6 +688,7 @@ Furthermore, we also have the cross-correlation function as:
    \frac{1}{2}, &\text{if } h = -1 \\
     0, &\text{if } h \ge 2
    \end{cases}\]
+```
 
 ### Sample Cross-Covariance and Cross-Correlation Functions
 
