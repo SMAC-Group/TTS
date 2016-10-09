@@ -103,16 +103,16 @@ $$\begin{equation}
 
 ### Definitions
 (Def. 3.7, p.94). An ARMA(p, q) model is *causal*, if the time series $\{ X_t \}_{-\infty}^{\infty}$ can be written as a one-sided linear process:
-$$\begin{equation}
+\begin{equation}
     X_t = \sum_{j = 0}^{\infty} \psi_j W_{t-j} = \psi(B) W_t,
-    \label{eq:causal}
-\end{equation}$$
+(\#eq:causal)
+\end{equation}
 where $\psi(B) = \sum_{j = 0}^{\infty} \psi_j B^j$, and $\sum_{j=0}^{\infty}|\psi_j| < \infty$; we set $\psi_0 = 1$.
 
 (Def. 3.8, p.95). An ARMA(p, q) model is *invertible*, if the time series $\{ X_t \}_{-\infty}^{\infty}$ can be written as
 \begin{equation}
     \pi(B)X_t = \sum_{j = 0}^{\infty} \pi_j X_{t-j} = W_t,
-    \label{eq:invertible}
+(\#eq:invertible)
 \end{equation}
 where $\pi(B) = \sum_{j = 0}^{\infty} \pi_j B^j$, and $\sum_{j=0}^{\infty}|\pi_j| < \infty$; we set $\pi_0 = 1$.
 
@@ -166,8 +166,8 @@ Thus we can represent $\phi_1$ and $\phi_2$ by $z_1$ and $z_2$,
 Moreover we have the following equivalent condition for causality:
 
 $$\begin{cases}
-        |z_1| &< 1\\
-        |z_2| &< 1
+        |z_1| &> 1\\
+        |z_2| &> 1
 \end{cases}$$
 if and only if
 $$\begin{cases}
@@ -238,6 +238,30 @@ Step 4.
 \[X_t = \phi^{-1}(B)W_t = \sum_{j = 0}^{\infty} \left[ \frac{-5}{3} (0.5)^j + \frac{8}{3} (0.8)^j \right] B^j W_t = \sum_{j = 0}^{\infty} \left[ \frac{-5}{3} (0.5)^j + \frac{8}{3} (0.8)^j \right] W_{t-j} .
 \]
 
+**Example: ACF of AR(2)**
+We use the same AR(2) model as previous example: $X_t = 1.3X_{t-1} - 0.4X_{t-2} + W_t$. 
+
+Step 1. Find the homogeneous difference equation with repsect to the ACF $\rho(h)$.
+
+As it is shown in previous example, our model is causal. Follow the precedure of (Ex. 3.9, p.99), we have,
+\[\rho(h) - 1.3\rho(h-1) + 0.4\rho(h-2) = 0, \mbox{ } h = 1,2,...\]
+and the initial conditions are $\rho(0) = 1$ and $\rho(-1) = \frac{13}{14}$.
+
+Step 2. Solve the roots of the AR polynomial.
+
+The AR polynomial can be written as:
+\[\phi(z) = 1 - 1.3z + 0.4z^2 = (1 - 0.5z)(1 - 0.8z) ,\]
+
+it has roots $z_1 = 2 > 1$ and $z_2 = 1.25 > 1$. Since $z_1$ and $z_2$ are real and distinct, the solution would take the form
+\[\rho(h) = c_1z_1^{-h} + c_2z_2^{-h} .\]
+
+Step 3. Solve $c_1$ and $c_2$ based on two initial conditions.
+\[\begin{cases}
+      \rho(0) = c_1 + c_2 = 1\\
+      \rho(-1) = 2c_1 + 1.25c_2 = \frac{13}{14}
+\end{cases},\]
+then we have $c_1 = -\frac{3}{7}$ and $c_2 = \frac{10}{7}$. Then the ACF is
+\[\rho(h) = -\frac{3}{7}2^{-h} + \frac{10}{7}\left(\frac{5}{4}\right)^{-h} .\]
 
 ## Estimation of Parameters
 
