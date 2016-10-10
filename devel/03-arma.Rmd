@@ -124,9 +124,9 @@ These estimators have the following asymptotic properties.
 
 **Property: Consistency and Asymptotic Normality of Yule-Walker estimators**
 The Yule-Walker estimators for a causal AR(p) model have the following asymptotic properties:
-\begin{equation}
+
+\begin{equation*}
 \sqrt{T}(\hat{\mathbf{\phi}}- \mathbf{\phi}) \xrightarrow{\mathcal{D}} \mathcal{N}(\mathbf{0},\sigma_w^2\Gamma_p^{-1}) \text{and} \hat{\sigma}_w^2 \xrightarrow{\mathcal{P}} \sigma_w^2 .
+\end{equation*}
 
 Therefore the Yule-Walker estimators have an asymptotically normal distribution and the estimator of the innovation variance is consistent.
-\end{equation}
-\end{equation*}
