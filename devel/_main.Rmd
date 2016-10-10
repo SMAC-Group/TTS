@@ -1,0 +1,2248 @@
+# Basic Models
+
+```{r basic_models_code, echo = FALSE}
+source("../code/init/chapter_start.R")
+knitr::read_chunk('../code/chapter/02_basic_models.R')
+```
+
+## The Backshift Operator
+
+*Definition:* **Backshift Operator**
+
+The **Backshift Operator** is helpful when manipulating time series. When we backshift, we are changing the indices of the time series. e.g. $t \rightarrow t-1$. The operator is defined as:
+
+\[B{x_t} = {x_{t - 1}}\]
+
+If we were to repeatedly apply the backshift operator, we would receive:
+
+\[\begin{aligned}
+  {B^2}{x_t} &= B\left( {B{x_t}} \right) \\
+   &= B\left( {{x_{t - 1}}} \right) \\
+   &= {x_{t - 2}} \\ 
+\end{aligned}\]
+
+We can generalize this behavior as:
+$${B^k}{x_t} = {x_{t - k}}$$
+
+The backshift operator is helpful for later decompositions in addition to making differencing operations more straightforward.
+
+## White Noise
+
+The process name of white noise has meaning in the notion of colors of noise. Specifically, the white noise is a process that mirrors white light's flat frequency spectrum. So, the process has equal frequencies in any interval of time.
+
+*Definition:* **White Noise**
+
+$w_t$ or $\varepsilon _t$ is a **white noise process** if $w_t$ are uncorrelated identically distributed random variables with
+$E\left[w_t\right] = 0$ and $Var\left[w_t\right] = \sigma ^2$, for all $t$. We can represent this algebraically as:
+$$y_t = w_t,$$
+where ${w_t}\mathop \sim \limits^{id} WN\left( {0,\sigma _w^2} \right)$
+
+Now, if the $w_t$ are **Normally (Gaussian) distributed**, then the process is known as a **Gaussian White Noise** e.g. ${w_t}\mathop \sim \limits^{iid} N\left( {0,{\sigma ^2}} \right)$
+
+To generate gaussian white noise use:
+
+```{r generate_white_noise, cache=TRUE}
+```
+
+
+## Moving Average Process of Order q = 1 a.k.a MA(1)
+
+*Definition:* **Moving Average Process of Order (q = 1)**
+
+The concept of a **Moving Average Process of Order q** is a way to remove "noise" and emphasize the signal. The moving average achieves this by taking the local averages of the data to produce a new smoother time series series. The newly created time series is more descriptive, but it does influence the dependence within the time series.
+
+This process is generally denoted as **MA(1)** and is defined as:
+
+$${y_t} = {\theta _1}{w_{t - 1}} + {w_t},$$
+
+where ${w_t}\mathop \sim \limits^{iid} WN\left( {0,\sigma _w^2} \right)$
+
+```{r generate_ma1, cache=TRUE}
+```
+
+## Drift
+
+*Definition:* **Drift**
+
+A **drift process** has two components: time and a slope. As more points are accumlated over time, the drift will match the common slope form.
+
+Specifically, the drift process has the following form:
+$$y_t = y_{t-1} + \delta $$
+with the initial condition $y_0 = c$.
+
+The process can be simplified using **backsubstitution** to being:
+\[\begin{aligned}
+  {y_t} &= {y_{t - 1}} + \delta \\
+   &= \left( {{y_{t - 2}} + \delta} \right) + \delta \\
+   &\vdots  \\
+   &= \sum\limits_{i = 1}^t {\delta}  + y_0 \\ 
+   {y_t} &= t{\delta} + c  \\ 
+\end{aligned} \]
+
+Again, note that a drift is similar to the slope-intercept form a linear line. e.g. $y = mx + b$.
+
+To generate a drift use:
+
+```{r generate_drift, cache=TRUE}
+```
+
+## Random Walk
+
+In 1906, Karl Pearson coined the term 'random walk' and demonstrated that "the most likely place to find a drunken walker is somewhere near his starting point." Empirical evidence of this phenomenon is not too hard to find on a Friday night in Champaign.
+
+*Definition:* **Random Walk**
+
+A **random walk** is defined as a process where the current value of a variable is composed of the past value plus an error term that is a white noise. In algebraic form,
+$$y_t = y_{t-1} + w_t$$
+with the initial condition $y_0 = c$.
+
+The process can be simplified using **backsubstitution** to being:
+\[\begin{aligned}
+  {y_t} &= {y_{t - 1}} + {w_t} \\
+   &= \left( {{y_{t - 2}} + {w_{t - 1}}} \right) + {w_t} \\
+   &\vdots  \\
+  {y_t} &= \sum\limits_{i = 1}^t {{w_i}} + y_0 =  \sum\limits_{i = 1}^t {{w_i}} + c \\ 
+\end{aligned} \]
+
+To generate a random walk, we use:
+
+```{r generate_rw, cache=TRUE}
+```
+
+## Random Walk with Drift
+
+In the previous case of a random walk, we assumed that drift, $\delta$, was equal to 0. What happens to the random walk if the drift is not equal to zero? That is, what happens with the initial condition $y_0 = c$?
+
+\[\begin{aligned}
+  {y_t} &= {y_{t - 1}} + {w_t} + \delta \\
+   &= \left( {{y_{t - 2}} + {w_{t - 1}} + \delta} \right) + {w_t} + \delta \\
+   &\vdots  \\
+  {y_t} &= \sum\limits_{i = 1}^t {\left({w_{i} + \delta}\right)} + y_0 =  \sum\limits_{i = 1}^t {{w_i}} + t\delta + c \\ 
+\end{aligned} \]
+
+To generate a random walk with drift we use:
+
+```{r generate_rwd, cache=TRUE}
+```
+
+Notice the difference the drift makes upon the random walk:
+
+```{r compare_rw_and_rwd, cache=TRUE}
+```
+
+## Autoregressive Process of Order p = 1 a.k.a AR(1)
+
+*Definition:* **Autoregressive Process of Order p = 1**
+
+This process is generally denoted as **AR(1)** and is defined as:
+${y_t} = {\phi _1}{y_{t - 1}} + {w_t},$
+
+where ${w_t}\mathop \sim \limits^{iid} WN\left( {0,\sigma _w^2} \right)$
+
+If $\phi _1 = 1$, then the process is equivalent to a random walk.
+
+The process can be simplified using **backsubstitution** to being:
+\[\begin{aligned}
+ {y_t} &= {\phi _t}{y_{t - 1}} + {w_t} \\
+   &= {\phi _1}\left( {{\phi _1}{y_{t - 2}} + {w_{t - 1}}} \right) + {w_t} \\
+   &= \phi _1^2{y_{t - 2}} + {\phi _1}{w_{t - 1}} + {w_t} \\
+   &\vdots  \\
+   &= {\phi ^t}{y_0} + \sum\limits_{i = 0}^{t - 1} {\phi _1^i{w_{t - i}}}
+\end{aligned}\]
+
+```{r generate_ar1, cache=TRUE}
+```
+
+<!--chapter:end:01-intro-old.Rmd-->
+
+# Autocorrelation and Stationarity
+
+```{r autocorrelation_stationarity_code, echo = FALSE, message = FALSE, warning = FALSE}
+source("../code/init/chapter_start.R")
+knitr::read_chunk('../code/chapter/02_stationarity_autocorrelation.R')
+```
+<!-- > "I have seen the future and it is very much like the present, only longer."
+>
+> --- Kehlog Albran, The Profit -->
+
+>
+> "*One of the first things taught in introductory statistics textbooks is that correlation is not causation. It is also one of the first things forgotten.*", Thomas Sowell
+>
+
+<!--
+
+After reading this chapter you will be able to:
+
+- Describe independent and dependent data
+- Interpret a processes ACF and CCF.  
+- Understand the notion of stationarity.
+- Differentiate between Strong and Weak stationarity.
+- Judge whether a process is stationary. 
+
+-->
+
+In this chapter we will discuss and formalize how knowledge about $X_{t-1}$ (or more generally $\Omega_t$) can provide us with some information about the properties of $X_t$. In particular, we will consider the correlation (or covariance) of $(X_t)$ at different times such as $\corr \left(X_t, X_{t+h}\right)$. This "form" of correlation (covariance) is called the *autocorrelation* (*autocovariance*) and is a very useful tool in time series analysis. However, if we do not assume that a time series is characterized by a certain form of "stability", it would be rather difficult to estimate $\corr \left(X_t, X_{t+h}\right)$ as this quantity would depend on both $t$ and $h$ leading to more parameters to estimate than observations available. Therefore, the concept of *stationarity* is convenient in this context as it allows (among other things) to assume that
+
+\[\corr \left(X_t, X_{t+h}\right) = \corr \left(X_{t+j}, X_{t+h+j}\right), \;\;\; \text{for all $j$},\]
+
+implying that the autocorrelation (or autocovariance) is only a function of the lag between observations (rather than time itself). These two concepts (i.e. autocorrelation and stationarity) will be discussed in this chapter. Before moving on, it is helpful to remember that correlation (or autocorrelation) is only appropriate to measure a very specific kind of dependence, i.e. the linear dependence. There are many other forms of dependence as illustrated in the bottom panels of the graph below, which all have a (true) zero correlation:
+
+```{r correxample, cache = TRUE, echo = FALSE, fig.cap="Different forms of dependence and their Pearson's r value", fig.align = 'center'}
+knitr::include_graphics("../images/corr_example.png")
+```
+
+Several other metrics have been introduced in the literature to assess the degree of "dependence" of two random variables however this goes beyond the material discussed in this chapter.
+
+## The Autocorrelation and Autocovariance Functions 
+
+### Definitions
+
+The *autocovariance function* of a series $(X_t)$ is defined as 
+
+\[{\gamma_x}\left( {t,t+h} \right) = \cov \left( {{X_t},{X_{t+h}}} \right),\]
+
+where the definition of covariance is given by:
+
+\[
+  \cov \left( {{X_t},{X_{t+h}}} \right) = \mathbb{E}\left[ {{X_t}{X_{t+h}}} \right] - \mathbb{E}\left[ {{X_t}} \right]\mathbb{E}\left[ {{X_{t+h}}} \right].
+ \]
+  
+Similarly, the above expectations are defined to be:
+
+\[\begin{aligned}
+  \mathbb{E}\left[ {{X_t}} \right] &= \int\limits_{ - \infty }^\infty  {x \cdot {f_t}\left( x \right)dx},  \\
+  \mathbb{E}\left[ {{X_t}{X_{t+h}}} \right] &= \int\limits_{ - \infty }^\infty  {\int\limits_{ - \infty }^\infty  {{x_1}{x_2} \cdot f_{t,t+h}\left( {{x_1},{x_2}} \right)d{x_1}d{x_2}} } ,
+\end{aligned} \]
+
+where ${f_t}\left( x \right)$ and $f_{t,t+h}\left( {{x_1},{x_2}} \right)$ denote, respectively, the density of $X_t$ and the joint density of the pair $(X_t, X_{t+h})$.
+Since we generally consider stochastic processes with constant zero mean we often have
+
+\[{\gamma_x}\left( {t,t+h} \right) = \mathbb{E}\left[X_t X_{t+h} \right]. \]
+
+In addition, we normally drop the subscript referring to the time series (i.e. $x$ in this case) if it is clear from the context which time series the autocovariance refers to. For example, we generally use ${\gamma}\left( {t,t+h} \right)$ instead of ${\gamma_x}\left( {t,t+h} \right)$. Moreover, the notation is even further simplified when the covariance of $X_t$ and $X_{t+h}$ is the same as that of $X_{t+j}$ and $X_{t+h+j}$ (for all $j$), i.e. the covariance depends only on the time between observations and not on the specific time $t$. This is an important property called *stationarity*, which will be discuss in the next section. In this case, we simply use to following notation:
+\[\gamma \left( {h} \right) = \cov \left( X_t , X_{t+h} \right). \]
+
+This notation will generally be used throughout the text and implicitly assume certain properties (i.e. stationarity) on the process $(X_t)$. 
+Several remarks can be made on the autocovariance:
+
+1. The autocovariance function is *symmetric*. That is, ${\gamma}\left( {h} \right) = {\gamma}\left( -h \right)$ since $\cov \left( {{X_t},{X_{t+h}}} \right) = \cov \left( X_{t+h},X_{t} \right)$.
+2. The autocovariance function "contains" the variance of the process as $\var \left( X_{t} \right) = {\gamma}\left( 0 \right)$.
+3. We have that $|\gamma(h)| \leq \gamma(0)$ for all $h$. The proof of this inequality is direct and follows from the Cauchy-Schwarz inequality, i.e.
+\[ \begin{aligned}
+\left(|\gamma(h)| \right)^2 &= \gamma(h)^2 = \left(\mathbb{E}\left[\left(X_t - \mathbb{E}[X_t] \right)\left(X_{t+h} - \mathbb{E}[X_{t+h}] \right)\right]\right)^2\\
+&\leq \mathbb{E}\left[\left(X_t - \mathbb{E}[X_t] \right)^2 \right] \mathbb{E}\left[\left(X_{t+h} - \mathbb{E}[X_{t+h}] \right)^2 \right] =  \gamma(0)^2. 
+\end{aligned}
+\] 
+4. Just as any covariance, ${\gamma}\left( {h} \right)$ is "scale dependent" since ${\gamma}\left( {h} \right) \in \real$, or $-\infty \le {\gamma}\left( {h} \right) \le +\infty$. We therefore have:
+    - if $\left| {\gamma}\left( {h} \right) \right|$ is "close" to zero, then $X_t$ and $X_{t+h}$ are "weakly" (linearly) dependent;
+    - if $\left| {\gamma}\left( {h} \right) \right|$ is "far" from zero, then the two random variable present a "strong" (linear) dependence. However it is generally difficult to asses what "close" and "far" from zero means in this case. 
+5. ${\gamma}\left( {h} \right)=0$ does not imply that $X_t$ and $X_{t+h}$ are independent but simply $X_t$ and $X_{t+h}$ are uncorrelated. The independence is only implied by ${\gamma}\left( {h} \right)=0$ in the jointly Gaussian case.
+
+As hinted in the introduction, an important related statistic is the correlation of $X_t$ with $X_{t+h}$ or *autocorrelation*, which is defined as
+
+$$\rho \left(  h \right) = \corr\left( {{X_t},{X_{t + h}}} \right) = \frac{{\cov\left( {{X_t},{X_{t + h}}} \right)}}{{{\sigma _{{X_t}}}{\sigma _{{X_{t + h}}}}}} = \frac{\gamma(h) }{\gamma(0)}.$$
+
+Similarly to $\gamma(h)$, it is important to note that the above notation implies that the autocorrelation function is only a function of the lag $h$ between observations. Thus, autocovariances and autocorrelations are one possible way to describe the joint distribution of a time series. Indeed, the correlation of $X_t$ with $X_{t+1}$ is an obvious measure of how *persistent* a time series is. 
+
+Remember that just as with any correlation:
+
+1. $\rho \left( h \right)$ is "scale free" so it is much easier to interpret than $\gamma(h)$.
+2. $|\rho \left( h \right)| \leq 1$ since $|\gamma(h)| \leq \gamma(0)$.
+3. **Causation and correlation are two very different things!**
+
+### A Fundamental Representation
+
+Autocovariances and autocorrelations also turn out to be a very useful tool because they are one of the *fundamental
+representations* of time series. Indeed, if we consider a zero mean normally distributed process, it is clear that its joint distribution is fully characterized by the autocariances $\mathbb{E}[X_t X_{t+h}]$ (since the joint probability
+density only depends of these covariances). Once we know the autocovariances we know *everything* there is to know about the process and therefore:
+*if two processes have the same autocovariance function, then they are the same process.*
+
+### Admissible Autocorrelation Functions
+
+Since the autocorrelation is related to a fundamental representation of time series, it implies that one might be able to define a stochastic process by picking a set of autocorrelation values (assuming for example that $\var(X_t) = 1$). However, it turns out that not every collection of numbers, say $\{\rho_1, \rho_2, ...\}$, can represent the autocorrelation of a process. Indeed, two conditions are required to ensure the validity of an autocorrelation sequence:
+
+1. $\operatorname{max}_j \; | \rho_j| \leq 1$.
+2. $\var \left[\sum_{j = 0}^\infty \alpha_j X_{t-j} \right] \geq 0 \;$ for all $\{\alpha_0, \alpha_1, ...\}$.
+
+The first condition is obvious and simply reflects the fact that $|\rho \left( h \right)| \leq 1$ but the second is far more difficult to verify. To further our understanding of the latter we let $\alpha_j = 0$ for $j > 1$, then condition 2 implies that
+
+\[\var \left[ \alpha_0 X_{t} + \alpha_1 X_{t-1}  \right] = \gamma_0 \begin{bmatrix}
+  \alpha_0 & \alpha_1
+ \end{bmatrix}   \begin{bmatrix}
+  1 & \rho_1\\
+  \rho_1 & 1
+ \end{bmatrix} \begin{bmatrix}
+  \alpha_0 \\
+  \alpha_1
+ \end{bmatrix} \geq 0. \]
+ 
+Thus, the matrix 
+ 
+ \[ \boldsymbol{A}_1 = \begin{bmatrix}
+  1 & \rho_1\\
+  \rho_1 & 1
+ \end{bmatrix} \]
+ 
+must be positive semi-definite. Taking the determinant we have 
+ 
+ \[\operatorname{det} \left(\boldsymbol{A}_1\right) = 1 - \rho_1^2 \]
+
+implying that the condition $|\rho_1| < 1$ must be respected. Now, let $\alpha_j = 0$ for $j > 2$, then we must verify that:
+
+\[\var \left[ \alpha_0 X_{t} + \alpha_1 X_{t-1}  + \alpha_2 X_{t-2} \right] = \gamma_0 \begin{bmatrix}
+  \alpha_0 & \alpha_1 &\alpha_2
+ \end{bmatrix}   \begin{bmatrix}
+  1 & \rho_1 & \rho_2\\
+  \rho_1 & 1 & \rho_1 \\
+  \rho_2 & \rho_1 & 1
+ \end{bmatrix} \begin{bmatrix}
+  \alpha_0 \\
+  \alpha_1 \\
+  \alpha_2
+ \end{bmatrix} \geq 0. \]
+
+Again, this implies that the matrix
+
+ \[ \boldsymbol{A}_2 = \begin{bmatrix}
+  1 & \rho_1 & \rho_2\\
+  \rho_1 & 1 & \rho_1 \\
+  \rho_2 & \rho_1 & 1
+ \end{bmatrix} \]
+ 
+must be positive semi-definite and it is easy to verify that
+ 
+ \[\operatorname{det} \left(\boldsymbol{A}_2\right) = \left(1 - \rho_2 \right)\left(- 2 \rho_1^2 + \rho_2 + 1\right). \]
+
+Thus, this implies that $|\rho_2| < 1$ as well as 
+
+\[\begin{aligned} &- 2 \rho_1^2 + \rho_2 + 1 \geq 0 \Rightarrow 1 > \rho_2 \geq 2 \rho_1^2 - 1 \\
+&\Rightarrow 1 - \rho_1^2 > \rho_2 - \rho_1^2 \geq -(1 - \rho_1^2)\\
+&\Rightarrow 1 > \frac{\rho_2 - \rho_1^2 }{1 - \rho_1^2} \geq -1.
+\end{aligned}\]
+
+Therefore, $\rho_1$ and $\rho_2$ must lie in a parabolic shaped region defined by the above inequalities as illustrated in Figure \@ref(fig:admissibility).
+
+```{r admissibility, cache = TRUE, echo = FALSE, fig.cap = "Admissible autocorrelation functions", fig.align='center'}
+```
+
+From our derivation it is clear that the restrictions on the autocorrelation are very complicated thereby justifying the need for other forms of fundamental representation which we will explore later in this text. Before moving on to the estimation of the autocorrelation and autocovariance functions, we must first discuss the stationarity of $(X_t)$, which will provide a convenient framework in which $\gamma(h)$ and $\rho(h)$ can be used (rather that $\gamma(t,t+h)$ for example) and (easily) estimated.
+
+## Stationarity
+
+### Definitions
+
+There are two kinds of stationarity that are commonly used. They are defined below:
+
+- A process $(X_t)$ is *strongly stationary* or *strictly stationary* if the joint probability distribution of $(X_{t-h}, ..., X_t, ..., X_{t+h})$ is independent of $t$ for all $h$.
+- A process $(X_t)$ is *weakly stationary*, *covariance stationary* or *second order stationary* if $\mathbb{E}[X_t]$, $\mathbb{E}[X_t^2]$ are finite and $\mathbb{E}[X_t X_{t-h}]$ depends only on $h$ and not on $t$.
+
+These types of stationarity are *not equivalent* and the presence of one kind of stationarity does not imply the other. That is, a time series can be strongly stationary but not weakly stationary and vice versa. In some cases, a time series can be both strongly and weakly stationary and this is occurs, for example, in the (jointly) Gaussian case. Stationarity of $(X_t)$ matters because *it provides the framework in which averaging dependent data makes sense* thereby allowing to easily estimate quantities such as the autocorrelation function.
+
+Several remarks and comments can be made on these definitions:
+
+- As mentioned earlier, strong stationarity *does not imply* weak stationarity. *Example*: an iid Cauchy process is strongly but not weakly stationary.
+- Weak stationarity *does not imply* strong stationarity. *Example*: Consider the following weak white noise process:
+\begin{equation*}
+X_t = \begin{cases}
+    U_{t}      & \quad \text{if } t \in \{2k:\, k\in \mathbb{Z} \}, \\
+    V_{t}      & \quad \text{if } t \in \{2k+1:\, k\in \mathbb{Z} \},\\
+  \end{cases}
+\end{equation*}
+where ${U_t} \mathop \sim \limits^{iid} N\left( {1,1} \right)$ and ${V_t}\mathop \sim \limits^{iid} \mathcal{E}\left( 1 \right)$ is a weakly stationary process that is *not* strongly stationary.
+- Strong stationarity combined with bounded values of $\mathbb{E}[X_t]$ and $\mathbb{E}[X_t^2]$ *implies* weak stationarity
+- Weak stationarity combined with normality distributed processes *implies* strong stationarity.
+
+### Assessing Weak Stationarity of Time Series Models
+
+It is important to understand how to verify if a postulated model is (weakly) stationary. In order to do so, we must ensure that our model satisfies the following three properties:
+
+1. $\mathbb{E}\left[X_t \right] = \mu_t = \mu < \infty$,
+2. $\var\left[X_t \right] = \sigma^2_t = \sigma^2 < \infty$,
+3. $\cov\left(X_t, X_{t+h} \right) = \gamma \left(h\right)$.
+
+In the following examples we evaluate the stationarity of the processes introduced in Section \@ref(basic-time-series-models).
+
+**Example: Gaussian White Noise** It is easy to verify that this process is stationary. Indeed, we have:
+
+1. $\mathbb{E}\left[ {{X_t}} \right] = 0$,
+2. $\gamma(0) = \sigma^2 < \infty$,  
+3. $\gamma(h) = 0$ for $|h| > 0$.
+
+**Example: Random Walk** To evaluate the stationarity of this process we first derive its properties:
+
+1. We begin by calculating the expectation of the process
+\[
+  \mathbb{E}\left[ {{X_t}} \right] = \mathbb{E}\left[ {{X_{t - 1}} + {W_t}} \right] 
+   = \mathbb{E}\left[ {\sum\limits_{i = 1}^t {{W_i}}  + {X_0}} \right] 
+   = \mathbb{E}\left[ {\sum\limits_{i = 1}^t {{W_i}} } \right] + {c} 
+   = c.  \] 
+Observe that the mean obtained is constant since it depends only on the value of the first term in the sequence.
+
+2. Next, after finding the mean to be constant, we calculate the variance to check stationarity:
+\[\begin{aligned}
+  \var\left( {{X_t}} \right) &= \var\left( {\sum\limits_{i = 1}^t {{W_t}}  + {X_0}} \right) 
+   = \var\left( {\sum\limits_{i = 1}^t {{W_i}} } \right) + \underbrace {\var\left( {{X_0}} \right)}_{= 0} \\
+   &= \sum\limits_{i = 1}^t {\var\left( {{W_i}} \right)} 
+   = t \sigma_w^2,
+\end{aligned}\] 
+where $\sigma_w^2 = \var(W_t)$. Therefore, the variance depends on time $t$ contradicting our second property. Moreover, we have:
+\[\mathop {\lim }\limits_{t \to \infty } \; \var\left(X_t\right) = \infty.\]
+This process is therefore not weakly stationary.
+
+3. Regarding the autocovariance of a random walk we have:
+\[\begin{aligned}
+  \gamma \left( h \right) &= \cov\left( {{X_t},{X_{t + h}}} \right) 
+   = \cov\left( {\sum\limits_{i = 1}^t {{W_i}} ,\sum\limits_{j = 1}^{t + h} {{W_j}} } \right) 
+   = \cov\left( {\sum\limits_{i = 1}^t {{W_i}} ,\sum\limits_{j = 1}^t {{W_j}} } \right)\\ 
+   &= \min \left( {t,t + h} \right)\sigma _w^2
+   = \left( {t + \min \left( {0,h} \right)} \right)\sigma _w^2,
+\end{aligned} \]
+which further illustrates the non-stationarity of this process.
+
+Moreover, the autocorrelation of this process is given by
+
+\[\rho (h) = \frac{t + \min \left( {0,h} \right)}{\sqrt{t}\sqrt{t+h}},\]
+
+implying (for a fixed $h$) that
+
+\[\mathop {\lim }\limits_{t \to \infty } \; \rho(h) = 1.\]
+
+In the following simulated example, we illustrate the non-stationary feature of such a process:
+
+```{r RWsim, cache = TRUE, fig.cap = "Two hundred simulated random walks.", fig.align='center'}
+```
+
+In the plot, two hundred simulated random walks are plotted along with the theoretical 95\% confidence intervals (red-dashed lines). The relationship between time and variance can clearly be observed (i.e. the variance of the process increases with the time).
+
+**Example: MA(1)** Similarly to our previous examples, we attempt to verify the stationary properties for the MA(1) model defined in Section \@ref(ma1):
+  
+1. \[ 
+  \mathbb{E}\left[ {{X_t}} \right] = \mathbb{E}\left[ {{\theta_1}{W_{t - 1}} + {W_t}} \right] 
+   = {\theta_1} \mathbb{E} \left[ {{W_{t - 1}}} \right] + \mathbb{E}\left[ {{W_t}} \right] 
+   = 0. \] 
+2. \[\var \left( {{X_t}} \right) = \theta_1^2 \var \left( W_{t - 1}\right) + \var \left( W_{t}\right) = \left(1 + \theta^2 \right) \sigma^2_w.\]  
+3. Regarding the autocovariance, we have 
+\[\begin{aligned}
+  \cov\left( {{X_t},{X_{t + h}}} \right) &= \mathbb{E}\left[ {\left( {{X_t} - \mathbb{E}\left[ {{X_t}} \right]} \right)\left( {{X_{t + h}} - \mathbb{E}\left[ {{X_{t + h}}} \right]} \right)} \right] = \mathbb{E}\left[ {{X_t}{X_{t + h}}} \right] \\
+   &= \mathbb{E}\left[ {\left( {{\theta}{W_{t - 1}} + {W_t}} \right)\left( {{\theta }{W_{t + h - 1}} + {W_{t + h}}} \right)} \right] \\
+   &= \mathbb{E}\left[ {\theta^2{W_{t - 1}}{W_{t + h - 1}} + \theta {W_t}{W_{t + h}} + {\theta}{W_{t - 1}}{W_{t + h}} + {W_t}{W_{t + h}}} \right]. \\
+  \end{aligned} \] 
+It is easy to see that $\mathbb{E}\left[ {{W_t}{W_{t + h}}} \right] = {\boldsymbol{1}_{\left\{ {h = 0} \right\}}}\sigma _w^2$ and therefore, we obtain
+\[\cov \left( {{X_t},{X_{t + h}}} \right) = \left( {\theta^2{ \boldsymbol{1}_{\left\{ {h = 0} \right\}}} + {\theta}{\boldsymbol{1}_{\left\{ {h = 1} \right\}}} + {\theta}{\boldsymbol{1}_{\left\{ {h =  - 1} \right\}}} + {\boldsymbol{1}_{\left\{ {h = 0} \right\}}}} \right)\sigma _w^2\] 
+implying the following autocovariance function:
+\[\gamma \left( h \right) = \left\{ {\begin{array}{*{20}{c}}
+  {\left( {\theta^2 + 1} \right)\sigma _w^2}&{h = 0} \\ 
+  {{\theta}\sigma _w^2}&{\left| h \right| = 1} \\ 
+  0&{\left| h \right| > 1} 
+  \end{array}} \right. .\]
+Therefore, an MA(1) process is weakly stationary since both the mean and variance are constant over time and its covariance function is only a function of the lag $h$. Finally, we can easily obtain the autocorrelation for this process, which is given by
+$$\rho \left( h \right) = \left\{ {\begin{array}{*{20}{c}}
+  1&{h = 0} \\ 
+  {\frac{{{\theta}\sigma _w^2}}{{\left( {\theta^2 + 1} \right)\sigma _w^2}} = \frac{{{\theta}}}{{\theta^2 + 1}}}&{\left| h \right| = 1} \\ 
+  0&{\left| h \right| > 1} 
+\end{array}} \right. .$$
+Interestingly, we can note that $|\rho(1)| \leq 0.5$.
+
+**Example AR(1)** As another example, we shall verify the stationary properties for the AR(1) model defined in Section \@ref(ar1).
+
+Using the *backsubstitution* technique, we can rearrange an AR(1) process so that it is written in a more compact form, i.e.
+
+\[\begin{aligned}
+  {X_t} & =  {\phi }{X_{t - 1}} + {W_t} = \phi \left[ {\phi {X_{t - 2}} + {W_{t - 1}}} \right] + {W_t} 
+    =  {\phi ^2}{X_{t - 2}} + \phi {W_{t - 1}} + {W_t}  \\
+   &  \vdots  \\
+   & =  {\phi ^k}{X_{t-k}} + \sum\limits_{j = 0}^{k - 1} {{\phi ^j}{W_{t - j}}} .
+\end{aligned} \]
+
+By taking the limit in $k$ (which is perfectly valid as we assume $t \in \mathbb{Z}$) and assuming $|\phi|<1$, we obtain
+
+\[\begin{aligned}
+  X_t = \mathop {\lim }\limits_{k \to \infty} \; {X_t}  =  \sum\limits_{j = 0}^{\infty} {{\phi ^j}{W_{t - j}}} 
+\end{aligned} \]
+
+and therefore such process can be interpreted as a linear combination of the white noise $(W_t)$ and corresponds (as we will later on) to an MA($\infty$). In addition, the requirement $\left| \phi  \right| < 1$ turns out to be extremely useful as the above formula is related to Geometric series which would diverge if $\phi \geq 1$. Indeed, remember that
+an infinite (converging) Geometric series is given by
+
+\[\sum\limits_{k = 0}^\infty  \, a{{r^k}}  = \frac{a}{{1 - r}}, \; {\text{ if }}\left| r \right| < 1.\]
+
+<!--
+The origin of the requirement comes from needing to ensure that the characteristic polynomial solution for an AR1 lies outside of the unit circle. Subsequently, stability enables the process to be stationary. If $\phi  \ge 1$, the process would not converge. Under the requirement, the process can represented as a 
+-->
+
+With this setup, we demonstrate how crucial this property is by calculating each of the requirements of a stationary process.
+
+1. First, we will check to see if the mean is stationary. In this case, we opt to use limits to derive the expectation
+\[\begin{aligned}
+  \mathbb{E}\left[ {{X_t}} \right] &= \mathop {\lim }\limits_{k \to \infty } \mathbb{E}\left[ {{\phi^k}{X_{t-k}} + \sum\limits_{j = 0}^{k - 1} {\phi^j{W_{t - j}}} } \right] 
+   = \mathop {\lim }\limits_{k \to \infty } \, \underbrace {{\phi ^k}{\mathbb{E}[X_{t-k}]}}_{= 0} + \mathop {\lim }\limits_{k \to \infty } \, \sum\limits_{j = 0}^{k - 1} {\phi^j\underbrace {\mathbb{E}\left[ {{W_{t - j}}} \right]}_{ = 0}}
+   = 0.
+\end{aligned} \] As expected, the mean is zero and, hence, the first criteria for weak stationarity is satisfied. 
+2. Next, we opt to determine the variance of the process
+\[\begin{aligned}
+\var\left( {{X_t}} \right) &= \mathop {\lim }\limits_{k \to \infty } \var\left( {{\phi^k}{X_{t-k}} + \sum\limits_{j = 0}^{k - 1} {\phi^j{W_{t - j}}} } \right)
+   = \mathop {\lim }\limits_{k \to \infty } \sum\limits_{j = 0}^{k - 1} {\phi ^{2j} \var\left( {{W_{t - j}}} \right)}  \\
+   &= \mathop {\lim }\limits_{k \to \infty } \sum\limits_{j = 0}^{k - 1} \sigma _W^2 \, {\phi ^{2j}}  =  
+  \underbrace {\frac{\sigma _W^2}{{1 - {\phi ^2}}}.}_{\begin{subarray}{l} 
+  {\text{Geom. Serie}} 
+\end{subarray}}
+\end{aligned} \] Once again, the above result only holds because we are able to use the geometric series convergence as a result of $\left| \phi  \right| < 1$.
+3. Finally, we consider the autocovariance of an AR(1). For $h > 0$, we have
+\[\gamma \left( h \right) =  \cov\left( {{X_t},{X_{t + h}}} \right) = \phi \cov\left( {{X_t},{X_{t + h - 1}}} \right) = \phi \, \gamma \left( h-1 \right).\]
+Therefore, we using the symmetry of the autocovariance we have that
+\[\gamma \left( h \right) = |h| \, \gamma(0).\]
+
+Both the mean and variance do not depend on time in addition the autocovariance function can be viewed as function dependent on only lags and, thus, the AR(1) process is weakly stationary if $\left| \phi  \right| < 1$.  Lastly, we can obtain the autocorrelation for this process. Indeed, for $h > 0$, we have
+
+\[\rho \left( h \right) = \frac{{\gamma \left( h \right)}}{{\gamma \left( 0 \right)}} = \frac{{\phi \gamma \left( {h - 1} \right)}}{{\gamma \left( 0 \right)}} = \phi \rho \left( {h - 1} \right).\]
+
+After fully simplifying, we obtain
+
+\[\rho \left( h \right) = {\phi^{|h|}}.\]
+
+Thus, the autocorrelation function for an AR(1) exhibits a _geometric decay_. As in, the smaller the $|\phi|$, the faster the autocorrelation reaches zero. If $|\phi|$ is close to 1, then the decay rate is slower.
+
+<!--
+
+If we assume that the AR(1) process is stationary, we can derive the mean and variance in another way. Without loss of generality, we'll assume that $y_0 = 0$.
+
+Therefore:
+
+\[\begin{aligned}
+  {y_t} &= {\phi _t}{y_{t - 1}} + {w_t} \\
+   &= {\phi }\left( {{\phi }{y_{t - 2}} + {w_{t - 1}}} \right) + {w_t} \\
+   &= \phi ^2{y_{t - 2}} + {\phi }{w_{t - 1}} + {w_t} \\
+   &\vdots  \\
+   &= \sum\limits_{i = 0}^{t - 1} {\phi ^i{w_{t - i}}}  \\
+   & \\
+  E\left[ {{y_t}} \right] &= E\left[ {\sum\limits_{i = 0}^{t - 1} {\phi ^i{w_{t - i}}} } \right] \\
+   &= \sum\limits_{i = 0}^{t - 1} {\phi ^i\underbrace {E\left[ {{w_{t - i}}} \right]}_{ = 0}}  \\
+   &= 0 \\
+   &\\
+  \var\left( {{y_t}} \right) &= E\left[ {{{\left( {{y_t} - E\left[ {{y_t}} \right]} \right)}^2}} \right] \\
+   &= E\left[ {y_t^2} \right] - {\left( {E\left[ {{y_t}} \right]} \right)^2} \\
+   &= E\left[ {y_t^2} \right] \\
+   &= E\left[ {{{\left( {{\phi }{y_{t - 1}} + {w_t}} \right)}^2}} \right] \\
+   &= E\left[ {\phi ^2y_{t - 1}^2 + w_t^2 + 2{\phi }{y_t}{w_t}} \right] \\
+   &= \phi ^2E\left[ {y_{t - 1}^2} \right] + \underbrace {E\left[ {w_t^2} \right]}_{ = \sigma _w^2} + 2{\phi }\underbrace {E\left[ {{y_t}} \right]}_{ = 0}\underbrace {E\left[ {{w_t}} \right]}_{ = 0} \\
+   &= \underbrace {\phi ^2\var\left( {{y_{t - 1}}} \right) + \sigma _w^2 = \phi ^2\var\left( {{y_t}} \right) + \sigma _w^2}_{{\text{Assume stationarity}}} \\
+  \var\left( {{y_t}} \right) &= \phi ^2\var\left( {{y_t}} \right) + \sigma _w^2 \\
+  \var\left( {{y_t}} \right) - \phi ^2\var\left( {{y_t}} \right) &= \sigma _w^2 \\
+  \var\left( {{y_t}} \right)\left( {1 - \phi ^2} \right) &= \sigma _w^2 \\
+  \var\left( {{y_t}} \right) &= \frac{{\sigma _w^2}}{{1 - \phi ^2}}. \\ 
+\end{aligned} \] -->
+
+
+## Estimation of the Mean Function
+
+If a time series is stationary, the mean function is constant and a possible estimator of this quantity is given by
+
+\[\bar{X} = {\frac{1}{n}\sum\limits_{t = 1}^n {{X_t}} }.\]
+
+This estimator is clearly unbiased and has the following variance: 
+
+\[\begin{aligned}
+  \var \left( {\bar X} \right) &= \var \left( {\frac{1}{n}\sum\limits_{t = 1}^n {{X_t}} } \right)  \\
+   &= \frac{1}{{{n^2}}}\var \left( {{{\left[ {\begin{array}{*{20}{c}}
+  1& \cdots &1
+\end{array}} \right]}_{1 \times n}}{{\left[ {\begin{array}{*{20}{c}}
+  {{X_1}} \\
+   \vdots  \\
+  {{X_n}}
+\end{array}} \right]}_{n \times 1}}} \right)  \\
+   &= \frac{1}{{{n^2}}}{\left[ {\begin{array}{*{20}{c}}
+  1& \cdots &1
+\end{array}} \right]_{1 \times n}}\left[ {\begin{array}{*{20}{c}}
+  {\gamma \left( 0 \right)}&{\gamma \left( 1 \right)}& \cdots &{\gamma \left( {n - 1} \right)} \\
+  {\gamma \left( 1 \right)}&{\gamma \left( 0 \right)}&{}& \vdots  \\
+   \vdots &{}& \ddots & \vdots  \\
+  {\gamma \left( {n - 1} \right)}& \cdots & \cdots &{\gamma \left( 0 \right)}
+\end{array}} \right]_{n \times n}{\left[ {\begin{array}{*{20}{c}}
+  1 \\
+   \vdots  \\
+  1
+\end{array}} \right]_{n \times 1}}  \\
+   &= \frac{1}{{{n^2}}}\left( {n\gamma \left( 0 \right) + 2\left( {n - 1} \right)\gamma \left( 1 \right) + 2\left( {n - 2} \right)\gamma \left( 2 \right) +  \cdots  + 2\gamma \left( {n - 1} \right)} \right)  \\
+   &= \frac{1}{n}\sum\limits_{h =  - n}^n {\left( {1 - \frac{{\left| h \right|}}{n}} \right)\gamma \left( h \right)}   \\
+\end{aligned}. \]
+
+In the white noise case, the above formula reduces to the usual $\var \left( {\bar X} \right) = \var(X_t)/n$.
+
+**Example:** For an AR(1) we have $\gamma(h) = \phi^h \sigma_w^2 \left(1 - \phi^2\right)^2$, therefore, we obtain (after some computations):
+
+\[ \var \left( {\bar X} \right) = \frac{\sigma_w^2 \left( n - 2\phi - n \phi^2 + 2 \phi^{n + 1}\right)}{n^2\left(1-\phi^2\right)\left(1-\phi\right)^2}.\]
+
+Unfortunately, deriving such an exact formula is often difficult when considering more complex models. However, asymptotic approximations are often employed to simplify the calculation. For example, in our case we have
+
+\[\mathop {\lim }\limits_{n \to \infty } \; n \var \left( {\bar X} \right) = \frac{\sigma_w^2}{\left(1-\phi\right)^2},\]
+
+providing the following approximate formula:
+
+\[\var \left( {\bar X} \right) \approx \frac{\sigma_w^2}{n \left(1-\phi\right)^2}.\]
+
+Alternatively, simulation methods can also be employed. The figure generated by the following code compares these three methods:
+
+```{r estimXbar, cache = TRUE}
+```
+
+<!-- TO DO: comment graph a little -->
+
+## Sample Autocovariance and Autocorrelation Functions
+
+A natural estimator of the **autocovariance function** is given by:
+
+\[\hat \gamma \left( h \right) = \frac{1}{T}\sum\limits_{t = 1}^{T - h} {\left( {{X_t} - \bar X} \right)\left( {{X_{t + h}} - \bar X} \right)} \]
+
+leading the following "plug-in" estimator of the **autocorrelation function**
+
+\[\hat \rho \left( h \right) = \frac{{\hat \gamma \left( h \right)}}{{\hat \gamma \left( 0 \right)}}.\]
+
+A graphical representation of the autocorrelation function is often the first step for any time series analysis (assuming the process to be stationary). Consider the following simulated example:
+
+```{r basicACF, cache = TRUE}
+```
+
+In this example, the true autocorrelation is equal to zero at any lag $h \neq 0$ but obviously the estimated autocorrelations are random variables and are not equal to their true values. It would therefore be usefull to have some knowledge about the variability of the sample autocorrelations (under some conditions) to assess whether the data comes from a completely random series or presents some significant correlation at some lags. The following result provides an asymptotic solution to this problem:
+
+**Theorem:** If $X_t$ is a strong white noise with finite fourth moment, then $\hat{\rho}(h)$ is approximately normally distributed with mean $0$ and variance $n^{-1}$ for all fixed $h$.
+
+The proof of this Theorem is given in Appendix \@ref(appendix-a).
+
+Using this result, we now have an approximate method to assess whether peaks in the sample autocorrelation are significant by determining whether the observed peak lies outside the interval $\pm 2/\sqrt{T}$ (i.e. an approximate 95%  confidence interval). Returning to our previous example:
+
+```{r basicACF2, cache = TRUE}
+```
+
+It can now be observed that most peaks lie within the interval $\pm 2/\sqrt{T}$ suggesting that the true data generating process is completely random (in the linear sense).
+
+Unfortunately, this method is asymptotic (it relies on the central limit theorem) and there are no "exact" tools that can be used in this case. In the simulation study below we consider the "quality" of this result for $h = 3$ considering different sample sizes:
+
+```{r simulationACF, cache = TRUE}
+```
+
+It can clearly be observed that the asymptotic approximation is quite poor when $T = 5$ but as the sample size increases the approximation improves and is very close when, for example, $T = 300$.
+
+<!-- TO DO: ADD MORE DETAILS ON THE SIMULATION -->
+
+
+## Joint Stationarity
+
+Two time series, say $\left(X_t \right)$ and $\left(Y_t\right)$, are said to be jointly stationary if they are each stationary, and the cross-covariance function
+
+\[{\gamma _{XY}}\left( {t,t + h} \right) = \cov\left( {{X_t},{Y_{t + h}}} \right) = {\gamma _{XY}}\left( h \right)\]
+
+is a function only of lag $h$.
+
+The cross-correlation function for jointly stationary times can be expressed as:
+
+\[{\rho _{XY}}\left( {t,t + h} \right) = \frac{{{\gamma _{XY}}\left( {t,t + h} \right)}}{{{\sigma _{{X_t}}}{\sigma _{{Y_{t + h}}}}}} = \frac{{{\gamma _{XY}}\left( h \right)}}{{{\sigma _{{X_t}}}{\sigma _{{Y_{t + h}}}}}} = {\rho _{XY}}\left( h \right)\]
+
+These ideas can extended beyond the bivariate case to a general multivariate setting. 
+
+
+<!-- TO DO: JOINT STATIONARITY IS MISSING. 
+- Add content of class notes
+- Add simulated example 
+- Add real bivariate example
+-->
+
+<!-- TO DO: ADD REAL DATA EXAMPLE -->
+
+
+
+
+## Robustness Issues
+
+<!-- Rob I am sure you would be great to extent this section! I add a small simulation as an example -->
+
+The data generating process delivers a theoretical autocorrelation (autocovariance) function that, as explained in the previous section, can then be estimated through the sample autocorrelation (autocovariance) functions. However, in practice, the sample is often issued from a data generating process that is "close" to the true one, meaning that the sample suffers from some form of small contamination. This contamination is typically represented by a small amount of extreme observations that are called "outliers" that come from a process that is different from the true data generating process.
+
+The fact that the sample can suffer from outliers implies that the standard estimation of the autocorrelation (autocovariance) functions through the sample functions can be highly biased. The standard estimators presented in the previous section are therefore not "robust" and can behave badly when the sample suffers from contamination. The following simulated example highlights how the performance of these estimators can deteriorate if the sample is contaminated:
+
+```{r simulationRobust, cache = TRUE}
+```
+
+The boxplots in each figure show how the standard autocorrelation estimator is centred around the true value (red line) when the sample is not contaminated (left boxplot) while it is considerably biased when the sample is contaminated (right boxplot), especially at the smallest lags. Indeed, it can be seen how the boxplots under contamination are often close to zero indicating that it does not detect much dependence in the data although it should. This is a known result in robustness, more specifically that outliers in the data can break the dependence structure and make it more difficult for the latter to be detected.
+
+In order to limit this problematic, different robust estimators exist for time series problems allowing to reduce the impact of contamination on the estimation procedure. Among these estimators there are a few that estimate the autocorrelation (autocovariance) functions in a robust manner. One of these estimators is provided in the robacf() function in the "robcor" package and the following simulated example shows how it limits the bias due to contamination:
+
+
+```{r simulationRobust2, cache = TRUE}
+```
+
+
+The robust estimator remains close to the true value represented by the red line in the boxplots as opposed to the standard estimator. It can also be observed that to reduce the bias induced by contamination in the sample, robust estimators pay a certain price in terms of efficiency as highlighted by the boxplots that show more variability compared to those of the standard estimator.
+
+
+Let us consider the issue of robustness on a real data set coming from the domain of hydrology. The data concerns monthly precipitation (in mm) over a certain period of time (1907 to 1972) and is interesting for scientists in order to study water cycles. Let us compare the standard and robust estimators of the autocorrelation functions:
+
+```{r hydro_ACF, cache = TRUE}
+```
+
+It can be seen that, under certain assumptions (e.g. linear dependence), the standard estimator does not detect any significant autocorrelation between lags since the estimations all lie within the asymptotic confidence intervals. However, many of the robust estimations lie outside these confidence intervals at different lags indicating that there could be dependence within the data. If one were only to rely on the standard estimator in this case, there may be erroneous conclusions drawn on this data. Robustness issues therefore need to be considered for any time series analysis, not only when estimating the autocorrelation (autocovariance) functions.
+
+## Portmanteau test
+In this section we give a brief introduction to Portmanteau tests used in time series analysis. In linear regression, we always need to do diagnostic test for residuals after building our model, to check whether our assumptions are satisfied. If there is no evidence to reject any of the assumptions, we can say that the linear model we built is adequate. Otherwise, the linear models are not adequate, some modifications or transformations need to be done either for the previous model or for the data. This rule also applies to time series modeling. In time series analysis, a wide variety of Portmanteau tests can be used to check the white noise residuals assumption. We will introduce two of them as follows, which are based on the ACF of residuals, in order to illustrate some of ideas of this kind of tests.
+
+Dating back to 1970, Box and Pierce proposed the well-known Box-Pierce test statistic as the following form:
+\begin{equation*}
+    Q_{BP} = n\sum_{h =1}^m \hat{\rho}_h^2,
+\end{equation*}
+where the empirical autocorrelation of residuals at lag $h$ is defined as $\hat{\rho}_h = \frac{\hat{\gamma}(h)}{\hat{\gamma}(0)}$. It is obvious that under alternative hypothesis, $\hat{\rho}_h$ would be deviate from $0$, thus a large $Q_{BP}$ gives us the evidence to reject the null. And under null hypothesis that the residuals are white noise (or equivalently the time series are adequate), it can be shown that when $n \to \infty$, we have
+\begin{equation*}
+    Q_{BP} \overset{\mathcal{D}}{\to} \chi^2_{m - m^{\prime}},
+\end{equation*}
+where $m^{\prime}$ is the number of parameters in the time series model.
+
+Then on 1978, Ljung and Box improved Box-Pierce test by standardizing each $\hat{\rho}_h$ by its asymptotic variance. The Ljung and Box test statistic is
+\begin{equation*}
+    Q_{LB} = n\sum_{h =1}^m \frac{n+2}{n-h}\hat{\rho}_h^2.
+\end{equation*}
+It can also be shown that $Q_{LB} \overset{\mathcal{D}}{\to} \chi^2_{m - m^{\prime}}$ under the null. However, compared to $Q_{BP}$, the distribution of $Q_{BP}$ under the null is closer to $\chi^2_{m - m^{\prime}}$, when $n$ is finite.
+
+In the above two examples, the test statistic contains a user specified parameter $m$. And for different $m$, the power of the test would be different. Thus many work has been done to either select the optimal $m$, or propose a new test statistic without user specified parameters. Moreover, testing white noise can also be done by checking PACF, or by checking the spectral density in the frequency domain. Therefore these lead to many different Portmanteau tests.
+
+Take for an example the following use of a Portmanteau test to show the distribution of test statistics under the null:
+
+```{r dist_null_portmanteau, cache = TRUE}
+```
+
+From the histogram, we can see that under the null the distribution of both BP
+and LB are close to Chi-square distribution, but LP is slightly better.
+
+To show the distribution of P-values under different alternatives and
+show that the test depends on specified $m$.
+
+```{r alternatives_port, cache = TRUE}
+```
+
+<!--chapter:end:02-stationarity-old.Rmd-->
+
+# Autoregressive Moving Average Models
+
+```{r arma_code, echo = FALSE}
+source("../code/init/chapter_start.R")
+knitr::read_chunk('../code/chapter/03_arma.R')
+```
+
+
+In this chapter we introduce a class of time series models that is flexible and among the most commonly used to describe stationary time series. This class is represented by the AutoRegressive Moving Average (ARMA) models which combine and include the autoregressive and moving average models seen in the previous chapter, which we first discuss in further detail before introducing the general ARMA class.
+
+## Autoregressive Models (AR(p))
+
+The class of autoregressive models is based on the idea that previous values in the time series are needed to explain current values in the series. For this class of models, we assume that the $p$ previous observations are needed for this purpose and we therefore denote this class as AR($p$). In the previous chapter, the model we introduced was an AR(1) in which only the immediately previous observation is needed to explain the following one and therefore represents a particular model which is part of the more general class of AR(p) models.
+
+The AR(p) models can be formally represented as follows
+$${X_t} = {\phi_1}{Y_{t - 1}} + ... + {\phi_p}{X_{t - p}} + {W_t},$$
+where $\min_{i = 1, ..., p} \; |\phi_i| \geq 0$ and $W_t$ is a (Gaussian) white noise process with variance $\sigma^2$. In general, we will assume that the expectation of the process $({X_t})$, as well as that of the following ones in this chapter, is zero. The reason for this simplification is that if $\mathbb{E} [ X_t ] = \mu$, we can define an AR process *around* $\mu$ as follows:
+
+$$X_t - \mu = \sum_{i = 1}^p \left(\phi_i X_{t-i} - \mu \right) + W_t,$$
+
+which is equivalent to 
+
+$$X_t  = \mu^{\star} +  \sum_{i = 1}^p \phi_i X_{t-i}  + W_t,$$
+
+where $\mu^{\star} = \mu (1 - \sum_{i = 1}^p \phi_i)$. Therefore, to simplify the notation we will generally consider only zero mean process, since adding means (as well as other deterministic trends) is easy.
+
+A useful way of representing AR processes is through the backshift operator introduced in the previous section and is as follows
+
+\[\begin{aligned}
+  {X_t} &= {\phi_1}{X_{t - 1}} + ... + {\phi_p}{y_{t - p}} + {w_t} \\
+   &= {\phi_1}B{X_t} + ... + {\phi_p}B^p{X_t} + {W_t} \\
+   &= ({\phi_1}B + ... + {\phi_p}B^p){X_t} + {W_t} \\ 
+\end{aligned},\]
+
+which finally yields
+
+$$(1 - {\phi _1}B - ... - {\phi_p}B^p){X_t} = {W_t},$$
+
+which, in abbreviated form, can be expressed as
+
+$$\phi(B){X_t} = W_t.$$
+
+We will see that $\phi(B)$ is important to establish the stationarity of these processes and is called the *autoregressive* operator. Moreover, this quantity is closely related to another important property of AR processes, called *causality*. Before formally definition this new property, we consider the following example, which provides intuitive illustration of its importance.
+
+**Example:** Consider a classical AR(1) model with $|\phi| > 1$. Such model could be expressed as
+
+$$X_t = \phi^{-1} X_{t+1} - \phi^{-1} W_t = \phi^{-k} X_{t+k} - \sum_{i = 1}^{k-1} \phi^{-i} W_{t+i}.$$
+
+Since $|\phi| > 1$, we obtain
+
+$$X_t = - \sum_{i = 1}^{\infty} \phi^{-j} W_{t-j},$$
+
+which is a linear process and therefore is stationary. Unfortunately, such model is useless because the future is required to predict the future and such processes are called non-causal.
+
+
+
+<!--chapter:end:03-arma.Rmd-->
+
+# Linear Regression
+
+```{r linear_reg_code, echo = FALSE}
+source("../code/init/chapter_start.R")
+knitr::read_chunk('../code/chapter/05_linear_models.R')
+```
+
+## Review on Linear Regression
+
+In this chapter we discuss how the classical linear regression setting can be extended to accomodate for autocorrelated error. Before considering this more general setting, we start by discussing the usual linear regression model with Gaussian errors, i.e. 
+
+\begin{equation*}
+ \y = \X \bbeta + \bepsilon, \;\;\; \bepsilon \sim \mathcal{N}\left( \0,\sigma_{\epsilon}^2 \I \right) ,
+\end{equation*}
+
+where $\X$ is a known $n \times p$ design matrix of rank $p$ and $\bbeta$ is a $p \times 1$ vector of unknown parameters. Under this setting, the MLE and LSE are equivalent (due to normality of $\bepsilon$) and corresponds to the ordinary LS parameter estimates of $\bbeta$, i.e.
+
+\begin{equation}
+	\hat{\bbeta} = \left(\X^T \X \right)^{-1} \X^T \y ,
+	\label{eq:betaLSE}
+\end{equation}
+
+leading to the (linear) prediction
+
+\begin{equation*}
+	\hat{\y} = \X \hat{\bbeta} = \S \y
+\end{equation*}
+
+where $\S = \X\left(\X^T \X \right)^{-1} \X^T$ denotes the "*hat*" matrix. The unbiased and maximum likelihood estimates of $\sigma^2_{\epsilon}$ are, respectively, given by
+
+\begin{equation}
+		\tilde{\sigma}^2_{\epsilon} = \frac{||\y - \hat{\y} ||_2^2}{n - p} \;\;\, \text{and} \;\;\,
+		\hat{\sigma}^2_{\epsilon} = \frac{||\y - \hat{\y} ||_2^2}{n}\,,
+	\label{eq:LM:sig2:hat}
+\end{equation}
+
+where $|| \cdot ||_2$ denotes the $L_2$ norm.  Throughout this chapter we assume that $0 < \sigma_{\epsilon}^2 < \infty$. Under this setting (i.e. Gaussian iid errors) $\tilde{\sigma}^2_{\epsilon}$ is distributed proportiinally to $\chi^2$ random vcaraible with $n-p$ degrees of freedom independent of $\hat{\bbeta}$ (a proof of this result can for example be found in ?????). Consequently, it follow that
+
+\begin{equation}
+	\frac{\hat{\beta}_i - \beta_i}{\left(\boldsymbol{C}\right)_{i}} \sim t_{n-p},
+	\label{eq:beta_t_dist}
+\end{equation}
+
+where $\left(\boldsymbol{C}\right)_{i}$ denotes the $i$-th diagonal element of the following matrix
+
+\begin{equation}
+		\boldsymbol{C} = \cov \left(\hat{\bbeta} \right) = \sigma_{\epsilon}^2 \left(\X^T \X\right)^{-1},
+	\label{eq:covbeta}
+\end{equation}
+
+and where $\hat{\beta}_i$ denotes the $i$-th element of $\hat{\bbeta}$. Thus, this allows for a natural approach for testing coefficients and selecting models. Moreover, a common quantity used ton evaluate the "quality" of a model is the $R^2$, which corresponds to the proportion of variation explained by the model, i.e.
+
+\[R^2 = \frac{\sum_{i=1}^n \left(y_i - \hat{\y}_i\right)^2 - \sum_{i=1}^n \left(y_i - \bar{y}\right)^2}{\sum_{i=1}^n \left(y_i - \bar{y}\right)^2},\]
+
+where $y_i$ and $\hat{y}_i$ denote, respectively, the $i$-th element of $\y$ and $\hat{\y}$, and $\bar{y}$ represent the mean value of the vector $\y$. This goodness-of-fit is widely used in practice but its limits are often misunderstood as illustrated in the example below.
+
+**Example:** Suppose that we have two *nested* models, say $\mathcal{M}_1$ and $\mathcal{M}_2$, i.e.
+
+\[\begin{aligned}
+\mathcal{M}_1: \;\;\;\;\; \y &= \X_1 \bbeta_1 + \bepsilon,\\
+\mathcal{M}_2: \;\;\;\;\; \y &= \X_1 \bbeta_1 + \X_2 \bbeta_2 + \bepsilon,\\
+\end{aligned}\]
+
+and assume that $\bbeta_2 = \0$. In this case, it is interesting to compare the $R^2$ of both models, say $R_1^2$ and $R^2_2$. Using $\hat{\y}_i$ to denote the predictions made from model $\mathcal{M}_i$, we have that
+
+\[||\y - \hat{\y}_1 ||_2^2 \geq ||\y - \hat{\y}_2 ||_2^2.\]
+
+By letting $||\y - \hat{\y}_1 ||_2^2 = ||\y - \hat{\y}_2 ||_2^2 + c$ where $c$ is a non-negartive constant we obtain:
+
+\[R_1^2 = 1 - \frac{ ||\y - \hat{\y}_1 ||_2^2 }{ \sum_{i=1}^n \left(y_i - \bar{y}\right)^2}  = 1 - \frac{||\y - \hat{\y}_2  ||_2^2 
++ c}{\sum_{i=1}^n \left(y_i - \bar{y}\right)^2} = R_2^2 + \frac{c}{\sum_{i=1}^n \left(y_i - \bar{y}\right)^2}.\]
+
+This implies that $R_1^2 \leq R_2^2$, regardelss of the value of $\bbeta_2$ and therefore the $R^2$ is essentially useless in terms of model selection. This results is well known and is further discuss in ??????REF *REGRESSION and TIME SERIES MODEL SELECTION< TSAI< CHAP 2*.
+
+<!--Rob: could you expand a little the intro to linear model, maybe an example,.. no rush... thanks mate! -->
+
+A more approriate measure of the goodness-of-fit of a particular model is for example Mallow's $C_p$ introduced in **REF see STEF PHD**. This metric balances the error of fit against its complexity and can be defined as
+
+\begin{equation}
+C_p = || \y - \X\hat{\bbeta}||_2^2 +  2 \hat{\sigma}_{\ast}^2 p,
+\label{eq:MallowCp}
+\end{equation}
+
+where $\hat{\sigma}_{\ast}^2$ is an unbiased estimates of ${\sigma}_{\epsilon}^2$, generally $\tilde{\sigma}^2_{\epsilon}$ computed on a "low-bias" model (i.e. a sufficiently "large" model).
+
+To understand how this result is derived, we let $\y_0$ denote an independent "copy" of $\y$ issued from the same data-generating process and let $E_0[\cdot]$ denotes the expectation under the distribution of $\y_0$ (conditionally on $\X$). Then, it can be argued that the following quantity is approriate at measuring the adequacy of model as it compares how $\y$ can be used to predict $\y_0$,
+
+\[E \left[ E_0 \left[ || \y_0 - \X\hat{\bbeta}||_2^2 \right] \right].\]
+
+As we will see Mallow's $C_p$ is an unbiased estimator of this quantity. There are several ways of showing it, one of them is presented here using the following "*optimism*" theorem. Note that this result is based on Theorem 2.1 of **REF MISSING, TWO HERE PHD STEF** and on the Optimism Theorem of ** REF MISSING EFRON COVARIACNE PAPER 2004 JASA**.
+
+**Theorem:** Let $\y_0$ denote an independent "copy" of $\y$ issued from the same data-generating process and let $E_0[\cdot]$ denotes the expectation under the distribution of $\y_0$ (conditionally on $\X$). Then we have that,
+
+\[E \left[ E_0 \left[ || \y_0 - \X\hat{\bbeta}||_2^2 \right] \right] = E \left[ || \y - \X\hat{\bbeta}||_2^2 \right] + 2 \tr \left( \cov \left(\y, \X \hat{\bbeta} \right)\right).\]
+
+*Proof:* We first expend $|| \y - \X{\bbeta}||_2^2$ as follows:
+
+\[|| \y - \X{\bbeta}||_2^2 = \y^T \y + \bbeta^T \X^T \X \bbeta - 2 \y^T \X \bbeta = \y^T \y - \bbeta^T \X^T \X \bbeta - 2 \left(\y - \X\bbeta\right)^T \X \bbeta. \]
+
+Then, we define C and C$^\ast$ and used the above expension
+
+\[\begin{aligned}
+\text{C} &= E \left[ E_0 \left[ || \y_0 - \X\hat{\bbeta}||_2^2 \right] \right] =  E_0 \left[ \y_0^T \y_0 \right] - E \left[ \hat{\bbeta}^T \X^T \X \hat{\bbeta}\right] - 2 E \left[\left(E_0 \left[ \y_0\right] - \X\hat{\bbeta}\right)^T \X \hat{\bbeta}\right],\\
+\text{C}^\ast &= E \left[ || \y - \X\hat{\bbeta}||_2^2 \right] =  E \left[ \y^T \y \right] - E \left[ \hat{\bbeta}^T \X^T \X \hat{\bbeta}\right] - 2 E \left[\left( \y - \X\hat{\bbeta}\right)^T \X \hat{\bbeta}\right].
+\end{aligned}\]
+
+Next, we consider the difference between C and C$^\ast$, i.e.
+
+\[\begin{aligned} 
+\text{C} - \text{C}^\ast &= 2 E \left[\left( \y - E_0 \left[ \y_0\right]\right)^T \X \hat{\bbeta}\right] = 2 \tr \left( \cov \left(\y - E_0 [\y_0], \X \hat{\bbeta} \right)\right) + 2 \tr \left(E \left[\y - E_0 [\y_0] \right] E^T [\X \hat{\bbeta}]\right) \\
+&= 2 \tr \left( \cov \left(\y - E_0 [\y_0], \X \hat{\bbeta} \right)\right) = 2 \tr \left( \cov \left(\y, \X \hat{\bbeta} \right)\right),
+\end{aligned}
+\]
+which concludes our proof. Note that in the above equation we used the following equality, which is based on two vector valued random variation of approriate dimensions:
+
+\[E \left[\X^T \boldsymbol{Z}\right]  = E \left[\tr \left(\X^T \boldsymbol{Z}\right)\right] = E \left[\tr \left( \boldsymbol{Z} \X^T \right)\right] = \tr \left(\cov \left(\X, \boldsymbol{Z}\right)\right) + \tr \left(E[\X] E^T[\boldsymbol{Z}]\right). \]
+
+In the linear regression case with iid Gaussian errors we have:
+
+\[\tr \left( \cov \left(\y, \X \hat{\bbeta} \right)\right) = \tr \left( \cov \left(\y, \S \y \right)\right) = \sigma_{\epsilon}^2 \tr\left(\S\right) = \sigma_{\epsilon}^2 p.\]
+
+Therefore,
+
+\[\text{C} = E \left[ E_0 \left[ || \y_0 - \X\hat{\bbeta}||_2^2 \right] \right] = E \left[ || \y - \X\hat{\bbeta}||_2^2 \right] + 2 \sigma_{\epsilon}^2 p, \]
+
+yielding to the unbiased estimate
+
+\[\widehat{\text{C}} = C_p = || \y - \X\hat{\bbeta}||_2^2 +  2 \hat{\sigma}_{\ast}^2 p.\]
+
+An alternative famous goodness-of-fit criterion was proposed by Akaike (1969, 1973, 1974) **REF MISSING** and is given by
+
+\begin{equation}\text{AIC} = \log \left(\hat{\sigma}^2_{\epsilon} \right) + \frac{n + 2p}{n}.
+\label{eq:defAIC}
+\end{equation}
+
+where $\hat{\sigma}^2_{\epsilon}$ denotes the MLE for $\sigma_{\epsilon}^2$ defined in \@ref(eq:LM:sig2:hat).
+
+The AIC is based on a *divergence* (i.e. a generalization of the notion of distance) that informally speaking measures "how far" is the density of the estimated model compared to the "true" density. This divergence is called the Kullback-Leibler information which in this context can be defined for two densities of the same family as
+
+\[\KL  =  \frac{1}{n} E \left[ E_0 \left[\log \left(  
+\frac{f (\y_0| \btheta_0)}
+{f (\y_0| \hat{\btheta})}
+\right)\right] \right],\]
+
+where we assume $\btheta_0$ and $\hat{\btheta}$ to denote, respectively, the true parameter vector of interest and an estimator $\btheta_0$ based on a postulated model. Similarly to the setting used to derive Mallow's $C_p$, the expectations $E \left[\cdot\right]$ and $E_0 \left[\cdot\right]$ denote the expectation with respect to the densities of $\y$ and $\y_0$ (conditionally on $\X$). Note that $\hat{\btheta}$ dependences on $\y$ and not $\y_0$. Informally speaking this divergence measure how far is $f (\y_0| \btheta_0)$ from $f (\y_0| \hat{\btheta})$, where in the latter $\hat{\btheta}$ is estimated on $\y$, a sample independent from $\y_0$.
+
+To derive the AIC we start by considering a generic a linear model $\mathcal{M}$ with parameter vector $\btheta = [\bbeta^T \;\;\; \sigma_{\epsilon}^2]$. Indeed, we have that its density is given by
+
+\[\begin{aligned} 
+  f\left( {\y|\btheta } \right) &= {\left( {2\pi } \right)^{ - n/2}}{\left| { \sigma_{\epsilon}^2 \I} \right|^{ - 1/2}}\exp \left( { - \frac{1}{2}{{\left( {\y - \X{\bbeta}} \right)}^T}{{\left( {\sigma_{\epsilon}^2 \I} \right)}^{ - 1}}\left( {\y - \X{\beta _i}} \right)} \right)  \\
+   &= {\left( {2\pi } \right)^{ - n/2}}{\left( {\sigma_{\epsilon}^2} \right)^{ - n/2}}\exp \left( { - \frac{1}{{2 \sigma_{\epsilon}^2}}{{\left( {\y - \X{\bbeta}} \right)}^T}\left( {\y - \X{\bbeta}} \right)} \right).  \\ 
+\end{aligned} \]
+
+Using this result and letting 
+
+\[{\btheta}_0 = [{\bbeta}_0^T \;\;\; {\sigma}^2_0] \;\;\;\;\; \text{ and }  \;\;\;\;\; \hat{\btheta} = [\hat{\bbeta}^T \;\;\; \hat{\sigma}^2], \]
+
+where $\hat{\btheta}$ denotes the MLE for $\hat{\btheta}$, we obtain
+
+\[\scriptsize \begin{aligned}
+ \frac{1}{n} {E}\left[ {E_0}\left[ {\log \left( {\frac{{f\left( {\y_0|{\btheta_0}} \right)}}{{f\left( {\y_0|{\hat{\btheta}}} \right)}}} \right)} \right]\right]
+   &= \frac{1}{n} {E}\left[ {E_0}\left[ \log \left( {\frac{{{{\left( {\sigma _0^2} \right)}^{ - n/2}}}}{{{{\left( {\hat{\sigma}^2} \right)}^{ - n/2}}}}} \right)  
+ + \log \left( \frac{{\exp \left( { - \frac{1}{{2\sigma _0^2}}{{\left( {\y_0 - \X{\bbeta _0}} \right)}^T}\left( {\y_0 - \X{\bbeta _0}} \right)} \right)}}{{\exp \left( { - \frac{1}{{2\hat{\sigma}^2}}{{\left( {\y_0 - \X{\hat{\bbeta}}} \right)}^T}\left( {\y_0 - \X{\hat{\bbeta}}} \right)} \right)}} \right) \right]  \right] \\
+  &= -\frac{1}{2} E \left[\log \left( {\frac{{\sigma _0^2}}{{\hat{\sigma}^2}}} \right)\right] - \frac{1}{{2n\sigma _0^2}}{E_0}\left[ {{{\left( {\y_0 - \X{\bbeta _0}} \right)}^T}\left( {\y_0 - \X{\bbeta _0}} \right)} \right] \\
+   &+ \frac{1}{{2n}}{E}\left[\frac{1}{\hat{\sigma}^2}E_0\left[ {{{\left( {\y_0 - \X{\hat{\bbeta}}} \right)}^T}\left( {\y_0 - \X{\hat{\bbeta}}} \right)} \right]\right].
+ \end{aligned} \]
+
+
+Next, we consider each term of the above equation. For the first term, we have
+
+\[
+-\frac{1}{2} E \left[\log \left( {\frac{{\sigma _0^2}}{{\hat{\sigma}^2}}} \right)\right] = 
+\frac{1}{2} \left(E \left[ \log \left( \hat{\sigma}^2 \right) \right] - \log \left( \sigma_0^2 \right)\right).
+\]
+
+For the second term, we obtain
+
+\[ -\frac{1}{{2n\sigma _0^2}} {E_0}\left[ {{{\left( {\y_0 - \X{\bbeta _0}} \right)}^T}\left( {\y_0 - \X{\bbeta _0}} \right)} \right] = -\frac{1}{2}. \]
+
+Finally, we have for the last term
+
+\[\scriptsize \begin{aligned}
+\frac{1}{{2n}} {E}\left[ \frac{1}{\hat{\sigma}^2} {E_0}\left[ {{{\left( {\y_0 - \X{\hat{\bbeta}}} \right)}^T}\left( {\y_0 - \X\hat{\bbeta}} \right)} \right]\right]
+   &=  \frac{1}{{2n}} {E}\left[ \frac{1}{\hat{\sigma}^2} {E_0}\left[ {{{\left( {\y_0 - \X \bbeta_0 - \X\left( {\hat{\bbeta} - \bbeta_0} \right)} \right)}^T}\left( {\y_0 - \X \bbeta_0 - \X\left( {\hat{\bbeta} - \bbeta_0} \right)} \right)} \right] \right] \\
+   &= \frac{1}{{2n}} E\left[  \frac{1}{\hat{\sigma}^2}  \left[ {E_0}\left[ {{{\left( {\y_0 - \X \bbeta_0} \right)}^T}\left( {\y_0 - \X \bbeta_0} \right)} \right]\right] \right]\\
+   &+ \frac{1}{{2n}} E \left[ \frac{1}{\hat{\sigma}^2}  \left( \bbeta_0 - \hat{\bbeta} \right)^T \X^T \X\left( \bbeta_0 - \hat{\bbeta} \right)\right]\\
+   &= \frac{1}{{2}} E \left[ \frac{\sigma_0^2}{\hat{\sigma}^2} \right]
+   + \frac{1}{{2n}} E \left[ \frac{\sigma_0^2}{\hat{\sigma}^2}  \frac{\left( \bbeta_0 - \hat{\bbeta} \right)^T \X^T \X\left( \bbeta_0 - \hat{\bbeta} \right)}{\sigma_0^2}\right].\\
+\end{aligned}\]
+   
+   To simplify further this result it is usefull to remeber that
+
+\[
+U_1 = \frac{n \hat{\sigma}^2}{\sigma_0^2} \sim \chi^2_{n-p}, \;\;\;\;\;\;
+U_2 = \frac{\left( \bbeta_0 - \hat{\bbeta} \right)^T \X^T \X\left( \bbeta_0 - \hat{\bbeta} \right)}{\sigma_0^2} \sim \chi^2_p,
+\]
+
+and that $U_1$ and $U_2$ are independent. Moreover, we have that if $U \sim \chi^2_k$ then $E[1/U] = 1/(k-2)$. Thus, we obtain
+
+\[\begin{aligned}
+\frac{1}{{2n}} {E}\left[ \frac{1}{\hat{\sigma}^2} {E_0}\left[ {{{\left( {\y_0 - \X{\hat{\bbeta}}} \right)}^T}\left( {\y_0 - \X\hat{\bbeta}} \right)} \right]\right]
+   = \frac{n+p}{{2(n-p-2)}}.
+\end{aligned}\]
+
+Combining, the above result we have
+
+\[\KL = \frac{1}{2} \left[ E \left[ \log \left( \hat{\sigma}^2 \right) \right] + \frac{n+p}{(n-p-2)} + c \right],\]  
+ 
+where $c =  - \log \left( \sigma_0^2 \right) - 1$. Since the constant $c$ is *common* to all models it can neglated for the purpose of model selection. Therefore, neglecting the constant we obtain that  
+
+\[\KL \propto E \left[ \log \left( \hat{\sigma}^2 \right) \right] + \frac{n+p}{(n-p-2)}.\] 
+
+Thus, an unbiased estimator of $\KL$ is given by
+
+\[\text{AICc} = \log \left( \hat{\sigma}^2 \right)  + \frac{n+p}{(n-p-2)},\]
+
+since an unbiased estimator of $E \left[\log \left( \hat{\sigma}^2 \right)\right]$ is simply $\log \left( \hat{\sigma}^2 \right)$. However, it can be observed that the result we derived is not equal to the AIC defined in (\@ref(eq:defAIC)). Indeed, this result is known as the bias-corrected AIC or AICc. To understand the relationship between the AIC and AICc it is instructif to consider their difference and letting $n$ diverge to infinity, i.e.
+
+\[\lim_{n \to \infty} \; \text{AIC} - \text{AICc} = \frac{2 \left(p^2 + 2p + n\right)}{n \left(p - n - 2\right)} = 0.\]
+
+Therefore, the AIC is an asymptotically unbiased estimator of $\KL$. In practice, the AIC and AICc provides very similar result expect when the sample size is rather small.
+
+
+**TO DO** Talk about BIC
+
+Illustration for model selection with linear model:
+
+**TO DO** add comments
+
+
+```{r modelSelectionEg, cache=TRUE, fig.height= 5.5, fig.width= 10}
+```
+
+
+## Linear Regression with Autocorrelated Errors
+
+**TO DO**
+
+<!--chapter:end:05-linear-models.Rmd-->
+
+# State-Space Models
+
+<!--chapter:end:06-state-space.Rmd-->
+
+# (APPENDIX) Appendix {-} 
+
+## Structure (New)
+
+## Chapter 0: EDA
+
+## Chapter 1: Stationarity and ACF
+
+### Stationarity
+
+- 2 kinds + examples
+
+### ACF / CCF
+
+- Definitions
+- Admisibility
+- Confidence Bands
+- Examples
+
+## Chapter 2: Time Series Models
+
+- Geometric Series
+- Backshift operator
+- Basic models
+  - RW
+  - WN
+  - AR1
+- Linear processes
+
+## Chapter 3: ARMA 
+
+### Definition
+
+### MA / AR Operations
+
+### Redundancy
+
+### Causal + invertible
+
+### Estimation
+
+### Prediction / Forecast
+
+
+## Structure (Old)
+
+1. **Introduction to large sample theory:** This chapter is a summary of the first three section of "*Large Sample Estimation and Hypothesis Testing*" by Newey and McFadden. 
+    1. Extremum Estimators
+    2. Consistency
+        1. Basic results
+        2. Identification
+        3. Uniform convergence and stochasitc equicontinuity
+        4. Consistency for maximum likelihood estimators
+        5. Consistency for generalized method of moments estimators
+    3. Asymptotic normality
+        1. Basic results
+        4. Asymptotic normality for maximum likelihood estimators
+        5. Asymptotic normality for generalized method of moments estimators 
+        
+2. **ARMA models:** This chapter is based on the following two references: "*Time Series for Macroeconomics and Finance (chapter 3)*" by Cochrane and "*Time Series Analysis and Its Applications: With R Examples - Third Edition (Chapter 3)*" by Shumway and Stoffer.  
+    1. Basic time series models
+        1. White noise
+        2. Random walk
+    2. Basic ARMA models
+        1. Definitions
+        2. Backshift operators
+        3. Autoregressive and moving average operators
+    3. Linear processes    
+3. **The Autocorrelation and Autocovariance functions:** This chapter is based on the following two references: "*Time Series for Macroeconomics and Finance (chapter 6)*" by Cochrane and "*Time Series Analysis and Its Applications: With R Examples - Third Edition (Chapter 1)*" by Shumway and Stoffer.
+    1. Definition 
+    2. Autocovariance and autocorrelation of ARMA processes
+    3. Fundamental represenation
+    4. Admissibility
+    5. Estimation and Inference
+4. **Stationarity and Wold representation** This chapter is based on the following two references: "*Time Series for Macroeconomics and Finance (chapter 6)*" by Cochrane and "*Time Series Analysis and Its Applications: With R Examples - Third Edition (Chapter 1)*" by Shumway and Stoffer.
+5. **Forecasting**
+6. **Estimation of ARMA parameters**
+
+<!--chapter:end:06-struct.Rmd-->
+
+# ARIMA
+
+## Differencing Operator
+
+*Definition:* **Differencing Operator**
+
+The **Differencing Operator** is defined as the gradient symbol applied to a time series:
+\[\nabla {x_t} = {x_t} - {x_{t - 1}}\]
+
+The differencing operator is helpful when trying to remove trend from the data.
+
+We can take higher moments of differences by:
+\[\begin{aligned}
+  {\nabla ^2}{x_t} &= \nabla \left( {\nabla {x_t}} \right) \\
+   &= \nabla \left( {{x_t} - {x_{t - 1}}} \right) \\
+   &= \left( {{x_t} - {x_{t - 1}}} \right) - \left( {{x_{t - 1}} - {x_{t - 2}}} \right) \\
+   &= {x_t} - 2{x_{t - 1}} + {x_{t - 2}} \\ 
+\end{aligned} \]
+
+So, the difference operator has the following properties:
+\[\begin{aligned}
+  {\nabla ^k}{x_t} &= {\nabla ^{k - 1}} \left( {\nabla {x_t}}\right) \hfill \\
+  {\nabla ^1}{x_t} &= \nabla {x_t} \hfill \\ 
+\end{aligned} \]
+
+Notice, within the difference operation, we are backshifting the timeseries.
+
+If we rewrite the difference operator to use the backshift operator, we receive:
+\[\nabla {x_t} = {x_t} - {x_{t - 1}} = \left( {1 - B} \right){x_t}\]
+
+This holds for later incarnations as well:
+\[\begin{aligned}
+  {\nabla ^2}{x_t} &= {x_t} - 2{x_{t - 1}} + {x_{t - 2}} \hfill \\
+   &= \left( {1 - B} \right)\left( {1 - B} \right){x_t} \hfill \\
+   &= {\left( {1 - B} \right)^2}{x_t} \hfill \\ 
+\end{aligned} \]
+
+Thus, we can generalize this to:
+\[{\nabla ^k}{x_t} = {\left( {1 - B} \right)^k}{x_t}\]
+
+<!--chapter:end:07-ARIMA.Rmd-->
+
+# Time Series Models of Heteroskedasticity
+
+ 
+
+<!--chapter:end:07-heteroskedasticity.Rmd-->
+
+# ARMA Models
+
+```{r arma_code, echo = FALSE, cache = FALSE}
+knitr::read_chunk('code/chapter/04_arma.R')
+```
+
+In this chapter we introduce a class of time series models that is flexible and among the most commonly used to describe stationary time series. This class is represented by the AutoRegressive Moving Average (ARMA) models which combine and include the autoregressive and moving average models seen in the previous chapter, which we first discuss in further detail before introducing the general ARMA class.
+
+## Autoregressive Models (AR(p))
+
+The class of autoregressive models is based on the idea that previous values in the time series are needed to explain current values in the series. For this class of models, we assume that the $p$ previous observations are needed for this purpose and we therefore denote this class as AR(p). In the previous chapter, the model we introduced was an AR(1) in which only the immediately previous observation is needed to explain the following one and therefore represents a particular model which is part of the more general class of AR(p) models.
+
+The AR(p) models can be formally represented as follows
+$${y_t} = {\phi _1}{y_{t - 1}} + ... + {\phi _p}{y_{t - p}} + {w_t}$$,
+where $\phi_p \neq 0$ and $w_t$ is a white noise process. Without loss of generality, we will assume that the expectation of the processes $({y_t})$ and $(w_{t})$, as well as that of the following ones in this chapter, is zero. However, a more appropriate way of representing these processes is through the backshift operator introduced in the previous chapter and is as follows
+
+\[\begin{aligned}
+  {y_t} &= {\phi _1}{y_{t - 1}} + ... + {\phi_p}{y_{t - p}} + {w_t} \\
+   &= {\phi _1}B{y_t} + ... + {\phi_p}B^p{y_t} + {w_t} \\
+   &= ({\phi _1}B + ... + {\phi_p}B^p){y_t} + {w_t} \\ 
+\end{aligned}\],
+
+which finally yields
+$$(1 - {\phi _1}B + ... + {\phi_p}B^p){y_t} = {w_t}$$,
+which, in abbreviated form, can be expressed as
+$$\phi(B){y_t} = w_t$$.
+
+To illustrate these models further, let us consider a simple AR(1) process and carry out the following iterative exercise
+
+\[\begin{aligned}
+  {y_t} &= {\phi _1}{y_{t - 1}} + {w_t} \\
+   &= {\phi _1}({\phi _1}{y_{t - 2}} + {w_{t-1}}) + {w_t} \\
+   &= {\phi _1^2}{y_{t - 2}} + {\phi _1}{w_{t-1}} + {w_t} \\
+   &= ... \\
+   &= {\phi _1^h}{y_{t - h}} + \sum_{i=0}^{h-1}{\phi _1^i}w_{t-i}
+\end{aligned}\].
+
+If we suppose that $|\phi_1| < 1$, then continuing the iteration to infinity would lead us to
+$$y_t = \sum_{i=0}^{\infty}{\phi _1^i}w_{t-i}$$,
+which has $\mathbb{E}[y_t] = 0$ and autocovariance function
+$$\gamma(h) = \frac{\phi_1^h}{1-\phi_1^2}\sigma _w^2$$
+where $\sigma _w^2$ is the variance of the white noise process $(w_t)$. It must be noted that if $\phi_1 = 1$ then the AR(1) becomes a random walk process (non-stationary) whereas if $|\phi_1| < 1$ the process is stationary.
+
+For these kind of models, the ACF and PACF can give meaningful insight into the order of the autoregressive model. The following plots show the ACF and PACF of an AR(1) with $\phi_1 = 0.8$ indicating that the ACF of an AR process decays exponentially while its PACF cuts off after the lag corresponding to the order of the autoregressive process.
+
+INSERT R CODE FOR ACF AND PACF OF SIMULATED AR(1)
+
+The condition for the stationarity of an AR(1) model have been partially discussed above. However, the condition of $|\phi_1| < 1$ is not the only one that guarantees that the AR(1) is stationary. Indeed, so-called explosive AR(1) models with $|\phi_1| > 1$ can be re-expressed, using the same kind of iterative argument above, as a stationary process. Nevertheless this iterative procedure makes use of future values of the series $(y_t)$ and therefore is not a so-called "causal" process. Generally speaking, by causal process we mean a process whose current values are only explained by its past values and not by its future ones.
+
+DISCUSS CAUSALITY MORE IN DEPTH ALSO OF AR(p)
+
+## Moving Average Models (MA(q))
+
+A moving average model can be interpreted in a similar way to an AR(p) model, except that in this case the time series is the result of a linear operation on the innovation process rather than on the time series itself. More specifically, an MA(q) model can be defined as follows
+$${y_t} = \theta_1 w_{t-1} + ... + \theta_q w_{t-q} + w_t$$.
+Following the same logic as for the AR(p) models and using the backshift operator as before, we can re-express these moving average processes as follows
+$$y_t = \theta(B)w_t$$
+where $\theta(B) = 1 + \theta_1B + ... + \theta_qB^q$.
+
+These processes are always stationary, no matter the values that $\theta_q$ takes. However, the MA(q) processes may not be identifiable through their autocovariance functions. By the latter we mean that different parameteres for a same order MA(q) model can deliver the exact same autocovariance function and it would therefore be impossible to retrieve the parameters of the model by only looking at the autocovariance function.
+
+DICUSS INVERTIBILITY
+
+## AutoRegressive Moving Average Models (ARMA(p,q))
+
+<!--chapter:end:08-ARMA.Rmd-->
+
+# (APPENDIX) Appendix {-} 
+
+<!--chapter:end:90-appendix.Rmd-->
+
+# Proofs
+
+## Proof of Theorem 1
+
+*Proof:* we let $X_t = W_t + \mu$, where $\mu < \infty$ and $(W_t)$ is a strong white noise process with variance $\sigma^2$ and finite fourth moment.
+
+Next, we consider the sample autocovariance function computed on $(X_t)$, i.e.
+
+\begin{equation*}
+    \hat \gamma \left( h \right) = \frac{1}{n}\sum\limits_{t = 1}^{n - h} {\left( {{X_t} - \bar X} \right)\left( {{X_{t + h}} - \bar X} \right)}.
+\end{equation*}
+
+For this equation, it is clear that $\hat \gamma \left( 0 \right)$ and $\hat \gamma \left( h \right)$ (with $h > 0$) are two statistics involving sums of different lengths. As we will see, this prevents us from using directely the multivariate central limit theorem on the vector $[ \hat \gamma \left( h \right) \;\;\; \hat \gamma \left( h \right) ]^T$. However, the lag $h$ is fixed and therefore the difference in the number of elements of both sums is asymptotically negligible. Therefore, we define a new statistic 
+
+\begin{equation*}
+    \tilde{\gamma} \left( h \right) = \frac{1}{n}\sum\limits_{t = 1}^{n} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)},
+\end{equation*}
+
+which is easier to "handle" and show that $\hat \gamma \left( h \right)$ and $\tilde{\gamma} \left( h \right)$ are asymptotically equivalent in the sense that:
+
+\begin{equation*}
+    n^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)] = o_p(1).
+\end{equation*}
+
+Therefore $\tilde{\gamma} \left( h \right)$ and $\hat \gamma \left( h \right)$ have the same asymptotic distribution, it is suffice to show the asymptotic distribution of $\tilde{\gamma} \left( h \right)$.
+
+So that before continuing prove the Theorem 1 we state and prove the following lemma:
+
+**Lemma A1:** Let 
+\begin{equation}
+X_t = \mu + \sum\limits_{j = -\infty}^{\infty} \psi_j W_{t-j},
+\end{equation}
+where $(W_t)$ is a strong white process with variance $\sigma^2$, and the coefficients satisfying $\sum \, |\psi_j| < \infty$. Then, we have
+    \begin{equation*}
+        n^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)] = o_p(1).
+    \end{equation*}
+
+*Proof:* By Markov inequality, we have
+\begin{equation*}
+\mathbb{P}\left( |n^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)]| \geq \epsilon \right) \leq \frac{\mathbb{E}|n^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)]|}{\epsilon},
+\end{equation*}
+for any $\epsilon > 0$.
+
+Thus, it is enough to show that $\mathbb{E}|n^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)]| \to 0$ as $n \to \infty$.
+
+By the definitions of $\tilde{\gamma} \left( h \right)$ and $\hat \gamma \left( h \right)$,
+\begin{equation*}
+\begin{aligned}
+n^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)] &= \frac{1}{\sqrt{n}} \sum_{t = n-h+1}^{n}(X_t - \mu)(X_{t+h} - \mu) \\
+&+ \frac{1}{\sqrt{n}} \sum_{t = 1}^{n-h}\left[(X_t - \mu)(X_{t+h} - \mu) - (X_t - \bar{X})(X_{t+h} - \bar{X})\right]\\
+&= \frac{1}{\sqrt{n}} \sum_{t = n-h+1}^{n}(X_t - \mu)(X_{t+h} - \mu) \\
+&+ \frac{1}{\sqrt{n}} \sum_{t = 1}^{n-h}\left[(\bar{X} - \mu)(X_t + X_{t+h} - \mu - \bar{X})\right]\\
+&= \frac{1}{\sqrt{n}} \sum_{t = n-h+1}^{n} (X_t - \mu)(X_{t+h} - \mu)\\
+&+ \frac{1}{\sqrt{n}} (\bar{X} - \mu)\sum_{t = 1}^{n-h}(X_t + X_{t+h} - \mu - \bar{X})\\
+&= \frac{1}{\sqrt{n}} \sum_{t = n-h+1}^{n} (X_t - \mu)(X_{t+h} - \mu)\\
+&+ \frac{1}{\sqrt{n}} (\bar{X} - \mu)\left[\sum_{t = 1+h}^{n-h}X_t - (n-h)\mu + h\bar{X}\right]\\
+&= \frac{1}{\sqrt{n}} \sum_{t = n-h+1}^{n} (X_t - \mu)(X_{t+h} - \mu)\\
+&+ \frac{1}{\sqrt{n}} (\bar{X} - \mu)\left[\sum_{t = 1+h}^{n-h}(X_t - \mu) - h(\mu - \bar{X})\right]\\
+&= \frac{1}{\sqrt{n}} \sum_{t = n-h+1}^{n} (X_t - \mu)(X_{t+h} - \mu)\\
+&+ \frac{1}{\sqrt{n}} (\bar{X} - \mu)\sum_{t = 1+h}^{n-h}(X_t - \mu) + \frac{h}{\sqrt{n}} (\bar{X} - \mu)^2,
+\end{aligned}
+\end{equation*}
+where $\bar{X} = \frac{1}{n}\sum_{t=1}^n X_t = \mu + \frac{1}{n}\sum_{t=1}^n\sum_{j=-\infty}^{\infty} \psi_j W_{t-j} = \mu + \frac{1}{n} \sum_{j = -\infty}^{\infty} \sum_{t=1}^n \psi_j W_{t-j}$.
+
+Then,
+\begin{equation*}
+\begin{aligned}
+\mathbb{E}|n^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)]|
+&\leq \frac{1}{\sqrt{n}} \sum_{t = n-h+1}^{n} \mathbb{E}\left[|(X_t - \mu)||(X_{t+h} - \mu)|\right]\\
+&+ \frac{1}{\sqrt{n}} \mathbb{E} \left[|(\bar{X} - \mu)||\sum_{t = 1+h}^{n-h}(X_t - \mu)|\right] +  \frac{h}{\sqrt{n}}\mathbb{E} \left[ (\bar{X} - \mu)^2 \right].
+\end{aligned}
+\end{equation*}
+
+Next, we consider each term of the above equation. For the first term, since $(X_t - \mu)^2 = \left(\sum_{j = -\infty}^{\infty} \psi_j W_{t-j}\right)^2$, and $\mathbb{E}[W_iW_j] \neq 0$ only if $i = j$. And by Cauchy–Schwarz inequality we have
+\begin{equation*}
+\mathbb{E}\left[|(X_t - \mu)||(X_{t+h} - \mu)|\right] \leq \sqrt{\mathbb{E}\left[|(X_t - \mu)|^2\right] \mathbb{E}\left[|(X_{t+h} - \mu)|^2\right]} = \sigma^2 \sum_{i = -\infty}^{\infty}\psi_i^2.
+\end{equation*}
+
+Then, we consider the third term, since it will be used in the second term
+\begin{equation*}
+\mathbb{E}[(\bar{X} - \mu)^2] = \frac{1}{n^2} \sum_{t = 1}^{n} \sum_{i = -\infty}^{\infty} \psi_i^2 \mathbb{E}\left[ W_{t-i}^2 \right] = \frac{\sigma^2}{n} \sum_{i = -\infty}^{\infty}\psi_i^2.
+\end{equation*}
+
+Similarly, for the second term we have
+\begin{equation*}
+\begin{aligned}
+\mathbb{E}\left[|(\bar{X} - \mu)||\sum_{t = 1+h}^{n-h}(X_t - \mu)|\right] &\leq \sqrt{\mathbb{E}\left[|(\bar{X} - \mu)|^2\right] \mathbb{E}\left[|\sum_{t = 1+h}^{n-h}(X_t - \mu)|^2\right]}\\
+&= \sqrt{\mathbb{E}\left[(\bar{X} - \mu)^2\right] \mathbb{E}\left[\sum_{t = 1+h}^{n-h}\left(X_t - \mu \right)^2 + \sum_{t_1 \neq t_2}(X_{t_1} - \mu)(X_{t_2} - \mu) \right]}\\
+&\leq \sqrt{\frac{\sigma^2}{n} \sum_{i = -\infty}^{\infty}\psi_i^2 \cdot (n-2h)\sigma^2 \left( \sum_{j = -\infty}^{\infty} |\psi_j| \right)^2}\\
+&\leq \sqrt{\frac{n-2h}{n}}\sigma^2 \left(\sum_{i = -\infty}^{\infty}|\psi_i| \right)^2.
+\end{aligned}
+\end{equation*}
+
+
+Then we have 
+
+\begin{equation*}
+\begin{aligned}
+\mathbb{E}|n^{\frac{1}{2}}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)]|
+&\leq \frac{1}{\sqrt{n}} h \sigma^2 \sum_{i = -\infty}^{\infty}\psi_i^2 + \sqrt{\frac{n-2h}{n^2}}\sigma^2 \left(\sum_{i = -\infty}^{\infty}|\psi_i| \right)^2 + \frac{h}{n\sqrt{n}}\sigma^2 \sum_{i = -\infty}^{\infty}\psi_i^2\\
+&\leq \frac{1}{n\sqrt{n}} (nh + \sqrt{n - 2h} + h) \sigma^2 \left(\sum_{i = -\infty}^{\infty}|\psi_i|\right)^2 \to 0,
+\end{aligned}
+\end{equation*}
+as $n \to \infty$.
+
+Thus we conclude that
+\begin{equation*}
+\sqrt{n}[\tilde{\gamma} \left( h \right) - \hat \gamma \left( h \right)] = o_p(1).
+\end{equation*}
+
+Returning to the proof of Theorem 1, since $\{\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)\}_1^n$ are iid, we can apply multivariate CLT to it, and have
+\begin{equation*}
+    \sqrt{n}\left\{
+        \begin{bmatrix}
+         \tilde{\gamma} \left( 0 \right) \\
+         \tilde{\gamma} \left( h \right)
+        \end{bmatrix}
+    - \mathbb{E}\begin{bmatrix}
+         \tilde{\gamma} \left( 0 \right) \\
+         \tilde{\gamma} \left( h \right)
+        \end{bmatrix} \right\}
+    = \frac{1}{\sqrt{n}}\begin{bmatrix}
+         \sum\limits_{t = 1}^{n}(X_t - \mu)^2 - n\mathbb{E}\left[ \tilde{\gamma} \left( 0 \right) \right]\\
+         \sum\limits_{t = 1}^{n}\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right) - n\mathbb{E}\left[ \tilde{\gamma} \left( h \right) \right]
+        \end{bmatrix} \overset{\mathcal{D}}{\to} 
+    \mathcal{N}\left(0, n \cdot var \left(\begin{bmatrix}
+         \tilde{\gamma} \left( 0 \right) \\
+         \tilde{\gamma} \left( h \right)
+        \end{bmatrix} \right)\right)
+\end{equation*}
+
+
+
+The expectation of $\tilde{\gamma} \left( h \right)$,
+\begin{equation*}
+    \mathbb{E}[\tilde{\gamma} \left( h \right)] = \mathbb{E}\left[\frac{1}{n}\sum\limits_{t = 1}^{n} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)}\right].
+\end{equation*}
+
+By Cauchy–Schwarz inequality and $var(X_t) = \sigma^2$, we have
+\begin{equation*}
+    \frac{1}{n}\sum\limits_{t = 1}^{n} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)} \leq \sqrt{\frac{1}{n}\sum\limits_{t = 1}^{n} {\left( {{X_t} - \mu} \right)^2} \frac{1}{n}\sum\limits_{t = 1}^{n} {\left( {{X_{t + h}} - \mu} \right)^2}} < \infty.
+\end{equation*}
+
+Then by bounded convergence theorem and $\{X_t\}_1^n$ are independent, we have
+
+\begin{equation*}
+    \mathbb{E}[\tilde{\gamma} \left( h \right)] = { \mathbb{E}\left( {{X_t} - \mu} \right)\mathbb{E}\left( {{X_{t + h}} - \mu} \right)} =
+    \begin{cases}
+        \sigma^2, & \text{for } h = 0\\
+        0, & \text{for } h \neq 0
+    \end{cases}.
+\end{equation*}
+
+
+The variance of $\tilde{\gamma} \left( h \right)$, 
+
+when $h \neq 0$,
+\begin{equation*}
+    \begin{aligned}
+        var[\tilde{\gamma} \left( h \right)] &= \frac{1}{n^2}\mathbb{E}\left\{\left[\sum\limits_{t = 1}^{n} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)}\right]^2\right\}\\
+        &= \frac{1}{n^2}\mathbb{E}\left\{\left[\sum\limits_{i = 1}^{n} {\left( {{X_i} - \mu} \right)\left( {{X_{i + h}} - \mu} \right)}\right] \left[\sum\limits_{j = 1}^{n} {\left( {{X_j} - \mu} \right)\left( {{X_{j + h}} - \mu} \right)}\right]\right\}\\
+        &= \frac{1}{n^2}\mathbb{E}\left[\sum\limits_{i = 1}^{n}\sum\limits_{j = 1}^{n} {\left( {{X_i} - \mu} \right)\left( {{X_{i + h}} - \mu} \right)}{\left( {{X_j} - \mu} \right)\left( {{X_{j + h}} - \mu} \right)}\right].
+    \end{aligned}
+\end{equation*}
+
+Also by Cauchy–Schwarz inequality and the finite fourth moment assumption, we can use the bounded convergence theorem. And since $\{X_t\}_1^n$ is white noise process, we have 
+
+
+\begin{equation*}
+    \mathbb{E}\left[{\left( {{X_i} - \mu} \right)\left( {{X_{i + h}} - \mu} \right)}{\left( {{X_j} - \mu} \right)\left( {{X_{j + h}} - \mu} \right)}\right] \neq 0
+\end{equation*}
+only when $i = j$.
+
+Therefore,
+\begin{equation*}
+    \begin{aligned}
+        var[\tilde{\gamma} \left( h \right)] &= \frac{1}{n^2}\sum\limits_{i = 1}^{n} \mathbb{E}\left[ {\left( {{X_i} - \mu} \right)^2\left( {{X_{i + h}} - \mu} \right)^2}\right]\\
+        &= \frac{1}{n^2}\sum\limits_{i = 1}^{n} \mathbb{E}{\left( {{X_i} - \mu} \right)^2\mathbb{E}\left( {{X_{i + h}} - \mu} \right)^2}\\
+        &= \frac{1}{n}\sigma^4, \text{for } (h \neq 0).
+    \end{aligned}
+\end{equation*}
+
+Similarly, when $h = 0$, we have
+
+\begin{equation*}
+    \begin{aligned}
+        var[\tilde{\gamma} \left( 0 \right)] &= \frac{1}{n^2}\mathbb{E}\left\{\left[\sum\limits_{t = 1}^{n} {\left( {{X_t} - \mu} \right)^2}\right]^2\right\} - \frac{1}{n^2}\left[\mathbb{E}\sum\limits_{t = 1}^{n} {\left( {{X_t} - \mu} \right)^2}\right]^2\\
+        &= \frac{2}{n}\sigma^4, \text{for } (h = 0).
+    \end{aligned}
+\end{equation*}
+
+Next, for $h \neq 0$,
+\begin{equation*}
+    \begin{aligned}
+        cov[\tilde{\gamma} \left( 0 \right), \tilde{\gamma} \left( h \right)] &= \mathbb{E}[\tilde{\gamma} \left( 0 \right) \tilde{\gamma} \left( h \right)] - \mathbb{E}[\tilde{\gamma} \left( 0 \right)] \mathbb{E}[\tilde{\gamma} \left( h \right)]\\
+        &= \mathbb{E}[\tilde{\gamma} \left( 0 \right) \tilde{\gamma} \left( h \right)]\\
+        &= \mathbb{E}\left[\left[\sum\limits_{t = 1}^{n} {\left( {{X_t} - \mu} \right)^2}\right]\left[\sum\limits_{t = 1}^{n} {\left( {{X_t} - \mu} \right)\left( {{X_{t + h}} - \mu} \right)}\right]\right]\\
+        &= 0.
+    \end{aligned}
+\end{equation*}
+
+Therefore by Slutsky's Theorem we have,
+\begin{equation*}
+    \begin{aligned}
+    \sqrt{n}\left\{
+        \begin{bmatrix}
+         \hat{\gamma} \left( 0 \right) \\
+         \hat{\gamma} \left( h \right)
+        \end{bmatrix}
+    - \begin{bmatrix}
+         \sigma^2 \\
+         0
+        \end{bmatrix} \right\}
+    &= \sqrt{n}\left\{
+        \begin{bmatrix}
+         \tilde{\gamma} \left( 0 \right) \\
+         \tilde{\gamma} \left( h \right)
+        \end{bmatrix}
+    - \begin{bmatrix}
+         \sigma^2 \\
+         0
+        \end{bmatrix} \right\}
+    + \underbrace{\sqrt{n}\left\{
+        \begin{bmatrix}
+         \hat{\gamma} \left( 0 \right) \\
+         \hat{\gamma} \left( h \right)
+        \end{bmatrix}
+    - \begin{bmatrix}
+         \tilde{\gamma} \left( 0 \right) \\
+         \tilde{\gamma} \left( h \right)
+        \end{bmatrix} \right\}}_{\overset{p}{\to} 0}\\
+    &\overset{\mathcal{D}}{\to} 
+    \mathcal{N}\left(0, \begin{bmatrix}
+         2\sigma^2 & 0\\
+         0 & \sigma^2
+        \end{bmatrix} \right).
+    \end{aligned}
+\end{equation*}
+
+Next, we set $g\left( \begin{bmatrix}
+         a \\
+         b
+        \end{bmatrix} \right) = b/a$, where $a \neq 0$. And we also have $\nabla g\left( \begin{bmatrix}
+         a \\
+         b
+        \end{bmatrix} \right) = \begin{bmatrix}
+         -\frac{b}{a^2} \\
+         \frac{1}{a}
+        \end{bmatrix}^{T}$
+
+Then by Delta method, we have for $h \neq 0$
+\begin{equation*}
+    \begin{aligned}
+    \sqrt{n}\hat{\rho}(h) =
+    \sqrt{n}\left\{g\left(
+        \begin{bmatrix}
+         \hat{\gamma} \left( 0 \right) \\
+         \hat{\gamma} \left( h \right)
+        \end{bmatrix} \right)
+    - g\left(\begin{bmatrix}
+         \sigma^2 \\
+         0
+        \end{bmatrix} \right) \right\}
+    &\overset{\mathcal{D}}{\to} 
+    \mathcal{N}\left(0, \nabla g\left(\begin{bmatrix}
+         \sigma^2 \\
+         0
+        \end{bmatrix} \right) \begin{bmatrix}
+         2\sigma^2 & 0\\
+         0 & \sigma^2
+        \end{bmatrix} \nabla g\left(\begin{bmatrix}
+         \sigma^2 \\
+         0
+        \end{bmatrix} \right)^{T} \right)\\
+    &=  \mathcal{N}(0, 1)  .
+    \end{aligned}
+\end{equation*}
+
+
+
+<!--chapter:end:91-appendix-a.Rmd-->
+
+# Remark on Syntax 
+
+Hi guys, since we are all using a different syntax here is what I propose. Let me know if we should change it. Once we agree, we will unify the syntax:
+
+| Symbol              |  Meaning              | Code             |
+|---------------------|-----------------------|------------------|
+| $\e{ }$             |  Expected value       |  `\e{ }`         |
+| $\var$              |  Variance             |  `\var`          |
+| $\cov$              |  Covariance           |  `\cov`          |
+| $\corr$             |  Correlation          |  `\corr`         |
+| $\ind$              |  Indicator            |  `\ind`          |
+| $\real$             |  Real                 |  `\real`         |
+| $\natural$          |  Natural              |  `\natural`      |
+| $\integers$         |  Integers             |  `\integers`     |
+| $(X_t)$             |  A time series        | `(X_t)`          |
+| $\{X_t\}$           |  A set                | `\{X_t\}`        |
+| $\gamma()$          |  Autocov. fun.        | `\gamma()`       |
+| $\rho()$            |  Autocor. fun.        | `\rho()`         |
+| $W_t$               |  White noise          | `W_t`            |
+| $\normal$           |  Normal dist.         | `\normal`        |
+| $\KL$               |  KL diverg.           | `\KL`            |
+| $\AIC$              |  AIC                  | `\AIC`           |
+| $\BIC$              |  BIC                  | `\BIC`           |
+| $n$                 |  Length of time series| `n`              |
+
+
+Also for the parenthesis, I propose to use this as much as possible $\{[(\{[( \cdot )]\})]\}$, for which I am a terrible example.
+
+<!--chapter:end:92-syntax.Rmd-->
+
+
+
+To illustrate these models further, let us consider a simple AR(1) process and carry out the following iterative exercise
+
+\[\begin{aligned}
+  {y_t} &= {\phi _1}{y_{t - 1}} + {w_t} \\
+   &= {\phi _1}({\phi _1}{y_{t - 2}} + {w_{t-1}}) + {w_t} \\
+   &= {\phi _1^2}{y_{t - 2}} + {\phi _1}{w_{t-1}} + {w_t} \\
+   &= ... \\
+   &= {\phi _1^h}{y_{t - h}} + \sum_{i=0}^{h-1}{\phi _1^i}w_{t-i}
+\end{aligned}\].
+
+If we suppose that $|\phi_1| < 1$, then continuing the iteration to infinity would lead us to
+$$y_t = \sum_{i=0}^{\infty}{\phi _1^i}w_{t-i}$$,
+which has $\mathbb{E}[y_t] = 0$ and autocovariance function
+$$\gamma(h) = \frac{\phi_1^h}{1-\phi_1^2}\sigma _w^2$$
+where $\sigma _w^2$ is the variance of the white noise process $(w_t)$. It must be noted that if $\phi_1 = 1$ then the AR(1) becomes a random walk process (non-stationary) whereas if $|\phi_1| < 1$ the process is stationary.
+
+For these kind of models, the ACF and PACF can give meaningful insight into the order of the autoregressive model. The following plots show the ACF and PACF of an AR(1) with $\phi_1 = 0.8$ indicating that the ACF of an AR process decays exponentially while its PACF cuts off after the lag corresponding to the order of the autoregressive process.
+
+INSERT R CODE FOR ACF AND PACF OF SIMULATED AR(1)
+
+The condition for the stationarity of an AR(1) model have been partially discussed above. However, the condition of $|\phi_1| < 1$ is not the only one that guarantees that the AR(1) is stationary. Indeed, so-called explosive AR(1) models with $|\phi_1| > 1$ can be re-expressed, using the same kind of iterative argument above, as a stationary process. Nevertheless this iterative procedure makes use of future values of the series $(y_t)$ and therefore is not a so-called "causal" process. Generally speaking, by causal process we mean a process whose current values are only explained by its past values and not by its future ones.
+
+DISCUSS CAUSALITY MORE IN DEPTH ALSO OF AR(p)
+
+## Moving Average Models (MA(q))
+
+A moving average model can be interpreted in a similar way to an AR(p) model, except that in this case the time series is the result of a linear operation on the innovation process rather than on the time series itself. More specifically, an MA(q) model can be defined as follows
+$${y_t} = \theta_1 w_{t-1} + ... + \theta_q w_{t-q} + w_t$$.
+Following the same logic as for the AR(p) models and using the backshift operator as before, we can re-express these moving average processes as follows
+$$y_t = \theta(B)w_t$$
+where $\theta(B) = 1 + \theta_1B + ... + \theta_qB^q$.
+
+These processes are always stationary, no matter the values that $\theta_q$ takes. However, the MA(q) processes may not be identifiable through their autocovariance functions. By the latter we mean that different parameteres for a same order MA(q) model can deliver the exact same autocovariance function and it would therefore be impossible to retrieve the parameters of the model by only looking at the autocovariance function.
+
+DICUSS INVERTIBILITY
+
+## AutoRegressive Moving Average Models (ARMA(p,q))
+
+The objective behind this chapter is to talk about *A*uto*R*egressive *M*oving
+*A*verage (ARMA) models.
+
+## ARMA Definition
+
+## MA / AR Operators
+
+We define the *AR and MA polynomials*, which will be used often through this chapter.
+
+Define the *AR and MA polynomials* respectively as
+\begin{equation*}
+    \phi(z) = 1 - \phi_1 z - ... - \phi_p z^p, \mbox{ } \phi_p \neq 0,
+\end{equation*}
+and
+\begin{equation*}
+    \theta(z) = 1 + \theta_1 z + ... + \theta_p z^p, \mbox{ } \theta_p \neq 0,
+\end{equation*}
+where $z$ is a complex number.
+
+
+## Redundancy
+
+Parameter redundancy is a problem which makes an ARMA(p, q) model has more parameters than necessary. Especially when we want to estimate parameters of a proposed ARMA(p, q) model, if this model has parameter redundancy, then it is not *Identifiable* (i.e. parameters of this model are not unique). In addition, *Causality* and *Invertibility* can only be assessed for ARMA(p, q) models without parameter redundancy.
+
+Parameter redundancy can be checked by using *AR and MA polynomials*. A sufficient condition for parameter redundancy is *AR and MA polynomials* have common factors.
+
+**Example: Redundancy** Consider the following model
+
+$$\begin{equation}
+    X_t = 0.4X_{t-1} + 0.45X_{t-2} + W_t + W_{t-1} + 0.25W_{t-2},
+\end{equation}$$
+rewrite it with backshift operator,
+
+$$\begin{equation}
+    (1 - 0.4B - 0.45B^2)X_t = (1 + B + 0.25B^2)W_t,
+\end{equation}$$
+
+it looks like an ARMA(2, 2), but since
+
+$$\begin{equation}
+    (1 + 0.5B)(1 - 0.9B)X_t = (1 + 0.5B)^2W_t,
+\end{equation}$$
+
+the AR polynomials
+
+$$\begin{equation*}
+    \phi(z) = (1 + 0.5z)(1 - 0.9z),
+\end{equation*}$$
+
+and the MA polynomials
+
+$$\begin{equation*}
+    \theta(z) = (1 + 0.5z)^2,
+\end{equation*}$$
+have common factor, there is an issue of redundancy. By removing the common factor, we can obtain an actual ARMA(1, 1) model,
+
+$$\begin{equation}
+    (1 - 0.9B)X_t = (1 + 0.5B)W_t.
+\end{equation}$$
+
+
+## Causal + Invertible
+
+### Definitions
+(Def. 3.7, p.94). An ARMA(p, q) model is *causal*, if the time series $\{ X_t \}_{-\infty}^{\infty}$ can be written as a one-sided linear process:
+\begin{equation}
+    X_t = \sum_{j = 0}^{\infty} \psi_j W_{t-j} = \psi(B) W_t,
+(\#eq:causal)
+\end{equation}
+where $\psi(B) = \sum_{j = 0}^{\infty} \psi_j B^j$, and $\sum_{j=0}^{\infty}|\psi_j| < \infty$; we set $\psi_0 = 1$.
+
+(Def. 3.8, p.95). An ARMA(p, q) model is *invertible*, if the time series $\{ X_t \}_{-\infty}^{\infty}$ can be written as
+\begin{equation}
+    \pi(B)X_t = \sum_{j = 0}^{\infty} \pi_j X_{t-j} = W_t,
+(\#eq:invertible)
+\end{equation}
+where $\pi(B) = \sum_{j = 0}^{\infty} \pi_j B^j$, and $\sum_{j=0}^{\infty}|\pi_j| < \infty$; we set $\pi_0 = 1$.
+
+It might be difficult and not obvious to show the causality or the invertibility of an ARMA process (especially the higher order process) by using these definitions directly, thus the following properties are useful in practice. 
+
+**Property: Causality**
+If an ARMA(p, q) model is causal, then the coefficients of the one-sided linear process given in (\@ref(eq:causal)) can be obtained by
+\begin{equation*}
+    \psi(z) = \sum_{j=0}^{\infty} \psi_j z^j = \frac{\theta(z)}{\phi(z)}, \mbox{ } |z| \leq 1.
+\end{equation*}
+    
+Thus, we have the following results for causality
+
+- An ARMA(p, q) is causal iff $\phi(z) \neq 0$ for $|z| \leq 1$,
+- An ARMA(p, q) is causal only when the roots of $\phi(z) = 0$ lie outside the unit circle, i.e. $|z| > 1$.
+
+**Property: Invertibility**
+If an ARMA(p, q) model is invertible, then the coefficients of the one-sided linear process given in (\@ref(eq:invertible)) can be obtained by
+\begin{equation*}
+    \pi(z) = \sum_{j=0}^{\infty} \pi_j z^j = \frac{\phi(z)}{\theta(z)}, \mbox{ } |z| \leq 1.
+\end{equation*}
+    
+Thus, we have the following results for causality
+
+- An ARMA(p, q) is invertible iff $\theta(z) \neq 0$ for $|z| \leq 1$,
+- An ARMA(p, q) is invertible only when the roots of $\theta(z) = 0$ lie outside the unit circle, i.e. $|z| > 1$.
+
+
+**Example: Causal Conditons for an AR(2) Process** We already know that an AR(1) is causal with the simple condition $|\phi_1| < 1$. It could seem natural to believe that an AR(2) should be causal (implies stationary) with the conditon: $|\phi_i| < 1, \, i = 1,2$, however, this is not the case. Indeed, an AR(2) can be expressed as
+
+\[X_t = \phi_1 X_{t-1} + \phi_2 X_{t-2} + W_t = \phi_1 B X_t + \phi_2 B^2 X_t + W_t,\]
+
+corresponding to the following autoregressive operator:
+
+\[\phi(z) = 1 - \phi_1 z - \phi_2 z^2.\]
+
+Therefore, the process is causal when the roots of $\phi(z)$ lies outside of the unit circle. Letting $z_1$ and $z_2$ denote those roots, we impose the following constraints to ensure the causality of the model:
+
+\[\begin{aligned}
+|z_1| &> 1, \;\;\;\; \text{where} \;\; &z_1 = \frac{\phi_1 + \sqrt{\phi_1^2 + 4\phi_2}}{-2 \phi_2},\\
+|z_2| &> 1, \;\;\;\; \text{where} \;\; &z_2 = \frac{\phi_1 - \sqrt{\phi_1^2 + 4\phi_2}}{-2 \phi_2},
+\end{aligned}\]
+note that $z_1$ and $z_2$ can be complex values.
+
+Thus we can represent $\phi_1$ and $\phi_2$ by $z_1$ and $z_2$,
+\[\begin{aligned}
+\phi_1 = (z_1^{-1} + z_2^{-1}),\\
+\phi_2 = -(z_1 z_2)^{-1}.
+\end{aligned}\]
+
+Moreover we have the following equivalent condition for causality:
+
+$$\begin{cases}
+        |z_1| &> 1\\
+        |z_2| &> 1
+\end{cases}$$
+if and only if
+$$\begin{cases}
+        \phi_1 + \phi_2 &< 1\\
+        \phi_2 - \phi_1 &< 1\\
+        |\phi_2| &< 1
+\end{cases}$$
+
+We can show "if"
+
+$\phi_1 + \phi_2 = \frac{1}{z_1} + \frac{1}{z_2} - \frac{1}{z_1z_2} = \frac{1}{z_1}\left( 1 - \frac{1}{z_2} \right) + \frac{1}{z_2} < 1 - \frac{1}{z_2} + \frac{1}{z_2} = 1$, (since $\left( 1 - \frac{1}{z_2} \right) > 0$)
+
+$\phi_2 - \phi_1 = - \frac{1}{z_1z_2} - \frac{1}{z_1} - \frac{1}{z_2} = - \frac{1}{z_1}\left( \frac{1}{z_2} + 1 \right) - \frac{1}{z_2} < \frac{1}{z_2} + 1 - \frac{1}{z_2} = 1$, (since $\left( \frac{1}{z_2} + 1 \right) > 0$)
+
+$|\phi_2| = \frac{1}{|z_1||z_2|} < 1$
+
+We can also show "only if"
+
+Since $z_1 = \frac{\phi_1 + \sqrt{\phi_1^2 + 4\phi_2}}{-2 \phi_2}$ and $\phi_2-1 < \phi_1 < 1-\phi_2$, then $z_1^2 = \frac{\left(\phi_1 + \sqrt{\phi_1^2 + 4\phi_2}\right)^2}{4 \phi_2^2} < \frac{\left((1-\phi_2) + \sqrt{(1-\phi_2)^2 + 4\phi_2}\right)^2}{4 \phi_2^2} = \frac{4}{4 \phi_2^2} \leq 1$.
+
+Since $z_2 = \frac{\phi_1 - \sqrt{\phi_1^2 + 4\phi_2}}{-2 \phi_2}$ and $\phi_2-1 < \phi_1 < 1-\phi_2$, then $z_2^2 = \frac{\left(\phi_1 - \sqrt{\phi_1^2 + 4\phi_2}\right)^2}{4 \phi_2^2} < \frac{\left((\phi_2-1) + \sqrt{(\phi_2-1)^2 + 4\phi_2}\right)^2}{4 \phi_2^2} = \frac{4 \phi_2^2}{4 \phi_2^2} = 1$.
+
+```{r causalAR2, cache = TRUE}
+```
+
+Now we know the causal condition for an AR(2) model, the following example will show you how to convert a causal AR(2) into a linear process.
+
+**Example: Convert AR(2) into a linear process**
+Given an AR(2) model: $X_t = 1.3X_{t-1} - 0.4X_{t-2} + W_t$. 
+
+Step 1. The AR polynomial can be written as:
+
+\[\phi(z) = 1 - 1.3z + 0.4z^2 = (1 - 0.5z)(1 - 0.8z) ,\]
+
+it has roots $2 > 1$ and $1.25 > 1$. Thus we are able to covert it into linear process.
+
+Step 2. If an AR process $\phi(B)X_t = W_t$ is causal, we can write it as $X_t = \phi^{-1}(B)W_t$. This step is to inverse $\phi(B)$.
+
+\[\phi^{-1}(z) = \frac{1}{(1 - 0.5z)(1 - 0.8z)} = \frac{C_1}{(1 - 0.5z)} + \frac{C_2}{(1 - 0.8z)} = \frac{C_2(1 - 0.5z) + C_1(1 - 0.8z)}{(1 - 0.5z)(1 - 0.8z)} ,\]
+
+Since we can think of the above equation is valid for any z, we will solve the following equations to get $C_1$ and $C_2$,
+
+\[\begin{cases}
+        C_1 + C_2 &= 1\\
+        -0.5C_2 - 0.8C_1 &< 1
+\end{cases}
+\implies 
+\begin{cases}
+        C_1 &= -\frac{5}{3}\\
+        C_2 &= \frac{8}{3}
+\end{cases}.
+\]
+
+Thus,
+\[\phi^{-1}(z) = \frac{-5}{3(1 - 0.5z)} + \frac{8}{3(1 - 0.8z)} .\]
+
+Step 3. Using Geometric series: $a \sum_{k = 0}^{\infty}r^k = \frac{a}{1-r}, \mbox{ if } |r| < 1$.
+
+\[\begin{cases}
+      \frac{-5}{3(1 - 0.5z)} &= \frac{-5}{3} \sum_{j = 0}^{\infty}0.5^jz^j , \mbox{ if } |z| < 2\\
+      \frac{8}{3(1 - 0.8z)} &= \frac{8}{3} \sum_{j = 0}^{\infty}0.8^jz^j , \mbox{ if } |z| < 1.25
+\end{cases}.\]
+
+So,
+\[\phi^{-1}(z) = \sum_{j = 0}^{\infty} \left[ \frac{-5}{3} (0.5)^j + \frac{8}{3} (0.8)^j \right] z^j, \mbox{ if } |z| < 1.25 .\]
+
+Step 4.
+\[X_t = \phi^{-1}(B)W_t = \sum_{j = 0}^{\infty} \left[ \frac{-5}{3} (0.5)^j + \frac{8}{3} (0.8)^j \right] B^j W_t = \sum_{j = 0}^{\infty} \left[ \frac{-5}{3} (0.5)^j + \frac{8}{3} (0.8)^j \right] W_{t-j} .
+\]
+
+**Example: ACF of AR(2)**
+We use the same AR(2) model as previous example: $X_t = 1.3X_{t-1} - 0.4X_{t-2} + W_t$. 
+
+Step 1. Find the homogeneous difference equation with repsect to the ACF $\rho(h)$.
+
+As it is shown in previous example, our model is causal. Follow the precedure of (Ex. 3.9, p.99), we have,
+\[\rho(h) - 1.3\rho(h-1) + 0.4\rho(h-2) = 0, \mbox{ } h = 1,2,...\]
+and the initial conditions are $\rho(0) = 1$ and $\rho(-1) = \frac{13}{14}$.
+
+Step 2. Solve the roots of the AR polynomial.
+
+The AR polynomial can be written as:
+\[\phi(z) = 1 - 1.3z + 0.4z^2 = (1 - 0.5z)(1 - 0.8z) ,\]
+
+it has roots $z_1 = 2 > 1$ and $z_2 = 1.25 > 1$. Since $z_1$ and $z_2$ are real and distinct, the solution would take the form
+\[\rho(h) = c_1z_1^{-h} + c_2z_2^{-h} .\]
+
+Step 3. Solve $c_1$ and $c_2$ based on two initial conditions.
+\[\begin{cases}
+      \rho(0) = c_1 + c_2 = 1\\
+      \rho(-1) = 2c_1 + 1.25c_2 = \frac{13}{14}
+\end{cases},\]
+then we have $c_1 = -\frac{3}{7}$ and $c_2 = \frac{10}{7}$. Then the ACF is
+\[\rho(h) = -\frac{3}{7}2^{-h} + \frac{10}{7}\left(\frac{5}{4}\right)^{-h} .\]
+
+## Estimation of Parameters
+
+Consider a time series given by $x_t \sim ARMA(p,q)$. This gives us with a paramter space $\Omega$ that looks like so: 
+
+\[\vec \varphi  = \left[ {\begin{array}{*{20}{c}}
+  {{\phi _1}} \\ 
+   \vdots  \\ 
+  {{\phi _p}} \\ 
+  {{\theta _1}} \\ 
+   \vdots  \\ 
+  {{\theta _q}} \\ 
+  {{\sigma ^2}} 
+\end{array}} \right]\]
+
+In order to estimate this parameter space, we must assume the following three conditions:
+
+1. The process is casual
+1. The process is invertible
+1. The process has Gaussian innovations.
+
+**Innovations** are a time series equivalent to residuals. That is, an innovation is given by ${x_t} - \hat x_t^{t - 1}$, where $\hat x_t^{t - 1}$ is the prediction at time $t$ given $t-1$ observations and ${x_t}$ is the true value observed at time $t$.
+
+There are two main ways of performing such an estimation of the parameter space.
+
+1. Maximum Likelihood / Least Squares Estimation [MLE / LSE]
+1. Method of Moments (MoM)
+
+To begin, we'll explore using the MLE to perform the estimation.
+
+### Maximum Likelihood Estimation
+
+**Definition** 
+Consider $X_n = (X_1, X_2, \ldots, X_n)$ with the joint density $f(X_1, X_2, \ldots, X_n ; \theta)$ where $\theta \in \Theta$. Given $X_1 = x_1, X_2 = x_2, \ldots, X_n = x_n$ is observed, we have the likelihood function of $\theta$ as
+
+$$L(\theta) = L(\theta|x_1,x_2, \ldots, x_n) = f(x_1,x_2, \ldots, x_n | \theta)$$
+
+If the $X_i$ are iid, then the likelihood simplifies to: 
+
+\[L(\theta) = \prod\limits_{i = 1}^n {f\left( {{x_i}|\theta } \right)} \]
+
+However, that's a bit painful to maximize with calculus. So, we opt to use the log of the function since derivatives are easier and the logarithmic function is always increasing. Thus, we traditionally use:
+
+\[l\left( \theta  \right) = \log \left( {L\left( \theta  \right)} \right) = \sum\limits_{i = 1}^n {\log \left( {f\left( {{x_i}|\theta } \right)} \right)} \]
+
+From maximizes the likelihood function $L(\theta)$, we get the **maximum likelihood estimate (MLE)** of $\theta$. So, we end up with a value that makes the observed data the "most probable."
+
+Note: The likelihood function is **not** a probability density function.
+
+#### $AR(1)$ with mean $\mu$
+
+Consider an $AR(1)$ process given as $y_t = \phi y_{t-1} + w_t$, ${w_t}\mathop  \sim \limits^{iid} N\left( {0,{\sigma ^2}} \right)$, with $E\left[ {{y_t}} \right] = 0$, $\left| \phi  \right| < 1$.
+
+Let $x_t = y_t + \mu$, so that $E\left[ {{x_t}} \right] = \mu$.
+
+Then, ${x_t} - \mu  = {y_t}$. Substituting in for $y_t$, we get:
+
+\[\begin{aligned}
+y_t &= \phi y_{t-1} + w_t \\
+\underbrace {\left( {{x_t} - \mu } \right)}_{ = {y_t}} &= \phi \underbrace {\left( {{x_{t - 1}} - \mu } \right)}_{ = {y_t}} + {w_t} \\
+{x_t} &= \mu  + \phi \left( {{x_{t - 1}} - \mu } \right) + {w_t}
+\end{aligned}\]
+
+In this case, $x_t$ is an $AR(1)$ process with mean $\mu$. 
+
+This means that we have:
+
+1. $E\left[ {{x_t}} \right] = \mu$
+1. \[\begin{aligned}
+  Var\left( {{x_t}} \right) &= Var\left( {{x_t} - \mu } \right) \hfill \\
+   &= Var\left( {{y_t}} \right) \hfill \\
+   &= Var\left( {\sum\limits_{j = 0}^\infty  {{\phi ^j}{w_{t - j}}} } \right) \hfill \\
+   &= \sum\limits_{j = 0}^\infty  {{\phi ^{2j}}Var\left( {{w_{t - j}}} \right)}  \hfill \\
+   &= {\sigma ^2}\sum\limits_{j = 0}^\infty  {{\phi ^{2j}}}  \hfill \\
+   &= \frac{{{\sigma ^2}}}{{1 - {\phi ^2}}},{\text{  since }}\left| \phi  \right| < 1{\text{ and }}\sum\limits_{k = 0}^n {a{r^k}}  = \frac{a}{{1 - r}} \hfill \\ 
+\end{aligned} \]
+
+So, $x_t \sim N\left({ \mu, \frac{{{\sigma ^2}}}{{1 - {\phi ^2}}} }\right)$.
+
+Note that the distribution of $x_t$ is normal and, thus, the density function of $x_t$ is given by:
+\[\begin{aligned}
+  f\left( {{x_t}} \right) &= \sqrt {\frac{{1 - {\phi ^2}}}{{2\pi {\sigma ^2}}}} \exp \left( { - \frac{1}{2} \cdot \frac{{1 - {\phi ^2}}}{{{\sigma ^2}}} \cdot {{\left( {{x_t} - \mu } \right)}^2}} \right) \hfill \\
+   &= {\left( {2\pi } \right)^{ - \frac{1}{2}}}{\left( {{\sigma ^2}} \right)^{ - \frac{1}{2}}}{\left( {1 - {\phi ^2}} \right)^{\frac{1}{2}}}\exp \left( { - \frac{1}{2} \cdot \frac{{1 - {\phi ^2}}}{{{\sigma ^2}}} \cdot {{\left( {{x_t} - \mu } \right)}^2}} \right) \textrm{           [1]}  \\ 
+\end{aligned} \]
+
+We'll call the last equation [1].
+
+#### Conditioning time $x_t | x_{t-1}$
+
+Now, consider $x_t | x_{t-1}$ for $t > 1$.
+
+The mean is given by:
+
+\[\begin{aligned}
+  E\left[ {{x_t}|{x_{t - 1}}} \right] &= E\left[ {\mu  + \phi \left( {{x_{t - 1}} - \mu } \right) + {w_t}|{x_{t - 1}}} \right] \nonumber \\
+   &= \mu  + \phi \left( {{x_{t - 1}} - \mu } \right)
+\end{aligned} \]
+
+This is the case since $E\left[ {{x_{t - 1}}|{x_{t - 1}}} \right] = {x_{t - 1}}$ and $E\left[ {{w_t}|{x_{t - 1}}} \right] = 0$
+
+Now, the variance is:
+
+\[\begin{aligned}
+  Var\left( {{x_t}|{x_{t - 1}}} \right) &= Var\left( {\mu  + \phi \left( {{x_{t - 1}} - \mu } \right) + {w_t}|{x_{t - 1}}} \right) \hfill \\
+   &= \underbrace {Var\left( {\mu  + \phi \left( {{x_{t - 1}} - \mu } \right)|{x_{t - 1}}} \right)}_{ = 0} + Var\left( {{w_t}|{x_{t - 1}}} \right) \hfill \\
+   &= Var\left( {{w_t}} \right) \hfill \\
+   &= {\sigma ^2} \hfill \\ 
+\end{aligned} \]
+
+Thus, we have: ${x_t}\sim N\left( {\mu  + \phi \left( {{x_{t - 1}} - \mu } \right),{\sigma ^2}} \right)$.
+
+Again, note that the distribution of $x_t$ is normal and, thus, the density function of $x_t$ is given by:
+\[\begin{aligned}
+  f\left( {{x_t}} \right) &= \sqrt {\frac{1}{{2\pi {\sigma ^2}}}} \exp \left( { - \frac{1}{{2{\sigma ^2}}} \cdot {{\left[ {\left( {{x_t} - \mu } \right) - \phi \left( {{x_{t - 1}} - \mu } \right)} \right]}^2}} \right) \hfill \\
+   &= {\left( {2\pi } \right)^{ - \frac{1}{2}}}{\left( {{\sigma ^2}} \right)^{ - \frac{1}{2}}}\exp \left( { - \frac{1}{{2{\sigma ^2}}} \cdot {{\left[ {\left( {{x_t} - \mu } \right) - \phi \left( {{x_{t - 1}} - \mu } \right)} \right]}^2}} \right) \textrm{           [2]} \\ 
+\end{aligned} \]
+
+And for this equation we'll call it [2].
+
+### MLE for $\sigma ^2$ on $AR(1)$ with mean $\mu$
+
+*Whew*, with all of the above said, we're now ready to obtain an MLE estimate on an $AR(1)$.
+
+Let $\vec{\theta}  = \left[ {\begin{array}{*{20}{c}}
+  \mu  \\ 
+  \phi  \\ 
+  {{\sigma ^2}} 
+\end{array}} \right]$, then the likelihood of $\vec{\theta}$ is given by $x_1, \ldots , x_T$ is:
+
+\[\begin{aligned}
+  L\left( {\vec \theta |{x_1}, \ldots ,{x_T}} \right) &= f\left( {{x_1}, \ldots ,{x_T}|\vec \theta } \right) \hfill \\
+   &= f\left( {{x_1}} \right) \cdot \prod\limits_{t = 2}^T {f\left( {{x_t}|{x_{t - 1}}} \right)}
+\end{aligned} \]
+
+The last equality is the result of us using a lag 1 of "memory." Also, note that $x_t | x_{t-1}$ must have $t > 1 \in \mathbb{N}$. Furthermore, we have dropped the parameters in the densities, e.g. $\vec{\theta}$ in $f(\cdot)$, to ease notation. 
+
+Using equations [1] and [2], we have:
+
+\[L\left( {\vec \theta |{x_1}, \ldots ,{x_T}} \right) = {\left( {2\pi } \right)^{ - \frac{T}{2}}}{\left( {{\sigma ^2}} \right)^{ - \frac{T}{2}}}{\left( {1 - {\phi ^2}} \right)^{\frac{1}{2}}}\exp \left( { - \frac{1}{{2{\sigma ^2}}}\left[ {\left( {1 - {\phi ^2}} \right){{\left( {{x_t} - \mu } \right)}^2} + \sum\limits_{t = 2}^T {{{\left[ {\left( {{x_t} - \mu } \right) - \phi \left( {{x_{t - 1}} - \mu } \right)} \right]}^2}} } \right]} \right)\]
+
+For convenience, we'll define:
+
+\[S\left( {\mu ,\phi } \right) = \left( {1 - {\phi ^2}} \right){\left( {{x_t} - \mu } \right)^2} + \sum\limits_{t = 2}^T {{{\left[ {\left( {{x_t} - \mu } \right) - \phi \left( {{x_{t - 1}} - \mu } \right)} \right]}^2}} \]
+
+Fun fact, this is called the "**unconditional** sum of squares."
+
+Thus, we will operate on:
+
+\[L\left( {\vec \theta |{x_1}, \ldots ,{x_T}} \right) = {\left( {2\pi } \right)^{ - \frac{T}{2}}}{\left( {{\sigma ^2}} \right)^{ - \frac{T}{2}}}{\left( {1 - {\phi ^2}} \right)^{\frac{1}{2}}}\exp \left( { - \frac{1}{{2{\sigma ^2}}}S\left( {\mu ,\phi } \right)} \right)\]
+
+Taking the log of this yields:
+
+\[\begin{aligned}
+  l\left( {\vec \theta |{x_1}, \ldots ,{x_T}} \right) &= \log \left( {L\left( {\vec \theta |{x_1}, \ldots ,{x_T}} \right)} \right) \hfill \\
+   &=  - \frac{T}{2}\log \left( {2\pi } \right) - \frac{T}{2}\log \left( {{\sigma ^2}} \right) + \frac{1}{2}\left( {1 - {\phi ^2}} \right) - \frac{1}{{2{\sigma ^2}}}S\left( {\mu ,\phi } \right) \hfill \\ 
+\end{aligned} \]
+
+Now, taking the derivative and solving for the maximized point gives:
+
+\[\begin{aligned}
+  \frac{\partial }{{\partial {\sigma ^2}}}l\left( {\vec \theta |{x_1}, \ldots ,{x_T}} \right) &=  - \frac{T}{{2{\sigma ^2}}} + \frac{1}{{2{\sigma ^4}}}S\left( {\mu ,\phi } \right) \hfill \\
+  0 &=  - \frac{T}{{2{\sigma ^2}}} + \frac{1}{{2{\sigma ^4}}}S\left( {\mu ,\phi } \right) \hfill \\
+  \frac{T}{{2{\sigma ^2}}} &= \frac{1}{{2{\sigma ^4}}}S\left( {\mu ,\phi } \right) \hfill \\
+  {{ \sigma }^2} &= \frac{1}{T}S\left( {\mu ,\phi } \right) \hfill \\ 
+\end{aligned} \]
+
+Thus, the MLE for ${\hat \sigma }^2 = \frac{1}{T}S\left( {\hat \mu ,\hat \phi } \right)$, where $\hat \mu$ and $\hat \phi$ are the MLEs for $\mu , \phi$ that are obtained numerically via either *Newton Raphson* or a *Scoring Algorithm*. (More details in a numerical recipe book.)
+
+#### Conditional MLE on $AR(1)$ with mean $\mu$
+
+A common strategy to reduce the dependency on numerical recipes is to simplify $l\left( {\vec \theta |{x_1}, \ldots ,{x_T}} \right)$ by using ${l^*}\left( {\vec \theta |{x_1}, \ldots ,{x_T}} \right)$:
+
+\[\begin{aligned}
+  {l^*}\left( {\vec \theta |{x_1}, \ldots ,{x_T}} \right) &= \prod\limits_{t = 2}^T {\log \left( {f\left( {{x_t}|{x_{t - 1}}} \right)} \right)}  \hfill \\
+   &= \prod\limits_{t = 2}^T {\log \left( {{{\left( {2\pi } \right)}^{ - \frac{1}{2}}}{{\left( {{\sigma ^2}} \right)}^{ - \frac{1}{2}}}\exp \left( { - \frac{1}{{2{\sigma ^2}}} \cdot {{\left[ {\left( {{x_t} - \mu } \right) - \phi \left( {{x_{t - 1}} - \mu } \right)} \right]}^2}} \right)} \right)}  \hfill \\
+   &=  - \frac{{\left( {T - 1} \right)}}{2}\log \left( {2\pi } \right) - \frac{{\left( {T - 1} \right)}}{2}\log \left( {{\sigma ^2}} \right) - \frac{1}{{2{\sigma ^2}}}\sum\limits_{t = 2}^T {{{\left[ {\left( {{x_t} - \mu } \right) - \phi \left( {{x_{t - 1}} - \mu } \right)} \right]}^2}}  \hfill \\ 
+\end{aligned} \]
+
+Again, for convenience, we'll define:
+
+\[{S_c}\left( {\mu ,\phi } \right) = \sum\limits_{t = 2}^T {{{\left[ {\left( {{x_t} - \mu } \right) - \phi \left( {{x_{t - 1}} - \mu } \right)} \right]}^2}} \]
+
+Fun fact, this is called the "**conditional** sum of squares."
+
+So, we will use:
+
+\[{l^*}\left( {\vec \theta |{x_1}, \ldots ,{x_T}} \right) =  - \frac{{\left( {T - 1} \right)}}{2}\log \left( {2\pi } \right) - \frac{{\left( {T - 1} \right)}}{2}\log \left( {{\sigma ^2}} \right) - \frac{1}{{2{\sigma ^2}}}{S_c}\left( {\mu ,\phi } \right)\]
+
+Taking the derivative with respect to $\mu$ gives:
+
+\[\begin{aligned}
+  \frac{\partial }{{\partial \mu }}{l^*}\left( {\vec \theta |{x_1}, \ldots ,{x_T}} \right) &=  - \frac{1}{{2{\sigma ^2}}}\sum\limits_{t = 2}^T {2\left[ {\left( {{x_t} - \mu } \right) - \phi \left( {{x_{t - 1}} - \mu } \right)} \right]\left( {\phi  - 1} \right)}  \hfill \\
+   &= \frac{{1 - \phi }}{{{\sigma ^2}}}\sum\limits_{t = 2}^T {\left[ {\left( {{x_t} - \mu } \right) - \phi \left( {{x_{t - 1}} - \mu } \right)} \right]}  \hfill \\
+   &= \frac{{1 - \phi }}{{{\sigma ^2}}}\sum\limits_{t = 2}^T {\left( {{x_t} - \phi {x_{t - 1}} - \mu \left( {1 - \phi } \right)} \right)}  \hfill \\
+   &= -\frac{{{{\left( {1 - \phi } \right)}^2}}}{{{\sigma ^2}}}\mu \left( {T - 1} \right) + \frac{{\left( {1 - \phi } \right)}}{{{\sigma ^2}}}\sum\limits_{t = 2}^T {\left( {{x_t} - \phi {x_{t - 1}}} \right)}  \hfill \\ 
+\end{aligned} \]
+
+Solving for $\mu^{*}$ gives:
+
+\[\begin{aligned}
+  0 &= \frac{\partial }{{\partial \mu }}{l^*}\left( {\vec \theta |{x_1}, \ldots ,{x_t}} \right) \hfill \\
+  0 &=  - \frac{{{{\left( {1 - \phi } \right)}^2}}}{{{\sigma ^2}}}{\mu ^*}\left( {T - 1} \right) + \frac{{\left( {1 - {\phi ^*}} \right)}}{{\sigma _*^2}}\sum\limits_{t = 2}^T {\left( {{x_t} - {\phi ^*}{x_{t - 1}}} \right)}  \hfill \\
+  \frac{{{{\left( {1 - {\phi ^*}} \right)}^2}}}{{\sigma _*^2}}{\mu ^*}\left( {T - 1} \right) &= \frac{{\left( {1 - {\phi ^*}} \right)}}{{\sigma _*^2}}\sum\limits_{t = 2}^T {\left( {{x_t} - {\phi ^*}{x_{t - 1}}} \right)}  \hfill \\
+  {\mu ^*}\left( {1 - {\phi ^*}} \right)\left( {T - 1} \right) &= \sum\limits_{t = 2}^T {\left( {{x_t} - {\phi ^*}{x_{t - 1}}} \right)}  \hfill \\
+  {\mu ^*} &= \frac{1}{{\left( {1 - {\phi ^*}} \right)\left( {T - 1} \right)}}\sum\limits_{t = 2}^T {\left( {{x_t} - {\phi ^*}{x_{t - 1}}} \right)}  \hfill \\
+  {\mu ^*} &= \frac{1}{{1 - {\phi ^*}}}\left[ {\underbrace {\frac{1}{{T - 1}}\sum\limits_{t = 2}^T {{x_t}} }_{ = {{\bar x}_{\left( 2 \right)}}} - \underbrace {\frac{{{\phi ^*}}}{{T - 1}}\sum\limits_{t = 2}^T {{x_{t - 1}}} }_{ = {{\bar x}_{\left( 1 \right)}}}} \right] \hfill \\
+  {{\hat \mu }^*} &= \frac{1}{{1 - {\phi ^*}}}\left( {{{\bar x}_{\left( 2 \right)}} - \phi {{\bar x}_{\left( 1 \right)}}} \right) \hfill \\ 
+\end{aligned} \]
+
+When $T$ is large, we have the following:
+
+\[\begin{aligned}
+  {{\bar x}_{\left( 1 \right)}} \approx \bar x &,{{\bar x}_{\left( 2 \right)}} \approx \bar x \hfill \\
+   \hfill \\
+  {{\hat \mu }^*} &= \frac{1}{{1 - {\phi ^*}}}\left( {\bar x - {\phi ^*}\bar x} \right) \hfill \\
+   &= \frac{{\bar x}}{{1 - {\phi ^*}}}\left( {1 - {\phi ^*}} \right) \hfill \\
+   &= \bar x \hfill \\ 
+\end{aligned} \]
+
+
+Taking the derivative with respect to $\sigma^2$ and solving for $\sigma^2$ gives:
+\[\begin{aligned}
+  \frac{\partial }{{\partial {\sigma ^2}}}{l^*}\left( {\vec \theta |{x_1}, \ldots ,{x_T}} \right) &=  - \frac{{\left( {T - 1} \right)}}{{2\sigma _*^2}} + \frac{1}{{2\sigma _*^4}}{S_c}\left( {\mu ,\phi } \right) \hfill \\
+  0 &=  - \frac{{\left( {T - 1} \right)}}{{2\sigma _*^2}} + \frac{1}{{2\sigma _*^4}}{S_c}\left( {\mu ,\phi } \right) \hfill \\
+  \frac{{\left( {T - 1} \right)}}{{2\sigma _*^2}} &= \frac{1}{{2\sigma _*^4}}{S_c}\left( {\mu ,\phi } \right) \hfill \\
+  \hat \sigma _*^2 &= \frac{1}{{T - 1}}{S_c}\left( {{{\hat \mu }^*},{{\hat \phi }^*}} \right) \hfill \\ 
+\end{aligned} \]
+
+
+Taking the derivative with respect to $\phi$ gives:
+\[\begin{aligned}
+  \frac{\partial }{{\partial \phi }}{l^*}\left( {\vec \theta |{x_1}, \ldots ,{x_T}} \right) &=  - \frac{1}{{2{\sigma ^2}}}\sum\limits_{t = 2}^T { - 2\left[ {\left( {{x_t} - \mu } \right) - \phi \left( {{x_{t - 1}} - \mu } \right)} \right]\left( {{x_{t - 1}} - \mu } \right)}  \hfill \\
+   &= \frac{1}{{{\sigma ^2}}}\sum\limits_{t = 2}^T {\left[ {{x_t} - \phi {x_{t - 1}} - \mu \left( {1 - \phi } \right)} \right]\left( {{x_{t - 1}} - \mu } \right)}  \hfill \\
+   &= \frac{1}{{{\sigma ^2}}}\sum\limits_{t = 2}^T {\left[ {{x_t}{x_{t - 1}} - \phi x_{t - 1}^2 - \mu \left( {1 - \phi } \right){x_{t - 1}} - \mu {x_t} + \mu \phi {x_{t - 1}} + {\mu ^2}\left( {1 - \phi } \right)} \right]}  \hfill \\
+   &= \frac{1}{{{\sigma ^2}}}\left[ \begin{gathered}
+  \sum\limits_{t = 2}^T {{x_t}{x_{t - 1}}}  - \phi \sum\limits_{t = 2}^T {x_{t - 1}^2}  - \mu \left( {1 - \phi } \right)\left( {T - 1} \right){{\bar x}_{\left( 1 \right)}} \hfill \\
+   - \mu \left( {T - 1} \right){{\bar x}_{\left( 2 \right)}} + \phi \mu \left( {T - 1} \right){{\bar x}_{\left( 1 \right)}} + {\mu ^2}\left( {1 - \phi } \right)\left( {T - 1} \right) \hfill \\ 
+\end{gathered}  \right] 
+\end{aligned}\]
+
+Solving for $\phi$ gives:
+\[\begin{aligned}
+  0 &= \frac{\partial }{{\partial \phi }}{l^*}\left( {\vec \theta |{x_1}, \ldots ,{x_T}} \right) \hfill \\
+  0 &= \sum\limits_{t = 2}^T {{x_t}{x_{t - 1}}}  - {{\hat \phi }^*}\sum\limits_{t = 2}^T {x_{t - 1}^2}  - \left( {{{\bar x}_{\left( 2 \right)}} - {{\hat \phi }^*}{{\bar x}_{\left( 1 \right)}}} \right)\left( {T - 1} \right){{\bar x}_{\left( 1 \right)}} - \frac{{{{\bar x}_{\left( 2 \right)}} - {{\hat \phi }^*}{{\bar x}_{\left( 1 \right)}}}}{{1 - {{\hat \phi }^*}}}\left( {T - 1} \right){{\bar x}_{\left( 2 \right)}} \\
+  &+ {{\hat \phi }^*}\frac{{{{\bar x}_{\left( 2 \right)}} - {{\hat \phi }^*}{{\bar x}_{\left( 1 \right)}}}}{{1 - {{\hat \phi }^*}}}\left( {T - 1} \right){{\bar x}_{\left( 1 \right)}} + {\left( {\frac{{{{\bar x}_{\left( 2 \right)}} - {{\hat \phi }^*}{{\bar x}_{\left( 1 \right)}}}}{{1 - {{\hat \phi }^*}}}} \right)^2}\left( {1 - {{\hat \phi }^*}} \right)\left( {T - 1} \right)  \hfill \\
+   &\vdots  \hfill \\
+  &{\text{Magic}} \hfill \\
+   &\vdots  \hfill \\
+  {{\hat \phi }^*} &= \frac{{\sum\limits_{t = 2}^T {\left( {{x_t} - {{\bar x}_{\left( 2 \right)}}} \right)\left( {{x_{t-1}} - {{\bar x}_{\left( 1 \right)}}} \right)} }}{{\sum\limits_{t = 2}^T {{{\left( {{x_{t - 1}} - {{\bar x}_{\left( 1 \right)}}} \right)}^2}} }} \hfill \\ 
+\end{aligned} \]
+
+When $T$ is large, we have: 
+
+\[\begin{aligned}
+  \sum\limits_{t = 2}^T {\left( {{x_t} - {{\bar x}_{\left( 2 \right)}}} \right)\left( {{x_t} - {{\bar x}_{\left( 1 \right)}}} \right)}  &\approx \sum\limits_{t = 2}^T {\left( {{x_t} - \bar x} \right)\left( {{x_{t - 1}} - \bar x} \right)}  \hfill \\
+  \sum\limits_{t = 2}^T {{{\left( {{x_{t - 1}} - {{\bar x}_{\left( 1 \right)}}} \right)}^2}}  &\approx \sum\limits_{t = 1}^T {{{\left( {{x_t} - \bar x} \right)}^2}}  \hfill \\
+   \hfill \\
+  {{\hat \phi }^*} &= \frac{{\sum\limits_{t = 2}^T {\left( {{x_t} - {{\bar x}_{\left( 2 \right)}}} \right)\left( {{x_t} - {{\bar x}_{\left( 1 \right)}}} \right)} }}{{\sum\limits_{t = 2}^T {{{\left( {{x_{t - 1}} - {{\bar x}_{\left( 1 \right)}}} \right)}^2}} }} \approx \frac{{\sum\limits_{t = 2}^T {\left( {{x_t} - \bar x} \right)\left( {{x_{t - 1}} - \bar x} \right)} }}{{\sum\limits_{t = 1}^T {{{\left( {{x_t} - \bar x} \right)}^2}} }} = \hat \rho \left( 1 \right) \hfill \\ 
+\end{aligned} \]
+
+
+## Method of Moments
+
+The goal behind the estimation with Method of Moments is to match the theoretical moment (e.g. $E\left[ {x_t^k} \right]$) with the sample moment (e.g $\frac{1}{n}\sum\limits_{i = 1}^n {x_i^k}$), where $k$ denotes the moment.
+
+This method often leads to suboptimal estimates for general ARMA models. However, it is quite optimal for $AR(p)$.
+
+### Method of Moments - AR(p)
+
+Consider an $AR(p)$ process represented by: 
+\[{x_t} = {\phi _1}{x_{t - 1}} +  \cdots  + {\phi _p}{x_{t - p}} + {w_t}\] 
+where $w_t \sim N(0,\sigma^2)$ 
+
+To begin, we find the Covariance of the process when $h > 0$:
+\[\begin{aligned}
+  Cov\left( {{x_{t + h}},{x_t}} \right) &\mathop = \limits^{\left( {h > 0} \right)} Cov\left( {{\phi _1}{x_{t + h - 1}} +  \cdots  + {\phi _p}{x_{t + h - p}} + {w_{t + h}},{x_t}} \right) \hfill \\
+   &= {\phi _1}Cov\left( {{x_{t + h - 1}},{x_t}} \right) +  \cdots  + {\phi _p}Cov\left( {{x_{t + h - p}},{x_t}} \right) + Cov\left( {{w_{t + h}},{x_t}} \right) \hfill \\
+   &= {\phi _1}\gamma \left( {h - 1} \right) +  \cdots  + {\phi _p}\gamma \left( {h - p} \right) \hfill \\ 
+\end{aligned} \]
+
+Now, we turn our attention to the variance of the process:
+
+\[\begin{aligned}
+  Var\left( {{w_t}} \right) &= Cov\left( {{w_t},{w_t}} \right) \hfill \\
+   &= Cov\left( {{w_t},{w_t}} \right) + \underbrace {Cov\left( {{\phi _1}{x_{t - 1}},{w_t}} \right)}_{ = 0} +  \cdots  + \underbrace {Cov\left( {{\phi _p}{x_{t - p}},{w_t}} \right)}_{ = 0} \hfill \\
+   &= Cov\left( {\underbrace {{\phi _1}{x_{t - 1}} +  \cdots  + {\phi _p}{x_p} + {w_t}}_{ = {x_t}},{w_t}} \right) \hfill \\
+   &= Cov\left( {{x_t},{w_t}} \right) \hfill \\
+   &= Cov\left( {{x_t},{x_t} - {\phi _1}{x_{t - 1}} -  \cdots  - {\phi _p}{x_p}} \right) \hfill \\
+   &= Cov\left( {{x_t},{x_t}} \right) - {\phi _1}Cov\left( {{x_t},{x_{t - 1}}} \right) -  \cdots  - {\phi _p}Cov\left( {{x_t},{x_{t - p}}} \right) \hfill \\
+   &= \gamma \left( 0 \right) - {\phi _1}\gamma \left( 1 \right) -  \cdots  - {\phi _p}\gamma \left( p \right) \hfill \\ 
+\end{aligned} \]
+
+Together, these equations are known as the **Yule-Walker** equations.
+
+### Yule-Walker
+
+**Definition** 
+
+Equation form:
+
+\[\begin{aligned}
+  \gamma \left( h \right) &= {\phi _1}\gamma \left( {h - 1} \right) -  \cdots  - {\phi _p}\gamma \left( {h - p} \right) \hfill \\
+  {\sigma ^2} &= \gamma \left( 0 \right) - {\phi _1}\gamma \left( 1 \right) -  \cdots  - {\phi _p}\gamma \left( p \right) \hfill \\ 
+  h & = 1, \ldots, p
+\end{aligned} \]
+
+Matrix form:
+\[\begin{aligned}
+  \Gamma \vec \phi  &= \vec \gamma  \hfill \\
+  {\sigma ^2} &= \gamma \left( 0 \right) - {{\vec \phi }^T}\vec \gamma  \hfill \\
+   \hfill \\
+  \vec \phi  &= \left[ {\begin{array}{*{20}{c}}
+  {{\phi _1}} \\ 
+   \vdots  \\ 
+  {{\phi _p}} 
+\end{array}} \right]_{p \times 1},\vec \gamma = \left[ {\begin{array}{*{20}{c}}
+  {\gamma \left( 1 \right)} \\ 
+   \vdots  \\ 
+  {\gamma \left( p \right)} 
+\end{array}} \right]_{p \times 1},\Gamma  = \left\{ {\gamma \left( {k - j} \right)} \right\}_{j,k = 1}^p  \\ 
+\end{aligned} \]
+
+More aptly, the structure of $\Gamma$ looks like the following: 
+$$\Gamma = {\left[ {\begin{array}{*{20}{c}}
+  {\gamma \left( 0 \right)}&{\gamma \left( { - 1} \right)}&{\gamma \left( { - 2} \right)}& \cdots &{\gamma \left( {1 - p} \right)} \\ 
+  {\gamma \left( 1 \right)}&{\gamma \left( 0 \right)}&{\gamma \left( { - 1} \right)}& \cdots &{\gamma \left( {2 - p} \right)} \\ 
+  {\gamma \left( 2 \right)}&{\gamma \left( 1 \right)}&{\gamma \left( 0 \right)}& \cdots &{\gamma \left( {3 - p} \right)} \\ 
+   \vdots & \vdots & \vdots & \ddots & \vdots  \\ 
+  {\gamma \left( {p - 1} \right)}&{\gamma \left( {p - 2} \right)}&{\gamma \left( {p - 3} \right)}& \cdots &{\gamma \left( 0 \right)} 
+\end{array}} \right]_{p \times p}}$$ 
+
+Note, that we are able to use the above equations to effectively estimate $\vec \phi$ and $\sigma ^2$.
+
+\[\left[ \begin{aligned}
+  \hat{\vec{\phi}}  &= {{\hat \Gamma }^{ - 1}}\hat{\vec{\gamma}}  \hfill \\
+  {{\hat \sigma }^2} &= \hat \gamma \left( 0 \right) - {{\hat{\vec{\gamma}}}^T}{{\hat \Gamma }^{ - 1}}\hat{\vec{\gamma}} \hfill \\ 
+\end{aligned}  \right. \to {\text{Yule - Walker Estimates}}\]
+
+For the second equation, we are effectively substituting in the first equation for $\hat{\vec{\phi}}$, hence the quadratic form ${{\hat{\vec{\gamma}}}^T}{{\hat \Gamma }^{ - 1}}\hat{\vec{\gamma}}$.
+
+With this being said, there are a few nice asymptotic properties that we obtain for an $AR(p)$.
+
+1. $\sqrt T \left( {\hat{\vec{\phi}}  - \vec \phi } \right)\mathop  \to \limits_{t \to \infty }^L N\left( {\vec 0,{\sigma ^2}{\Gamma ^{ - 1}}} \right)$
+1. ${\hat \sigma ^2}\mathop  \to \limits^p {\sigma ^2}$
+
+Yule-Walker estimates are optimal in the sense that they have the smallest asymptotic variance i.e. \[Var\left( {\sqrt{T} \hat{\vec{\phi}} } \right) = {\sigma ^2}{\Gamma ^{ - 1}}\] **However, they are not necessarily optimal with small sample sizes.**
+
+Conceptually, the reason for this optimality result is a consequence from the linear dependence between moments and variables. 
+
+This is not true for MA or ARMA, which are both nonlinear and suboptimal.
+
+### Estimates
+
+Consider $x_t$ as an $MA(1)$ process: ${x_t} = \theta {w_{t - 1}} + {w_t},{w_t}\mathop  \sim \limits^{i.i.d} N\left( {0,{\sigma ^2}} \right)$
+
+Finding the covariance when $h = 1$ gives:
+\[\begin{aligned}
+  Cov\left( {{x_t},{x_{t - 1}}} \right) &= Cov\left( {\theta {w_{t - 1}} + {w_t},\theta {w_{t - 2}} + {w_{t - 1}}} \right) \hfill \\
+   &= Cov\left( {\theta {w_{t - 1}},{w_{t - 1}}} \right) \hfill \\
+   &= \theta {\sigma ^2} \hfill \\
+\end{aligned} \]
+
+Finding the variance (e.g. $h=0$) gives:
+\[\begin{aligned}
+  Cov\left( {{x_t},{x_t}} \right) &= Cov\left( {\theta {w_{t - 1}} + {w_t},\theta {w_{t - 1}} + {w_t}} \right) \hfill \\
+   &= {\theta ^2}Cov\left( {{w_{t - 1}},{w_{t - 1}}} \right) + \underbrace {2\theta Cov\left( {{w_{t - 1}},{w_t}} \right)}_{ = 0} + Cov\left( {{w_t},{w_t}} \right) \hfill \\
+   &= {\theta ^2}{\sigma ^2} + {\sigma ^2} \hfill \\
+   &= {\sigma ^2}\left( {1 + {\theta ^2}} \right) \hfill \\ 
+\end{aligned} \]
+
+This gives us the MA(1) ACF of:
+\[\rho \left( h \right) = \left\{ {\begin{array}{*{20}{c}}
+  1&{h = 0} \\ 
+  {\frac{\theta }{{{\theta ^2} + 1}}}&{h =  \pm 1} 
+\end{array}} \right.\]
+
+With this in mind, let's solve for possible $\theta$ values:
+\[\begin{aligned}
+  \rho \left( 1 \right) &= \frac{\theta }{{{\theta ^2} + 1}} \hfill \\
+   \Rightarrow \theta  &= \left( {{\theta ^2} + 1} \right)\rho \left( 1 \right) \hfill \\
+  \theta  &= \rho \left( 1 \right){\theta ^2} + \rho \left( 1 \right) \hfill \\
+  0 &= \rho \left( 1 \right){\theta ^2} - \theta  + \rho \left( 1 \right) \hfill \\ 
+\end{aligned} \]
+
+Yuck, that looks nasty. Let's dig out an ol' friend from middle school known as the quadratic formula:
+
+\[\theta  = \frac{{ - b \pm \sqrt {{b^2} - 4ac} }}{{2a}}\]
+
+Applying the quadratic formula leads to:
+
+\[\begin{aligned}
+  a &= \rho \left( h \right), b = -1, c = \rho \left( h \right) \\
+  \theta  &= \frac{{1 \pm \sqrt {{1^2} - 4\rho \left( h \right)\rho \left( h \right)} }}{{2\rho \left( h \right)}} \hfill \\
+  \theta  &= \frac{{1 \pm \sqrt {1 - 4{{\left[ {\rho \left( h \right)} \right]}^2}} }}{{2\rho \left( h \right)}} \hfill \\
+\end{aligned} \]
+
+Thus, we have two possibilities:
+\[\begin{aligned}
+  {\theta _1} &= \frac{{1 + \sqrt {1 - 4{{\left[ {\rho \left( h \right)} \right]}^2}} }}{{2\rho \left( h \right)}} \hfill \\
+  {\theta _2} &= \frac{{1 - \sqrt {1 - 4{{\left[ {\rho \left( h \right)} \right]}^2}} }}{{2\rho \left( h \right)}} \hfill \\ 
+  \end{aligned}\]
+  
+To ensure invertibility, we mandate that $\left| {\rho \left( 1 \right)} \right| < \frac{1}{2}$. Thus, we opt for ${\theta _2}$.
+
+So, our estimator is: \[\hat \theta  = \frac{{1 - \sqrt {1 - 4{{\left[ {\hat \rho \left( 1 \right)} \right]}^2}} }}{{2\hat \rho \left( 1 \right)}}\]
+
+Furthermore, it can be shown that:
+
+\[\sqrt T \left( {\hat \theta  - \theta } \right)\mathop  \to \limits_{T \to \infty }^L N\left( {0 ,\frac{{1 + {\theta ^2} + 4{\theta ^4} + {\theta ^6} + {\theta ^8}}}{{{{\left( {1 - {\theta ^2}} \right)}^2}}}} \right)\]
+
+So, this is not a really optimal estimator...
+
+## Prediction (Forecast)
+
+
+<!--chapter:end:93-develARMA.Rmd-->
+
+# Sections that were cut
+
+
+*Definition:* **Autoregressive Process of Order p = 1**
+
+This process is generally denoted as **AR(1)** and is defined as:
+${y_t} = {\phi _1}{y_{t - 1}} + {w_t},$
+
+where ${w_t}\mathop \sim \limits^{iid} WN\left( {0,\sigma _w^2} \right)$
+
+If $\phi _1 = 1$, then the process is equivalent to a random walk.
+
+The process can be simplified using **backsubstitution** to being:
+
+
+
+white noise can actually be generalize
+
+The process name of white noise has meaning in the notion of colors of noise. Specifically, the white noise is a process that mirrors white light's flat frequency spectrum. So, the process has equal frequencies in any interval of time.
+
+*Definition:* **White Noise**
+
+$w_t$ or $\varepsilon _t$ is a **white noise process** if $w_t$ are uncorrelated identically distributed random variables with
+$E\left[w_t\right] = 0$ and $Var\left[w_t\right] = \sigma ^2$, for all $t$. We can represent this algebraically as:
+$$y_t = w_t,$$
+where ${w_t}\mathop \sim \limits^{id} WN\left( {0,\sigma _w^2} \right)$
+
+Now, if the $w_t$ are **Normally (Gaussian) distributed**, then the process is known as a **Gaussian White Noise** e.g. ${w_t}\mathop \sim \limits^{iid} N\left( {0,{\sigma ^2}} \right)$
+
+
+
+
+
+<!--chapter:end:99-scrapped.Rmd-->
+

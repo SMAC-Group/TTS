@@ -1,0 +1,64 @@
+# ARMA Models
+
+```{r arma_code, echo = FALSE, cache = FALSE}
+knitr::read_chunk('code/chapter/04_arma.R')
+```
+
+In this chapter we introduce a class of time series models that is flexible and among the most commonly used to describe stationary time series. This class is represented by the AutoRegressive Moving Average (ARMA) models which combine and include the autoregressive and moving average models seen in the previous chapter, which we first discuss in further detail before introducing the general ARMA class.
+
+## Autoregressive Models (AR(p))
+
+The class of autoregressive models is based on the idea that previous values in the time series are needed to explain current values in the series. For this class of models, we assume that the $p$ previous observations are needed for this purpose and we therefore denote this class as AR(p). In the previous chapter, the model we introduced was an AR(1) in which only the immediately previous observation is needed to explain the following one and therefore represents a particular model which is part of the more general class of AR(p) models.
+
+The AR(p) models can be formally represented as follows
+$${y_t} = {\phi _1}{y_{t - 1}} + ... + {\phi _p}{y_{t - p}} + {w_t}$$,
+where $\phi_p \neq 0$ and $w_t$ is a white noise process. Without loss of generality, we will assume that the expectation of the processes $({y_t})$ and $(w_{t})$, as well as that of the following ones in this chapter, is zero. However, a more appropriate way of representing these processes is through the backshift operator introduced in the previous chapter and is as follows
+
+\[\begin{aligned}
+  {y_t} &= {\phi _1}{y_{t - 1}} + ... + {\phi_p}{y_{t - p}} + {w_t} \\
+   &= {\phi _1}B{y_t} + ... + {\phi_p}B^p{y_t} + {w_t} \\
+   &= ({\phi _1}B + ... + {\phi_p}B^p){y_t} + {w_t} \\ 
+\end{aligned}\],
+
+which finally yields
+$$(1 - {\phi _1}B + ... + {\phi_p}B^p){y_t} = {w_t}$$,
+which, in abbreviated form, can be expressed as
+$$\phi(B){y_t} = w_t$$.
+
+To illustrate these models further, let us consider a simple AR(1) process and carry out the following iterative exercise
+
+\[\begin{aligned}
+  {y_t} &= {\phi _1}{y_{t - 1}} + {w_t} \\
+   &= {\phi _1}({\phi _1}{y_{t - 2}} + {w_{t-1}}) + {w_t} \\
+   &= {\phi _1^2}{y_{t - 2}} + {\phi _1}{w_{t-1}} + {w_t} \\
+   &= ... \\
+   &= {\phi _1^h}{y_{t - h}} + \sum_{i=0}^{h-1}{\phi _1^i}w_{t-i}
+\end{aligned}\].
+
+If we suppose that $|\phi_1| < 1$, then continuing the iteration to infinity would lead us to
+$$y_t = \sum_{i=0}^{\infty}{\phi _1^i}w_{t-i}$$,
+which has $\mathbb{E}[y_t] = 0$ and autocovariance function
+$$\gamma(h) = \frac{\phi_1^h}{1-\phi_1^2}\sigma _w^2$$
+where $\sigma _w^2$ is the variance of the white noise process $(w_t)$. It must be noted that if $\phi_1 = 1$ then the AR(1) becomes a random walk process (non-stationary) whereas if $|\phi_1| < 1$ the process is stationary.
+
+For these kind of models, the ACF and PACF can give meaningful insight into the order of the autoregressive model. The following plots show the ACF and PACF of an AR(1) with $\phi_1 = 0.8$ indicating that the ACF of an AR process decays exponentially while its PACF cuts off after the lag corresponding to the order of the autoregressive process.
+
+INSERT R CODE FOR ACF AND PACF OF SIMULATED AR(1)
+
+The condition for the stationarity of an AR(1) model have been partially discussed above. However, the condition of $|\phi_1| < 1$ is not the only one that guarantees that the AR(1) is stationary. Indeed, so-called explosive AR(1) models with $|\phi_1| > 1$ can be re-expressed, using the same kind of iterative argument above, as a stationary process. Nevertheless this iterative procedure makes use of future values of the series $(y_t)$ and therefore is not a so-called "causal" process. Generally speaking, by causal process we mean a process whose current values are only explained by its past values and not by its future ones.
+
+DISCUSS CAUSALITY MORE IN DEPTH ALSO OF AR(p)
+
+## Moving Average Models (MA(q))
+
+A moving average model can be interpreted in a similar way to an AR(p) model, except that in this case the time series is the result of a linear operation on the innovation process rather than on the time series itself. More specifically, an MA(q) model can be defined as follows
+$${y_t} = \theta_1 w_{t-1} + ... + \theta_q w_{t-q} + w_t$$.
+Following the same logic as for the AR(p) models and using the backshift operator as before, we can re-express these moving average processes as follows
+$$y_t = \theta(B)w_t$$
+where $\theta(B) = 1 + \theta_1B + ... + \theta_qB^q$.
+
+These processes are always stationary, no matter the values that $\theta_q$ takes. However, the MA(q) processes may not be identifiable through their autocovariance functions. By the latter we mean that different parameteres for a same order MA(q) model can deliver the exact same autocovariance function and it would therefore be impossible to retrieve the parameters of the model by only looking at the autocovariance function.
+
+DICUSS INVERTIBILITY
+
+## AutoRegressive Moving Average Models (ARMA(p,q))

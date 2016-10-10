@@ -6,11 +6,17 @@ knitr::read_chunk('../code/chapter/03_arma.R')
 ```
 
 
-In this chapter we introduce a class of time series models that is flexible and among the most commonly used to describe stationary time series. This class is represented by the AutoRegressive Moving Average (ARMA) models which combine and include the autoregressive and moving average models seen in the previous chapter, which we first discuss in further detail before introducing the general ARMA class.
+In this chapter we introduce a class of time series models that is flexible and among the most commonly used to describe stationary time series. This class is represented by the AutoRegressive Moving Average (ARMA) models which combine and include the autoregressive and moving average models seen in the previous chapter, which we first discuss in further detail before introducing the general ARMA class. The importance of the latter class of models resides in its flexibility as well as its capacity of describing (or closely approximating) almost all the features of a stationary time series. The autoregressive parts of these models describe how consecutive observations in time influence each other while the moving average parts capture some possible unobserved shocks thereby allowing to model different phenomena going from biology to finance.
+
+To introduce and explain this class of models, this chapter is organized in the following manner. First of all we will discuss the class of linear processes of which the ARMA models are part of. We will then proceed to a detailed description of autoregressive models in which we review their definition, explain their properties, introduce the main estimation methods for their parameters and highlight the diagnostic tools which can help understand if the estimated models appear to be appropriate or sufficient to well describe the observed time series. Once this is done, we will then use most of the results given for the autoregressive models to further desribe and discuss the moving average models, for which we underline the property of invertibility, and finally the ARMA models. Indeed, the properties and estimation methods for the latter class are directly inherited from the discussions on the autoregressive and moving average models.
+
+## Linear Processes
 
 ## Autoregressive Models (AR(p))
 
 The class of autoregressive models is based on the idea that previous values in the time series are needed to explain current values in the series. For this class of models, we assume that the $p$ previous observations are needed for this purpose and we therefore denote this class as AR($p$). In the previous chapter, the model we introduced was an AR(1) in which only the immediately previous observation is needed to explain the following one and therefore represents a particular model which is part of the more general class of AR(p) models.
+
+### Defintion
 
 The AR(p) models can be formally represented as follows
 $${X_t} = {\phi_1}{Y_{t - 1}} + ... + {\phi_p}{X_{t - p}} + {W_t},$$
@@ -22,7 +28,7 @@ which is equivalent to
 
 $$X_t  = \mu^{\star} +  \sum_{i = 1}^p \phi_i X_{t-i}  + W_t,$$
 
-where $\mu^{\star} = \mu (1 - \sum_{i = 1}^p \phi_i)$. Therefore, to simplify the notation we will generally consider only zero mean process, since adding means (as well as other deterministic trends) is easy.
+where $\mu^{\star} = \mu (1 - \sum_{i = 1}^p \phi_i)$. Therefore, to simplify the notation we will generally consider only zero mean processes, since adding means (as well as other deterministic trends) is easy.
 
 A useful way of representing AR processes is through the backshift operator introduced in the previous section and is as follows
 
@@ -40,9 +46,9 @@ which, in abbreviated form, can be expressed as
 
 $$\phi(B){X_t} = W_t.$$
 
-We will see that $\phi(B)$ is important to establish the stationarity of these processes and is called the *autoregressive* operator. Moreover, this quantity is closely related to another important property of AR processes, called *causality*. Before formally definition this new property, we consider the following example, which provides intuitive illustration of its importance.
+We will see that $\phi(B)$ is important to establish the stationarity of these processes and is called the *autoregressive* operator. Moreover, this quantity is closely related to another important property of AR processes called *causality*. Before formally defining this new property, we consider the following example, which provides an intuitive illustration of its importance.
 
-**Example:** Consider a classical AR(1) model with $|\phi| > 1$. Such model could be expressed as
+**Example:** Consider a classical AR(1) model with $|\phi| > 1$. Such a model could be expressed as
 
 $$X_t = \phi^{-1} X_{t+1} - \phi^{-1} W_t = \phi^{-k} X_{t+k} - \sum_{i = 1}^{k-1} \phi^{-i} W_{t+i}.$$
 
@@ -50,6 +56,77 @@ Since $|\phi| > 1$, we obtain
 
 $$X_t = - \sum_{i = 1}^{\infty} \phi^{-j} W_{t-j},$$
 
-which is a linear process and therefore is stationary. Unfortunately, such model is useless because the future is required to predict the future and such processes are called non-causal.
+which is a linear process and therefore is stationary. Unfortunately, such a model is useless because we need the future to predict the future and such processes are called non-causal.
 
+### Properties of AR(p) models
 
+In this section we will describe the main property of the AR(p) model which has already been introduced in the previous paragraphs and therefore let us now introduce the property of causality in a more formal manner.
+
+**Definition:** An AR(p) model is *causal*, if the time series $\{ X_t \}_{-\infty}^{\infty}$ can be written as a one-sided linear process:
+\begin{equation}
+    X_t = \sum_{j = 0}^{\infty} \psi_j W_{t-j} = \frac{1}{\phi(B)} W_t = \psi(B) W_t,
+(\#eq:causal)
+\end{equation}
+where $\phi(B) = \sum_{j = 0}^{\infty} \phi_j B^j$, and $\sum_{j=0}^{\infty}|\phi_j| < \infty$; we set $\phi_0 = 1$.
+
+As discussed earlier this condition implies that only the past values of the time series can explain the future values of it, and not viceversa. However, it might be difficult and not obvious to show the causality of an AR(p) process by using the above definitions directly, thus the following properties are useful in practice. 
+
+**Property: Causality**
+If an AR(p) model is causal, then the coefficients of the one-sided linear process given in (\@ref(eq:causal)) can be obtained by solving
+\begin{equation*}
+    \psi(z) = \frac{1}{\sum_{j=0}^{\infty} \phi_j z^j} = \frac{1}{\phi(z)}, \mbox{ } |z| \leq 1.
+\end{equation*}
+
+It can be seen how there is no solution to the above equation if $\phi(z) = 0$ and therefore an AR(p) is causal if and only if $\phi(z) \neq 0$. A condition for this to be respected is for the roots of $\phi(z) = 0$ to lie outside the unit circle.
+
+## Estimation of AR(p) models
+
+Given the above defined properties of the AR(p) models, we will now discuss how these models can be estimated, more specifically how the $p+1$ parameters can be obtained from an observed time series. Indeed, a reliable estimation of these models is necessary in order to intepret and describe different natural phenomena and/or forecast possible future values of the time series.
+
+A first approach builds upon the earlier definition of the AR(p) as being a linear process. Recall that
+\begin{equation}
+    X_t = \sum_{j = 1}^{p} \phi_j X_{t-j}
+\end{equation}
+which delivers the following autocovariance function
+\begin{equation}
+    \gamma(h) = cov(X_{t+h}, X_t) = cov(\sum_{j = 1}^{p} \phi_j X_{t-j}, X_t) = \sum_{j = 1}^{p} \phi_j \gamma(h-j), \mbox{ } h \geq 0.
+\end{equation}
+Rearranging the above expressions we obtain the following general equations
+\begin{equation}
+    \gamma(h) - \sum_{j = 1}^{p} \phi_j \gamma(h-j) = 0, \mbox{ } h \geq 1
+\end{equation}
+and, recalling that $\gamma(h) = \gamma(-h)$,
+\begin{equation}
+    \gamma(0) - \sum_{j = 1}^{p} \phi_j \gamma(j) = \sigma_w^2.
+\end{equation}
+We can now define the Yule-Walker equations.
+
+**Definition:** The Yule-Walker equations are given by
+\begin{equation}
+    \gamma(h) = \phi_1 \gamma(h-1) + ... + \phi_p \gamma(h-p), \mbox{ } h = 1,...,p
+\end{equation}
+and
+\begin{equation}
+    \sigma_w^2 = \gamma(0) - \phi_1 \gamma(1) - ... - \phi_p \gamma(p).
+\end{equation}
+which in matrix notation can be defined as follows
+\begin{equation}
+    \Gamma_p \mathbf{\phi} = \mathbf{\gamma}_p \text{and} \sigma_w^2 = \gamma(0) - \mathbf{\phi}'\mathbf{\gamma}_p
+\end{equation}
+where $\Gamma_p$ is the $p\times p$ matrix containing the autocovariances $\gamma(k-j), j,k = 1, ...,p$ while $\mathbf{\phi} = (\phi_1,...,\phi_p)'$ and $\mathbf{\gamma}_p = (\gamma(1),...,\gamma(p))'$ are $p\times 1$ vectors.
+
+Considering the Yule-Walker equations, it is possible to use a method of moments approach and simply replace the theoretical quantities given in the previous definition with their empirical (estimated) counterparts that we saw in the previous chapter. This gives us the following Yule-Walker estimators
+\begin{equation}
+    \hat{\mathbf{\phi}} = \hat{\Gamma}_p^{-1}\hat{\mathbf{\gamma}}_p \text{and} \hat{\sigma}_w^2 = \hat{\gamma}(0) - \hat{\mathbf{\gamma}}_p'\hat{\Gamma}_p^{-1}\hat{\mathbf{\gamma}}_p
+\end{equation}
+
+These estimators have the following asymptotic properties.
+
+**Property: Consistency and Asymptotic Normality of Yule-Walker estimators**
+The Yule-Walker estimators for a causal AR(p) model have the following asymptotic properties:
+\begin{equation}
+\sqrt{T}(\hat{\mathbf{\phi}}- \mathbf{\phi}) \xrightarrow{\mathcal{D}} \mathcal{N}(\mathbf{0},\sigma_w^2\Gamma_p^{-1}) \text{and} \hat{\sigma}_w^2 \xrightarrow{\mathcal{P}} \sigma_w^2 .
+
+Therefore the Yule-Walker estimators have an asymptotically normal distribution and the estimator of the innovation variance is consistent.
+\end{equation}
+\end{equation*}
