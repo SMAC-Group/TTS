@@ -238,6 +238,10 @@ Step 4.
 \[X_t = \phi^{-1}(B)W_t = \sum_{j = 0}^{\infty} \left[ \frac{-5}{3} (0.5)^j + \frac{8}{3} (0.8)^j \right] B^j W_t = \sum_{j = 0}^{\infty} \left[ \frac{-5}{3} (0.5)^j + \frac{8}{3} (0.8)^j \right] W_{t-j} .
 \]
 
+
+###Autocorrelation of AR models
+Recall the defination of ACF in Chapter 2. Although the ACF for certain non-causal AR models do exist, in this part we only focus on the ACF for causal AR models. Next we give an example with the ACF of AR(2) model.
+
 **Example: ACF of AR(2)**
 We use the same AR(2) model as previous example: $X_t = 1.3X_{t-1} - 0.4X_{t-2} + W_t$. 
 
@@ -262,6 +266,46 @@ Step 3. Solve $c_1$ and $c_2$ based on two initial conditions.
 \end{cases},\]
 then we have $c_1 = -\frac{3}{7}$ and $c_2 = \frac{10}{7}$. Then the ACF is
 \[\rho(h) = -\frac{3}{7}2^{-h} + \frac{10}{7}\left(\frac{5}{4}\right)^{-h} .\]
+
+
+Next we present an example to show how to derive the ACF for general causal AR(p) model. It is much more complicated than what we did for AR(2).
+
+**Example: ACF of AR(p)**
+Recall that the AR(p) models can be formally represented as follows
+$${X_t} = {\phi_1}{X_{t - 1}} + ... + {\phi_p}{X_{t - p}} + {W_t},$$
+where $W_t$ is a (Gaussian) white noise process with variance $\sigma^2$.
+
+As it is shown in Chapter 3.4 of textbook, there are two ways to derive the ACF for general AR(p) models. 
+
+For the first method, since we assume our AR(p) model is causal, we can write it as a one-sided linear process: $X_t = \sum_{j = 0}^{\infty} \psi_j W_{t-j}$, then the autocovariance function $\gamma(h) = cov(X_{t+h},X_t) = \sigma^2 \sum_{j=0}^{\infty} \psi_j \psi_{j+h}$, for $h \geq 0$. The difficulty of this method is to solve the $\psi$-weights. Treating AR(p) as a special case of ARMA(p,q), we can let the MA polynomials $\theta(z) = 1$ and solve the $\psi$-weights by matching the coefficients in $\phi(z)\psi(z) = \theta(z)$. The detailed precedure is listed on Chapter 3.3 of textbook.
+
+For the second method, we can also use the procedure we used for AR(2). That is finding a homogeneous difference equation with respect to ACF $\rho(h)$, and solve it directly. To do so we need following steps.
+
+Step 1. Find the homogeneous difference equation with repsect to the ACF $\rho(h)$.
+
+Firstly verify whether our model is causal. If it is then we have,
+\[\rho(h) - \phi_1\rho(h-1) - \cdots - \phi_p\rho(h-p) = 0, \mbox{ } h \geq p. \]
+
+Step 2. Solve the roots of the associated AR polynomials.
+
+The polynomials can be written as:
+\[\phi(z) = 1 - \phi_1z - \cdots - \phi_pz^p .\]
+
+Suppose the polynomials have $r$ distinct roots, and let $m_j$ denoted the number of replicates of $z_j$, such that $m_1 +m_2 + \cdots +m_r = p$.
+
+Then the general solution of the homogeneous difference equation is 
+\[\rho(h) = z_1^{-h}P_1(h) + z_2^{-h}P_2(h) + \cdots + z_r^{-h}P_r(h), \mbox{ } h \geq p,\]
+where $P_j(h)$ is the polynomial in $h$ of degree $m_j - 1$.
+
+Step 3. Solve every $P_j(h)$ based on $p$ given initial conditions on $\rho(h)$.
+
+**Remark**
+Since the AR(p) model is causal, the roots we obtained in step 2 should be outside of the unit circle (i.e. $|z_i| > 1$, for $i = 1, \cdots, r$). Then the absolute value of the general solution 
+\[|\rho(h)| = \left|\frac{P_1(h)}{z_1^{h}} + \frac{P_2(h)}{z_2^{h}} + \cdots + \frac{P_r(h)}{z_r^{h}}\right| \leq \left|\frac{P_1(h)}{z_1^{h}}\right| + \left| \frac{P_2(h)}{z_2^{h}}\right| + \cdots + \left|\frac{P_r(h)}{z_r^{h}}\right| \leq \frac{\left|P_1(h)\right| + \left| P_2(h)\right| + \cdots + \left|P_r(h)\right|}{\min_{j = 1, \cdots, r} \left|z_j \right|^{h}},\]
+
+from the right hand side of the last inequality, we can find the rate of convergence would be dominated by $\frac{1}{\min_{j = 1, \cdots, r} \left|z_j \right|^{h}}$. Thus the ACF $\rho(h)$ will goes to zero exponentially as $h \to \infty$.
+
+
 
 ## Estimation of Parameters
 
