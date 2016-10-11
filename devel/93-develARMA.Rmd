@@ -318,6 +318,22 @@ $$\phi_{hh} = \corr(X_{t+h} - \hat{X}_{t+h}, X_t - \hat{X}_t), \mbox{ } h \geq 2
 **Remark**
 From the above defination we can think of the partial correlation $\phi_{hh}$ as the correlation between the residual of $X_{t+h}$ after projecting it to the vector space spanned by $\{ X_{t+1}, \dots, X_{t+h-1} \}$ and the residual of $X_t$ after projecting it to the same vector space. Similar to the linear regression, after projecting the residuals should be independ with the vector space spanned by $\{ X_{t+1}, \dots, X_{t+h-1} \}$.
 
+**Example: PACF of AR(1)**
+Consider a casual AR(1) model ${X_t} = \phi {X_{t - 1}} + {W_t},$ We have, 
+\[\phi_{11} = \corr(X_{t+1}, X_t) = \rho(1) = \phi,\]
+and 
+\[\phi_{22} = \corr(X_{t+2} - \hat{X}_{t+2}, X_t - \hat{X}_t),\]
+Next, we find $\hat{X}_t$ and $\hat{X}_{t+2}$. Since $X_{t+1}$ is the only random between $X_t$ and $X_{t+2}$, $\hat{X}_t$ and $\hat{X}_{t+2}$ are the best linear predictors on the vector space spaned by $X_t$, we can obtain them by minimizing the MSE. 
+\[\mathbb{E}(X_{t+2} - \hat{X}_{t+2})^2 = \mathbb{E}(X_{t+2} - \beta_1 X_{t+1})^2 = \gamma(0) - 2\beta_1 \gamma(1) + \beta^2 \gamma(0),\]
+Then by minimizing the MSE, we have $\beta_1 = \frac{\gamma(1)}{\gamma(0)} = \phi$.
+
+Similarily, by minimizing
+\[\mathbb{E}(X_{t} - \hat{X}_{t})^2 = \mathbb{E}(X_{t} - \beta_2 X_{t+1})^2 = \gamma(0) - 2\beta_2 \gamma(1) + \beta^2 \gamma(0),\]
+we have $\beta_2 = \frac{\gamma(1)}{\gamma(0)} = \phi$.
+
+Therefore, \[\phi_{22} = \corr(X_{t+2} - \phi X_{t+1}, X_t - \phi X_{t+1}) = \corr(W_{t+2}, X_t - \phi X_{t+1}) = 0,\]
+note that the last equation is based on casuality.
+
 ## Estimation of Parameters
 
 Consider a time series given by $x_t \sim ARMA(p,q)$. This gives us with a paramter space $\Omega$ that looks like so: 
