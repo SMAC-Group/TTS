@@ -307,6 +307,17 @@ from the right hand side of the last inequality, we can find the rate of converg
 
 
 
+###Partial autocorrelation of AR models
+```{definition, label="pacf","Partial autocorrelation of AR models"}
+For a stationary process, $x_t$, the partial autocorrelation function (PACF) can be denoted as $\phi_{hh}$, for $h = 1, 2, \dots,$ which are
+$$\phi_{11} = \corr(X_{t+1}, X_t) = \rho(1),$$
+and 
+$$\phi_{hh} = \corr(X_{t+h} - \hat{X}_{t+h}, X_t - \hat{X}_t), \mbox{ } h \geq 2.$$
+```
+
+**Remark**
+From the above defination we can think of the partial correlation $\phi_{hh}$ as the correlation between the residual of $X_{t+h}$ after projecting it to the vector space spanned by $\{ X_{t+1}, \dots, X_{t+h-1} \}$ and the residual of $X_t$ after projecting it to the same vector space. Similar to the linear regression, after projecting the residuals should be independ with the vector space spanned by $\{ X_{t+1}, \dots, X_{t+h-1} \}$.
+
 ## Estimation of Parameters
 
 Consider a time series given by $x_t \sim ARMA(p,q)$. This gives us with a paramter space $\Omega$ that looks like so: 
