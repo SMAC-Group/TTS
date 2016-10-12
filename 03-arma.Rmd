@@ -132,14 +132,14 @@ process can be considered to be the traditional $X_t = \phi X_{t-1} + W_t$.
 
 TO DO JJB: Please complete, remove or merge this section into 3.1.
 
-## Autoregressive Models (AR(p))
+## Autoregressive Models
 
 The class of autoregressive models is based on the idea that previous values in the time series are needed to explain current values in the series. For this class of models, we assume that the $p$ previous observations are needed for this purpose and we therefore denote this class as AR($p$). In the previous chapter, the model we introduced was an AR(1) in which only the immediately previous observation is needed to explain the following one and therefore represents a particular model which is part of the more general class of AR(p) models.
 
-```{definition, label="ar_p","Autoregressive Models of Order P"}
+```{definition, label="ar_p", name = "Autoregressive Models of Order P"}
 The AR(p) models can be formally represented as follows
 $${X_t} = {\phi_1}{X_{t - 1}} + ... + {\phi_p}{X_{t - p}} + {W_t},$$
-where $\min_{i = 1, ..., p} \; |\phi_i| \geq 0$ and $W_t$ is a (Gaussian) white noise process with variance $\sigma^2$. 
+where $|\phi_p| \geq 0$ and $W_t$ is a (Gaussian) white noise process with variance $\sigma^2$. 
 ```
 
 In general, we will assume that the expectation of the process $({X_t})$, as well as that of the following ones in this chapter, is zero. The reason for this simplification is that if $\mathbb{E} [ X_t ] = \mu$, we can define an AR process *around* $\mu$ as follows:
@@ -164,13 +164,15 @@ which finally yields
 
 $$(1 - {\phi _1}B - ... - {\phi_p}B^p){X_t} = {W_t},$$
 
-which, in abbreviated form, can be expressed as
+or, in abbreviated form, can be expressed as
 
 $$\phi(B){X_t} = W_t.$$
 
 We will see that $\phi(B)$ is important to establish the stationarity of these processes and is called the *autoregressive* operator. Moreover, this quantity is closely related to another important property of AR processes called *causality*. Before formally defining this new property, we consider the following example, which provides an intuitive illustration of its importance.
 
-**Example:** Consider a classical AR(1) model with $|\phi| > 1$. Such a model could be expressed as
+
+```{example, label="ncAR1", name="Non-causal AR(1)"}
+Consider a classical AR(1) model with $|\phi| > 1$. Such a model could be expressed as
 
 $$X_t = \phi^{-1} X_{t+1} - \phi^{-1} W_t = \phi^{-k} X_{t+k} - \sum_{i = 1}^{k-1} \phi^{-i} W_{t+i}.$$
 
@@ -179,6 +181,7 @@ Since $|\phi| > 1$, we obtain
 $$X_t = - \sum_{i = 1}^{\infty} \phi^{-j} W_{t-j},$$
 
 which is a linear process and therefore is stationary. Unfortunately, such a model is useless because we need the future to predict the future and such processes are called non-causal.
+```
 
 ### Properties of AR(p) models
 
