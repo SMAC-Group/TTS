@@ -136,7 +136,7 @@ TO DO JJB: Please complete, remove or merge this section into 3.1.
 
 The class of autoregressive models is based on the idea that previous values in the time series are needed to explain current values in the series. For this class of models, we assume that the $p$ previous observations are needed for this purpose and we therefore denote this class as AR($p$). In the previous chapter, the model we introduced was an AR(1) in which only the immediately previous observation is needed to explain the following one and therefore represents a particular model which is part of the more general class of AR(p) models.
 
-```{definition, label="ar_p", name = "Autoregressive Models of Order P"}
+```{definition, label="ar_p", name = "Autoregressive Models of Order $p$"}
 The AR(p) models can be formally represented as follows
 $${X_t} = {\phi_1}{X_{t - 1}} + ... + {\phi_p}{X_{t - p}} + {W_t},$$
 where $|\phi_p| \geq 0$ and $W_t$ is a (Gaussian) white noise process with variance $\sigma^2$. 
@@ -170,7 +170,6 @@ $$\phi(B){X_t} = W_t.$$
 
 We will see that $\phi(B)$ is important to establish the stationarity of these processes and is called the *autoregressive* operator. Moreover, this quantity is closely related to another important property of AR processes called *causality*. Before formally defining this new property, we consider the following example, which provides an intuitive illustration of its importance.
 
-
 ```{example, label="ncAR1", name="Non-causal AR(1)"}
 Consider a classical AR(1) model with $|\phi| > 1$. Such a model could be expressed as
 
@@ -183,26 +182,37 @@ $$X_t = - \sum_{i = 1}^{\infty} \phi^{-j} W_{t-j},$$
 which is a linear process and therefore is stationary. Unfortunately, such a model is useless because we need the future to predict the future and such processes are called non-causal.
 ```
 
-### Properties of AR(p) models
+### Properties of AR($p$) models
 
-In this section we will describe the main property of the AR(p) model which has already been introduced in the previous paragraphs and therefore let us now introduce the property of causality in a more formal manner.
+In this section we discuss the main properties of AR($p$) processes. We first consider the causality of these models which has already been introduced in the previous paragraphs and then discuss the autocorrelation (and partial autocorrelation) of AR($p$) models. 
 
-**Definition:** An AR(p) model is *causal*, if the time series $\{ X_t \}_{-\infty}^{\infty}$ can be written as a one-sided linear process:
+#### Causality
+
+In the previous section we already introduced the idea of causal time series model and therefore let us now introduce this concept in a more formal manner.
+
+```{definition, label="causal_ar", name = "Causality of AR models"}
+ An AR(p) model is said to be *causal*, if the time series $\{ X_t \}_{-\infty}^{\infty}$ can be written as a one-sided linear process:
 \begin{equation}
     X_t = \sum_{j = 0}^{\infty} \psi_j W_{t-j} = \frac{1}{\phi(B)} W_t = \psi(B) W_t,
 (\#eq:causal)
 \end{equation}
-where $\phi(B) = \sum_{j = 0}^{\infty} \phi_j B^j$, and $\sum_{j=0}^{\infty}|\phi_j| < \infty$; we set $\phi_0 = 1$.
+where $\phi(B) = \sum_{j = 0}^{\infty} \phi_j B^j$, $\sum_{j=0}^{\infty}|\phi_j| < \infty$ and $\phi_0 = 1$.
+```
 
-As discussed earlier this condition implies that only the past values of the time series can explain the future values of it, and not viceversa. However, it might be difficult and not obvious to show the causality of an AR(p) process by using the above definitions directly, thus the following properties are useful in practice. 
+As discussed earlier this condition implies that only the past values of the time series can explain the future values of it, and not viceversa. As discussed in the previous section, linear processes are (weakly) stationarity processes and therefore causality directely implies (weak) stationarity. However, it might be difficult and not obvious to show the causality of AR($p$) processes by using the above definitions directly, thus the following property is particulary useful in practice. 
 
-**Property: Causality**
-If an AR(p) model is causal, then the coefficients of the one-sided linear process given in (\@ref(eq:causal)) can be obtained by solving
+```{theorem, label="thm_causal_ar", name = "Causality of AR models"}
+If an AR(p) model is causal if and only if $\phi(z) = 0$ for $|z| \leq 1$. Then, the coefficients of the one-sided linear process given in \@ref(eq:causal) can be obtained by solving
 \begin{equation*}
     \psi(z) = \frac{1}{\sum_{j=0}^{\infty} \phi_j z^j} = \frac{1}{\phi(z)}, \mbox{ } |z| \leq 1.
 \end{equation*}
+```
 
-It can be seen how there is no solution to the above equation if $\phi(z) = 0$ and therefore an AR(p) is causal if and only if $\phi(z) \neq 0$. A condition for this to be respected is for the roots of $\phi(z) = 0$ to lie outside the unit circle.
+The proof of this result is omitted but can (for example) be found in Appendix B of @shumway2011time. Moreover, it can be seen how there is no solution to the above equation if $\phi(z) = 0$ for $|z| \leq 1$ and therefore an AR($p$) is causal if and only if $\phi(z) \neq 0$ for $|z| \leq 1$. A condition for this to be respected is for the roots of $\phi(z) = 0$ to lie *outside the unit circle*.
+
+Before further discussing the properties of AR($p$) models we consider the following two examples which discuss the causality (and stationarity) of an AR(2).
+
+
 
 ## Estimation of AR(p) models
 
