@@ -1,16 +1,16 @@
 # Autoregressive Moving Average Models
 
-```{r arma_code, echo = FALSE}
-source("../code/init/chapter_start.R")
-knitr::read_chunk('../code/chapter/03_arma.R')
+```{r arma_code, echo = FALSE, message = FALSE, warning = FALSE}
+knitr::read_chunk('code/chapter/03_arma.R')
 ```
 
+In this chapter we introduce a class of time series models that is flexible and among the most commonly used to describe stationary time series. This class is represented by the AutoRegressive Moving Average (ARMA) models which combine and include the AutoRegressive (AR) and Moving Average (MA) models seen in the previous chapter. We first discuss AR and MA models in further detail before introducing the general ARMA class. The importance of the latter class of models resides in its flexibility as well as its capacity of describing (or closely approximating) the features of stationary time series. The autoregressive parts of these models describe how consecutive observations in time influence each other while the moving average parts capture some possible unobserved shocks thereby allowing to model different phenomena going from biology to finance.
 
-In this chapter we introduce a class of time series models that is flexible and among the most commonly used to describe stationary time series. This class is represented by the AutoRegressive Moving Average (ARMA) models which combine and include the autoregressive and moving average models seen in the previous chapter, which we first discuss in further detail before introducing the general ARMA class. The importance of the latter class of models resides in its flexibility as well as its capacity of describing (or closely approximating) almost all the features of a stationary time series. The autoregressive parts of these models describe how consecutive observations in time influence each other while the moving average parts capture some possible unobserved shocks thereby allowing to model different phenomena going from biology to finance.
-
-To introduce and explain this class of models, this chapter is organized in the following manner. First of all we will discuss the class of linear processes of which the ARMA models are part of. We will then proceed to a detailed description of autoregressive models in which we review their definition, explain their properties, introduce the main estimation methods for their parameters and highlight the diagnostic tools which can help understand if the estimated models appear to be appropriate or sufficient to well describe the observed time series. Once this is done, we will then use most of the results given for the autoregressive models to further desribe and discuss the moving average models, for which we underline the property of invertibility, and finally the ARMA models. Indeed, the properties and estimation methods for the latter class are directly inherited from the discussions on the autoregressive and moving average models.
+To introduce and explain this class of models, this chapter is organized in the following manner. First of all we will discuss the class of linear processes of which the ARMA models are part of. We will then proceed to a detailed description of AR models in which we review their definition, explain their properties, introduce the main estimation methods for their parameters and highlight the diagnostic tools which can help understand if the estimated models appear to be appropriate or sufficient to well describe the observed time series. Once this is done, we will then use most of the results given for AR models to further desribe and discuss MA models, for which we underline the property of invertibility, and finally the ARMA models. Indeed, the properties and estimation methods for the latter class are directly inherited from the discussions on AR and MA models.
 
 ## Linear Processes
+
+TO DO JJB: add introduction here. Explain why are linear processes important in this chapter.
 
 ```{definition, label="lp", name="Linear Process"}
 A time series, $(X_t)$, is defined to be a linear process if it can be expressed
@@ -28,27 +28,35 @@ nor symmetric as later examples will show. Generally, the properties of a linear
 process related to mean and variance are given by:
 
 \[\begin{aligned}
-\mu_{X} &= \mu \\
-\gamma_{X}(h) &= \sigma _W^2\sum\limits_{j =  - \infty }^\infty  {{\psi _j}{\psi _{h + j}}}
+\mathbb{E}[X_t] &= \mu \\
+\gamma(h) &= \sigma^2\sum\limits_{j =  - \infty }^\infty  {{\psi _j}{\psi _{h + j}}}.
 \end{aligned}\]
 
 The latter is derived from 
 
 \[\begin{aligned}
-  \gamma \left( h \right) &= Cov\left( {{x_t},{x_{t + h}}} \right) \\
-   &= Cov\left( {\mu  + \sum\limits_{j =  - \infty }^\infty  {{\psi _j}{w_{t - j}}} ,\mu  + \sum\limits_{j =  - \infty }^\infty  {{\psi _j}{w_{t + h - j}}} } \right) \\
-   &= Cov\left( {\sum\limits_{j =  - \infty }^\infty  {{\psi _j}{w_{t - j}}} ,\sum\limits_{j =  - \infty }^\infty  {{\psi _j}{w_{t + h - j}}} } \right) \\
-   &= \sum\limits_{j =  - \infty }^\infty  {{\psi _j}{\psi _{j + h}}Cov\left( {{w_{t - j}},{w_{t - j}}} \right)}  \\
-   &= \sigma _w^2\sum\limits_{j =  - \infty }^\infty  {{\psi _j}{\psi _{j + h}}}  \\ 
+  \gamma \left( h \right) &= Cov\left( {{X_t},{X_{t + h}}} \right) 
+   = Cov\left( {\mu  + \sum\limits_{j =  - \infty }^\infty  {{\psi _j}{W_{t - j}}} ,\mu  + \sum\limits_{j =  - \infty }^\infty  {{\psi _j}{W_{t + h - j}}} } \right) \\
+   &= Cov\left( {\sum\limits_{j =  - \infty }^\infty  {{\psi _j}{W_{t - j}}} ,\sum\limits_{j =  - \infty }^\infty  {{\psi _j}{W_{t + h - j}}} } \right) 
+    = \sum\limits_{j =  - \infty }^\infty  {{\psi _j}{\psi _{j + h}}Cov\left( {{W_{t - j}},{W_{t - j}}} \right)}  
+   = \sigma^2\sum\limits_{j =  - \infty }^\infty  {{\psi _j}{\psi _{j + h}}}.  \\ 
 \end{aligned} \]
 
 Within the above derivation, the key is to realize that 
-$Cov\left( {{w_{t - j}},{w_{t + h - j}}} \right) = 0$ if $t - j \ne t + h - j$.
+$Cov\left( {{W_{t - j}},{W_{t + h - j}}} \right) = 0$ if $t - j \ne t + h - j$.
+
+TO DO JJB: Add comment(s) on stationarity of linear processes.
 
 Lastly, one of the better formalities of a linear process is that it is able 
 to be represented in a simplified form under the **backshift operator**:
 
-\[{X_t} = \psi \left( B \right){W_t}\]
+\[{X_t} = \psi \left( B \right){W_t},\]
+
+where 
+
+\[\psi \left( B \right) = \sum_{j = -\infty}^{\infty} \, \psi_j B^{j}.\]
+
+TO DO JJB: Add small introduction to these examples.
 
 ```{example, label="lpwn", name="Linear Process of White Noise"}
 
