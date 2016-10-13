@@ -182,7 +182,7 @@ $$X_t = - \sum_{i = 1}^{\infty} \phi^{-j} W_{t-j},$$
 which is a linear process and therefore is stationary. Unfortunately, such a model is useless because we need the future to predict the future and such processes are called non-causal.
 ```
 
-### Properties of AR($p$) models
+### Properties of AR models
 
 In this section we discuss the main properties of AR($p$) processes. We first consider the causality of these models which has already been introduced in the previous paragraphs and then discuss the autocorrelation (and partial autocorrelation) of AR($p$) models. 
 
@@ -352,7 +352,7 @@ EXAMPLE MISSING HERE! TO DO
 Next we present an example to show how to derive the ACF for general causal AR(p) model. It is much more complicated than what we did for AR(2).
 
 ```{example, label="arpacf", name = "Autocorrelation of an AR($p$)"}
-Recall that the AR(p) models can be formally represented as follows
+Recall that the AR($p$) models can be formally represented as follows
 $${X_t} = {\phi_1}{X_{t - 1}} + ... + {\phi_p}{X_{t - p}} + {W_t},$$
 where $W_t$ is a (Gaussian) white noise process with variance $\sigma^2$.
 
@@ -386,6 +386,57 @@ Since the AR(p) model is causal, the roots we obtained in step 2 should be outsi
 
 from the right hand side of the last inequality, we can find the rate of convergence would be dominated by $\frac{1}{\min_{j = 1, \dots, r} \left|z_j \right|^{h}}$. Thus the ACF $\rho(h)$ will goes to zero exponentially as $h \to \infty$.
 ```
+
+#### Partial autocorrelation of AR models
+
+```{definition, label="pacf", name = "Partial autocorrelation"}
+For a stationary process, $X_t$, the Partial AutoCorrelation Function (PACF) can be denoted as $\phi_{hh}$, for $h = 1, 2, \dots,$ which are
+$$\phi_{11} = \corr(X_{t+1}, X_t) = \rho(1),$$
+and 
+$$\phi_{hh} = \corr(X_{t+h} - \hat{X}_{t+h}, X_t - \hat{X}_t), \mbox{ } h \geq 2.$$
+```
+
+**Remark**
+From the above defination we can think of the partial correlation $\phi_{hh}$ as the correlation between the residual of $X_{t+h}$ after removing its best linear predictor on the vector space spanned by $\{ X_{t+1}, \dots, X_{t+h-1} \}$ and the residual of $X_t$ after reomving its best linear predictor on the same vector space. Similar to the linear regression, after projecting the residuals should be independ with the vector space spanned by $\{ X_{t+1}, \dots, X_{t+h-1} \}$. 
+
+We will discuss about the best linear predictor in the section Forecasing, here we just mention how to obtain the best linear predictor. Given a time serie $X_1, X_2, \dots, X_t$ with zero mean, the best linear predictor of $X_{t+h}$ can be written as $\hat{X}_{t+h} = \sum_{j=1}^t \alpha_j X_j$ such than it satisfies the prediction equations:
+\[ \mathbb{E}(X_{t+h} - \hat{X}_{t+h}) = 0, \]
+and
+\[ \mathbb{E} [(X_{t+h} - \hat{X}_{t+h})X_j ] = 0, \mbox{ for } i = 1, \dots, t.\]
+According to the projection theorem, we can show that satisfying the prediction equations is equivalent to minimizing the mean square error $\mathbb{E}(X_{t+h} - \hat{X}_{t+h})$. Thus we have two equivalent to obtain the best linear predictor.
+
+**Example: PACF of AR(1)**
+Consider a casual AR(1) model ${X_t} = \phi {X_{t - 1}} + {W_t},$ We have, 
+\[\phi_{11} = \corr(X_{t+1}, X_t) = \rho(1) = \phi,\]
+and 
+\[\phi_{22} = \corr(X_{t+2} - \hat{X}_{t+2}, X_t - \hat{X}_t),\]
+Next, we find $\hat{X}_t$ and $\hat{X}_{t+2}$. Since $X_{t+1}$ is the only random between $X_t$ and $X_{t+2}$, $\hat{X}_t$ and $\hat{X}_{t+2}$ are the best linear predictors on the vector space spaned by $X_t$, we can obtain them by minimizing the MSE. 
+\[\mathbb{E}(X_{t+2} - \hat{X}_{t+2})^2 = \mathbb{E}(X_{t+2} - \beta_1 X_{t+1})^2 = \gamma(0) - 2\beta_1 \gamma(1) + \beta_1^2 \gamma(0),\]
+Then by minimizing the MSE, we have $\beta_1 = \frac{\gamma(1)}{\gamma(0)} = \phi$.
+
+Similarily, by minimizing
+\[\mathbb{E}(X_{t} - \hat{X}_{t})^2 = \mathbb{E}(X_{t} - \beta_2 X_{t+1})^2 = \gamma(0) - 2\beta_2 \gamma(1) + \beta_2^2 \gamma(0),\]
+we have $\beta_2 = \frac{\gamma(1)}{\gamma(0)} = \phi$.
+
+Or equivalently we can use the prediction equations. Thus we have
+\[\mathbb{E}[(X_{t+2} - \hat{X}_{t+2})X_{t+1}] = \mathbb{E}[(X_{t+2}X_{t+1} - \beta_1 X_{t+1}^2)] = \gamma(1) - \beta_1 \gamma(0) = 0,\]
+and
+\[\mathbb{E}[(X_{t} - \hat{X}_{t})X_{t+1}] = \mathbb{E}[(X_{t}X_{t+1} - \beta_2 X_{t+1}^2)] = \gamma(1) - \beta_2 \gamma(0) = 0,\]
+Thus we can get the same solutions.
+
+Therefore, \[\phi_{22} = \corr(X_{t+2} - \phi X_{t+1}, X_t - \phi X_{t+1}) = \corr(W_{t+2}, X_t - \phi X_{t+1}) = 0,\]
+note that the last equation is based on casuality.
+
+**Example: PACF of AR(p)**
+In this example we would like to show that the PACF characterize the order of AR(p) models. That is when $h > p$, the PACF $\phi_{hh} = 0$. Suppose a causal AR(p) model, $X_{t+h} = \sum_{j=1}^p \phi_j X_{t+h-j} + W_{t+h}$, we want to calculate $\phi_{hh}$.
+
+The best linear predictor of $X_{t+h}$ is 
+\[\hat{X}_{t+h} = \mathbb{E}\left[X_{t+h}|X_t, \dots, X_{t+h-1}\right] = \mathbb{E}\left[\sum_{j=1}^p \phi_j X_{t+h-j} + W_{t+h}|X_t, \dots, X_{t+h-1}\right] = \sum_{j=1}^p \mathbb{E}\left[\phi_j X_{t+h-j}|X_t, \dots, X_{t+h-1}\right] = \sum_{j=1}^p \phi_j X_{t+h-j}.\]
+Thus when $h > p$,
+\[ \phi_{hh} = corr(X_{t+h} - \hat{X}_{t+h}, X_t - \hat{X}_t) = corr(W_{t+h}, X_t - \hat{X}_t) = 0. \]
+
+
+
 
 ### Estimation of AR($p$) models
 

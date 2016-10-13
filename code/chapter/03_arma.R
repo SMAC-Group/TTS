@@ -47,3 +47,24 @@ a1 = autoplot(acf1)
 a2 = autoplot(acf2)
 a3 = autoplot(acf3)
 grid.arrange(a1, a2, a3, nrow = 1)
+
+
+## @knitr ACF_ARpeg
+library(exts)
+library(gridExtra)
+
+# Define models
+m1 = AR(phi = c(0.3, -0.4, 0.3, 0.1))
+m2 = AR(phi = c(1, -1/4, -0.25))
+m3 = AR(phi = c(1/2, -1/2,))
+
+# Theoretical ACF
+acf1 = theo_acf(m1)
+acf2 = theo_acf(m2)
+acf3 = theo_acf(m3)
+
+# Plot ACFs
+a1 = autoplot(acf1)
+a2 = autoplot(acf2)
+a3 = autoplot(acf3)
+grid.arrange(a1, a2, a3, nrow = 1)
