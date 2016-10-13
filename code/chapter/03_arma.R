@@ -26,3 +26,24 @@ polygon(c(phi1,rev(phi1)),c(rep(-1,10^3),
 
 # Adding text
 text(0,-0.5, c("Causal Region"))
+
+
+## @knitr ACFAR2eg
+library(exts)
+library(gridExtra)
+
+# Define models
+m1 = AR(phi = c(1.3, -0.4))
+m2 = AR(phi = c(1, -1/4))
+m3 = AR(phi = c(1/2, -1/2))
+
+# Theoretical ACF
+acf1 = theo_acf(m1)
+acf2 = theo_acf(m2)
+acf3 = theo_acf(m3)
+
+# Plot ACFs
+a1 = autoplot(acf1)
+a2 = autoplot(acf2)
+a3 = autoplot(acf3)
+grid.arrange(a1, a2, a3, nrow = 1)

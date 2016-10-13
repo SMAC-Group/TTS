@@ -136,7 +136,7 @@ TO DO JJB: Please complete, remove or merge this section into 3.1.
 
 The class of autoregressive models is based on the idea that previous values in the time series are needed to explain current values in the series. For this class of models, we assume that the $p$ previous observations are needed for this purpose and we therefore denote this class as AR($p$). In the previous chapter, the model we introduced was an AR(1) in which only the immediately previous observation is needed to explain the following one and therefore represents a particular model which is part of the more general class of AR(p) models.
 
-```{definition, label="ar_p", name = "Autoregressive Models of Order $p$"}
+```{definition, label="arp", name = "Autoregressive Models of Order $p$"}
 The AR(p) models can be formally represented as follows
 $${X_t} = {\phi_1}{X_{t - 1}} + ... + {\phi_p}{X_{t - p}} + {W_t},$$
 where $|\phi_p| \geq 0$ and $W_t$ is a (Gaussian) white noise process with variance $\sigma^2$. 
@@ -190,7 +190,7 @@ In this section we discuss the main properties of AR($p$) processes. We first co
 
 In the previous section we already introduced the idea of causal time series model and therefore let us now introduce this concept in a more formal manner.
 
-```{definition, label="causal_ar", name = "Causality of AR models"}
+```{definition, label="causalar", name = "Causality of AR models"}
  An AR(p) model is said to be *causal*, if the time series $\{ X_t \}_{-\infty}^{\infty}$ can be written as a one-sided linear process:
 \begin{equation}
     X_t = \sum_{j = 0}^{\infty} \psi_j W_{t-j} = \frac{1}{\phi(B)} W_t = \psi(B) W_t,
@@ -201,7 +201,7 @@ where $\phi(B) = \sum_{j = 0}^{\infty} \phi_j B^j$, $\sum_{j=0}^{\infty}|\phi_j|
 
 As discussed earlier this condition implies that only the past values of the time series can explain the future values of it, and not viceversa. As discussed in the previous section, linear processes are (weakly) stationarity processes and therefore causality directely implies (weak) stationarity. However, it might be difficult and not obvious to show the causality of AR($p$) processes by using the above definitions directly, thus the following property is particulary useful in practice. 
 
-```{theorem, label="thm_causal_ar", name = "Causality of AR models"}
+```{theorem, label="theocausalar", name = "Causality of AR models"}
 If an AR(p) model is causal if and only if $\phi(z) = 0$ for $|z| \leq 1$. Then, the coefficients of the one-sided linear process given in \@ref(eq:causal) can be obtained by solving
 \begin{equation*}
     \psi(z) = \frac{1}{\sum_{j=0}^{\infty} \phi_j z^j} = \frac{1}{\phi(z)}, \mbox{ } |z| \leq 1.
@@ -212,11 +212,184 @@ The proof of this result is omitted but can (for example) be found in Appendix B
 
 Before further discussing the properties of AR($p$) models we consider the following two examples which discuss the causality (and stationarity) of an AR(2).
 
+```{example, label="ex1causality", name = "Transforming an AR(2) into a linear process"}
+
+Given the following AR(2) $X_t = 1.3X_{t-1} - 0.4X_{t-2} + W_t$ one could wonder if this process can be written as a one-sided linear process as in Definition @causalar. This can be done using the following approach:
+
+*Step 1:* The AR operator of this model can be expressed as:
+
+\[\phi(z) = 1 - 1.3z + 0.4z^2 = (1 - 0.5z)(1 - 0.8z) ,\]
+
+and has roots $2 > 1$ and $1.25 > 1$. Thus, we should be able to covert it into linear process.
+
+*Step 2:* From Theorem @theocausalar we know that if AR process has roots that lie outside the unit circle, we can write $X_t = \phi^{-1}(B)W_t$ and "inverse" the autoregressive operator $\phi(B)$ as follows:
+
+\[\phi^{-1}(z) = \frac{1}{(1 - 0.5z)(1 - 0.8z)} = \frac{c_1}{(1 - 0.5z)} + \frac{c_2}{(1 - 0.8z)} = \frac{C_2(1 - 0.5z) + C_1(1 - 0.8z)}{(1 - 0.5z)(1 - 0.8z)} ,\]
+
+since we can think of the above equation is valid for any $z$, we will solve the following system of equations to get $c_1$ and $c_2$,
+
+\[\begin{cases}
+        c_1 + c_2 &= 1\\
+        -0.5 c_2 - 0.8 c_1 &= 0
+\end{cases}
+\implies 
+\begin{cases}
+        c_1 &= -\frac{5}{3}\\
+        2_2 &= \frac{8}{3},
+\end{cases}
+\]
+
+and, we obtain
+
+\[\phi^{-1}(z) = \frac{-5}{3(1 - 0.5z)} + \frac{8}{3(1 - 0.8z)} .\]
+
+*Step 3:* Using Geometric series, i.e. $a \sum_{k = 0}^{\infty}r^k = \frac{a}{1-r}, \mbox{ if } |r| < 1$, we have
+
+\[\begin{cases}
+      \frac{-5}{3(1 - 0.5z)} &= \frac{-5}{3} \sum_{j = 0}^{\infty}0.5^jz^j , \mbox{ if } |z| < 2\\
+      \frac{8}{3(1 - 0.8z)} &= \frac{8}{3} \sum_{j = 0}^{\infty}0.8^jz^j , \mbox{ if } |z| < 1.25.
+\end{cases}\]
+
+This allows to expressed $\phi^{-1}(z)$ as
+
+\[\phi^{-1}(z) = \sum_{j = 0}^{\infty} \left[ \frac{-5}{3} (0.5)^j + \frac{8}{3} (0.8)^j \right] z^j, \mbox{ if } |z| < 1.25 .\]
+
+*Step 4:* Finally, we obtain
+\[X_t = \phi^{-1}(B)W_t = \sum_{j = 0}^{\infty} \left[ \frac{-5}{3} (0.5)^j + \frac{8}{3} (0.8)^j \right] B^j W_t = \sum_{j = 0}^{\infty} \left[ \frac{-5}{3} (0.5)^j + \frac{8}{3} (0.8)^j \right] W_{t-j},
+\]
+which verifies that the AR(2) is causal (and stationary).
+```
+
+```{example, label="ex2causality", name = "Causal conditions for an AR(2) processes"}
+We already know that an AR(1) is causal with the simple condition $|\phi_1| < 1$. It could seem natural to believe that an AR(2) should be causal (implies stationary) with the conditon: $|\phi_i| < 1, \, i = 1,2$, however, this is not the case. Indeed, an AR(2) can be expressed as
+
+\[X_t = \phi_1 X_{t-1} + \phi_2 X_{t-2} + W_t = \phi_1 B X_t + \phi_2 B^2 X_t + W_t,\]
+
+corresponding to the following autoregressive operator:
+
+\[\phi(z) = 1 - \phi_1 z - \phi_2 z^2.\]
+
+Therefore, the process is causal when the roots of $\phi(z)$ lies outside of the unit circle. Letting $z_1$ and $z_2$ denote those roots, we impose the following constraints to ensure the causality of the model:
+
+\[\begin{aligned}
+|z_1| &> 1, \;\;\;\; \text{where} \;\; &z_1 = \frac{\phi_1 + \sqrt{\phi_1^2 + 4\phi_2}}{-2 \phi_2},\\
+|z_2| &> 1, \;\;\;\; \text{where} \;\; &z_2 = \frac{\phi_1 - \sqrt{\phi_1^2 + 4\phi_2}}{-2 \phi_2},
+\end{aligned}\]
+note that $z_1$ and $z_2$ can be complex values.
+
+Thus we can represent $\phi_1$ and $\phi_2$ by $z_1$ and $z_2$,
+\[\begin{aligned}
+\phi_1 = (z_1^{-1} + z_2^{-1}),\\
+\phi_2 = -(z_1 z_2)^{-1}.
+\end{aligned}\]
+
+Moreover we have the following equivalent condition for causality:
+
+$$\begin{cases}
+        |z_1| &> 1\\
+        |z_2| &> 1,
+\end{cases}$$
+if and only if
+$$\begin{cases}
+        \phi_1 + \phi_2 &< 1\\
+        \phi_2 - \phi_1 &< 1\\
+        |\phi_2| &< 1.
+\end{cases}$$
+
+We can show "*if*"
+
+$\phi_1 + \phi_2 = \frac{1}{z_1} + \frac{1}{z_2} - \frac{1}{z_1z_2} = \frac{1}{z_1}\left( 1 - \frac{1}{z_2} \right) + \frac{1}{z_2} < 1 - \frac{1}{z_2} + \frac{1}{z_2} = 1$, (since $\left( 1 - \frac{1}{z_2} \right) > 0$)
+
+$\phi_2 - \phi_1 = - \frac{1}{z_1z_2} - \frac{1}{z_1} - \frac{1}{z_2} = - \frac{1}{z_1}\left( \frac{1}{z_2} + 1 \right) - \frac{1}{z_2} < \frac{1}{z_2} + 1 - \frac{1}{z_2} = 1$, (since $\left( \frac{1}{z_2} + 1 \right) > 0$)
+
+$|\phi_2| = \frac{1}{|z_1||z_2|} < 1$.
+
+We can also show "*only if*"
+
+Since $z_1 = \frac{\phi_1 + \sqrt{\phi_1^2 + 4\phi_2}}{-2 \phi_2}$ and $\phi_2-1 < \phi_1 < 1-\phi_2$, then $z_1^2 = \frac{\left(\phi_1 + \sqrt{\phi_1^2 + 4\phi_2}\right)^2}{4 \phi_2^2} < \frac{\left((1-\phi_2) + \sqrt{(1-\phi_2)^2 + 4\phi_2}\right)^2}{4 \phi_2^2} = \frac{4}{4 \phi_2^2} \leq 1$.
+
+Since $z_2 = \frac{\phi_1 - \sqrt{\phi_1^2 + 4\phi_2}}{-2 \phi_2}$ and $\phi_2-1 < \phi_1 < 1-\phi_2$, then $z_2^2 = \frac{\left(\phi_1 - \sqrt{\phi_1^2 + 4\phi_2}\right)^2}{4 \phi_2^2} < \frac{\left((\phi_2-1) + \sqrt{(\phi_2-1)^2 + 4\phi_2}\right)^2}{4 \phi_2^2} = \frac{4 \phi_2^2}{4 \phi_2^2} = 1$.
+
+Finally, the causal region of an AR(2) is depicted on the figure below.
+
+```{r causalAR2, echo = FALSE, cache = TRUE}
+```
+
+#### Autocorrelation
+
+In this section we discuss the autocorrelation of (causal) AR($p$) processes. Before considering the general case of an AR($p$), we revisit Example @ref(ex1causality) and derive the ACF of the AR(2) model presented in this example.
+
+```{example, label="ar2acf", name = "Autocorrelation of an AR(2)"}
+Considering the same model as in Example @ref(ex1causality), i.e. $X_t = 1.3X_{t-1} - 0.4X_{t-2} + W_t$, we can derive the ACF using the following steps: 
+
+*Step 1:* Find the homogeneous difference equation with respect to the ACF $\rho(h)$, which in this case is given by:
+\[\rho(h) - 1.3\rho(h-1) + 0.4\rho(h-2) = 0, \mbox{ } h = 1,2,...\]
+and the initial conditions are $\rho(0) = 1$ and $\rho(-1) = \frac{13}{14}$.
+
+*Step 2:* Using the results of Example @ref(ex1causality), we have:
+\[\phi(z) = 1 - 1.3z + 0.4z^2 = (1 - 0.5z)(1 - 0.8z) ,\]
+and the roots of this equation are given by $z_1 = 2 > 1$ and $z_2 = 1.25 > 1$. Moreover, since $z_1$ and $z_2$ are real and distinct, we obtain:
+\[\rho(h) = c_1 z_1^{-h} + c_2 z_2^{-h}.\]
+
+*Step 3:* Solve $c_1$ and $c_2$ based on two initial conditions found in Step 1, i.e.
+\[\begin{cases}
+      \rho(0) = c_1 + c_2 = 1\\
+      \rho(-1) = 2c_1 + 1.25c_2 = \frac{13}{14},
+\end{cases},\]
+implying that $c_1 = -\frac{3}{7}$ and $c_2 = \frac{10}{7}$. The ACF for this model is therefore given by
+\[\rho(h) = -\frac{3}{7}2^{-h} + \frac{10}{7}\left(\frac{5}{4}\right)^{-h} .\]
+```
 
 
-## Estimation of AR(p) models
+EXAMPLE MISSING HERE! TO DO
 
-Given the above defined properties of the AR(p) models, we will now discuss how these models can be estimated, more specifically how the $p+1$ parameters can be obtained from an observed time series. Indeed, a reliable estimation of these models is necessary in order to intepret and describe different natural phenomena and/or forecast possible future values of the time series.
+```{r ACFAR2eg, fig.height = 3, fig.width = 9, warning=FALSE, message=FALSE}
+```
+
+
+
+
+Next we present an example to show how to derive the ACF for general causal AR(p) model. It is much more complicated than what we did for AR(2).
+
+```{example, label="arpacf", name = "Autocorrelation of an AR($p$)"}
+Recall that the AR(p) models can be formally represented as follows
+$${X_t} = {\phi_1}{X_{t - 1}} + ... + {\phi_p}{X_{t - p}} + {W_t},$$
+where $W_t$ is a (Gaussian) white noise process with variance $\sigma^2$.
+
+There are two ways to derive the ACF for general AR(p) models. 
+
+For the first method, since we assume our AR(p) model is causal, we can write it as a one-sided linear process: $X_t = \sum_{j = 0}^{\infty} \psi_j W_{t-j}$, then the autocovariance function $\gamma(h) = cov(X_{t+h},X_t) = \sigma^2 \sum_{j=0}^{\infty} \psi_j \psi_{j+h}$, for $h \geq 0$. The difficulty of this method is to solve the $\psi$-weights. Treating AR(p) as a special case of ARMA(p,q), we can let the MA polynomials $\theta(z) = 1$ and solve the $\psi$-weights by matching the coefficients in $\phi(z)\psi(z) = \theta(z)$. 
+
+For the second method, we can also use the procedure we used for AR(2). That is finding a homogeneous difference equation with respect to ACF $\rho(h)$, and solve it directly. To do so we need following steps.
+
+Step 1. Find the homogeneous difference equation with repsect to the ACF $\rho(h)$.
+
+Firstly verify whether our model is causal. If it is then we have,
+\[\rho(h) - \phi_1\rho(h-1) - \cdots - \phi_p\rho(h-p) = 0, \mbox{ } h \geq p. \]
+
+Step 2. Solve the roots of the associated AR polynomials.
+
+The polynomials can be written as:
+\[\phi(z) = 1 - \phi_1z - \cdots - \phi_pz^p .\]
+
+Suppose the polynomials have $r$ distinct roots, and let $m_j$ denoted the number of replicates of $z_j$, such that $m_1 +m_2 + \cdots +m_r = p$.
+
+Then the general solution of the homogeneous difference equation is 
+\[\rho(h) = z_1^{-h}P_1(h) + z_2^{-h}P_2(h) + \cdots + z_r^{-h}P_r(h), \mbox{ } h \geq p,\]
+where $P_j(h)$ is the polynomial in $h$ of degree $m_j - 1$.
+
+Step 3. Solve every $P_j(h)$ based on $p$ given initial conditions on $\rho(h)$.
+
+**Remark**
+Since the AR(p) model is causal, the roots we obtained in step 2 should be outside of the unit circle (i.e. $|z_i| > 1$, for $i = 1, \cdots, r$). Then the absolute value of the general solution 
+\[|\rho(h)| = \left|\frac{P_1(h)}{z_1^{h}} + \frac{P_2(h)}{z_2^{h}} + \cdots + \frac{P_r(h)}{z_r^{h}}\right| \leq \left|\frac{P_1(h)}{z_1^{h}}\right| + \left| \frac{P_2(h)}{z_2^{h}}\right| + \dots + \left|\frac{P_r(h)}{z_r^{h}}\right| \leq \frac{r \left|P_r(h)\right|}{\min_{j = 1, \dots, r} \left|z_j \right|^{h}},\]
+
+from the right hand side of the last inequality, we can find the rate of convergence would be dominated by $\frac{1}{\min_{j = 1, \dots, r} \left|z_j \right|^{h}}$. Thus the ACF $\rho(h)$ will goes to zero exponentially as $h \to \infty$.
+```
+
+### Estimation of AR($p$) models
+
+Given the above defined properties of the AR($p$) models, we will now discuss how these models can be estimated, more specifically how the $p+1$ parameters can be obtained from an observed time series. Indeed, a reliable estimation of these models is necessary in order to intepret and describe different natural phenomena and/or forecast possible future values of the time series.
 
 A first approach builds upon the earlier definition of the AR(p) as being a linear process. Recall that
 \begin{equation}
