@@ -172,9 +172,7 @@ Therefore, $\rho_1$ and $\rho_2$ must lie in a parabolic shaped region defined b
 From our derivation it is clear that the restrictions on the autocorrelation are very complicated thereby justifying the need for other forms of fundamental representation which we will explore later in this text. Before moving on to the estimation of the autocorrelation and autocovariance functions, we must first discuss the stationarity of $(X_t)$, which will provide a convenient framework in which $\gamma(h)$ and $\rho(h)$ can be used (rather that $\gamma(t,t+h)$ for example) and (easily) estimated.
 
 
-## Stationarity
-
-### Definitions
+## Stationarity {#stationary}
 
 There are two kinds of stationarity that are commonly used. They are defined as follows:
 
