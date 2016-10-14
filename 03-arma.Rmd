@@ -347,8 +347,6 @@ EXAMPLE MISSING HERE! TO DO
 ```
 
 
-
-
 Next we present an example to show how to derive the ACF for general causal AR(p) model. It is much more complicated than what we did for AR(2).
 
 ```{example, label="arpacf", name = "Autocorrelation of an AR($p$)"}
@@ -405,7 +403,7 @@ and
 \[ \mathbb{E} [(X_{t+h} - \hat{X}_{t+h})X_j ] = 0, \mbox{ for } i = 1, \dots, t.\]
 According to the projection theorem, we can show that satisfying the prediction equations is equivalent to minimizing the mean square error $\mathbb{E}(X_{t+h} - \hat{X}_{t+h})$. Thus we have two equivalent to obtain the best linear predictor.
 
-**Example: PACF of AR(1)**
+```{example, label="pacfar1", name = "PACF of AR(1)"}
 Consider a casual AR(1) model ${X_t} = \phi {X_{t - 1}} + {W_t},$ We have, 
 \[\phi_{11} = \corr(X_{t+1}, X_t) = \rho(1) = \phi,\]
 and 
@@ -426,17 +424,16 @@ Thus we can get the same solutions.
 
 Therefore, \[\phi_{22} = \corr(X_{t+2} - \phi X_{t+1}, X_t - \phi X_{t+1}) = \corr(W_{t+2}, X_t - \phi X_{t+1}) = 0,\]
 note that the last equation is based on casuality.
+```
 
-**Example: PACF of AR(p)**
+```{example, label="pacfarp", name = "PACF of AR(p)"}
 In this example we would like to show that the PACF characterize the order of AR(p) models. That is when $h > p$, the PACF $\phi_{hh} = 0$. Suppose a causal AR(p) model, $X_{t+h} = \sum_{j=1}^p \phi_j X_{t+h-j} + W_{t+h}$, we want to calculate $\phi_{hh}$.
 
 The best linear predictor of $X_{t+h}$ is 
 \[\hat{X}_{t+h} = \mathbb{E}\left[X_{t+h}|X_t, \dots, X_{t+h-1}\right] = \mathbb{E}\left[\sum_{j=1}^p \phi_j X_{t+h-j} + W_{t+h}|X_t, \dots, X_{t+h-1}\right] = \sum_{j=1}^p \mathbb{E}\left[\phi_j X_{t+h-j}|X_t, \dots, X_{t+h-1}\right] = \sum_{j=1}^p \phi_j X_{t+h-j}.\]
 Thus when $h > p$,
 \[ \phi_{hh} = corr(X_{t+h} - \hat{X}_{t+h}, X_t - \hat{X}_t) = corr(W_{t+h}, X_t - \hat{X}_t) = 0. \]
-
-
-
+```
 
 ### Estimation of AR($p$) models
 
@@ -460,7 +457,8 @@ and, recalling that $\gamma(h) = \gamma(-h)$,
 \end{equation}
 We can now define the Yule-Walker equations.
 
-**Definition:** The Yule-Walker equations are given by
+```{definition, label = "yweqs", name = "Yule-Walker Equations"}
+The Yule-Walker equations are given by
 \begin{equation}
     \gamma(h) = \phi_1 \gamma(h-1) + ... + \phi_p \gamma(h-p), \mbox{ } h = 1,...,p
 \end{equation}
@@ -473,6 +471,7 @@ which in matrix notation can be defined as follows
     \Gamma_p \mathbf{\phi} = \mathbf{\gamma}_p \text{and} \sigma_w^2 = \gamma(0) - \mathbf{\phi}'\mathbf{\gamma}_p
 \end{equation}
 where $\Gamma_p$ is the $p\times p$ matrix containing the autocovariances $\gamma(k-j), j,k = 1, ...,p$ while $\mathbf{\phi} = (\phi_1,...,\phi_p)'$ and $\mathbf{\gamma}_p = (\gamma(1),...,\gamma(p))'$ are $p\times 1$ vectors.
+```
 
 Considering the Yule-Walker equations, it is possible to use a method of moments approach and simply replace the theoretical quantities given in the previous definition with their empirical (estimated) counterparts that we saw in the previous chapter. This gives us the following Yule-Walker estimators
 \begin{equation}
