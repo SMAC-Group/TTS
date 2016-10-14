@@ -199,7 +199,7 @@ In the previous section we already introduced the idea of causal time series mod
 where $\phi(B) = \sum_{j = 0}^{\infty} \phi_j B^j$, $\sum_{j=0}^{\infty}|\phi_j| < \infty$ and $\phi_0 = 1$.
 ```
 
-As discussed earlier this condition implies that only the past values of the time series can explain the future values of it, and not viceversa. As discussed in the previous section, linear processes are (weakly) stationarity processes and therefore causality directely implies (weak) stationarity. However, it might be difficult and not obvious to show the causality of AR($p$) processes by using the above definitions directly, thus the following property is particulary useful in practice. 
+As discussed earlier this condition implies that only the past values of the time series can explain the future values of it, and not viceversa. As discussed in the previous section, linear processes are (weakly) stationary processes and therefore causality directly implies (weak) stationarity. However, it might be difficult and not obvious to show the causality of AR($p$) processes by using the above definitions directly, thus the following property is particulary useful in practice. 
 
 ```{theorem, label="theocausalar", name = "Causality of AR models"}
 If an AR(p) model is causal if and only if $\phi(z) = 0$ for $|z| \leq 1$. Then, the coefficients of the one-sided linear process given in \@ref(eq:causal) can be obtained by solving
@@ -440,15 +440,15 @@ Thus when $h > p$,
 
 ### Estimation of AR($p$) models
 
-Given the above defined properties of the AR($p$) models, we will now discuss how these models can be estimated, more specifically how the $p+1$ parameters can be obtained from an observed time series. Indeed, a reliable estimation of these models is necessary in order to intepret and describe different natural phenomena and/or forecast possible future values of the time series.
+Given the above defined properties of the AR($p$) models, we will now discuss how these models can be estimated, more specifically how the $p+1$ parameters can be obtained from an observed time series. Indeed, a reliable estimation of these models is necessary in order to interpret and describe different natural phenomena and/or forecast possible future values of the time series.
 
 A first approach builds upon the earlier definition of the AR(p) as being a linear process. Recall that
 \begin{equation}
-    X_t = \sum_{j = 1}^{p} \phi_j X_{t-j}
+    X_t = \sum_{j = 1}^{p} \phi_j X_{t-j} + W_t
 \end{equation}
 which delivers the following autocovariance function
 \begin{equation}
-    \gamma(h) = cov(X_{t+h}, X_t) = cov(\sum_{j = 1}^{p} \phi_j X_{t-j}, X_t) = \sum_{j = 1}^{p} \phi_j \gamma(h-j), \mbox{ } h \geq 0.
+    \gamma(h) = cov(X_{t+h}, X_t) = cov(\sum_{j = 1}^{p} \phi_j X_{t-j} + W_{t+h}, X_t) = \sum_{j = 1}^{p} \phi_j \gamma(h-j), \mbox{ } h \geq 0.
 \end{equation}
 Rearranging the above expressions we obtain the following general equations
 \begin{equation}
@@ -490,9 +490,9 @@ The Yule-Walker estimators for a causal AR(p) model have the following asymptoti
 
 Therefore the Yule-Walker estimators have an asymptotically normal distribution and the estimator of the innovation variance is consistent. Moreover, these estimators are also optimal for AR(p) models, meaning that they are also efficient. However, there exists another method which allows to achieve this efficiency also for general ARMA models and this is the maximum likelihood method. Considering an AR(1) model as an example, and assuming without loss of generality that the expectation is zero, we have the following representation of the AR(1) model
 \begin{equation*}
-X_t = \phi X_{t-1} + w_t
+X_t = \phi X_{t-1} + W_t
 \end{equation*}
-where $|\phi|<1$ and $w_t \overset{iid}{\sim} \mathcal{N}(0,\sigma_w^2)$. Supposing we have observations issued from this model $(x_t)_{t=1,...,T}$, then the likelihood function for this setting is given by
+where $|\phi|<1$ and $W_t \overset{iid}{\sim} \mathcal{N}(0,\sigma_w^2)$. Supposing we have observations issued from this model $(x_t)_{t=1,...,T}$, then the likelihood function for this setting is given by
 \begin{equation*}
 L(\phi,\sigma_w^2) = f(\phi,\sigma_w^2|x_1,...,x_T)
 \end{equation*}
@@ -537,8 +537,35 @@ The estimation methods presented so far are standard ones for these kind of mode
 \begin{equation*}
  \kappa(\mathbf{\theta}|x_j,...x_{j+p}) = \frac{\partial}{\partial \mathbf{\theta}} (x_{j+p} - \sum_{k=1}^p \phi_k x_{j+p-k})^2
 \end{equation*}
-which delivers the estimating equation
+where $\theta$ is the parameter vector containing, in the case of an AR(1) model, the two parameters $\phi$ and $\sigma_w^2$ (i.e. $\theta = [\phi \,\, \sigma_w^2]$). This delivers the estimating equation
 \begin{equation*}
-\sum_{j=1}^{n-p} \kappa (\mathbf{\theta}|x_j,...x_{j+p}) = 0 .
+\sum_{j=1}^{n-p} \kappa (\hat{\mathbf{\theta}}|x_j,...x_{j+p}) = 0 .
 \end{equation*}
-The score function 
+The score function $\kappa(\cdot)$ is clearly not bounded, in the sense that if we arbitrarily move a value of $(x_t)$ to infinity then the score function also goes to infinity thereby delivering a biased estimation procedure. To avoid that outlying observations bias the estimation excessively, a bounded score function can be used to deliver an M-estimator given by
+\begin{equation*}
+\sum_{j=1}^{n-p} \psi (\hat{\mathbf{\theta}}|x_j,...x_{j+p}) = 0,
+\end{equation*}
+where $\psi(\cdot)$ is a function of bounded variation. When conditioning on the first $p$ observations, this problem can be brought back to a linear regression problem which can be applied in a robust manner using the robust regression tools available in R such as \texttt{rlm(\cdot)} or \texttt{lmrob(\cdot)}. However, another available tool in R which can applied directly without conditioning also for general ARMA models is the \texttt{gmwm(\cdot)} function which, by specifying the option ``\texttt{robust=TRUE}''. This function makes use of a quantity called the wavelet variance (denoted as $\nu$) which is estimated robustly and then used to retrieve the parameters $\theta$ of the time series model. The robust estimate is obtained by solving the following minimization problem
+\begin{equation*}
+\hat{\theta} = \underset{\theta \in \Theta}{\argmin} (\hat{\nu} - \nu{\theta})^T\Omega(\hat{\nu} - \nu{\theta}),
+\end{equation*}
+where $\hat{\nu}$ is the robustly estimated wavelet variance, $\nu{\theta}$ is the theoretical wavelet variance and $\Omega$ is positive definite weighting matrix. Below we show some simulation studies where we present the results of the above estimation procedures in absence and in presence of contamination in the data.
+
+INSERT SIMULATIONS
+
+For all the above methods, it would be necessary to understand how ``precise'' their estimates are. To do so we would need to obtain confidence intervals for these estimates and this can be done mainly in two manners:
+\begin{itemize}
+  \item using the asymptotic distribution of the parameter estimates;
+  \item using parametric bootrstrap.
+\end{itemize}
+The first approach consists in using the asymptotic distribution of the estimators presented earlier to deliver approximations of the confidence intervals which get better as the length of the observed time series increases. Hence, for example, if we wanted to find a 95\% confidence interval for the parameter $\phi$, we would use the quantiles of the normal distribution (given that all methods presented earlier present this asymptotic distribution). However, this approach can present some drawbacks, one of which is there behaviour when the parameters are close to the boundaries of the parameter space. Let us take the example of an AR(1) to illustrate this problematic and suppose that $\phi = 0.99 < 1$ and $\sigma_w^2$. It can be seen that the parameter $\phi$ respects the condition for stationarity but is very close to its boundary. The code below computes the confidence interval for $\phi$ using the asymptotic normal distribution.
+
+```{r asy_conf_int, echo = FALSE, cache = TRUE}
+```
+
+It can be seen how the confidence interval contains values that make the AR(1) non-stationary (i.e. values of $\phi$ larger than 1). For this purpose, the approach based on parametric bootstrap provides a viable solution. Indeed, parametric bootstrap takes the estimated parameter values and uses them in order to simulate from an AR(1) based on these parameter values. For each simulation the parameters are estimated again and saved. Finally, the empirical quantiles of the saved estimated parameter values provide a confidence interval which does not suffer from boundary problems. The code below gives an example of how this confidence interval is built based on the same estimation procedure but using parametric bootstrap (using 500 bootstrap replicates).
+
+```{r boot_conf_int, echo = FALSE, cache = TRUE}
+```
+
+In this case, it can be observed that the confidence interval lies entirely within the boundaries of the parameter space.

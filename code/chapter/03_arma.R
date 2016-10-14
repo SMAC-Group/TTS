@@ -68,3 +68,28 @@ a1 = autoplot(acf1)
 a2 = autoplot(acf2)
 a3 = autoplot(acf3)
 grid.arrange(a1, a2, a3, nrow = 1)
+
+## @knitr asy_conf_int
+set.seed(2)
+x = arima.sim(n = 50, list(ar = 0.99, ma = 0, sd = 1))
+fit = arima(x, order = c(1,0,0), include.mean = FALSE)
+c(fit$coef - 1.96*sqrt(fit$var.coef),fit$coef + 1.96*sqrt(fit$var.coef))
+
+## @knitr boot_conf_int
+set.seed(2)
+x = arima.sim(n = 50, list(ar = 0.99, ma = 0, sd = 1))
+fit = arima(x, order = c(1,0,0), include.mean = FALSE)
+
+B = 500
+est.phi = rep(NA,B)
+
+for(i in 1:B){
+  
+  set.seed(i+2)
+  
+  x.star = arima.sim(n = 50, list(ar = fit$coef, ma = 0, sd = fit$sigma2))
+  est.phi[i] = try(arima(x.star, order = c(1,0,0), include.mean = FALSE)$coef, silent = T)
+  
+}
+
+suppressWarnings(quantile(as.numeric(est.phi),probs=c(0.025,0.975),na.rm = T))
