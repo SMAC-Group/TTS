@@ -273,7 +273,7 @@ Next we present an example to show how to derive the ACF for general causal AR(p
 **Example: ACF of AR(p)**
 Recall that the AR(p) models can be formally represented as follows
 $${X_t} = {\phi_1}{X_{t - 1}} + ... + {\phi_p}{X_{t - p}} + {W_t},$$
-where $W_t$ is a (Gaussian) white noise process with variance $\sigma^2$.
+where $\phi_p \neq 0$ and $W_t$ is a (Gaussian) white noise process with variance $\sigma^2$.
 
 As it is shown in Chapter 3.4 of textbook, there are two ways to derive the ACF for general AR(p) models. 
 

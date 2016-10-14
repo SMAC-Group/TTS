@@ -139,7 +139,7 @@ The class of autoregressive models is based on the idea that previous values in 
 ```{definition, label="arp", name = "Autoregressive Models of Order $p$"}
 The AR(p) models can be formally represented as follows
 $${X_t} = {\phi_1}{X_{t - 1}} + ... + {\phi_p}{X_{t - p}} + {W_t},$$
-where $|\phi_p| \geq 0$ and $W_t$ is a (Gaussian) white noise process with variance $\sigma^2$. 
+where $\phi_p \neq 0$ and $W_t$ is a (Gaussian) white noise process with variance $\sigma^2$. 
 ```
 
 In general, we will assume that the expectation of the process $({X_t})$, as well as that of the following ones in this chapter, is zero. The reason for this simplification is that if $\mathbb{E} [ X_t ] = \mu$, we can define an AR process *around* $\mu$ as follows:
