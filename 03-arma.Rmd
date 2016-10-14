@@ -545,7 +545,7 @@ The score function $\kappa(\cdot)$ is clearly not bounded, in the sense that if 
 \begin{equation*}
 \sum_{j=1}^{n-p} \psi (\hat{\mathbf{\theta}}|x_j,...x_{j+p}) = 0,
 \end{equation*}
-where $\psi(\cdot)$ is a function of bounded variation. When conditioning on the first $p$ observations, this problem can be brought back to a linear regression problem which can be applied in a robust manner using the robust regression tools available in R such as \texttt{rlm(\cdot)} or \texttt{lmrob(\cdot)}. However, another available tool in R which can applied directly without conditioning also for general ARMA models is the \texttt{gmwm(\cdot)} function which, by specifying the option ``\texttt{robust=TRUE}''. This function makes use of a quantity called the wavelet variance (denoted as $\nu$) which is estimated robustly and then used to retrieve the parameters $\theta$ of the time series model. The robust estimate is obtained by solving the following minimization problem
+where $\psi(\cdot)$ is a function of bounded variation. When conditioning on the first $p$ observations, this problem can be brought back to a linear regression problem which can be applied in a robust manner using the robust regression tools available in R such as `rlm(...)` or `lmrob(...)`. However, another available tool in R which can applied directly without conditioning also for general ARMA models is the `gmwm(...)` function which, by specifying the option `robust = TRUE`. This function makes use of a quantity called the wavelet variance (denoted as $\nu$) which is estimated robustly and then used to retrieve the parameters $\theta$ of the time series model. The robust estimate is obtained by solving the following minimization problem
 \begin{equation*}
 \hat{\theta} = \underset{\theta \in \Theta}{\argmin} (\hat{\nu} - \nu{\theta})^T\Omega(\hat{\nu} - \nu{\theta}),
 \end{equation*}
@@ -553,7 +553,7 @@ where $\hat{\nu}$ is the robustly estimated wavelet variance, $\nu{\theta}$ is t
 
 INSERT SIMULATIONS
 
-For all the above methods, it would be necessary to understand how ``precise'' their estimates are. To do so we would need to obtain confidence intervals for these estimates and this can be done mainly in two manners:
+For all the above methods, it would be necessary to understand how "precise" their estimates are. To do so we would need to obtain confidence intervals for these estimates and this can be done mainly in two manners:
 \begin{itemize}
   \item using the asymptotic distribution of the parameter estimates;
   \item using parametric bootrstrap.
