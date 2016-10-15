@@ -766,4 +766,17 @@ Furthermore, it can be shown that:
 So, this is not a really optimal estimator...
 
 ## Prediction (Forecast)
+One of the most interesting things in time series analysis is to predict the future unobserved values based on the observed values up to now. However, it is not possible if the underlying model is unknown, thus in this section we assume the time series $X_t$ is stationary and its model is known. Recall that the best linear predictor is mentioned when we calculate the PACF of AR model. Here is the definition of best linear predictor.
 
+**Definition** 
+Given a stationary time serie $X_1, X_2, \dots, X_t$, without loss of generality we assume it has mean, the best linear predictor of $X_{t+h}$ is the linear combination $\sum_{j=1}^t \alpha_j X_j$ that minimize $\mathbb{E}|X_{t+h} - Y|^2$ over all linera combinations $Y$ of $X_1, X_2, \dots, X_t$. The minimal value $\mathbb{E}|X_{t+h} - \sum_{j=1}^t \alpha_j X_j|^2$ is called the square prediction error.
+
+In the preceding section, we also give an equivalent way to find the best linear predictor by solving the predition equations,
+\[ \mathbb{E}(X_{t+h} - \hat{X}_{t+h}) = 0, \mbox{( it is trivil for TS with zero mean)}\]
+and
+\[ \mathbb{E} [(X_{t+h} - \hat{X}_{t+h})X_j ] = 0, \mbox{ for } i = 1, \dots, t.\]
+
+Predition equations are leaded by projection theorem as follows.
+
+**Theorem** (Projection Theorem)
+Let $\mathcal{M} \subset \mathcal{L}_2$ be a closed linear subspace of Hibert space. For every $y \in \mathcal{L}_2$, there exists a unique element $\hat{y} \in \mathcal{M}$ that minimizes $||y - l||^2$ over $l \in \mathcal{M}$. This element is uniquely determined by the requirements (1) $\hat{y} \in \mathcal{M}$ and (2) $(y - \hat{y}) \perp \mathcal{M}$.
