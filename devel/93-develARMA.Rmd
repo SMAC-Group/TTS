@@ -305,7 +305,19 @@ Since the AR(p) model is causal, the roots we obtained in step 2 should be outsi
 
 from the right hand side of the last inequality, we can find the rate of convergence would be dominated by $\frac{1}{\min_{j = 1, \dots, r} \left|z_j \right|^{h}}$. Thus the ACF $\rho(h)$ will goes to zero exponentially as $h \to \infty$.
 
+**Remark**
+From the example and remark, we know that a causal AR(p) can be written as a one-sided linear process: $X_t = \sum_{j = 0}^{\infty} \psi_j W_{t-j}$, and the autocovariance function $\gamma(h) = cov(X_{t+h},X_t) = \sigma^2 \sum_{j=0}^{\infty} \psi_j \psi_{j+h}$, for $h \geq 0$. And the ACF $\rho(h)$ of AR(p) will goes to zero exponentially as $h \to \infty$.
 
+Now, suppose we have another one-sided linear process: $X_t = \sum_{j = 0}^{q} \psi_j W_{t-j}$, but it is truncated at order q. Then let $h>0$, $X_{t+h} = \sum_{j = 0}^{q} \psi_j W_{t+h-j}$. Then the the autocovariance function 
+\[\gamma(h) = cov(X_{t+h},X_t) =
+\begin{cases}
+        \sigma^2 \sum_{j=0}^{q-h} \psi_j \psi_{j+h} & 1 \leq h \leq q\\
+        0 & h > q
+\end{cases}. \]
+It is shown that this truncated one-sided linear process (MA(q) model) would always has ACF $\rho(h) = 0$ when $h > q$. Thus ACF is a very informative tool to identify this order q of the truncated one-sided linear process (MA(q) model). However a causal AR(p) is a one-sided linear process with infinite order, so that ACF do not tell us anything information on the order of an AR model.
+
+However a similar statistic of ACF, called the partial autocorrelation function is quite informative about order
+of AR(p).
 
 ###Partial autocorrelation of AR models
 ```{definition, label="pacf","Partial autocorrelation of AR models"}
@@ -771,12 +783,33 @@ One of the most interesting things in time series analysis is to predict the fut
 **Definition** 
 Given a stationary time serie $X_1, X_2, \dots, X_t$, without loss of generality we assume it has mean, the best linear predictor of $X_{t+h}$ is the linear combination $\sum_{j=1}^t \alpha_j X_j$ that minimize $\mathbb{E}|X_{t+h} - Y|^2$ over all linera combinations $Y$ of $X_1, X_2, \dots, X_t$. The minimal value $\mathbb{E}|X_{t+h} - \sum_{j=1}^t \alpha_j X_j|^2$ is called the square prediction error.
 
-In the preceding section, we also give an equivalent way to find the best linear predictor by solving the predition equations,
+**Theorem** (Projection Theorem)
+Let $\mathcal{M} \subset \mathcal{L}_2$ be a closed linear subspace of Hibert space. For every $y \in \mathcal{L}_2$, there exists a unique element $\hat{y} \in \mathcal{M}$ that minimizes $||y - l||^2$ over $l \in \mathcal{M}$. This element is uniquely determined by the requirements (1) $\hat{y} \in \mathcal{M}$ and (2) $(y - \hat{y}) \perp \mathcal{M}$.
+
+Projection theorem natually leads to an equivalent way to find the best linear predictor by solving the predition equations,
 \[ \mathbb{E}(X_{t+h} - \hat{X}_{t+h}) = 0, \mbox{( it is trivil for TS with zero mean)}\]
 and
 \[ \mathbb{E} [(X_{t+h} - \hat{X}_{t+h})X_j ] = 0, \mbox{ for } i = 1, \dots, t.\]
 
-Predition equations are leaded by projection theorem as follows.
+Write $\mathbb{E}(X_{i}, X_{j})$ as $\gamma(|i - j|)$, predition equations can be represented by the following form
+\begin{equation}
+  \begin{pmatrix}
+    \gamma(0) & \gamma(1) & \cdots & \gamma(t-1) \\
+    \gamma(1) & \gamma(0) & \cdots & \gamma(t-2) \\
+    \vdots & \vdots & \ddots & \vdots \\
+    \gamma(t-1) & \gamma(t-2) & \cdots &\gamma(0)
+  \end{pmatrix}
 
-**Theorem** (Projection Theorem)
-Let $\mathcal{M} \subset \mathcal{L}_2$ be a closed linear subspace of Hibert space. For every $y \in \mathcal{L}_2$, there exists a unique element $\hat{y} \in \mathcal{M}$ that minimizes $||y - l||^2$ over $l \in \mathcal{M}$. This element is uniquely determined by the requirements (1) $\hat{y} \in \mathcal{M}$ and (2) $(y - \hat{y}) \perp \mathcal{M}$.
+  \begin{pmatrix}
+    \alpha_1 \\
+    \vdots \\
+    \alpha_t
+  \end{pmatrix}
+  =
+  \begin{pmatrix}
+    \gamma(t+h-1)  \\
+    \vdots \\
+    \gamma(h)
+  \end{pmatrix}
+\end{equation}.
+
