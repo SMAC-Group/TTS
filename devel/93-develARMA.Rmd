@@ -366,6 +366,13 @@ The best linear predictor of $X_{t+h}$ is
 Thus when $h > p$,
 \[ \phi_{hh} = corr(X_{t+h} - \hat{X}_{t+h}, X_t - \hat{X}_t) = corr(W_{t+h}, X_t - \hat{X}_t) = 0. \]
 
+Therefore, when the lag is greater than p the PACF is zero.
+
+In summary, we have two general results to identify time series models.
+
+(1) If the ACF after a certain lag (q) is zero, it suggests an MA(q) model for the time series. However, the ACF of any AR(p) process will only decay to zero as the lag increases.
+(2) If the PACF after a certain lag (p) is zero, it suggests an AR(p) model for the time series. However, the partial covariances of any MA(p) process will only decay to zero as the lag increases.
+
 ## Estimation of Parameters
 
 Consider a time series given by $x_t \sim ARMA(p,q)$. This gives us with a paramter space $\Omega$ that looks like so: 
