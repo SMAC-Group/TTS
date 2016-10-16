@@ -4,6 +4,12 @@
 knitr::read_chunk('code/chapter/03_arma.R')
 ```
 
+
+>
+> "*Essentially, all models are wrong, but some are useful*", George Box
+>
+
+
 In this chapter we introduce a class of time series models that is flexible and among the most commonly used to describe stationary time series. This class is represented by the AutoRegressive Moving Average (ARMA) models which combine and include the AutoRegressive (AR) and Moving Average (MA) models seen in the previous chapter. We first discuss AR and MA models in further detail before introducing the general ARMA class. The importance of the latter class of models resides in its flexibility as well as its capacity of describing (or closely approximating) the features of stationary time series. The autoregressive parts of these models describe how consecutive observations in time influence each other while the moving average parts capture some possible unobserved shocks thereby allowing to model different phenomena going from biology to finance.
 
 To introduce and explain this class of models, this chapter is organized in the following manner. First of all we will discuss the class of linear processes of which the ARMA models are part of. We will then proceed to a detailed description of AR models in which we review their definition, explain their properties, introduce the main estimation methods for their parameters and highlight the diagnostic tools which can help understand if the estimated models appear to be appropriate or sufficient to well describe the observed time series. Once this is done, we will then use most of the results given for AR models to further desribe and discuss MA models, for which we underline the property of invertibility, and finally the ARMA models. Indeed, the properties and estimation methods for the latter class are directly inherited from the discussions on AR and MA models.
@@ -191,7 +197,7 @@ In this section we discuss the main properties of AR($p$) processes. We first co
 In the previous section we already introduced the idea of causal time series model and therefore let us now introduce this concept in a more formal manner.
 
 ```{definition, label="causalar", name = "Causality of AR models"}
- An AR(p) model is said to be *causal*, if the time series $\{ X_t \}_{-\infty}^{\infty}$ can be written as a one-sided linear process:
+ An AR(p) model is said to be *causal*, if the time series $(X_t)$ can be written as a one-sided linear process:
 \begin{equation}
     X_t = \sum_{j = 0}^{\infty} \psi_j W_{t-j} = \frac{1}{\phi(B)} W_t = \psi(B) W_t,
 (\#eq:causal)
@@ -210,7 +216,7 @@ If an AR(p) model is causal if and only if $\phi(z) \neq 0$ for $|z| \leq 1$. Th
 
 The proof of this result is omitted but can (for example) be found in Appendix B of @shumway2011time. Moreover, it can be seen how there is no solution to the above equation if $\phi(z) = 0$ for $|z| \leq 1$ and therefore an AR($p$) is causal if and only if $\phi(z) \neq 0$ for $|z| \leq 1$. A condition for this to be respected is for the roots of $\phi(z) = 0$ to lie *outside the unit circle*.
 
-Before further discussing the properties of AR($p$) models we consider the following two examples which discuss the causality (and stationarity) of an AR(2).
+Before further discussing the properties of AR($p$) models we consider the following two examples which discuss the causality (and stationarity) of AR(2) models.
 
 ```{example, label="ex1causality", name = "Transforming an AR(2) into a linear process"}
 
@@ -323,12 +329,13 @@ In this section we discuss the autocorrelation of (causal) AR($p$) processes. Be
 Considering the same model as in Example @ref(ex1causality), i.e. $X_t = 1.3X_{t-1} - 0.4X_{t-2} + W_t$, we can derive the ACF using the following steps: 
 
 *Step 1:* Find the homogeneous difference equation with respect to the ACF $\rho(h)$, which in this case is given by:
-\[\rho(h) - 1.3\rho(h-1) + 0.4\rho(h-2) = 0, \mbox{ } h = 1,2,...\]
-and the initial conditions are $\rho(0) = 1$ and $\rho(-1) = \frac{13}{14}$.
+\[\rho(h) - 1.3\rho(h-1) + 0.4\rho(h-2) = 0, \mbox{   } h = 1,2,...\]
+and the initial conditions are $\rho(0) = 1$ and $\rho(-1) = \frac{13}{14}$. Note that the above equation is an homogenous difference equation of order 2.
 
 *Step 2:* Using the results of Example @ref(ex1causality), we have:
 \[\phi(z) = 1 - 1.3z + 0.4z^2 = (1 - 0.5z)(1 - 0.8z) ,\]
-and the roots of this equation are given by $z_1 = 2 > 1$ and $z_2 = 1.25 > 1$. Moreover, since $z_1$ and $z_2$ are real and distinct, we obtain:
+and the roots of this equation are given by $z_1 = 2 > 1$ and $z_2 = 1.25 > 1$. Moreover, since $z_1$ and $z_2$ are real and distinct, we obtain (since it corresponds to the solution of an homogenous difference equation of order 2):
+
 \[\rho(h) = c_1 z_1^{-h} + c_2 z_2^{-h}.\]
 
 *Step 3:* Solve $c_1$ and $c_2$ based on two initial conditions found in Step 1, i.e.
@@ -338,36 +345,60 @@ and the roots of this equation are given by $z_1 = 2 > 1$ and $z_2 = 1.25 > 1$. 
 \end{cases},\]
 implying that $c_1 = -\frac{3}{7}$ and $c_2 = \frac{10}{7}$. The ACF for this model is therefore given by
 \[\rho(h) = -\frac{3}{7}2^{-h} + \frac{10}{7}\left(\frac{5}{4}\right)^{-h} .\]
+
+The graph depicts the ACF of this process:
+
+```{r ACFAR2_cont, fig.height = 4, fig.width = 6, warning=FALSE, message=FALSE}
 ```
 
+The method used in the previous is only applicable for AR(2) with roots that are distinct and real, which is true when $\phi_2 > - \phi^1/4$. In the case where $\phi_2 = - \phi^1/4$, the autoregressive operator has single root and $\rho(h)$ can be obtain by determining (using inital conditions) the constants $c_1$ and $c_2$ of the following expression:
 
-EXAMPLE MISSING HERE! TO DO
+$$\rho(h) = z_1^{-h} \left(c_1 + c_2 h\right).$$
+When $\phi_2 > - \phi^1/4$ the roots are complexe conjugate pairs and solution is given by:
+
+$$\rho(h) = c_1 |z_1|^{-h} \cos \left(h \theta + c_2\right), $$
+where the constants depends on inital conditions, while $\theta = \text{arg}(z_1)$. 
+
+Therefore, we have that $\rho(h) \to 0$ exponential fast as $h \to \infty$ and when $\phi_2 > - \phi^1/4$ $\rho(h)$ goes to zero in an sinusoidal fashion. This behaviour is illustrated in the following example:
+
+
+```{example, label="ar2acfExample", name = "Autocorrelation AR(2) Processes"}
+Consider the following models:
+
+\[\begin{aligned}
+  \text{Model 1}: \;\;\; X_t &= X_{t-1} - 0.25 X_{t-2} + W_t  \\
+  \text{Model 2}: \;\;\; X_t &= 0.5 X_{t-1} + 0.25 X_{t-2} + W_t  \\
+  \text{Model 3}: \;\;\; X_t &= -1.5 X_{t-1} - 0.75 X_{t-2} + W_t.
+\end{aligned} \]
+
+It is easy to verify the first one has real distrinct roots, the second a unique real root while the latter has complexe roots. This is illustrated in the figure which depicts the causal region of an AR(2) that has been separated between models with real and complexe roots.
+
+```{r causalAR2_part2, echo = FALSE, cache = TRUE}
+
+The ACF of these models are represented on the figure below. As expected the three models corresponds to an ACF that dempends expoentially fast but only Model 3 exibits a sinusoidal features.
 
 ```{r ACFAR2eg, fig.height = 3, fig.width = 9, warning=FALSE, message=FALSE}
 ```
 
 
-
-
-Next we present an example to show how to derive the ACF for general causal AR(p) model. It is much more complicated than what we did for AR(2).
+Next, we consider the ACF for a general causal AR($p$) model. Unfortunatelty, this is far more complicated than our previous example.
 
 ```{example, label="arpacf", name = "Autocorrelation of an AR($p$)"}
+
 Recall that the AR($p$) models can be formally represented as follows
 $${X_t} = {\phi_1}{X_{t - 1}} + ... + {\phi_p}{X_{t - p}} + {W_t},$$
 where $W_t$ is a (Gaussian) white noise process with variance $\sigma^2$.
 
-There are two ways to derive the ACF for general AR(p) models. 
-
-For the first method, since we assume our AR(p) model is causal, we can write it as a one-sided linear process: $X_t = \sum_{j = 0}^{\infty} \psi_j W_{t-j}$, then the autocovariance function $\gamma(h) = cov(X_{t+h},X_t) = \sigma^2 \sum_{j=0}^{\infty} \psi_j \psi_{j+h}$, for $h \geq 0$. The difficulty of this method is to solve the $\psi$-weights. Treating AR(p) as a special case of ARMA(p,q), we can let the MA polynomials $\theta(z) = 1$ and solve the $\psi$-weights by matching the coefficients in $\phi(z)\psi(z) = \theta(z)$. 
+There are two ways to derive the ACF for general AR($p$) models. For the first one, since we assume our AR($p$) model is causal, we can write it as a one-sided linear process: $X_t = \sum_{j = 0}^{\infty} \psi_j W_{t-j}$, then the autocovariance function $\gamma(h) = cov(X_{t+h},X_t) = \sigma^2 \sum_{j=0}^{\infty} \psi_j \psi_{j+h}$, for $h \geq 0$. The difficulty of this method is to solve the $\psi$-weights. Treating AR(p) as a special case of ARMA(p,q), we can let the MA polynomials $\theta(z) = 1$ and solve the $\psi$-weights by matching the coefficients in $\phi(z)\psi(z) = \theta(z)$. 
 
 For the second method, we can also use the procedure we used for AR(2). That is finding a homogeneous difference equation with respect to ACF $\rho(h)$, and solve it directly. To do so we need following steps.
 
-Step 1. Find the homogeneous difference equation with repsect to the ACF $\rho(h)$.
+*Step 1*: Find the homogeneous difference equation with repsect to the ACF $\rho(h)$.
 
 Firstly verify whether our model is causal. If it is then we have,
 \[\rho(h) - \phi_1\rho(h-1) - \cdots - \phi_p\rho(h-p) = 0, \mbox{ } h \geq p. \]
 
-Step 2. Solve the roots of the associated AR polynomials.
+*Step 2*: Solve the roots of the associated AR polynomials.
 
 The polynomials can be written as:
 \[\phi(z) = 1 - \phi_1z - \cdots - \phi_pz^p .\]
@@ -378,14 +409,16 @@ Then the general solution of the homogeneous difference equation is
 \[\rho(h) = z_1^{-h}P_1(h) + z_2^{-h}P_2(h) + \cdots + z_r^{-h}P_r(h), \mbox{ } h \geq p,\]
 where $P_j(h)$ is the polynomial in $h$ of degree $m_j - 1$.
 
-Step 3. Solve every $P_j(h)$ based on $p$ given initial conditions on $\rho(h)$.
+*Step 3*: Solve every $P_j(h)$ based on $p$ given initial conditions on $\rho(h)$.
 
-**Remark**
-Since the AR(p) model is causal, the roots we obtained in step 2 should be outside of the unit circle (i.e. $|z_i| > 1$, for $i = 1, \cdots, r$). Then the absolute value of the general solution 
+**Remark:**
+Since the AR($p$) model is causal, the roots we obtained in step 2 should be outside of the unit circle (i.e. $|z_i| > 1$, for $i = 1, \cdots, r$). Then the absolute value of the general solution 
 \[|\rho(h)| = \left|\frac{P_1(h)}{z_1^{h}} + \frac{P_2(h)}{z_2^{h}} + \cdots + \frac{P_r(h)}{z_r^{h}}\right| \leq \left|\frac{P_1(h)}{z_1^{h}}\right| + \left| \frac{P_2(h)}{z_2^{h}}\right| + \dots + \left|\frac{P_r(h)}{z_r^{h}}\right| \leq \frac{r \left|P_r(h)\right|}{\min_{j = 1, \dots, r} \left|z_j \right|^{h}},\]
 
 from the right hand side of the last inequality, we can find the rate of convergence would be dominated by $\frac{1}{\min_{j = 1, \dots, r} \left|z_j \right|^{h}}$. Thus the ACF $\rho(h)$ will goes to zero exponentially as $h \to \infty$.
 ```
+
+EXAMPLE MISSING HERE + DISCUSSION ON LIMITS OF ACF
 
 #### Partial autocorrelation of AR models
 
