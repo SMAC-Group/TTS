@@ -56,7 +56,7 @@ library(gridExtra)
 # Define models
 m1 = AR(phi = c(0.3, -0.4, 0.3, 0.1))
 m2 = AR(phi = c(1, -1/4, -0.25))
-m3 = AR(phi = c(1/2, -1/2,))
+m3 = AR(phi = c(1/2, 0.1, -1/2, -0.3, 0.3))
 
 # Theoretical ACF
 acf1 = theo_acf(m1)
