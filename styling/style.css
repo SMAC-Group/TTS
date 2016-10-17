@@ -40,9 +40,4 @@ pre code {
     font-style: italic;
 }
 
-.theorem:before {
-    content: "Theorem.";
-    font-weight: bold;
-    font-style: normal;
-}
 
