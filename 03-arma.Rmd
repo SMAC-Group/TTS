@@ -361,17 +361,16 @@ In the previous section we already introduced the idea of causal time series mod
 
 ```{definition, label="causalar", name = "Causality of AR models"}
  An AR(p) model is said to be *causal*, if the time series $(X_t)$ can be written as a one-sided linear process:
-\begin{equation}
-    X_t = \sum_{j = 0}^{\infty} \psi_j W_{t-j} = \frac{1}{\phi(B)} W_t = \psi(B) W_t,
-(\#eq:causal)
-\end{equation}
+ 
+$$X_t = \sum_{j = 0}^{\infty} \psi_j W_{t-j} = \frac{1}{\phi(B)} W_t = \psi(B) W_t,$$
+
 where $\phi(B) = \sum_{j = 0}^{\infty} \phi_j B^j$, $\sum_{j=0}^{\infty}|\phi_j| < \infty$ and $\phi_0 = 1$.
 ```
 
-As discussed earlier this condition implies that only the past values of the time series can explain the future values of it, and not viceversa. As discussed in the previous section, linear processes are (weakly) stationary processes and therefore causality directly implies (weak) stationarity. However, it might be difficult and not obvious to show the causality of AR($p$) processes by using the above definitions directly, thus the following property is particulary useful in practice. 
+As discussed earlier this condition implies that only the past values of the time series can explain the future values of it, and not vice versa. As discussed in the previous section, linear processes are (weakly) stationary processes and therefore causality directly implies (weak) stationarity. However, it might be difficult and not obvious to show the causality of AR($p$) processes by using the above definitions directly, thus the following property is particulary useful in practice. 
 
 ```{theorem, label="theocausalar", name = "Causality of AR models"}
-If an AR(p) model is causal if and only if $\phi(z) \neq 0$ for $|z| \leq 1$. Then, the coefficients of the one-sided linear process given in \@ref(eq:causal) can be obtained by solving
+If an AR(p) model is causal if and only if $\phi(z) \neq 0$ for $|z| \leq 1$. Then, the coefficients of the one-sided linear process given in \@ref(def:causalar) can be obtained by solving
 \begin{equation*}
     \psi(z) = \frac{1}{\sum_{j=0}^{\infty} \phi_j z^j} = \frac{1}{\phi(z)}, \mbox{ } |z| \leq 1.
 \end{equation*}
@@ -479,6 +478,7 @@ We can also show "*only if*"
 Since $z_1 = \frac{\phi_1 + \sqrt{\phi_1^2 + 4\phi_2}}{-2 \phi_2}$ and $\phi_2-1 < \phi_1 < 1-\phi_2$, then $z_1^2 = \frac{\left(\phi_1 + \sqrt{\phi_1^2 + 4\phi_2}\right)^2}{4 \phi_2^2} < \frac{\left((1-\phi_2) + \sqrt{(1-\phi_2)^2 + 4\phi_2}\right)^2}{4 \phi_2^2} = \frac{4}{4 \phi_2^2} \leq 1$.
 
 Since $z_2 = \frac{\phi_1 - \sqrt{\phi_1^2 + 4\phi_2}}{-2 \phi_2}$ and $\phi_2-1 < \phi_1 < 1-\phi_2$, then $z_2^2 = \frac{\left(\phi_1 - \sqrt{\phi_1^2 + 4\phi_2}\right)^2}{4 \phi_2^2} < \frac{\left((\phi_2-1) + \sqrt{(\phi_2-1)^2 + 4\phi_2}\right)^2}{4 \phi_2^2} = \frac{4 \phi_2^2}{4 \phi_2^2} = 1$.
+```
 
 Finally, the causal region of an AR(2) is depicted on the figure below.
 
@@ -487,16 +487,16 @@ Finally, the causal region of an AR(2) is depicted on the figure below.
 
 #### Autocorrelation
 
-In this section we discuss the autocorrelation of (causal) AR($p$) processes. Before considering the general case of an AR($p$), we revisit Example \@ref(ex1causality) and derive the ACF of the AR(2) model presented in this example.
+In this section we discuss the autocorrelation of (causal) AR($p$) processes. Before considering the general case of an AR($p$), we revisit Example \@ref(ex:ex1causality) and derive the ACF of the AR(2) model presented in this example.
 
 ```{example, label="ar2acf", name = "Autocorrelation of an AR(2)"}
-Considering the same model as in Example \@ref(ex1causality), i.e. $X_t = 1.3X_{t-1} - 0.4X_{t-2} + W_t$, we can derive the ACF using the following steps: 
+Considering the same model as in Example \@ref(ex:ex1causality), i.e. $X_t = 1.3X_{t-1} - 0.4X_{t-2} + W_t$, we can derive the ACF using the following steps: 
 
 *Step 1:* Find the homogeneous difference equation with respect to the ACF $\rho(h)$, which in this case is given by:
 \[\rho(h) - 1.3\rho(h-1) + 0.4\rho(h-2) = 0, \mbox{   } h = 1,2,...\]
 and the initial conditions are $\rho(0) = 1$ and $\rho(-1) = \frac{13}{14}$. Note that the above equation is an homogenous difference equation of order 2.
 
-*Step 2:* Using the results of Example \@ref(ex1causality), we have:
+*Step 2:* Using the results of Example \@ref(ex:ex1causality), we have:
 \[\phi(z) = 1 - 1.3z + 0.4z^2 = (1 - 0.5z)(1 - 0.8z) ,\]
 and the roots of this equation are given by $z_1 = 2 > 1$ and $z_2 = 1.25 > 1$. Moreover, since $z_1$ and $z_2$ are real and distinct, we obtain (since it corresponds to the solution of an homogenous difference equation of order 2):
 
@@ -509,6 +509,7 @@ and the roots of this equation are given by $z_1 = 2 > 1$ and $z_2 = 1.25 > 1$. 
 \end{cases},\]
 implying that $c_1 = -\frac{3}{7}$ and $c_2 = \frac{10}{7}$. The ACF for this model is therefore given by
 \[\rho(h) = -\frac{3}{7}2^{-h} + \frac{10}{7}\left(\frac{5}{4}\right)^{-h} .\]
+```
 
 The graph depicts the ACF of this process:
 
@@ -523,8 +524,7 @@ When $\phi_2 > - \phi^1/4$ the roots are complexe conjugate pairs and solution i
 $$\rho(h) = c_1 |z_1|^{-h} \cos \left(h \theta + c_2\right), $$
 where the constants depends on inital conditions, while $\theta = \text{arg}(z_1)$. 
 
-Therefore, we have that $\rho(h) \to 0$ exponential fast as $h \to \infty$ and when $\phi_2 > - \phi^1/4$ $\rho(h)$ goes to zero in an sinusoidal fashion. This behaviour is illustrated in the following example:
-
+Therefore, we have that $\rho(h) \to 0$ exponential fast as $h \to \infty$ and when $\phi_2 > - \phi^1/4$ $\rho(h)$ goes to zero in an sinusoidal fashion. This behaviour is illustrated in the next example.
 
 ```{example, label="ar2acfExample", name = "Autocorrelation AR(2) Processes"}
 Consider the following models:
@@ -536,10 +536,12 @@ Consider the following models:
 \end{aligned} \]
 
 It is easy to verify the first one has real distrinct roots, the second a unique real root while the latter has complexe roots. This is illustrated in the figure which depicts the causal region of an AR(2) that has been separated between models with real and complexe roots.
+```
 
 Next we present an example to show how to derive the ACF for general causal AR(p) model. It is much more complicated than what we did for AR(2).
 
 ```{r causalAR2_part2, echo = FALSE, cache = TRUE}
+```
 
 The ACF of these models are represented on the figure below. As expected the three models corresponds to an ACF that dempends expoentially fast but only Model 3 exibits a sinusoidal features.
 
@@ -754,11 +756,11 @@ where $\hat{\nu}$ is the robustly estimated wavelet variance, $\nu{\theta}$ is t
 INSERT SIMULATIONS
 
 For all the above methods, it would be necessary to understand how "precise" their estimates are. To do so we would need to obtain confidence intervals for these estimates and this can be done mainly in two manners:
-\begin{itemize}
-  \item using the asymptotic distribution of the parameter estimates;
-  \item using parametric bootrstrap.
-\end{itemize}
-The first approach consists in using the asymptotic distribution of the estimators presented earlier to deliver approximations of the confidence intervals which get better as the length of the observed time series increases. Hence, for example, if we wanted to find a 95\% confidence interval for the parameter $\phi$, we would use the quantiles of the normal distribution (given that all methods presented earlier present this asymptotic distribution). However, this approach can present some drawbacks, one of which is there behaviour when the parameters are close to the boundaries of the parameter space. Let us take the example of an AR(1) to illustrate this problematic and suppose that $\phi = 0.99 < 1$ and $\sigma_w^2$. It can be seen that the parameter $\phi$ respects the condition for stationarity but is very close to its boundary. The code below computes the confidence interval for $\phi$ using the asymptotic normal distribution.
+
+- using the asymptotic distribution of the parameter estimates;
+- using parametric bootrstrap.
+
+The first approach consists in using the asymptotic distribution of the estimators presented earlier to deliver approximations of the confidence intervals which get better as the length of the observed time series increases. Hence, for example, if we wanted to find a 95% confidence interval for the parameter $\phi$, we would use the quantiles of the normal distribution (given that all methods presented earlier present this asymptotic distribution). However, this approach can present some drawbacks, one of which is there behaviour when the parameters are close to the boundaries of the parameter space. Let us take the example of an AR(1) to illustrate this problematic and suppose that $\phi = 0.99 < 1$ and $\sigma_W^2$. It can be seen that the parameter $\phi$ respects the condition for stationarity but is very close to its boundary. The code below computes the confidence interval for $\phi$ using the asymptotic normal distribution.
 
 ```{r asy_conf_int, echo = FALSE, cache = TRUE}
 ```
