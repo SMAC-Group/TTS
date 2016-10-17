@@ -14,9 +14,163 @@ In this chapter we introduce a class of time series models that is flexible and 
 
 To introduce and explain this class of models, this chapter is organized in the following manner. First of all we will discuss the class of linear processes of which the ARMA models are part of. We will then proceed to a detailed description of AR models in which we review their definition, explain their properties, introduce the main estimation methods for their parameters and highlight the diagnostic tools which can help understand if the estimated models appear to be appropriate or sufficient to well describe the observed time series. Once this is done, we will then use most of the results given for AR models to further desribe and discuss MA models, for which we underline the property of invertibility, and finally the ARMA models. Indeed, the properties and estimation methods for the latter class are directly inherited from the discussions on AR and MA models.
 
-## Linear Processes
+## Linear Operators and Processes
 
-TO DO JJB: add introduction here. Explain why are linear processes important in this chapter.
+Within this section, the concepts of linear operators and processes will be
+discussed. Both concepts are critical to being able to model time series data.
+In fact, every time series that can be denoted as weakly stationary is either a 
+linear process or has the ability to be after being transformed using a linear 
+operation such as differencing deterministic components. 
+
+### Linear Operators
+
+Prior to introducing linear processes, discussion must first focus upon a very
+useful tool: linear operators. These operators play a fundamental role in easing
+the manipulation of time series equations. Principally, the manipulations serve
+three fold: 1. converting into a linear process form, 2. differencing
+deterministic components, and 3. adjusting seasonal time windows.
+
+```{definition, label="linop", name = "Linear Operator"}
+A linear operator, $L$, is an operator which satisfies the following two 
+conditions: 
+
+\[\begin{aligned}
+  L\left( {{X_t} + {Y_t}} \right) &= L{X_t} + L{X_t} & \text{(Preserves Addition)}\\
+  L\left( {\lambda  \cdot {X_t}} \right) &= \lambda  \cdot \left( {L{X_t}} \right) & \text{(Preserves Scalar Multiplication)} \\ 
+\end{aligned} \]
+```
+
+Linear operators are defined to exists within a Hilbert space. As a result,
+these operations are mathematical very rigorous. Details on the rigor will
+not be invested indepth within this text and are left as an exercise better
+suited to Abstract Linear Algebra. 
+
+#### Backshift (Lag) Operator
+
+One of the principal uses of a linear operator within time series is the 
+backshift operator. The backshift operator provides the ability to change the
+indices of the time series by one period e.g. $t \rightarrow t-1$. 
+
+```{definition, label="backshiftop", name = "Backshift Operator"}
+The backshift operator is defined as:
+
+\[B{X_t} = {X_{t - 1}}\]
+
+The backshift operator has the following properties:
+
+1. Multiple backshifts yield: 
+${B^k}{X_t} = B^{k-1} B {X_t} = B^{k-1} {X_{t-1}} = {X_{t - k}}$
+2. By raising to a negative power, the backshift operator moves observations
+forward: $B^{-1} = {X_{t+1}}$
+3. Given a constant, $c \in \real$: $Bc = c$
+4. $B^0 = 1$
+
+```
+
+The notation for the backshift operator changes depending on the author's 
+preferences. An alternative way to denote a backshift operation given by $B$
+is to use the lag operator $L$. The same conventions as discussed above apply
+equally to the lag operator.
+
+```{example, label="backshiftseasons", name = "Backshifting with respect to seasonality"}
+If the backshift operator is raised to a higher power, say $k = 12$, then this 
+leads to allowing the exploration of seasonality. Specifically, in the case of 
+monthly data, $B^12 X_t = X_{t-12}$ would provide a way to look at the data that
+occurred one year prior.
+```
+
+#### Differencing Operator
+
+The differencing operator is helpful when trying to remove trend from the data.
+Many make an analogy between this operator and taking a first derivative of
+a function.
+
+```{definition, label="diffop", name = "Differencing Operator"}
+The **Differencing Operator** is defined as the gradient symbol applied to
+a time series:
+
+\[\nabla {X_t} = {X_t} - {X_{t - 1}} = \left( {1 - B} \right){X_t}\]
+
+The difference operator has the following properties:
+
+1. ${\nabla ^k}{X_t} = {\nabla ^{k - 1}} \left( {\nabla {X_t}}\right) = \left( {1 - B} \right)^k {X_t}$
+2. ${\nabla ^1}{X_t} = \nabla {X_t}$
+3. $\nabla c = 0$
+3. ${\nabla ^0}{X_t} = {X_t}$
+
+```
+
+```{example, label="diffex", name = "Repetitive Differencing"}
+To understand the repetitive nature of the difference operation, consider the
+case when the number of differences is $k = 2$:
+
+\[\begin{aligned}
+  {\nabla ^2}{X_t} &= \nabla \left( {\nabla {X_t}} \right) \\
+   &= \nabla \left( {{X_t} - {X_{t - 1}}} \right) \\
+   &= \left( {{X_t} - {X_{t - 1}}} \right) - \left( {{X_{t - 1}} - {X_{t - 2}}} \right) \\
+   &= {X_t} - 2{X_{t - 1}} + {X_{t - 2}} \\ 
+\end{aligned} \]
+
+Notice that at the end of the process, we are able to transform the
+differencing operation to rely upon the backshift operator:
+
+\[\begin{aligned}
+  {\nabla ^2}{X_t} &= {X_t} - 2{X_{t - 1}} + {X_{t - 2}} = {X_t} - 2B{X_t} + B^2{X_t} \\
+   &= \left( {1 - B} \right)\left( {1 - B} \right){X_t} = {\left( {1 - B} \right)^2}{X_t} \\ 
+\end{aligned} \]
+```
+
+#### Seasonal Differencing Operator
+
+As discussed previously, the backshift operator has a subtle way of shifting
+one time period. Trends that exists within time series sometimes span months
+or even years. Therefore, to remove such a deterministic component, the
+seasonality will have to be differenced out.
+
+```{definition, label="seasonaldiff", name = "Seasonal Difference Operator"}
+The seasonal difference operator can applied by using a seasonal backshift:
+
+\[{\nabla _s}{X_t} = {X_t} - {X_{t - s}} = \left( {1 - B_s} \right){X_t}\]
+
+As this is a modification of the difference operator, the previously discussed
+properties associated with the differencing operation largely are the same
+excluding the differentiation. That is, the seasonal difference operator is
+generalized such that:
+
+\[{\nabla ^k_s}{X_t} = {\left( {1 - B_s} \right)^k}{X_t}\]
+
+```
+
+
+### Linear Processes
+
+The models that that have been studied thus far have a common theme that unites
+them. Underlying each model, there is an input sequence of independent random
+errors that is mapped to a series of correlated weighted random variables. As
+only the output $\left\{X_t\right\}$ is observable, the type of process and
+subsequently weighting must be differentiated during the course of modeling.
+
+```{r linearfilter, fig.cap="Processing a signal", cache = TRUE, fig.align='center', echo = FALSE}
+knitr::include_graphics("images/filter/filtering.png")
+```
+
+Recall the Example \@ref(ex:exar1) where *backsubstitution* was used to
+manipulate an AR(1) model into a condensed series form. From the condensed form,
+the ability to ascertain whether an $X_t$ existed such that the model had a
+solution was readily apparent. With the newfound knowledge of the *backshift*
+operator, the example is ripe to be revisited.
+
+\[\begin{aligned}
+  {X_t} &= \phi {X_{t - 1}} + {W_t} \\
+  {X_t} - \phi {X_{t - 1}} &= {W_t} \\
+  \left( {1 - \phi B} \right){X_t} &= {W_t} \\
+  {X_t} &= \frac{1}{{1 - \phi B}}{W_t} \\
+   &= \sum\limits_{j = 0}^\infty  {{\phi ^j}{B^j}{W_t}}  = \sum\limits_{j = 0}^\infty  {{\phi ^j}{W_{t - j}}}  \\ 
+\end{aligned} \]
+
+Thus, just as before, there does exist a solution for an AR(1) when
+$\left|\phi\right| < 1$. However, there is a specific name for a process that is
+able to be written in the above form.
 
 ```{definition, label="lp", name="Linear Process"}
 A time series, $(X_t)$, is defined to be a linear process if it can be expressed
@@ -30,39 +184,52 @@ where $W_t \sim WN(0, \sigma^2)$ and $\sum\limits_{j =  - \infty }^\infty  {\lef
 Note, the later assumption is required to ensure that the series has a limit. 
 Furthermore, the set of coefficients \[{\{ {\psi _j}\} _{j =  - \infty , \cdots ,\infty }}\]
 can be viewed as linear filter. These coefficients do not have to be all equal
-nor symmetric as later examples will show. Generally, the properties of a linear
-process related to mean and variance are given by:
+nor symmetric as later examples will show. 
+
+```{theorem, label="lpstat", name="Stationarity of Linear Process"}
+A linear process $\left\{X_t\right\}$ in the form of Definition \@ref(def:lp) 
+is stationary with:
 
 \[\begin{aligned}
 \mathbb{E}[X_t] &= \mu \\
 \gamma(h) &= \sigma^2\sum\limits_{j =  - \infty }^\infty  {{\psi _j}{\psi _{h + j}}}.
 \end{aligned}\]
+```
 
-The latter is derived from 
+```{proof}
+The expectation and autocovariance are able to be obtained immediately given the
+series converges under $\sum\limits_{j =  - \infty }^\infty  {\left| {{\psi _j}} \right|}  < \infty$. Therefore, we have for the expectation:
+
+\[E\left[ {{X_t}} \right] = E\left[ {\mu  + \sum\limits_{j =  - \infty }^\infty  {{\psi _j}{W_{t - j}}} } \right] = \mu  + \sum\limits_{j =  - \infty }^\infty  {{\psi _j}E\left[ {{W_{t - j}}} \right]}  = \mu  + 0 = \mu \]
+
+In addition, the autocovariance is able to be obtained as:
 
 \[\begin{aligned}
-  \gamma \left( h \right) &= Cov\left( {{X_t},{X_{t + h}}} \right) 
-   = Cov\left( {\mu  + \sum\limits_{j =  - \infty }^\infty  {{\psi _j}{W_{t - j}}} ,\mu  + \sum\limits_{j =  - \infty }^\infty  {{\psi _j}{W_{t + h - j}}} } \right) \\
-   &= Cov\left( {\sum\limits_{j =  - \infty }^\infty  {{\psi _j}{W_{t - j}}} ,\sum\limits_{j =  - \infty }^\infty  {{\psi _j}{W_{t + h - j}}} } \right) 
-    = \sum\limits_{j =  - \infty }^\infty  {{\psi _j}{\psi _{j + h}}Cov\left( {{W_{t - j}},{W_{t - j}}} \right)}  
-   = \sigma^2\sum\limits_{j =  - \infty }^\infty  {{\psi _j}{\psi _{j + h}}}.  \\ 
+  \cov \left( {{X_{t + h}},{X_t}} \right) &= \cov \left( {\mu  + \sum\limits_{j =  - \infty }^\infty  {{\psi _j}{W_{t + h - j}}} ,\mu  + \sum\limits_{i =  - \infty }^\infty  {{\psi _i}{W_{t - i}}} } \right) \\
+   &= \sum\limits_{j =  - \infty }^\infty  {\sum\limits_{i =  - \infty }^\infty  {{\psi _j}{\psi _i}\cov \left( {{W_{t + h - j}},{W_{t - i}}} \right)} }  = \sum\limits_{j =  - \infty }^\infty  {{\psi _{j + h}}{\psi _j}\cov \left( {{W_t},{W_t}} \right)}  + \sum\limits_{j =  - \infty }^\infty  {\sum\limits_{i =  - \infty }^\infty  {{\psi _j}{\psi _i}\underbrace {\cov \left( {{W_{t + h - j}},{W_{t - i}}} \right)}_{ = 0}} }  \\
+   &= \sigma _W^2\sum\limits_{j =  - \infty }^\infty  {{\psi _j}{\psi _i}}  \\ 
 \end{aligned} \]
 
 Within the above derivation, the key is to realize that 
-$Cov\left( {{W_{t - j}},{W_{t + h - j}}} \right) = 0$ if $t - j \ne t + h - j$.
+$\cov\left( {{W_{t + h - j}},{W_{t - i}}} \right) = 0$ since $i \ne j + h$.
+```
 
-TO DO JJB: Add comment(s) on stationarity of linear processes.
+```{example, label="backshiftlp", name = "Linear Processes under backshift operator"}
+Linear processes are able to written in a more compact form by utilizing the
+backshift operator.
 
-Lastly, one of the better formalities of a linear process is that it is able 
-to be represented in a simplified form under the **backshift operator**:
+\[\begin{aligned}
+  {X_t} &= \mu  + \psi \left( B \right){W_t} \\
+  \psi \left( B \right) &= \sum\limits_{j = 0}^\infty  {{\psi _j}{B^j}}  \\ 
+\end{aligned} \]
+```
 
-\[{X_t} = \psi \left( B \right){W_t},\]
+### Examples of Linear Processes
 
-where 
-
-\[\psi \left( B \right) = \sum_{j = -\infty}^{\infty} \, \psi_j B^{j}.\]
-
-TO DO JJB: Add small introduction to these examples.
+Next, let us consider how to represent the previously discussed time series in
+Section \@ref(basicmodels) as a linear process. Generally speaking, the work
+required to transform the time series representation into a linear process rests
+solely upon the ability to find a set of $\psi_j$.
 
 ```{example, label="lpwn", name="Linear Process of White Noise"}
 
@@ -133,10 +300,6 @@ and $\mu = 0$.
 Under the condition that $\left| \phi \right| < 1$ the
 process can be considered to be the traditional $X_t = \phi X_{t-1} + W_t$.
 ```
-
-## Linear Operators
-
-TO DO JJB: Please complete, remove or merge this section into 3.1.
 
 ## Autoregressive Models
 
@@ -214,13 +377,13 @@ If an AR(p) model is causal if and only if $\phi(z) \neq 0$ for $|z| \leq 1$. Th
 \end{equation*}
 ```
 
-The proof of this result is omitted but can (for example) be found in Appendix B of @shumway2011time. Moreover, it can be seen how there is no solution to the above equation if $\phi(z) = 0$ for $|z| \leq 1$ and therefore an AR($p$) is causal if and only if $\phi(z) \neq 0$ for $|z| \leq 1$. A condition for this to be respected is for the roots of $\phi(z) = 0$ to lie *outside the unit circle*.
+The proof of this result is omitted but can (for example) be found in Appendix B of @shumway2010time. Moreover, it can be seen how there is no solution to the above equation if $\phi(z) = 0$ for $|z| \leq 1$ and therefore an AR($p$) is causal if and only if $\phi(z) \neq 0$ for $|z| \leq 1$. A condition for this to be respected is for the roots of $\phi(z) = 0$ to lie *outside the unit circle*.
 
 Before further discussing the properties of AR($p$) models we consider the following two examples which discuss the causality (and stationarity) of AR(2) models.
 
 ```{example, label="ex1causality", name = "Transforming an AR(2) into a linear process"}
 
-Given the following AR(2) $X_t = 1.3X_{t-1} - 0.4X_{t-2} + W_t$ one could wonder if this process can be written as a one-sided linear process as in Definition @causalar. This can be done using the following approach:
+Given the following AR(2) $X_t = 1.3X_{t-1} - 0.4X_{t-2} + W_t$ one could wonder if this process can be written as a one-sided linear process as in Definition \@ref(def:causalar). This can be done using the following approach:
 
 *Step 1:* The AR operator of this model can be expressed as:
 
@@ -228,7 +391,8 @@ Given the following AR(2) $X_t = 1.3X_{t-1} - 0.4X_{t-2} + W_t$ one could wonder
 
 and has roots $2 > 1$ and $1.25 > 1$. Thus, we should be able to covert it into linear process.
 
-*Step 2:* From Theorem @theocausalar we know that if AR process has all its roots lie outside the unit circle, we can write $X_t = \phi^{-1}(B)W_t$ and "inverse" the autoregressive operator $\phi(B)$ as follows:
+
+*Step 2:* From Theorem \ref(@theocausalar) we know that if AR process has all its roots lie outside the unit circle, we can write $X_t = \phi^{-1}(B)W_t$ and "inverse" the autoregressive operator $\phi(B)$ as follows:
 
 \[\phi^{-1}(z) = \frac{1}{(1 - 0.5z)(1 - 0.8z)} = \frac{c_1}{(1 - 0.5z)} + \frac{c_2}{(1 - 0.8z)} = \frac{c_2(1 - 0.5z) + c_1(1 - 0.8z)}{(1 - 0.5z)(1 - 0.8z)} ,\]
 
@@ -323,16 +487,16 @@ Finally, the causal region of an AR(2) is depicted on the figure below.
 
 #### Autocorrelation
 
-In this section we discuss the autocorrelation of (causal) AR($p$) processes. Before considering the general case of an AR($p$), we revisit Example @ref(ex1causality) and derive the ACF of the AR(2) model presented in this example.
+In this section we discuss the autocorrelation of (causal) AR($p$) processes. Before considering the general case of an AR($p$), we revisit Example \@ref(ex1causality) and derive the ACF of the AR(2) model presented in this example.
 
 ```{example, label="ar2acf", name = "Autocorrelation of an AR(2)"}
-Considering the same model as in Example @ref(ex1causality), i.e. $X_t = 1.3X_{t-1} - 0.4X_{t-2} + W_t$, we can derive the ACF using the following steps: 
+Considering the same model as in Example \@ref(ex1causality), i.e. $X_t = 1.3X_{t-1} - 0.4X_{t-2} + W_t$, we can derive the ACF using the following steps: 
 
 *Step 1:* Find the homogeneous difference equation with respect to the ACF $\rho(h)$, which in this case is given by:
 \[\rho(h) - 1.3\rho(h-1) + 0.4\rho(h-2) = 0, \mbox{   } h = 1,2,...\]
 and the initial conditions are $\rho(0) = 1$ and $\rho(-1) = \frac{13}{14}$. Note that the above equation is an homogenous difference equation of order 2.
 
-*Step 2:* Using the results of Example @ref(ex1causality), we have:
+*Step 2:* Using the results of Example \@ref(ex1causality), we have:
 \[\phi(z) = 1 - 1.3z + 0.4z^2 = (1 - 0.5z)(1 - 0.8z) ,\]
 and the roots of this equation are given by $z_1 = 2 > 1$ and $z_2 = 1.25 > 1$. Moreover, since $z_1$ and $z_2$ are real and distinct, we obtain (since it corresponds to the solution of an homogenous difference equation of order 2):
 
@@ -372,6 +536,8 @@ Consider the following models:
 \end{aligned} \]
 
 It is easy to verify the first one has real distrinct roots, the second a unique real root while the latter has complexe roots. This is illustrated in the figure which depicts the causal region of an AR(2) that has been separated between models with real and complexe roots.
+
+Next we present an example to show how to derive the ACF for general causal AR(p) model. It is much more complicated than what we did for AR(2).
 
 ```{r causalAR2_part2, echo = FALSE, cache = TRUE}
 
@@ -438,7 +604,7 @@ and
 \[ \mathbb{E} [(X_{t+h} - \hat{X}_{t+h})X_j ] = 0, \mbox{ for } i = 1, \dots, t.\]
 According to the projection theorem, we can show that satisfying the prediction equations is equivalent to minimizing the mean square error $\mathbb{E}(X_{t+h} - \hat{X}_{t+h})$. Thus we have two equivalent to obtain the best linear predictor.
 
-**Example: PACF of AR(1)**
+```{example, label="pacfar1", name = "PACF of AR(1)"}
 Consider a casual AR(1) model ${X_t} = \phi {X_{t - 1}} + {W_t},$ We have, 
 \[\phi_{11} = \corr(X_{t+1}, X_t) = \rho(1) = \phi,\]
 and 
@@ -459,17 +625,16 @@ Thus we can get the same solutions.
 
 Therefore, \[\phi_{22} = \corr(X_{t+2} - \phi X_{t+1}, X_t - \phi X_{t+1}) = \corr(W_{t+2}, X_t - \phi X_{t+1}) = 0,\]
 note that the last equation is based on casuality.
+```
 
-**Example: PACF of AR(p)**
+```{example, label="pacfarp", name = "PACF of AR(p)"}
 In this example we would like to show that the PACF characterize the order of AR(p) models. That is when $h > p$, the PACF $\phi_{hh} = 0$. Suppose a causal AR(p) model, $X_{t+h} = \sum_{j=1}^p \phi_j X_{t+h-j} + W_{t+h}$, we want to calculate $\phi_{hh}$.
 
 The best linear predictor of $X_{t+h}$ is 
 \[\hat{X}_{t+h} = \mathbb{E}\left[X_{t+h}|X_t, \dots, X_{t+h-1}\right] = \mathbb{E}\left[\sum_{j=1}^p \phi_j X_{t+h-j} + W_{t+h}|X_t, \dots, X_{t+h-1}\right] = \sum_{j=1}^p \mathbb{E}\left[\phi_j X_{t+h-j}|X_t, \dots, X_{t+h-1}\right] = \sum_{j=1}^p \phi_j X_{t+h-j}.\]
 Thus when $h > p$,
 \[ \phi_{hh} = corr(X_{t+h} - \hat{X}_{t+h}, X_t - \hat{X}_t) = corr(W_{t+h}, X_t - \hat{X}_t) = 0. \]
-
-
-
+```
 
 ### Estimation of AR($p$) models
 
@@ -493,7 +658,8 @@ and, recalling that $\gamma(h) = \gamma(-h)$,
 \end{equation}
 We can now define the Yule-Walker equations.
 
-**Definition:** The Yule-Walker equations are given by
+```{definition, label = "yweqs", name = "Yule-Walker Equations"}
+The Yule-Walker equations are given by
 \begin{equation}
     \gamma(h) = \phi_1 \gamma(h-1) + ... + \phi_p \gamma(h-p), \mbox{ } h = 1,...,p
 \end{equation}
@@ -506,6 +672,7 @@ which in matrix notation can be defined as follows
     \Gamma_p \mathbf{\phi} = \mathbf{\gamma}_p \text{and} \sigma_w^2 = \gamma(0) - \mathbf{\phi}'\mathbf{\gamma}_p
 \end{equation}
 where $\Gamma_p$ is the $p\times p$ matrix containing the autocovariances $\gamma(k-j), j,k = 1, ...,p$ while $\mathbf{\phi} = (\phi_1,...,\phi_p)'$ and $\mathbf{\gamma}_p = (\gamma(1),...,\gamma(p))'$ are $p\times 1$ vectors.
+```
 
 Considering the Yule-Walker equations, it is possible to use a method of moments approach and simply replace the theoretical quantities given in the previous definition with their empirical (estimated) counterparts that we saw in the previous chapter. This gives us the following Yule-Walker estimators
 \begin{equation}
@@ -578,7 +745,7 @@ The score function $\kappa(\cdot)$ is clearly not bounded, in the sense that if 
 \begin{equation*}
 \sum_{j=1}^{n-p} \psi (\hat{\mathbf{\theta}}|x_j,...x_{j+p}) = 0,
 \end{equation*}
-where $\psi(\cdot)$ is a function of bounded variation. When conditioning on the first $p$ observations, this problem can be brought back to a linear regression problem which can be applied in a robust manner using the robust regression tools available in R such as \texttt{rlm(\cdot)} or \texttt{lmrob(\cdot)}. However, another available tool in R which can applied directly without conditioning also for general ARMA models is the \texttt{gmwm(\cdot)} function which, by specifying the option ``\texttt{robust=TRUE}''. This function makes use of a quantity called the wavelet variance (denoted as $\nu$) which is estimated robustly and then used to retrieve the parameters $\theta$ of the time series model. The robust estimate is obtained by solving the following minimization problem
+where $\psi(\cdot)$ is a function of bounded variation. When conditioning on the first $p$ observations, this problem can be brought back to a linear regression problem which can be applied in a robust manner using the robust regression tools available in R such as `rlm(...)` or `lmrob(...)`. However, another available tool in R which can applied directly without conditioning also for general ARMA models is the `gmwm(...)` function which, by specifying the option `robust = TRUE`. This function makes use of a quantity called the wavelet variance (denoted as $\nu$) which is estimated robustly and then used to retrieve the parameters $\theta$ of the time series model. The robust estimate is obtained by solving the following minimization problem
 \begin{equation*}
 \hat{\theta} = \underset{\theta \in \Theta}{\argmin} (\hat{\nu} - \nu{\theta})^T\Omega(\hat{\nu} - \nu{\theta}),
 \end{equation*}
@@ -586,7 +753,7 @@ where $\hat{\nu}$ is the robustly estimated wavelet variance, $\nu{\theta}$ is t
 
 INSERT SIMULATIONS
 
-For all the above methods, it would be necessary to understand how ``precise'' their estimates are. To do so we would need to obtain confidence intervals for these estimates and this can be done mainly in two manners:
+For all the above methods, it would be necessary to understand how "precise" their estimates are. To do so we would need to obtain confidence intervals for these estimates and this can be done mainly in two manners:
 \begin{itemize}
   \item using the asymptotic distribution of the parameter estimates;
   \item using parametric bootrstrap.

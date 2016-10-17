@@ -226,7 +226,7 @@ Although a linear trend and other processes are present in this signal
 (time series), it is practically impossible to understand or guess anything
 from the plot.
 
-## Basic Time Series Models
+## Basic Time Series Models {#basicmodels}
 
 In this section, we introduce some simple time series models. Before doing so
 it is useful to define $\Omega_t$ as all the information avaiable up to time
