@@ -11,7 +11,7 @@
 \centering
 \begin{tikzpicture}[node distance=2.5cm, auto]
 \node (error) {$W_t$};
-\node[rectangle, right of=error, align=left] (filter) [fill=none, draw = black, thick] {Linear Filter \\ $\sum\limits_{j = -\infty}^{\infty}{\psi_jW_t}$};
+\node[rectangle, right of=error, align=left] (filter) [fill=none, draw = black, thick] {Process};
 \node[right of=filter] (obs) {$X_t$};
 
 \draw[->]
