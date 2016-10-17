@@ -12,7 +12,7 @@ knitr::read_chunk('code/chapter/03_arma.R')
 
 In this chapter we introduce a class of time series models that is flexible and among the most commonly used to describe stationary time series. This class is represented by the AutoRegressive Moving Average (ARMA) models which combine and include the AutoRegressive (AR) and Moving Average (MA) models seen in the previous chapter. We first discuss AR and MA models in further detail before introducing the general ARMA class. The importance of the latter class of models resides in its flexibility as well as its capacity of describing (or closely approximating) the features of stationary time series. The autoregressive parts of these models describe how consecutive observations in time influence each other while the moving average parts capture some possible unobserved shocks thereby allowing to model different phenomena going from biology to finance.
 
-To introduce and explain this class of models, this chapter is organized in the following manner. First of all we will discuss the class of linear processes of which the ARMA models are part of. We will then proceed to a detailed description of AR models in which we review their definition, explain their properties, introduce the main estimation methods for their parameters and highlight the diagnostic tools which can help understand if the estimated models appear to be appropriate or sufficient to well describe the observed time series. Once this is done, we will then use most of the results given for AR models to further desribe and discuss MA models, for which we underline the property of invertibility, and finally the ARMA models. Indeed, the properties and estimation methods for the latter class are directly inherited from the discussions on AR and MA models.
+To introduce and explain this class of models, this chapter is organized in the following manner. First of all we will discuss the class of linear processes of which the ARMA models are part of. We will then proceed to a detailed description of AR models in which we review their definition, explain their properties, introduce the main estimation methods for their parameters and highlight the diagnostic tools which can help understand if the estimated models appear to be appropriate or sufficient to well describe the observed time series. Once this is done, we will then use most of the results given for AR models to further describe and discuss MA models, for which we underline the property of invertibility, and finally the ARMA models. Indeed, the properties and estimation methods for the latter class are directly inherited from the discussions on AR and MA models.
 
 ## Linear Operators and Processes
 
@@ -367,7 +367,7 @@ $$X_t = \sum_{j = 0}^{\infty} \psi_j W_{t-j} = \frac{1}{\phi(B)} W_t = \psi(B) W
 where $\phi(B) = \sum_{j = 0}^{\infty} \phi_j B^j$, $\sum_{j=0}^{\infty}|\phi_j| < \infty$ and $\phi_0 = 1$.
 ```
 
-As discussed earlier this condition implies that only the past values of the time series can explain the future values of it, and not vice versa. As discussed in the previous section, linear processes are (weakly) stationary processes and therefore causality directly implies (weak) stationarity. However, it might be difficult and not obvious to show the causality of AR($p$) processes by using the above definitions directly, thus the following property is particulary useful in practice. 
+As discussed earlier this condition implies that only the past values of the time series can explain the future values of it, and not vice versa. As discussed in the previous section, linear processes are (weakly) stationary processes and therefore causality directly implies (weak) stationarity. However, it might be difficult and not obvious to show the causality of AR($p$) processes by using the above definitions directly, thus the following property is particularly useful in practice. 
 
 ```{theorem, label="theocausalar", name = "Causality of AR models"}
 If an AR(p) model is causal if and only if $\phi(z) \neq 0$ for $|z| \leq 1$. Then, the coefficients of the one-sided linear process given in \@ref(def:causalar) can be obtained by solving
@@ -391,7 +391,7 @@ Given the following AR(2) $X_t = 1.3X_{t-1} - 0.4X_{t-2} + W_t$ one could wonder
 and has roots $2 > 1$ and $1.25 > 1$. Thus, we should be able to covert it into linear process.
 
 
-*Step 2:* From Theorem \ref(@theocausalar) we know that if AR process has all its roots lie outside the unit circle, we can write $X_t = \phi^{-1}(B)W_t$ and "inverse" the autoregressive operator $\phi(B)$ as follows:
+*Step 2:* From Theorem \@ref(thm:theocausalar) we know that if AR process has all its roots lie outside the unit circle, we can write $X_t = \phi^{-1}(B)W_t$ and "inverse" the autoregressive operator $\phi(B)$ as follows:
 
 \[\phi^{-1}(z) = \frac{1}{(1 - 0.5z)(1 - 0.8z)} = \frac{c_1}{(1 - 0.5z)} + \frac{c_2}{(1 - 0.8z)} = \frac{c_2(1 - 0.5z) + c_1(1 - 0.8z)}{(1 - 0.5z)(1 - 0.8z)} ,\]
 
@@ -516,15 +516,15 @@ The graph depicts the ACF of this process:
 ```{r ACFAR2_cont, fig.height = 4, fig.width = 6, warning=FALSE, message=FALSE}
 ```
 
-The method used in the previous is only applicable for AR(2) with roots that are distinct and real, which is true when $\phi_2 > - \phi^1/4$. In the case where $\phi_2 = - \phi^1/4$, the autoregressive operator has single root and $\rho(h)$ can be obtain by determining (using inital conditions) the constants $c_1$ and $c_2$ of the following expression:
+The method used in the previous is only applicable for AR(2) with roots that are distinct and real, which is true when $\phi_2 > - \phi^1/4$. In the case where $\phi_2 = - \phi^1/4$, the autoregressive operator has single root and $\rho(h)$ can be obtain by determining (using initial conditions) the constants $c_1$ and $c_2$ of the following expression:
 
 $$\rho(h) = z_1^{-h} \left(c_1 + c_2 h\right).$$
-When $\phi_2 > - \phi^1/4$ the roots are complexe conjugate pairs and solution is given by:
+When $\phi_2 > - \phi^1/4$ the roots are complex conjugate pairs and solution is given by:
 
 $$\rho(h) = c_1 |z_1|^{-h} \cos \left(h \theta + c_2\right), $$
-where the constants depends on inital conditions, while $\theta = \text{arg}(z_1)$. 
+where the constants depends on initial conditions, while $\theta = \text{arg}(z_1)$. 
 
-Therefore, we have that $\rho(h) \to 0$ exponential fast as $h \to \infty$ and when $\phi_2 > - \phi^1/4$ $\rho(h)$ goes to zero in an sinusoidal fashion. This behaviour is illustrated in the next example.
+Therefore, we have that $\rho(h) \to 0$ exponential fast as $h \to \infty$ and when $\phi_2 > - \phi^1/4$ $\rho(h)$ goes to zero in an sinusoidal fashion. This behavior is illustrated in the next example.
 
 ```{example, label="ar2acfExample", name = "Autocorrelation AR(2) Processes"}
 Consider the following models:
@@ -543,13 +543,13 @@ Next we present an example to show how to derive the ACF for general causal AR(p
 ```{r causalAR2_part2, echo = FALSE, cache = TRUE}
 ```
 
-The ACF of these models are represented on the figure below. As expected the three models corresponds to an ACF that dempends expoentially fast but only Model 3 exibits a sinusoidal features.
+The ACF of these models are represented on the figure below. As expected the three models corresponds to an ACF that dampens exponentially fast but only Model 3 exhibits a sinusoidal features.
 
 ```{r ACFAR2eg, fig.height = 3, fig.width = 9, warning=FALSE, message=FALSE}
 ```
 
 
-Next, we consider the ACF for a general causal AR($p$) model. Unfortunatelty, this is far more complicated than our previous example.
+Next, we consider the ACF for a general causal AR($p$) model. Unfortunately, this is far more complicated than our previous example.
 
 ```{example, label="arpacf", name = "Autocorrelation of an AR($p$)"}
 
@@ -598,9 +598,9 @@ $$\phi_{hh} = \corr(X_{t+h} - \hat{X}_{t+h}, X_t - \hat{X}_t), \mbox{ } h \geq 2
 ```
 
 **Remark**
-From the above defination we can think of the partial correlation $\phi_{hh}$ as the correlation between the residual of $X_{t+h}$ after removing its best linear predictor on the vector space spanned by $\{ X_{t+1}, \dots, X_{t+h-1} \}$ and the residual of $X_t$ after reomving its best linear predictor on the same vector space. Similar to the linear regression, after projecting the residuals should be independ with the vector space spanned by $\{ X_{t+1}, \dots, X_{t+h-1} \}$. 
+From the above definition we can think of the partial correlation $\phi_{hh}$ as the correlation between the residual of $X_{t+h}$ after removing its best linear predictor on the vector space spanned by $\{ X_{t+1}, \dots, X_{t+h-1} \}$ and the residual of $X_t$ after removing its best linear predictor on the same vector space. Similar to the linear regression, after projecting the residuals should be independent with the vector space spanned by $\{ X_{t+1}, \dots, X_{t+h-1} \}$. 
 
-We will discuss about the best linear predictor in the section Forecasing, here we just mention how to obtain the best linear predictor. Given a time serie $X_1, X_2, \dots, X_t$ with zero mean, the best linear predictor of $X_{t+h}$ can be written as $\hat{X}_{t+h} = \sum_{j=1}^t \alpha_j X_j$ such than it satisfies the prediction equations:
+We will discuss about the best linear predictor in the section Forecasting, here we just mention how to obtain the best linear predictor. Given a time series $X_1, X_2, \dots, X_t$ with zero mean, the best linear predictor of $X_{t+h}$ can be written as $\hat{X}_{t+h} = \sum_{j=1}^t \alpha_j X_j$ such than it satisfies the prediction equations:
 \[ \mathbb{E}(X_{t+h} - \hat{X}_{t+h}) = 0, \]
 and
 \[ \mathbb{E} [(X_{t+h} - \hat{X}_{t+h})X_j ] = 0, \mbox{ for } i = 1, \dots, t.\]
@@ -758,7 +758,7 @@ INSERT SIMULATIONS
 For all the above methods, it would be necessary to understand how "precise" their estimates are. To do so we would need to obtain confidence intervals for these estimates and this can be done mainly in two manners:
 
 - using the asymptotic distribution of the parameter estimates;
-- using parametric bootrstrap.
+- using parametric bootstrap.
 
 The first approach consists in using the asymptotic distribution of the estimators presented earlier to deliver approximations of the confidence intervals which get better as the length of the observed time series increases. Hence, for example, if we wanted to find a 95% confidence interval for the parameter $\phi$, we would use the quantiles of the normal distribution (given that all methods presented earlier present this asymptotic distribution). However, this approach can present some drawbacks, one of which is there behaviour when the parameters are close to the boundaries of the parameter space. Let us take the example of an AR(1) to illustrate this problematic and suppose that $\phi = 0.99 < 1$ and $\sigma_W^2$. It can be seen that the parameter $\phi$ respects the condition for stationarity but is very close to its boundary. The code below computes the confidence interval for $\phi$ using the asymptotic normal distribution.
 
