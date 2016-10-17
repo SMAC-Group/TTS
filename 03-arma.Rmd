@@ -803,7 +803,7 @@ and
 \end{equation}
 which in matrix notation can be defined as follows
 \begin{equation}
-    \Gamma_p \mathbf{\phi} = \mathbf{\gamma}_p \text{and} \sigma_w^2 = \gamma(0) - \mathbf{\phi}'\mathbf{\gamma}_p
+    \Gamma_p \mathbf{\phi} = \mathbf{\gamma}_p \text{ and } \sigma_w^2 = \gamma(0) - \mathbf{\phi}'\mathbf{\gamma}_p
 \end{equation}
 where $\Gamma_p$ is the $p\times p$ matrix containing the autocovariances $\gamma(k-j), j,k = 1, ...,p$ while $\mathbf{\phi} = (\phi_1,...,\phi_p)'$ and $\mathbf{\gamma}_p = (\gamma(1),...,\gamma(p))'$ are $p\times 1$ vectors.
 ```
@@ -813,7 +813,7 @@ approach and simply replace the theoretical quantities given in the previous
 definition with their empirical (estimated) counterparts that we saw in the 
 previous chapter. This gives us the following Yule-Walker estimators
 \begin{equation}
-    \hat{\mathbf{\phi}} = \hat{\Gamma}_p^{-1}\hat{\mathbf{\gamma}}_p \text{and} \hat{\sigma}_w^2 = \hat{\gamma}(0) - \hat{\mathbf{\gamma}}_p'\hat{\Gamma}_p^{-1}\hat{\mathbf{\gamma}}_p
+    \hat{\mathbf{\phi}} = \hat{\Gamma}_p^{-1}\hat{\mathbf{\gamma}}_p \text{ and } \hat{\sigma}_w^2 = \hat{\gamma}(0) - \hat{\mathbf{\gamma}}_p'\hat{\Gamma}_p^{-1}\hat{\mathbf{\gamma}}_p
 \end{equation}
 
 These estimators have the following asymptotic properties.
@@ -823,7 +823,7 @@ The Yule-Walker estimators for a causal AR(p) model have the following
 asymptotic properties:
 
 \begin{equation*}
-\sqrt{T}(\hat{\mathbf{\phi}}- \mathbf{\phi}) \xrightarrow{\mathcal{D}} \mathcal{N}(\mathbf{0},\sigma_w^2\Gamma_p^{-1}) \text{and} \hat{\sigma}_w^2 \xrightarrow{\mathcal{P}} \sigma_w^2 .
+\sqrt{T}(\hat{\mathbf{\phi}}- \mathbf{\phi}) \xrightarrow{\mathcal{D}} \mathcal{N}(\mathbf{0},\sigma_w^2\Gamma_p^{-1}) \text{ and } \hat{\sigma}_w^2 \xrightarrow{\mathcal{P}} \sigma_w^2 .
 \end{equation*}
 
 Therefore the Yule-Walker estimators have an asymptotically normal distribution 
