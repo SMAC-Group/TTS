@@ -27,11 +27,11 @@ polygon(c(phi1,rev(phi1)),c(rep(-1,10^3),
 # Adding text
 text(0,-0.5, c("Causal Region"))
 
-## @knitr ACFAR2_cont
+## @knitr ACFAR2cont
 library(exts)
 autoplot(theo_acf(AR(phi = c(1.3, -0.4))))
 
-## @knitr causalAR2_part2
+## @knitr causalAR2part2
 plot(NA, xlim = c(-2.1,2.1), ylim = c(-1.1,1.1), xlab = expression(phi[1]),
      ylab = expression(phi[2]), cex.lab = 1.5)
 grid()
@@ -76,8 +76,8 @@ text(0.5, 0.18, c("Model 2"), cex = 0.75)
 text(-1.5, -0.82, c("Model 3"), cex = 0.75)
 
 ## @knitr ACFAR2eg
-
-library(gridExtra)
+library("exts")
+library("gridExtra")
 
 # Define models
 m1 = AR(phi = c(1, -0.25))

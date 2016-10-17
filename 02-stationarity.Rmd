@@ -218,7 +218,7 @@ It is important to understand how to verify if a postulated model is (weakly) st
 2. $\var\left[X_t \right] = \sigma^2_t = \sigma^2 < \infty$,
 3. $\cov\left(X_t, X_{t+h} \right) = \gamma \left(h\right)$.
 
-In the following examples we evaluate the stationarity of the processes introduced in Section \@ref(basic-time-series-models).
+In the following examples we evaluate the stationarity of the processes introduced in Section \@ref(basicmodels).
 
 ```{example, label="gwn", name = "Gaussian White Noise"} 
 It is easy to verify that this process is stationary. Indeed, we have:

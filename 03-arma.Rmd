@@ -555,9 +555,9 @@ Since $z_1 = \frac{\phi_1 + \sqrt{\phi_1^2 + 4\phi_2}}{-2 \phi_2}$ and $\phi_2-1
 Since $z_2 = \frac{\phi_1 - \sqrt{\phi_1^2 + 4\phi_2}}{-2 \phi_2}$ and $\phi_2-1 < \phi_1 < 1-\phi_2$, then $z_2^2 = \frac{\left(\phi_1 - \sqrt{\phi_1^2 + 4\phi_2}\right)^2}{4 \phi_2^2} < \frac{\left((\phi_2-1) + \sqrt{(\phi_2-1)^2 + 4\phi_2}\right)^2}{4 \phi_2^2} = \frac{4 \phi_2^2}{4 \phi_2^2} = 1$.
 ```
 
-Finally, the causal region of an AR(2) is depicted on the figure below.
+Finally, the causal region of an AR(2) is depicted in Figure \@ref(fig:causalAR2).
 
-```{r causalAR2, echo = FALSE, cache = TRUE}
+```{r causalAR2, echo = FALSE, cache = TRUE, fig.cap="Causal Region for Parameters of an AR(2) Process"}
 ```
 
 #### Autocorrelation
@@ -595,9 +595,7 @@ implying that $c_1 = -\frac{3}{7}$ and $c_2 = \frac{10}{7}$. The ACF for this mo
 \[\rho(h) = -\frac{3}{7}2^{-h} + \frac{10}{7}\left(\frac{5}{4}\right)^{-h} .\]
 ```
 
-The graph depicts the ACF of this process:
-
-```{r ACFAR2_cont, fig.height = 4, fig.width = 6, warning=FALSE, message=FALSE}
+```{r ACFAR2cont, fig.height = 4, fig.width = 6, warning=FALSE, message=FALSE, fig.cap="Depicts of the Theoretical ACF of an AR(2) Process."}
 ```
 
 The method used in the previous is only applicable for AR(2) with roots that are
@@ -627,22 +625,22 @@ Consider the following models:
 \end{aligned} \]
 
 It is easy to verify the first one has real distrinct roots, the second a unique 
-real root while the latter has complexe roots. This is illustrated in the figure 
-which depicts the causal region of an AR(2) that has been separated between 
-models with real and complexe roots.
+real root while the latter has complexe roots. This is illustrated in Figure 
+\@ref(fig:causalAR2part2) which depicts the causal region of an AR(2) that
+has been separated between models with real and complexe roots.
 ```
 
 Next we present an example to show how to derive the ACF for general causal
 AR(p) model. It is much more complicated than what we did for AR(2).
 
-```{r causalAR2_part2, echo = FALSE, cache = TRUE}
+```{r causalAR2part2, echo = FALSE, cache = TRUE, fig.cap = "Viable Solutions of AR(p)"}
 ```
 
-The ACF of these models are represented on the figure below. As expected the 
+The ACF of these models are represented in Figure \@ref(fig:ACFAR2eg). As expected the 
 three models corresponds to an ACF that dampens exponentially fast but only 
 Model 3 exhibits a sinusoidal features.
 
-```{r ACFAR2eg, fig.height = 3, fig.width = 9, warning=FALSE, message=FALSE}
+```{r ACFAR2eg, fig.height = 3, fig.width = 9, warning=FALSE, message=FALSE, fig.cap="Theoretical Autocorrelation Graphs of with models from left to right being Model 1, Model 2, and Model 3."}
 ```
 
 
