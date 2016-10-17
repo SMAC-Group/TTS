@@ -75,7 +75,7 @@ equally to the lag operator.
 ```{example, label="backshiftseasons", name = "Backshifting with respect to seasonality"}
 If the backshift operator is raised to a higher power, say $k = 12$, then this 
 leads to allowing the exploration of seasonality. Specifically, in the case of 
-monthly data, $B^12 X_t = X_{t-12}$ would provide a way to look at the data that
+monthly data, $B^{12} X_t = X_{t-12}$ would provide a way to look at the data that
 occurred one year prior.
 ```
 
@@ -173,7 +173,7 @@ $\left|\phi\right| < 1$. However, there is a specific name for a process that is
 able to be written in the above form.
 
 ```{definition, label="lp", name="Linear Process"}
-A time series, $(X_t)$, is defined to be a linear process if it can be expressed
+A time series, $\left\{X_t\right\}$, is defined to be a linear process if it can be expressed
 as a linear combination of white noise by:
 
 \[{X_t} = \mu + \sum\limits_{j =  - \infty }^\infty  {{\psi _j}{W_{t - j}}} \]
