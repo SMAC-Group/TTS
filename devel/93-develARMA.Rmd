@@ -273,7 +273,7 @@ Next we present an example to show how to derive the ACF for general causal AR(p
 **Example: ACF of AR(p)**
 Recall that the AR(p) models can be formally represented as follows
 $${X_t} = {\phi_1}{X_{t - 1}} + ... + {\phi_p}{X_{t - p}} + {W_t},$$
-where $W_t$ is a (Gaussian) white noise process with variance $\sigma^2$.
+where $\phi_p \neq 0$ and $W_t$ is a (Gaussian) white noise process with variance $\sigma^2$.
 
 As it is shown in Chapter 3.4 of textbook, there are two ways to derive the ACF for general AR(p) models. 
 
@@ -305,7 +305,19 @@ Since the AR(p) model is causal, the roots we obtained in step 2 should be outsi
 
 from the right hand side of the last inequality, we can find the rate of convergence would be dominated by $\frac{1}{\min_{j = 1, \dots, r} \left|z_j \right|^{h}}$. Thus the ACF $\rho(h)$ will goes to zero exponentially as $h \to \infty$.
 
+**Remark**
+From the example and remark, we know that a causal AR(p) can be written as a one-sided linear process: $X_t = \sum_{j = 0}^{\infty} \psi_j W_{t-j}$, and the autocovariance function $\gamma(h) = cov(X_{t+h},X_t) = \sigma^2 \sum_{j=0}^{\infty} \psi_j \psi_{j+h}$, for $h \geq 0$. And the ACF $\rho(h)$ of AR(p) will goes to zero exponentially as $h \to \infty$.
 
+Now, suppose we have another one-sided linear process: $X_t = \sum_{j = 0}^{q} \psi_j W_{t-j}$, but it is truncated at order q. Then let $h>0$, $X_{t+h} = \sum_{j = 0}^{q} \psi_j W_{t+h-j}$. Then the the autocovariance function 
+\[\gamma(h) = cov(X_{t+h},X_t) =
+\begin{cases}
+        \sigma^2 \sum_{j=0}^{q-h} \psi_j \psi_{j+h} & 1 \leq h \leq q\\
+        0 & h > q
+\end{cases}. \]
+It is shown that this truncated one-sided linear process (MA(q) model) would always has ACF $\rho(h) = 0$ when $h > q$. Thus ACF is a very informative tool to identify this order q of the truncated one-sided linear process (MA(q) model). However a causal AR(p) is a one-sided linear process with infinite order, so that ACF do not tell us anything information on the order of an AR model.
+
+However a similar statistic of ACF, called the partial autocorrelation function is quite informative about order
+of AR(p).
 
 ###Partial autocorrelation of AR models
 ```{definition, label="pacf","Partial autocorrelation of AR models"}
@@ -353,6 +365,13 @@ The best linear predictor of $X_{t+h}$ is
 \[\hat{X}_{t+h} = \mathbb{E}\left[X_{t+h}|X_t, \dots, X_{t+h-1}\right] = \mathbb{E}\left[\sum_{j=1}^p \phi_j X_{t+h-j} + W_{t+h}|X_t, \dots, X_{t+h-1}\right] = \sum_{j=1}^p \mathbb{E}\left[\phi_j X_{t+h-j}|X_t, \dots, X_{t+h-1}\right] = \sum_{j=1}^p \phi_j X_{t+h-j}.\]
 Thus when $h > p$,
 \[ \phi_{hh} = corr(X_{t+h} - \hat{X}_{t+h}, X_t - \hat{X}_t) = corr(W_{t+h}, X_t - \hat{X}_t) = 0. \]
+
+Therefore, when the lag is greater than p the PACF is zero.
+
+In summary, we have two general results to identify time series models.
+
+(1) If the ACF after a certain lag (q) is zero, it suggests an MA(q) model for the time series. However, the ACF of any AR(p) process will only decay to zero as the lag increases.
+(2) If the PACF after a certain lag (p) is zero, it suggests an AR(p) model for the time series. However, the partial covariances of any MA(p) process will only decay to zero as the lag increases.
 
 ## Estimation of Parameters
 
@@ -766,4 +785,38 @@ Furthermore, it can be shown that:
 So, this is not a really optimal estimator...
 
 ## Prediction (Forecast)
+One of the most interesting things in time series analysis is to predict the future unobserved values based on the observed values up to now. However, it is not possible if the underlying model is unknown, thus in this section we assume the time series $X_t$ is stationary and its model is known. Recall that the best linear predictor is mentioned when we calculate the PACF of AR model. Here is the definition of best linear predictor.
+
+**Definition** 
+Given a stationary time serie $X_1, X_2, \dots, X_t$, without loss of generality we assume it has mean, the best linear predictor of $X_{t+h}$ is the linear combination $\sum_{j=1}^t \alpha_j X_j$ that minimize $\mathbb{E}|X_{t+h} - Y|^2$ over all linera combinations $Y$ of $X_1, X_2, \dots, X_t$. The minimal value $\mathbb{E}|X_{t+h} - \sum_{j=1}^t \alpha_j X_j|^2$ is called the square prediction error.
+
+**Theorem** (Projection Theorem)
+Let $\mathcal{M} \subset \mathcal{L}_2$ be a closed linear subspace of Hibert space. For every $y \in \mathcal{L}_2$, there exists a unique element $\hat{y} \in \mathcal{M}$ that minimizes $||y - l||^2$ over $l \in \mathcal{M}$. This element is uniquely determined by the requirements (1) $\hat{y} \in \mathcal{M}$ and (2) $(y - \hat{y}) \perp \mathcal{M}$.
+
+Projection theorem natually leads to an equivalent way to find the best linear predictor by solving the predition equations,
+\[ \mathbb{E}(X_{t+h} - \hat{X}_{t+h}) = 0, \mbox{( it is trivil for TS with zero mean)}\]
+and
+\[ \mathbb{E} [(X_{t+h} - \hat{X}_{t+h})X_j ] = 0, \mbox{ for } i = 1, \dots, t.\]
+
+Write $\mathbb{E}(X_{i}, X_{j})$ as $\gamma(|i - j|)$, predition equations can be represented by the following form
+\begin{equation}
+  \begin{pmatrix}
+    \gamma(0) & \gamma(1) & \cdots & \gamma(t-1) \\
+    \gamma(1) & \gamma(0) & \cdots & \gamma(t-2) \\
+    \vdots & \vdots & \ddots & \vdots \\
+    \gamma(t-1) & \gamma(t-2) & \cdots &\gamma(0)
+  \end{pmatrix}
+
+  \begin{pmatrix}
+    \alpha_1 \\
+    \vdots \\
+    \alpha_t
+  \end{pmatrix}
+  =
+  \begin{pmatrix}
+    \gamma(t+h-1)  \\
+    \vdots \\
+    \gamma(h)
+  \end{pmatrix}
+\end{equation}.
 
