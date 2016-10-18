@@ -38,21 +38,22 @@ discussions on AR and MA models.
 ## Linear Operators and Processes
 
 Within this section, the concepts of linear operators and processes will be
-discussed. Both concepts are critical to being able to model time series data.
-In fact, every time series that can be denoted as weakly stationary is either a 
-linear process or has the ability to be after being transformed using a linear 
-operation such as differencing deterministic components. 
+discussed thereby providing some theoretical bases to model a variety of time series data.
+In fact, every time series that is weakly stationary is either a 
+linear process or can be redefined as such after being transformed using a linear 
+operation such as, for example, removing a trend through differencing. 
 
 ### Linear Operators
 
-Prior to introducing linear processes, discussion must first focus upon a very
-useful tool: linear operators. These operators play a fundamental role in easing
-the manipulation of time series equations. Principally, the manipulations serve
-three fold: 1. converting into a linear process form, 2. differencing
-deterministic components, and 3. adjusting seasonal time windows.
+Prior to introducing linear processes, we will first discuss the concept of linear operators that are necessary to better understand the former. These operators allow to manipulate time series in order to transform them into a form that can be represented by the models presented in the previous chapters (and the ARMA models presented further on). Generally speaking, these operators serve three main goals:
+\begin{itemize}
+  \item converting a time series into a linear process form;
+  \item differencing in order to remove deterministic components;
+  \item removing seasonal trends.
+\end{itemize}
 
 ```{definition, label="linop", name = "Linear Operator"}
-A linear operator, $L$, is an operator which satisfies the following two 
+A linear operator $L$ is an operator that satisfies the following two 
 conditions: 
 
 \[\begin{aligned}
@@ -61,79 +62,63 @@ conditions:
 \end{aligned} \]
 ```
 
-Linear operators are defined to exists within a Hilbert space. As a result,
-these operations are mathematical very rigorous. Details on the rigor will
-not be invested indepth within this text and are left as an exercise better
-suited to Abstract Linear Algebra. 
+Given these definitions, the following subsections will investigate some specific linear operators that are particularly suited to manipulate the time series that are treated within this chapter.
 
 #### Backshift (Lag) Operator
 
-One of the principal uses of a linear operator within time series is the 
-backshift operator. The backshift operator provides the ability to change the
-indices of the time series by one period e.g. $t \rightarrow t-1$. 
+The backshift operator is a linear operator which can be used to define the other operators that will be discussed in the following paragraphs. The purpose of this operator is to change the
+indices of the time series by one period (e.g. $t \rightarrow t-1$) thereby shifting a variable at time $t$ to its predecessor at time $t-1$. 
 
 ```{definition, label="backshiftop", name = "Backshift Operator"}
-The backshift operator is defined as:
+The backshift operator $B$ is defined as:
 
 \[B{X_t} = {X_{t - 1}}\]
+```
 
-The backshift operator has the following properties:
+Given this definition, the backshift operator has the following properties:
 
-1. Multiple backshifts yield: 
-${B^k}{X_t} = B^{k-1} B {X_t} = B^{k-1} {X_{t-1}} = {X_{t - k}}$
-2. By raising to a negative power, the backshift operator moves observations
-forward: $B^{-1} = {X_{t+1}}$
-3. Given a constant, $c \in \real$: $Bc = c$
+1. ${B^k}{X_t} = B^{k-1} B {X_t} = B^{k-1} {X_{t-1}} = ... = {X_{t - k}}$ for $k \in \mathbb{N}^{+}$
+2. $B^{u} = {X_{t+u}}$ for $u \in \mathbb{Z}^{-}$ (i.e. negative integer powers)
+3. $Bc = c$ for $c \in \real$
 4. $B^0 = 1$
 
+Often the backshift operator may be denoted as $L$ which can be confused with the notation of the linear operator provided earlier. Therefore, in the context of this chapter (and book), please notice that $L$ will denote a general linear operator and that $B$ will instead denote the backshift operator.
+
+```{example, label="backshiftseasons", name = "Backshift operator for seasonality"}
+A certain power used for the backshift operator can be useful to deal with seasonal features in the observed time series. For example, in the case of 
+monthly data, $B^{12} X_t = X_{t-12}$ would eventually allow to deal with cycles that occur every year while $B^{3} X_t = X_{t-3}$ would be more adapted to dealing with quarterly characteristics.
 ```
 
-The notation for the backshift operator changes depending on the author's 
-preferences. An alternative way to denote a backshift operation given by $B$
-is to use the lag operator $L$. The same conventions as discussed above apply
-equally to the lag operator.
+#### Difference Operator
 
-```{example, label="backshiftseasons", name = "Backshifting with respect to seasonality"}
-If the backshift operator is raised to a higher power, say $k = 12$, then this 
-leads to allowing the exploration of seasonality. Specifically, in the case of 
-monthly data, $B^{12} X_t = X_{t-12}$ would provide a way to look at the data that
-occurred one year prior.
-```
+A very useful operator that can be defined through the backshift operator $B$ is given by the difference operator $\nabla$. The latter is particularly helpful when there is a need to remove trends from the time series.
 
-#### Differencing Operator
+```{definition, label="diffop", name = "Difference Operator"}
+The **Difference Operator** is defined as follows:
 
-The differencing operator is helpful when trying to remove trend from the data.
-Many make an analogy between this operator and taking a first derivative of
-a function.
-
-```{definition, label="diffop", name = "Differencing Operator"}
-The **Differencing Operator** is defined as the gradient symbol applied to
-a time series:
-
-\[\nabla {X_t} = {X_t} - {X_{t - 1}} = \left( {1 - B} \right){X_t}\]
+\[\nabla {X_t} = \left( {1 - B} \right){X_t} = {X_t} - {X_{t - 1}}.\]
 
 The difference operator has the following properties:
 
 1. ${\nabla ^k}{X_t} = {\nabla ^{k - 1}} \left( {\nabla {X_t}}\right) = \left( {1 - B} \right)^k {X_t}$
-2. ${\nabla ^1}{X_t} = \nabla {X_t}$
-3. $\nabla c = 0$
+2. $\nabla c = 0$ for $c \in \real$
 3. ${\nabla ^0}{X_t} = {X_t}$
 
 ```
 
 ```{example, label="diffex", name = "Repetitive Differencing"}
-To understand the repetitive nature of the difference operation, consider the
+To understand the repetitive nature of the difference operator, consider the
 case when the number of differences is $k = 2$:
 
 \[\begin{aligned}
   {\nabla ^2}{X_t} &= \nabla \left( {\nabla {X_t}} \right) \\
-   &= \nabla \left( {{X_t} - {X_{t - 1}}} \right) \\
+   &= \nabla \left( {{X_t} - {X_{t - 1}}} \right) = \nabla {X_t} - \nabla {X_{t - 1}} \\
    &= \left( {{X_t} - {X_{t - 1}}} \right) - \left( {{X_{t - 1}} - {X_{t - 2}}} \right) \\
    &= {X_t} - 2{X_{t - 1}} + {X_{t - 2}} \\ 
 \end{aligned} \]
 
-Notice that at the end of the process, we are able to transform the
-differencing operation to rely upon the backshift operator:
+Notice that at the end of the process, we are able to re-express the
+differencing operation in terms of the backshift operator:
 
 \[\begin{aligned}
   {\nabla ^2}{X_t} &= {X_t} - 2{X_{t - 1}} + {X_{t - 2}} = {X_t} - 2B{X_t} + B^2{X_t} \\
@@ -141,60 +126,47 @@ differencing operation to rely upon the backshift operator:
 \end{aligned} \]
 ```
 
-#### Seasonal Differencing Operator
+#### Seasonal Difference Operator
 
-As discussed previously, the backshift operator has a subtle way of shifting
-one time period. Trends that exists within time series sometimes span months
-or even years. Therefore, to remove such a deterministic component, the
-seasonality will have to be differenced out.
+A specific case of the backshift operator, as highlighted earlier, is the capacity of adapting to seasonal features in the time series. Indeed, there may be trends in the time series that occur over lags of months or even years. In order to remove these trends in the process, a seasonal version of the difference operator can therefore be used.
 
 ```{definition, label="seasonaldiff", name = "Seasonal Difference Operator"}
 The seasonal difference operator can applied by using a seasonal backshift:
 
-\[{\nabla _s}{X_t} = {X_t} - {X_{t - s}} = \left( {1 - B_s} \right){X_t}\]
+\[{\nabla _s}{X_t} = \left( {1 - B_s} \right){X_t} = {X_t} - {X_{t - s}} \]
 
-As this is a modification of the difference operator, the previously discussed
-properties associated with the differencing operation largely are the same
-excluding the differentiation. That is, the seasonal difference operator is
-generalized such that:
+where $s$ denotes the lag at which the seasonal trend occurs. Being a specific case of the difference operator, the previously discussed
+properties associated with the difference operator generally hold. However, the seasonal difference operator is more specifically represented as follows:
 
-\[{\nabla ^k_s}{X_t} = {\left( {1 - B_s} \right)^k}{X_t}\]
+\[{\nabla ^k_s}{X_t} = {\left( {1 - B_s} \right)^k}{X_t},\]
+
+and therefore can be more complex to apply than a simple difference operator.
 
 ```
 
 
 ### Linear Processes
 
-The models that that have been studied thus far have a common theme that unites
-them. Underlying each model, there is an input sequence of independent random
-errors that is mapped to a series of correlated weighted random variables. As
-only the output $\left\{X_t\right\}$ is observable, the type of process and
-subsequently weighting must be differentiated during the course of modeling.
+The stationary models considered so far, including the ARMA models treated further on in this chapter, can all be represented as linear processes. Indeed, a linear process is a process that can be represented as an infinite linear combination of independent random variables $\left\{W_t\right\}$ with linear coefficients generally denoted as $\psi_j$, $j = -\infty,...,+\infty$. The following figure gives a general idea of how a linear process can be obtained.
 
-```{r linearfilter, fig.cap="Processing a signal", cache = TRUE, fig.align='center', echo = FALSE}
+```{r linearfilter, fig.cap="Linear process representation", cache = TRUE, fig.align='center', echo = FALSE}
 knitr::include_graphics("images/filter/filtering.png")
 ```
 
-Recall the Example \@ref(ex:exar1) where *backsubstitution* was used to
-manipulate an AR(1) model into a condensed series form. From the condensed form,
-the ability to ascertain whether an $X_t$ existed such that the model had a
-solution was readily apparent. With the newfound knowledge of the *backshift*
-operator, the example is ripe to be revisited.
+To put this definition into context, recall Example \@ref(ex:exar1) where *backsubstitution* was used to represent an AR(1) model as a linear combination of a white noise process $\left\{W_t\right\}$. Using the *backshift* operator $B$ defined earlier, we can revisit this example in the following manner:
 
 \[\begin{aligned}
   {X_t} &= \phi {X_{t - 1}} + {W_t} \\
   {X_t} - \phi {X_{t - 1}} &= {W_t} \\
   \left( {1 - \phi B} \right){X_t} &= {W_t} \\
   {X_t} &= \frac{1}{{1 - \phi B}}{W_t} \\
-   &= \sum\limits_{j = 0}^\infty  {{\phi ^j}{B^j}{W_t}}  = \sum\limits_{j = 0}^\infty  {{\phi ^j}{W_{t - j}}}  \\ 
+   &= \sum\limits_{j = 0}^\infty  {{\phi ^j}{B^j}{W_t}}  = \sum\limits_{j = 0}^\infty  {{\phi ^j}{W_{t - j}}} . \\ 
 \end{aligned} \]
 
-Thus, just as before, there does exist a solution for an AR(1) when
-$\left|\phi\right| < 1$. However, there is a specific name for a process that is
-able to be written in the above form.
+As can be seen, under the condition that $\left|\phi\right| < 1$, an AR(1) can therefore be represented as a linear process. Given the above discussion and examples, let us now formalize the definition of this class of processes.
 
 ```{definition, label="lp", name="Linear Process"}
-A time series, $\left\{X_t\right\}$, is defined to be a linear process if it can be expressed
+A time series $\left\{X_t\right\}$ is defined to be a linear process if it can be expressed
 as a linear combination of white noise by:
 
 \[{X_t} = \mu + \sum\limits_{j =  - \infty }^\infty  {{\psi _j}{W_{t - j}}} \]
@@ -202,9 +174,8 @@ as a linear combination of white noise by:
 where $W_t \sim WN(0, \sigma^2)$ and $\sum\limits_{j =  - \infty }^\infty  {\left| {{\psi _j}} \right|}  < \infty$.
 ```
 
-Note, the later assumption is required to ensure that the series has a limit. 
-Furthermore, the set of coefficients \[{\{ {\psi _j}\} _{j =  - \infty , \cdots ,\infty }}\]
-can be viewed as linear filter. These coefficients do not have to be all equal
+Note, the latter assumption (i.e. $\sum\limits_{j =  - \infty }^\infty  {\left| {{\psi _j}} \right|}  < \infty$) is required to ensure that the series has a limit. Hence, the set of coefficients \[{\{ {\psi _j}\} _{j =  - \infty , \cdots ,\infty }}\]
+can be viewed as linear filter that do not have to be all equal
 nor symmetric as later examples will show. 
 
 ```{theorem, label="lpstat", name="Stationarity of Linear Process"}
@@ -218,31 +189,29 @@ is stationary with:
 ```
 
 ```{proof}
-The expectation and autocovariance are able to be obtained immediately given the
-series converges under $\sum\limits_{j =  - \infty }^\infty  {\left| {{\psi _j}} \right|}  < \infty$. Therefore, we have for the expectation:
+Given that the
+series converges under $\sum\limits_{j =  - \infty }^\infty  {\left| {{\psi _j}} \right|}  < \infty$, the expectation and autocovariance can be computed in a straightforward manner. Indeed, for the expectation we have:
 
 \[E\left[ {{X_t}} \right] = E\left[ {\mu  + \sum\limits_{j =  - \infty }^\infty  {{\psi _j}{W_{t - j}}} } \right] = \mu  + \sum\limits_{j =  - \infty }^\infty  {{\psi _j}E\left[ {{W_{t - j}}} \right]}  = \mu  + 0 = \mu \]
 
-In addition, the autocovariance is able to be obtained as:
+As for the autocovariance, noting that $\cov\left( {{W_{t + h - j}},{W_{t - i}}} \right) = 0$ for $i \ne j + h$, we have:
 
 \[\begin{aligned}
   \cov \left( {{X_{t + h}},{X_t}} \right) &= \cov \left( {\mu  + \sum\limits_{j =  - \infty }^\infty  {{\psi _j}{W_{t + h - j}}} ,\mu  + \sum\limits_{i =  - \infty }^\infty  {{\psi _i}{W_{t - i}}} } \right) \\
    &= \sum\limits_{j =  - \infty }^\infty  {\sum\limits_{i =  - \infty }^\infty  {{\psi _j}{\psi _i}\cov \left( {{W_{t + h - j}},{W_{t - i}}} \right)} }  = \sum\limits_{j =  - \infty }^\infty  {{\psi _{j + h}}{\psi _j}\cov \left( {{W_t},{W_t}} \right)}  + \sum\limits_{j =  - \infty }^\infty  {\sum\limits_{i =  - \infty }^\infty  {{\psi _j}{\psi _i}\underbrace {\cov \left( {{W_{t + h - j}},{W_{t - i}}} \right)}_{ = 0}} }  \\
-   &= \sigma _W^2\sum\limits_{j =  - \infty }^\infty  {{\psi _j}{\psi _i}}  \\ 
+   &= \sigma _W^2\sum\limits_{j =  - \infty }^\infty  {{\psi _j}{\psi _i}}.  \\ 
 \end{aligned} \]
-
-Within the above derivation, the key is to realize that 
-$\cov\left( {{W_{t + h - j}},{W_{t - i}}} \right) = 0$ since $i \ne j + h$.
 ```
 
-```{example, label="backshiftlp", name = "Linear Processes under backshift operator"}
-Linear processes are able to written in a more compact form by utilizing the
-backshift operator.
+```{example, label="backshiftlp", name = "Backshift operators for Linear Processes"}
+A special notation for linear processes based on the backshift operator is as follows:
 
 \[\begin{aligned}
   {X_t} &= \mu  + \psi \left( B \right){W_t} \\
   \psi \left( B \right) &= \sum\limits_{j = 0}^\infty  {{\psi _j}{B^j}}  \\ 
 \end{aligned} \]
+
+This notation allows to define the processes in a more compact form.
 ```
 
 ### Examples of Linear Processes
@@ -763,14 +732,13 @@ Thus when $h > p$,
 \[ \phi_{hh} = corr(X_{t+h} - \hat{X}_{t+h}, X_t - \hat{X}_t) = corr(W_{t+h}, X_t - \hat{X}_t) = 0. \]
 ```
 
-With these properties in mind, we need to deliver an estimator for the PACF just as we defined an estimator for the ACF in the previous chapter. If we re-express the above definitions of the PACF $\phi_{hh}$ using the linear predictors and taking from the defintion given earlier and the subsequent remark, we can redefine the PACF $\phi_{hh}$ as being the coefficient $\beta_h$ of the linear predictor
+With these properties in mind, we need to deliver an estimator for the PACF just as we defined an estimator for the ACF in the previous chapter. If we re-express the above definitions of the PACF $\phi_{hh}$ using the linear predictors and taking from the defintion given earlier followed by its subsequent remark, we can redefine the PACF $\phi_{hh}$ as being the coefficient $\beta_h$ of the linear predictor
 \[\hat{X}_{t+h} = \sum_{j=1}^h \beta_j X_{t+h-j}\]
 since $\beta_h$ represents the effect of $X_t$ on $X_{t+h}$ once the linear effect of the intermediate variables has been removed. Therefore, given this linear problem, we can obtain an estimate of the PACF ($\hat{\phi}_{hh}$) as the least squares solution for $\beta_h$ to the following regression problem
 \[x_{t+h} = \sum_{j=1}^h \beta_j x_{t+h-j},\]
 where $(x_t)_{t=h,...,T}$ is the observed time series. Adapting the asymptotics for the coefficients of a linear regression, we have that $\hat{\phi}_{hh}$ is asymptotically normally distributed and, if the process $(X_t)$ is a white noise, its variance is given by
 \[\Var(\hat{\phi}_{hh}) \approx \frac{1}{T}.\]
 Hence, as for the ACF, the PACF can be tested for significance by building approximate confidence intervals using $\pm 2/\sqrt{T}$ as critical limits.
-
 
 
 ### Estimation of AR($p$) models
