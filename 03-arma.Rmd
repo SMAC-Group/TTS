@@ -763,6 +763,16 @@ Thus when $h > p$,
 \[ \phi_{hh} = corr(X_{t+h} - \hat{X}_{t+h}, X_t - \hat{X}_t) = corr(W_{t+h}, X_t - \hat{X}_t) = 0. \]
 ```
 
+With these properties in mind, we need to deliver an estimator for the PACF just as we defined an estimator for the ACF in the previous chapter. If we re-express the above definitions of the PACF $\phi_{hh}$ using the linear predictors and taking from the defintion given earlier and the subsequent remark, we can redefine the PACF $\phi_{hh}$ as being the coefficient $\beta_h$ of the linear predictor
+\[\hat{X}_{t+h} = \sum_{j=1}^h \beta_j X_{t+h-j}\]
+since $\beta_h$ represents the effect of $X_t$ on $X_{t+h}$ once the linear effect of the intermediate variables has been removed. Therefore, given this linear problem, we can obtain an estimate of the PACF ($\hat{\phi}_{hh}$) as the least squares solution for $\beta_h$ to the following regression problem
+\[x_{t+h} = \sum_{j=1}^h \beta_j x_{t+h-j},\]
+where $(x_t)_{t=h,...,T}$ is the observed time series. Adapting the asymptotics for the coefficients of a linear regression, we have that $\hat{\phi}_{hh}$ is asymptotically normally distributed and, if the process $(X_t)$ is a white noise, its variance is given by
+\[\Var(\hat{\phi}_{hh}) \approx \frac{1}{T}.\]
+Hence, as for the ACF, the PACF can be tested for significance by building approximate confidence intervals using $\pm 2/\sqrt{T}$ as critical limits.
+
+
+
 ### Estimation of AR($p$) models
 
 Given the above defined properties of the AR($p$) models, we will now discuss
