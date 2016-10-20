@@ -216,30 +216,24 @@ This notation allows to define the processes in a more compact form.
 
 ### Examples of Linear Processes
 
-Next, let us consider how to represent the previously discussed time series in
-Section \@ref(basicmodels) as a linear process. Generally speaking, the work
-required to transform the time series representation into a linear process rests
-solely upon the ability to find a set of $\psi_j$.
+Let us now consider how to represent the time series models discussed in
+Section \@ref(basicmodels) as a linear process. Generally speaking, the work required to transform the traditional representation of a time series model into the form of a linear process consists mainly in finding the set of corresponding linear coefficients $\psi_j$ highlighted earlier.
 
-```{example, label="lpwn", name="Linear Process of White Noise"}
+```{example, label="lpwn", name="White Noise"}
 
-The white noise process $\left\{X_t\right\}$, defined in \@ref(wn),
-can be expressed as a linear process under:
+The representation of white noise process $\left\{X_t\right\}$, defined in \@ref(wn), as a linear process is quite straighforward since we have that:
 
 \[\psi _j = \begin{cases}
       1 , &\mbox{ if } j = 0\\
       0 , &\mbox{ if } |j| \ge 1,
 \end{cases}\]
 
-and $\mu = 0$.
-
-Therefore, $X_t = W_t$, where $W_t \sim WN(0, \sigma^2_W)$.
+and $\mu = 0$. Indeed, $X_t = W_t$ with $W_t \sim WN(0, \sigma^2_W)$, and therefore $\psi_0 = 1$ while the other coefficients are zero.
 ```
 
-```{example, label="lpma1", name="Linear Process of Moving Average Order 1"}
+```{example, label="lpma1", name="First Order Moving Average"}
 
-Similarly, consider $\left\{X_t\right\}$ to be a MA(1) process, 
-given by \@ref(ma1). The process can be expressed linearly under: 
+Consider the MA(1) process $\left\{X_t\right\}$ defined in \@ref(ma1). The representation of this process as a linear process can be done when defining the coefficients $\psi_j$ as follows: 
 
 \[\psi _j = \begin{cases}
       1, &\mbox{ if } j = 0\\
@@ -247,9 +241,7 @@ given by \@ref(ma1). The process can be expressed linearly under:
       0, &\mbox{ if } j \ge 2,
 \end{cases}\]
 
-and $\mu = 0$.
-
-Thus, we have: $X_t = W_t + \theta W_{t-1}$.
+and $\mu = 0$. Also in this case, as for the white noise process, the linear representation is directly observable from the traditional representation of the MA(1) process given by $X_t = W_t + \theta W_{t-1}$. It is in fact easy to see that $\psi_0 = 1$, $\psi_1 = \theta$ and the others are zero.
 ```
 
 ```{example, label="lpsma", name="Linear Process and Symmetric Moving Average"}
