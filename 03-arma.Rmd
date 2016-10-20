@@ -1,3 +1,8 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 # Autoregressive Moving Average Models
 
 ```{r arma_code, echo = FALSE, message = FALSE, warning = FALSE}
@@ -499,7 +504,7 @@ implying that $c_1 = -\frac{3}{7}$ and $c_2 = \frac{10}{7}$. The ACF for this mo
 which is represented in the plot below.
 ```
 
-```{r ACFAR2cont, fig.height = 4, fig.width = 6, warning=FALSE, message=FALSE, fig.cap="Theoretical ACF of the AR(2) Process from Example \@ref(ex:ex1causality)."}
+```{r ACFAR2cont, fig.height = 4, fig.width = 6, warning=FALSE, message=FALSE, fig.cap="Theoretical ACF of the AR(2) Process."}
 ```
 
 The method used in the previous paragraphs is only applicable for AR(2) models with roots that are distinct and real, which is true when $\phi_2 > - \phi^1/4$. In the case where $\phi_2 = - \phi^1/4$, the autoregressive operator has a single root and $\rho(h)$ can be obtained by determining (using initial conditions) the constants $c_1$ and  $c_2$ of the following expression:
@@ -634,10 +639,10 @@ With these properties in mind, it would be useful to have an estimator for the P
 since $\beta_h$ represents the effect of $X_t$ on $X_{t+h}$ once the linear effect of the intermediate variables has been removed. Therefore, given this linear problem, we can obtain an estimate of the PACF ($\hat{\phi}_{hh}$) as the least squares solution for $\beta_h$ to the following regression problem
 \[x_{t+h} = \sum_{j=1}^h \beta_j x_{t+h-j},\]
 where $(x_t)_{t=h,...,T}$ is the observed time series. Adapting the asymptotics for the coefficients of a linear regression, we have that $\hat{\phi}_{hh}$ is asymptotically normally distributed and, if the process $(X_t)$ is a white noise, its variance is given by
-\[\Var(\hat{\phi}_{hh}) \approx \frac{1}{T}.\]
+\[\var(\hat{\phi}_{hh}) \approx \frac{1}{T}.\]
 Hence, as for the ACF, the PACF can be tested for significance by building approximate confidence intervals using $\pm 2/\sqrt{T}$ as critical limits. Moreover, with such an estimator and confidence intervals, it would be possible to use the information from the estimated ACF and that of the PACF to determine the presence and eventual order of an AR(p) model underlying the observed time series.
 
-INSERT EXAMPLE
+
 
 
 ### Estimation of AR($p$) models
