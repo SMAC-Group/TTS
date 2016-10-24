@@ -645,28 +645,28 @@ Hence, as for the ACF, the PACF can be tested for significance by building appro
 
 
 
-### Estimation of AR($p$) models
+### Estimation of AR(p) models
 
-Given the above defined properties of the AR($p$) models, we will now discuss
-how these models can be estimated, more specifically how the $p+1$ parameters 
+Given the above defined properties of the AR(p) models, we will now discuss
+how these models can be estimated, more specifically how the p+1 parameters 
 can be obtained from an observed time series. Indeed, a reliable estimation of 
 these models is necessary in order to interpret and describe different natural 
 phenomena and/or forecast possible future values of the time series.
 
 A first approach builds upon the earlier definition of the AR(p) as being a
-linear process. Recall that
+linear process. And let it be **causal**. Recall that
 \begin{equation}
     X_t = \sum_{j = 1}^{p} \phi_j X_{t-j} + W_t
 \end{equation}
 which delivers the following autocovariance function
 \begin{equation}
-    \gamma(h) = cov(X_{t+h}, X_t) = cov(\sum_{j = 1}^{p} \phi_j X_{t-j} + W_{t+h}, X_t) = \sum_{j = 1}^{p} \phi_j \gamma(h-j), \mbox{ } h \geq 0.
+    \gamma(h) = cov(X_{t+h}, X_t) = cov(\sum_{j = 1}^{p} \phi_j X_{t+h-j} + W_{t+h}, X_t) = \sum_{j = 1}^{p} \phi_j \gamma(h-j), \mbox{ } h \geq 0.
 \end{equation}
 Rearranging the above expressions we obtain the following general equations
 \begin{equation}
     \gamma(h) - \sum_{j = 1}^{p} \phi_j \gamma(h-j) = 0, \mbox{ } h \geq 1
 \end{equation}
-and, recalling that $\gamma(h) = \gamma(-h)$,
+and, recalling that $\gamma(h) = \gamma(-h)$ and $\gamma(0) = cov(X_t, X_t)$,
 \begin{equation}
     \gamma(0) - \sum_{j = 1}^{p} \phi_j \gamma(j) = \sigma_w^2.
 \end{equation}
@@ -685,7 +685,7 @@ which in matrix notation can be defined as follows
 \begin{equation}
     \Gamma_p \mathbf{\phi} = \mathbf{\gamma}_p \text{ and } \sigma_w^2 = \gamma(0) - \mathbf{\phi}'\mathbf{\gamma}_p
 \end{equation}
-where $\Gamma_p$ is the $p\times p$ matrix containing the autocovariances $\gamma(k-j), j,k = 1, ...,p$ while $\mathbf{\phi} = (\phi_1,...,\phi_p)'$ and $\mathbf{\gamma}_p = (\gamma(1),...,\gamma(p))'$ are $p\times 1$ vectors.
+where $\Gamma_p$ is the $p\times p$ matrix with its $\(k,j\)^{th}$ element be the autocovariances $\gamma(k-j), j,k = 1, ...,p$ while $\mathbf{\phi} = (\phi_1,...,\phi_p)'$ and $\mathbf{\gamma}_p = (\gamma(1),...,\gamma(p))'$ are $p\times 1$ vectors.
 ```
 
 Considering the Yule-Walker equations, it is possible to use a method of moments
@@ -800,7 +800,7 @@ can be used to deliver an M-estimator given by
 \sum_{j=1}^{n-p} \psi (\hat{\mathbf{\theta}}|x_j,...x_{j+p}) = 0,
 \end{equation*}
 where $\psi(\cdot)$ is a function of bounded variation. When conditioning on the
-first $p$ observations, this problem can be brought back to a linear regression
+first p observations, this problem can be brought back to a linear regression
 problem which can be applied in a robust manner using the robust regression
 tools available in R such as `rlm(...)` or `lmrob(...)`. However, another 
 available tool in R which can applied directly without conditioning also for 
