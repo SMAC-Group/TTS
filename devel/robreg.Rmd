@@ -1,0 +1,82 @@
+# Robust Regression Methods {#appendixb}
+
+This appendix is based on introduction to linear robust regression presented in @ronchetti2006historical and @duncan2016ela. The large majority of the statistical models employed in most fields such as financial and actuarial sciences for example are parametric models. Typically, assumptions are made for these models and optimal procedures are derived under these assumptions. Least squares and maximum likelihood estimators are well known examples of optimal statistical procedures. However, these procedures are only optimal when the underlying statistical assumptions are exactly satisfied, and are biased and/or inefficient when small deviations from the model are present. The results obtained by classical procedures can therefore be misleading when applied to real data (see e.g. @ronchetti2006historical) and @huber2009robust).
+
+Robust statistics extends classical parametric statistics. While parametric models may be a good approximation of the true underlying situation, in applying robust statistics we do not assume that the model is exactly correct. A robust procedure should have the following features @huber2009robust: 
+- It should efficiently estimate the assumed model.
+- It should be reliable and reasonably efficient under small deviations from the model
+	(e.g. when the underlying distribution lies in a neighborhood of the assumed model).
+- Larger deviations from the model should not cause a catastrophe.
+
+A robust estimation method is a compromise with respect to these three features. This compromise is illustrated by @anscombe1960rejection using an insurance metaphor: "sacrifice some efficiency at the model in order to insure against accidents caused by deviations from the model".
+
+It is often believed that robust procedures may be avoided by using the following two-step procedure:
+
+- Clean the data using some rule for outlier rejection.
+- Apply classical optimal procedures on the remaining data. 
+
+Unfortunately such procedures cannot replace robust methods for the following reasons @huber2009robust:
+
+- The two steps are rarely possible to separate. For example, in a parametric regression setting outliers are difficult to recognize without reliable (i.e. robust) estimates of the model's parameters.
+-  The cleaned data will not correspond to the assumed model since there will be statistical errors of both kinds (false acceptance and false rejection). Therefore in general the classical theory is not applicable to the cleaned sample.
+- Empirically, the best rejection procedures do not reach the performance of the best robust procedures. The latter are apparently superior because they can make a smoother transition between the full acceptance and full rejection of an observation using weighting procedures @hampel1987robust.
+- Empirical studies have also shown that many of the classical rejection methods are unable to deal with multiple outliers. Indeed, it is possible that a second outlier "masks" the effect of the first so that neither is rejected.
+
+Unfortunately the least squares estimator suffers from a dramatic lack of robustness. A single outlier can have an arbitrarily large effect on the estimated parameters. In order to assess the robustness of an estimator we first need to introduce an important concept, namely the influence function. This concept was introduced in @hampel1968contributions and it formalizes the bias caused by one outlier. The influence function of an estimator represents the effect of an infinitesimal contamination at the point $x$ or ($\mathbf{x}$, $y$) in the regression setting) on the estimate, standardized by the mass of contamination. Mathematically, the influence function of the estimator $T$ for the model $F$ is given by:
+
+\[\text{IF}(x| T, F) = \lim_{\varepsilon \rightarrow 0} \frac{T\left((1-\varepsilon) F + \varepsilon \Delta_x \right) - T\left(F\right)}{\varepsilon}\]
+
+where $\Delta_x$ is a probability measure which puts mass $1$ at the point $x$.	
+
+## The Classical Least-Squares Estimator
+
+The standard definition of the linear model is derived as follows. Let ${(\mathbf{x}_{i},y_{i}): i = 1, \ldots, n}$ be a sequence of independent identically distributed random variables such that:
+
+\[y_{i} = \mathbf{x}_{i}^{T} {\bbeta} + u_{i}\]
+
+where $y_{i} \in \real$ is the $i$-th observation, $\mathbf{x}_{i} \in \real^{p}$ is the $i$-th row of the design matrix $\mathbf{X} \in \real^{n\times p}$, $\bm{\beta} \in \bm{\Theta} \subseteq \real$ is a \textit{p}-vector of unknown parameters, $u_{i} \in \real$ is the $i$-th error.   
+
+The least-squares estimator $\hat{\bm{\beta}}_{LS}$ of $\bm{\beta}$ can be expressed as an $M$-estimator\footnote{$M$-estimators are obtained as the minima of sums of functions of the data. Least-squares estimators are an example of the larger class of $M$-estimators. The definition of $M$-estimators was motivated by robust statistics which contributed new types of $M$-estimators.} defined by the estimating equation:
+
+\[
+	\sum_{i = 1}^{n} \left(y_{i} - \mathbf{x}_{i}^{T} \bm{\beta} \right)\mathbf{x}_{i} = 0.
+	\label{eq:ls_Mestim2}
+\]
+
+This estimator is optimal under the following assumptions:
+
+- $u_{i}$ are normally distributed.
+- $\mathbb{E}[u_{i}] = 0$ for $i = 1, \ldots, n$.
+- $Cov(u_{1}, \ldots, u_{n}) = \sigma^2 \, \mathbf{I}_{n}$ where $\mathbf{I}_{n}$ denotes the identity matrix of size $n$.
+
+In other words, least-squares estimation is only optimal when the errors are normally distributed. Small departures from the normality assumption for the errors results in considerable loss of efficiency of the least-squares estimator (see @hampel1987robust, @huber1973robust and @hampel1973robust).
+
+## Robust Estimators for Linear Regression Models
+
+The "Huber estimator" introduced in @huber1973robust was one of the first robust estimation methods applied to linear models. Basically, this estimator is a weighted version of the least-squares estimate with weights of the form:
+
+\[
+w_{i} = \min \left(1,\frac{c}{|r_{i}|}\right)
+\]
+
+where $r_{i}$ is the $i$-th residual and $c$ is a positive constant which control the trade-off between robustness and efficiency.
+
+Huber proposed an \textit{M}-estimator $\hat{\bm{\beta}}_{H}$ of $\bm{\beta}$ defined by the estimating equation:
+
+\[
+	\sum_{i = 1}^{n} \psi_{c}\left(y_{i} - \mathbf{x}_{i}^{T} \bm{\beta} \right)\mathbf{x}_{i} = 0
+\]
+
+where $\psi_{c}(\cdot)$ correspond to Huber's function based on (\ref{eq:huber_weight}) and defined as:
+
+\[
+\psi_{c}(r) = \left\{  
+\begin{array}{l l}
+  r & \quad \\
+  c \cdot \text{sign}(r). & \quad \\
+\end{array} \right. 
+\]
+
+However, the Huber estimator cannot cope with problems caused by outlying points in the factor space.
+
+One of the estimators developed to address this issue is that of Mallows. It has the important property that the influence function is bounded. Mallows's estimator was used to estimate the coefficients for this study (see @krasker1980estimation for more details).
