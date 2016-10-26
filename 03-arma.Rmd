@@ -685,7 +685,7 @@ which in matrix notation can be defined as follows
 \begin{equation}
     \Gamma_p \mathbf{\phi} = \mathbf{\gamma}_p \text{ and } \sigma_w^2 = \gamma(0) - \mathbf{\phi}'\mathbf{\gamma}_p
 \end{equation}
-where $\Gamma_p$ is the $p\times p$ matrix with its $\(k,j\)^{th}$ element be the autocovariances $\gamma(k-j), j,k = 1, ...,p$ while $\mathbf{\phi} = (\phi_1,...,\phi_p)'$ and $\mathbf{\gamma}_p = (\gamma(1),...,\gamma(p))'$ are $p\times 1$ vectors.
+where $\Gamma_p$ is the $p\times p$ matrix with its $\left(k,j\right)^{th}$ element be the autocovariances $\gamma(k-j), j,k = 1, ...,p$ while $\mathbf{\phi} = (\phi_1,...,\phi_p)'$ and $\mathbf{\gamma}_p = (\gamma(1),...,\gamma(p))'$ are $p\times 1$ vectors.
 ```
 
 Considering the Yule-Walker equations, it is possible to use a method of moments
