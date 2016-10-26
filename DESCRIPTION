@@ -11,6 +11,7 @@ Depends: R (>= 3.3.0)
 URL: https://github.com/SMAC-Group/TTS
 Imports:
   bookdown,
+  robustbase,
   ggplot2,
   astsa,
   ggfortify,
