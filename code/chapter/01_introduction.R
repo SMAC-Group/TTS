@@ -68,7 +68,7 @@ autoplot(Xt) + ylab(expression(paste("Error ", (rad/s^2))))
 # This code simulates a gaussian white noise process
 n = 1000                               # process length
 sigma2 = 1                             # process variance
-Xt = gen.gts(WN(sigma2 = sigma2), N = n)
+Xt = gen_gts(n, WN(sigma2 = sigma2))
 plot(Xt)
 
 
@@ -125,7 +125,7 @@ grid.arrange(a, b, nrow = 1)
 # This code simulates a gaussian random walk process
 n = 1000                               # process length
 gamma2 = 1                             # innovation variance
-Xt = gen.gts(RW(gamma2 = gamma2), N = n)
+Xt = gen_gts(n, RW(gamma2 = gamma2))
 plot(Xt)
 
 ## @knitr example_AR1
@@ -133,7 +133,7 @@ plot(Xt)
 n = 1000                              # process length
 phi = 0.5                             # phi parameter
 sigma2 = 1                            # innovation variance
-Xt = gen.gts(AR1(phi = phi, sigma2 = sigma2), N = n)
+Xt = gen_gts(n, AR1(phi = phi, sigma2 = sigma2))
 plot(Xt)
 
 ## @knitr example_MA1
@@ -141,14 +141,14 @@ plot(Xt)
 n = 1000                              # process length
 sigma2 = 1                            # innovation variance
 theta = 0.5                           # theta parameter
-Xt = gen.gts(MA1(theta = theta, sigma2 = sigma2), N = n)
+Xt = gen_gts(n, MA1(theta = theta, sigma2 = sigma2))
 plot(Xt)
 
 ## @knitr example_Drift
 # This code simulate a linear drift with 0 intercept
 n = 100                               # process length
 omega = 0.5                           # slope parameter
-Xt = gen.gts(DR(omega = omega), N = n)
+Xt = gen_gts(n, DR(omega = omega))
 plot(Xt)
 
 ## @knitr example_composite
@@ -157,7 +157,7 @@ delta = 0.005                           # delta parameter (drift)
 sigma2 = 10                             # variance parameter (white noise)
 gamma2 = 0.1                            # innovation variance (random walk)
 model = WN(sigma2 = sigma2) + RW(gamma2 = gamma2) + DR(omega = delta)
-Xt = gen.lts(model, N = n)
+Xt = gen_lts(n, model)
 plot(Xt)
 
 ## @knitr example_PSR

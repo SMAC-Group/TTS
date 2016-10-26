@@ -25,7 +25,7 @@ library(gridExtra)
 # Simulate Xt
 set.seed(1)
 model = AR1(phi = 0.5, sigma2 = 1)
-Xt = gen.gts(model)
+Xt = gen_gts(1000, model)
 
 # Construct Yt
 epsilon = 0.01
@@ -104,7 +104,7 @@ set.seed(3298)
 # Start Monte-Carlo
 for (i in seq_len(B)){
   # Simulate AR(1)
-  Xt = gen.gts(model, N = n)
+  Xt = gen_gts(n, model)
   
   # Create a copy of Xt
   Yt = Xt
@@ -168,7 +168,7 @@ set.seed(5585)
 # Start Monte-Carlo
 for (i in seq_len(B)){
   # Simulate AR(1)
-  Xt = gen.gts(model, N = n)
+  Xt = gen_gts(n, model)
   
   # Add a proportion alpha of extreme observations to Yt
   Xt[sample(1:n,round(alpha*n))] = rnorm(round(alpha*n), 0, sigma2.cont)
@@ -236,7 +236,7 @@ set.seed(5585)
 # Start Monte-Carlo
 for (i in seq_len(B)){
   # Simulate AR(1)
-  Xt = gen.gts(model, N = n)
+  Xt = gen_gts(n, model)
   
   # Add a proportion alpha of extreme observations to Yt
   Xt[sample(1:n,round(alpha*n))] = rnorm(round(alpha*n), 0, sigma2.cont)
@@ -267,10 +267,6 @@ for (i in seq_along(lags)){
 }
 
 
-
-
-
-
 ## @knitr estimXbar
 
 # Define sample size
@@ -293,7 +289,7 @@ for (i in seq_along(phi)){
   # Monte-Carlo
   for (j in seq_len(B)){
     # Simulate AR(1)
-    Xt = gen.gts(model, N = n)
+    Xt = gen_gts(n, model)
     
     # Estimate Xbar
     result[j,i] = mean(Xt)
@@ -353,7 +349,7 @@ library("gmwm")
 set.seed(2241)
 
 # Simulate 100 observation from a Gaussian white noise
-Xt = gen.gts(WN(sigma2 = 1), N = 100)
+Xt = gen_gts(100, WN(sigma2 = 1))
 
 # Compute autocorrelation
 acf_Xt = ACF(Xt)
@@ -375,7 +371,7 @@ B = 10000
 h = 3
 
 # Sample size considered
-N = c(5,10,30,300)
+N = c(5, 10, 30, 300)
 
 # Initialisation
 result = matrix(NA,B,length(N))
@@ -426,7 +422,7 @@ set.seed(6182)
 # Simulate Data
 for (i in seq_len(B)){
   # Simulate random walk
-  Xt = gen.gts(RW(gamma=1), N = n)
+  Xt = gen_gts(n, RW(gamma = 1))
   
   # Store process
   out[i,] = Xt
@@ -490,14 +486,14 @@ LB.pvalue = matrix(NA, nrow = B, ncol = 6)
 
 for (i in 1:3){
   for (j in seq_len(B)){
-    x = gen.gts(get(paste0("model", i)), N = 1000)
+    x = gen_gts(1000, get(paste0("model", i)))
     LB.pvalue[j,2*i-1] = Box.test(x, lag = 1, "Ljung-Box", fitdf = 0)$p.value
     LB.pvalue[j,2*i] = Box.test(x, lag = 10, "Ljung-Box", fitdf = 0)$p.value
   }
 }
 
-para_1 = data.frame(lag = 1, LB.pvalue[,c(1,3,5)])
-para_2 = data.frame(lag = 2, LB.pvalue[,c(2,4,6)])
+para_1 = data.frame(lag = 1, LB.pvalue[, c(1,3,5)])
+para_2 = data.frame(lag = 2, LB.pvalue[, c(2,4,6)])
 para = rbind(para_1, para_2)
 
 colnames(para)[2:4] = c("WN", "AR(1)", "Seasonal AR(10)")

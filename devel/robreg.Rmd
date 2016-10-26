@@ -38,10 +38,11 @@ where $y_{i} \in \real$ is the $i$-th observation, $\mathbf{x}_{i} \in \real^{p}
 
 The least-squares estimator $\hat{\bm{\beta}}_{LS}$ of $\bm{\beta}$ can be expressed as an $M$-estimator\footnote{$M$-estimators are obtained as the minima of sums of functions of the data. Least-squares estimators are an example of the larger class of $M$-estimators. The definition of $M$-estimators was motivated by robust statistics which contributed new types of $M$-estimators.} defined by the estimating equation:
 
-\[
-	\sum_{i = 1}^{n} \left(y_{i} - \mathbf{x}_{i}^{T} \bm{\beta} \right)\mathbf{x}_{i} = 0.
-	\label{eq:ls_Mestim2}
-\]
+\begin{equation}
+  \sum_{i = 1}^{n} \left(y_{i} - \mathbf{x}_{i}^{T} \bm{\beta} \right)\mathbf{x}_{i} = 0.
+	\(#eq:ls_Mestim2)
+\end{equation}
+
 
 This estimator is optimal under the following assumptions:
 
@@ -67,7 +68,7 @@ Huber proposed an \textit{M}-estimator $\hat{\bm{\beta}}_{H}$ of $\bm{\beta}$ de
 	\sum_{i = 1}^{n} \psi_{c}\left(y_{i} - \mathbf{x}_{i}^{T} \bm{\beta} \right)\mathbf{x}_{i} = 0
 \]
 
-where $\psi_{c}(\cdot)$ correspond to Huber's function based on (\ref{eq:huber_weight}) and defined as:
+where $\psi_{c}(\cdot)$ correspond to Huber's function based on (\@ref(eq:huber_weight) and defined as:
 
 \[
 \psi_{c}(r) = \left\{  
@@ -80,3 +81,237 @@ where $\psi_{c}(\cdot)$ correspond to Huber's function based on (\ref{eq:huber_w
 However, the Huber estimator cannot cope with problems caused by outlying points in the factor space.
 
 One of the estimators developed to address this issue is that of Mallows. It has the important property that the influence function is bounded. Mallows's estimator was used to estimate the coefficients for this study (see @krasker1980estimation for more details).
+
+## Applications of Robust Estimation
+
+With the theory of robustness addressed, the focus now turns to emphasize the
+application of robust techniques. Over the course of the next three examples,
+estimation between classical or traditional methods will be compared against 
+robust methods to illustrate the effect using such techniques can have in
+specific scenarios. 
+
+```{example, label = "slmrobust"}
+
+Consider a simple linear model with Gaussian errors such as
+
+\begin{equation}
+		y_i = \alpha + \beta x_i + \varepsilon_i, \;\; \varepsilon_i \overset{iid}{\sim} \mathcal{N}(0,\sigma^2)
+  (\#eq:exam)
+\end{equation}
+
+for $i = 1,...,n$. Next, we set the parameter values $\alpha = 5$, 
+$\beta = 0.5$ and $\sigma^2 = 1$ in order to simulate 20 observations from
+(\@ref(eq:exam)) where we define $x_i = i$ for $i = 1,...,20$. In the left 
+panel of Figure \@ref(fig:slmrobex), we present the simulated observations 
+together with the fitted regression lines obtained by least-squares and a
+robust estimation method, It can be observed that both lines are very similar and "close" to the true given by $y_i = 5 + 0.5 i$. Indeed, although the robust 
+estimator pays a small price in terms of efficiency compared to the the 
+least-squares, the two methods produce results in general very "similar" 
+when the assumption of the model holds. On the other hand, the robust 
+estimators provide (in general) far more reliable results when outliers 
+are present in a data-set. To illustrate this behavior we modify the last
+observation by setting $\varepsilon_{20} = -10$ (which is very "extreme" 
+under the assumption that $\varepsilon_i \overset{iid}{\sim} \mathcal{N}(0,1)$). 
+The modified observations are} presented in the left panel of 
+Figure \ref{Fig:example} together with the fitted regression lines. 
+In this case, the least-squares is strongly influenced by the outlier 
+we introduced while the robust estimator remains stable and "close" to the
+true model. Such results have been amply documented in the literature and 
+above sections of this Appendix provides more details on this topic.
+```
+
+
+```{r slmrobex, cache = TRUE}
+# Load robust library
+library("robustbase")
+
+# Set seed for reproducibility
+set.seed(867)
+
+# Sample size
+n = 20      
+
+# Model's parameters
+alpha = 5    # Intercept 
+beta = 0.5   # Slope 
+sig2 = 1     # Residual variance
+
+# Construct response variable y
+x = 1:n 
+y = alpha + beta*x + rnorm(n,0,sqrt(sig2))
+
+# Construct "perturbed" verison of y
+y.perturbed = y
+y.perturbed[20] = alpha + beta*x[20] - 10
+
+# Compute LS estimates
+LS.y = lm(y ~ x)
+LS.y.fit = coef(LS.y)[1] + coef(LS.y)[2]*x
+LS.y.pert = lm(y.perturbed ~ x)
+LS.y.pert.fit = coef(LS.y.pert)[1] + coef(LS.y.pert)[2]*x
+
+# Compute robust estimates
+RR.y = lmrob(y ~ x)
+RR.y.fit = coef(RR.y)[1] + coef(RR.y)[2]*x
+RR.y.pert = lmrob(y.perturbed ~ x)
+RR.y.pert.fit = coef(RR.y.pert)[1] + coef(RR.y.pert)[2]*x
+
+# Define colors
+gg_color_hue <- function(n, alpha = 1) {
+  hues = seq(15, 375, length = n + 1)
+  hcl(h = hues, l = 65, c = 100, alpha = alpha)[1:n]
+}
+couleurs = gg_color_hue(6)
+
+# Compare results based on y and y.perturbed
+par(mfrow = c(1,2))
+plot(NA, ylim = range(cbind(y,y.perturbed)), xlim = range(x),
+     main = "Uncontaminated setting", xlab = "x", ylab = "y")
+grid()
+points(x,y, pch = 16, col = couleurs[4])
+lines(x, alpha + beta*x, col = couleurs[3], lty = 2)
+lines(x, LS.y.fit, col = couleurs[5])
+lines(x, RR.y.fit, col = couleurs[1])
+
+legend("topleft",c("Observations","Estimated model (least-squares)",
+                   "Estimated model (robust)", "True model"), 
+       lwd = c(NA,1,1,1), col = couleurs[c(4,5,1,3)],
+       lty = c(NA,1,1,2), bty = "n", pch = c(16,NA,NA,NA))
+
+plot(NA, ylim = range(cbind(y,y.perturbed)), xlim = range(x),
+     main = "Contaminated setting", xlab = "x", ylab = "y")
+grid()
+points(x[1:19],y.perturbed[1:19], pch = 16, col = couleurs[4])
+points(x[20], y.perturbed[20], pch = 15, col = couleurs[6])
+lines(x, alpha + beta*x, col = couleurs[3], lty = 2)
+lines(x, LS.y.pert.fit, col = couleurs[5])
+lines(x, RR.y.pert.fit, col = couleurs[1])
+
+legend("topleft",c("Uncontamined observations", "Contamined observation",
+                   "Estimated model (least-squares)", "Estimated model (robust)",
+                   "True model"), lwd = c(NA,NA,1,1,1), col = couleurs[c(4,6,5,1,3)],
+       lty = c(NA,NA,1,1,2), bty = "n", pch = c(16,15,NA,NA,NA))
+```
+
+```{example, label="bslmrob", name = "Robust v. Classical Simulation Study."}
+For the next example, both the robust and classical techniques will be placed
+under simulation to show that the previous example was not due to a struck of
+pure luck. The simulation study will attempt to estimate the previous example's
+parameters over course of 100 iterations. 
+```
+
+```{r lmbsrob, cache = TRUE, warning = FALSE, message = FALSE}
+# Number of bootstrap replications
+B = 10^3
+
+# Initialisation
+coef.LS.cont = coef.rob.cont = matrix(NA,B,2)
+coef.LS.uncont = coef.rob.uncont = matrix(NA,B,2)
+
+# Start Monte-carlo
+for (j in 1:2){
+  for (i in seq_len(B)) {
+   # Control seed
+    set.seed(2*j*B + i)
+    
+    # Uncontaminated case
+    if (j == 1){
+      y = alpha + beta*x + rnorm(n,0,sqrt(sig2))
+      coef.LS.uncont[i,] = as.numeric(lm(y ~ x)$coef)
+      coef.rob.uncont[i,] = as.numeric(lmrob(y ~ x)$coef)
+    }
+    
+    # Contaminated case
+    if (j == 2){
+      y = alpha + beta*x + rnorm(n,0,sqrt(sig2))
+      y[20] = alpha + beta*x[20] - 10
+      coef.LS.cont[i,] = as.numeric(lm(y ~ x)$coef)
+      coef.rob.cont[i,] = as.numeric(lmrob(y ~ x)$coef)
+    }
+  }
+}
+
+# Make graph
+colors = gg_color_hue(6, alpha = 0.5)
+names = c("LS - uncont","Rob - uncont","LS - cont","Rob - cont")
+
+par(mfrow = c(1,2))
+boxplot(coef.LS.uncont[,1],coef.rob.uncont[,1],coef.LS.cont[,1],
+        coef.rob.cont[,1], main = expression(alpha), 
+        col = colors[c(5,1,5,1)], 
+        cex.main = 1.5, xaxt = "n")
+axis(1, labels = FALSE)
+text(x = seq_along(names), y = par("usr")[3] - 0.15, srt = 45, adj = 1,
+     labels = names, xpd = TRUE)
+
+abline(h = alpha, lwd = 2)
+
+boxplot(coef.LS.uncont[,2],coef.rob.uncont[,2],coef.LS.cont[,2],
+        coef.rob.cont[,2], main = expression(beta), 
+        col = colors[c(5,1,5,1)], 
+        cex.main = 1.5, xaxt = "n")
+axis(1, labels = FALSE)
+text(x = seq_along(names), y = par("usr")[3] - 0.015, srt = 45, adj = 1,
+     labels = names, xpd = TRUE)
+abline(h = beta, lwd = 2)
+```
+
+While under an uncontaminated setting the results between the estimators are
+relatively equivalent with the robust estimator performing slightly worst than
+that of the classical estimator. However, when the simulation study begins to
+use a contaminated setting, the robust methodology squarly handles the estimation
+while the classical techniques suffer greatly. Therefore, if the data is detected
+to have the presence of outliers, the use of robust methodology should be preferred
+over that of classical methodology.
+
+```{example, dsbook}
+As a pinnacle example of the utility of a robust methodology,
+consider a data set that contains properties of 47 stars from the Hertzsprung-Russell 
+diagram of the star cluster CYG OB1 in the direction of Cygnus. Within the 
+figure note that there is a cluster of four stars on the upper left hand-side of
+the diagram. Meanwhile, on the right handside, there is seemingly a perfect
+linear fit.
+```
+
+```{r robstarcluster, cache = TRUE}
+colors = gg_color_hue(6)
+data(starsCYG, package = "robustbase")
+par(mfrow = c(1,1))
+plot(NA, xlim = range(starsCYG$log.Te) + c(-0.1,0.1),
+     ylim = range(starsCYG$log.light),
+     xlab = "Temperature at the surface of the star (log)",
+     ylab = "Light intensity (log)")
+grid()  
+points(starsCYG, col = colors[4], pch = 16)
+
+LS = lm(starsCYG$log.light ~ starsCYG$log.Te)
+rob = lmrob(starsCYG$log.light ~ starsCYG$log.Te)
+x = seq(from = min(starsCYG$log.Te)-0.3, 
+        to = max(starsCYG$log.Te)+0.3, length.out = 4)
+fit.LS = coef(LS)[1] + x*coef(LS)[2]
+fit.rob = coef(rob)[1] + x*coef(rob)[2]
+
+lines(x, fit.LS, col = colors[5])
+lines(x, fit.rob, col = colors[1])
+
+
+legend("topright",c("Observations","Estimated model (least-squares)",
+                    "Estimated model (robust)"), lwd = c(NA,1,1), 
+       col = colors[c(4,5,1)], lty = c(NA,1,1), 
+       bty = "n", pch = c(16,NA,NA))
+
+```
+
+From Figure \@ref(fig:robstarcluster), the traditional linear regression falls
+victim to the presence of the cloud of outliers on the left hand side of the 
+graph. As a result, the regression line has a negative slope when the data 
+clearly has a positive linear trend. However, the reverse can be said for the
+robust method, which provides an estimate for the positive linear trend. Having
+said this, there are two distinct populations being modelled here: "giants" (upper left corner) and main sequencers ("right handside)". Thus, even with the ability to
+robustly provide parameter estimates, caution must be taken to ensure that the
+data is indeed a contamination and _not_ a secondary population.
+
+```{r estimatesreg, cache = TRUE}
+summary(LS)
+summary(rob)
+```
