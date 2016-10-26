@@ -40,7 +40,7 @@ The least-squares estimator $\hat{\bm{\beta}}_{LS}$ of $\bm{\beta}$ can be expre
 
 \begin{equation}
   \sum_{i = 1}^{n} \left(y_{i} - \mathbf{x}_{i}^{T} \bm{\beta} \right)\mathbf{x}_{i} = 0.
-	\(#eq:ls_Mestim2)
+	(\#eq:lsMestim2)
 \end{equation}
 
 
