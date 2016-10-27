@@ -86,8 +86,8 @@ $\bm{\beta} \in \bm{\Theta} \subseteq \real$ is a *p*-vector of unknown
 parameters, $u_{i} \in \real$ is the $i$-th error.   
 
 The least-squares estimator $\hat{\bm{\beta}}_{LS}$ of $\bm{\beta}$ can be
-expressed as an $M$-estimator\footnote{$M$-estimators are obtained as the
-minima of sums of functions of the data. Least-squares estimators are an
+expressed as an $M$-estimator^[$M$-estimators are obtained as the
+minima of sums of functions of the data.] Least-squares estimators are an
 example of the larger class of $M$-estimators. The definition of $M$-estimators
 was motivated by robust statistics which delivered new types of $M$-estimators.
 defined by the estimating equation:
@@ -193,7 +193,7 @@ true model.
 ```
 
 
-```{r slmrobex, cache = TRUE, fig.cap="Simulation Study Comparing Robust and Classical Regression Methodologies"}
+```{r slmrobex, cache = TRUE, fig.cap="Simulation Study Comparing Robust and Classical Regression Methodologies", fig.width = 13}
 # Load robust library
 library("robustbase")
 
