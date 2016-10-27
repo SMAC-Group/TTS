@@ -1,26 +1,26 @@
 # Robust Regression Methods {#appendixb}
 
-This appendix is based on introduction to linear robust regression presented in @ronchetti2006historical and @duncan2016ela. The large majority of the statistical models employed in most fields such as financial and actuarial sciences for example are parametric models. Typically, assumptions are made for these models and optimal procedures are derived under these assumptions. Least squares and maximum likelihood estimators are well known examples of optimal statistical procedures. However, these procedures are only optimal when the underlying statistical assumptions are exactly satisfied, and are biased and/or inefficient when small deviations from the model are present. The results obtained by classical procedures can therefore be misleading when applied to real data (see e.g. @ronchetti2006historical) and @huber2009robust).
+This appendix is largely based on the introduction to linear robust regression presented in @ronchetti2006historical and @duncan2016ela. In these references it is stated that the vast majority of the statistical models employed in different fields going from finance to biology and engineering, for example, are parametric models. Based on these models, assumptions are made concerning the properties of the variables of interest (and the models themselves) and optimal procedures are derived under these assumptions. Among these procedures, the least squares and maximum likelihood estimators are well known examples that, however, are only optimal when the underlying statistical assumptions are exactly satisfied. If the latter case does not hold, then these procedures can become considerably biased and/or inefficient when there exist small deviations from the model. The results obtained by classical procedures can therefore be misleading when applied to real data (see e.g. @ronchetti2006historical and @huber2009robust).
 
-Robust statistics extends classical parametric statistics. While parametric models may be a good approximation of the true underlying situation, in applying robust statistics we do not assume that the model is exactly correct. A robust procedure should have the following features @huber2009robust: 
+In order to address the problems arising from violated parametric assumptions, robust statistics can be seen as an extension to classical parametric statistics by directly considering the deviations from the models. Indeed, while parametric models may be a good approximation of the true underlying situation, robust statistics does not assume that the model is exactly correct. A robust procedure therefore should have the following features @huber2009robust: 
 - It should efficiently estimate the assumed model.
 - It should be reliable and reasonably efficient under small deviations from the model
-	(e.g. when the underlying distribution lies in a neighborhood of the assumed model).
-- Larger deviations from the model should not cause a catastrophe.
+	(e.g. when the distribution lies in a neighborhood of the assumed model).
+- Larger deviations from the model should not affect the estimation procedure excessively.
 
 A robust estimation method is a compromise with respect to these three features. This compromise is illustrated by @anscombe1960rejection using an insurance metaphor: "sacrifice some efficiency at the model in order to insure against accidents caused by deviations from the model".
 
 It is often believed that robust procedures may be avoided by using the following two-step procedure:
 
 - Clean the data using some rule for outlier rejection.
-- Apply classical optimal procedures on the remaining data. 
+- Apply classical optimal procedures on the "clean" data. 
 
 Unfortunately such procedures cannot replace robust methods for the following reasons @huber2009robust:
 
-- The two steps are rarely possible to separate. For example, in a parametric regression setting outliers are difficult to recognize without reliable (i.e. robust) estimates of the model's parameters.
+- It is rarely possible to seperate the two steps. For example, in a parametric regression setting, outliers are difficult to recognize without reliable (i.e. robust) estimates of the model's parameters.
 -  The cleaned data will not correspond to the assumed model since there will be statistical errors of both kinds (false acceptance and false rejection). Therefore in general the classical theory is not applicable to the cleaned sample.
 - Empirically, the best rejection procedures do not reach the performance of the best robust procedures. The latter are apparently superior because they can make a smoother transition between the full acceptance and full rejection of an observation using weighting procedures @hampel1987robust.
-- Empirical studies have also shown that many of the classical rejection methods are unable to deal with multiple outliers. Indeed, it is possible that a second outlier "masks" the effect of the first so that neither is rejected.
+- Empirical studies have also shown that many of the classical rejection methods are unable to deal with multiple outliers. Indeed, it is possible that a second outlier "masks" the effect of the first so that neither are rejected.
 
 Unfortunately the least squares estimator suffers from a dramatic lack of robustness. A single outlier can have an arbitrarily large effect on the estimated parameters. In order to assess the robustness of an estimator we first need to introduce an important concept, namely the influence function. This concept was introduced in @hampel1968contributions and it formalizes the bias caused by one outlier. The influence function of an estimator represents the effect of an infinitesimal contamination at the point $x$ or ($\mathbf{x}$, $y$) in the regression setting) on the estimate, standardized by the mass of contamination. Mathematically, the influence function of the estimator $T$ for the model $F$ is given by:
 
@@ -36,7 +36,7 @@ The standard definition of the linear model is derived as follows. Let ${(\mathb
 
 where $y_{i} \in \real$ is the $i$-th observation, $\mathbf{x}_{i} \in \real^{p}$ is the $i$-th row of the design matrix $\mathbf{X} \in \real^{n\times p}$, $\bm{\beta} \in \bm{\Theta} \subseteq \real$ is a \textit{p}-vector of unknown parameters, $u_{i} \in \real$ is the $i$-th error.   
 
-The least-squares estimator $\hat{\bm{\beta}}_{LS}$ of $\bm{\beta}$ can be expressed as an $M$-estimator\footnote{$M$-estimators are obtained as the minima of sums of functions of the data. Least-squares estimators are an example of the larger class of $M$-estimators. The definition of $M$-estimators was motivated by robust statistics which contributed new types of $M$-estimators.} defined by the estimating equation:
+The least-squares estimator $\hat{\bm{\beta}}_{LS}$ of $\bm{\beta}$ can be expressed as an $M$-estimator\footnote{$M$-estimators are obtained as the minima of sums of functions of the data. Least-squares estimators are an example of the larger class of $M$-estimators. The definition of $M$-estimators was motivated by robust statistics which delivered new types of $M$-estimators.} defined by the estimating equation:
 
 \begin{equation}
   \sum_{i = 1}^{n} \left(y_{i} - \mathbf{x}_{i}^{T} \bm{\beta} \right)\mathbf{x}_{i} = 0.
@@ -60,7 +60,7 @@ The "Huber estimator" introduced in @huber1973robust was one of the first robust
 w_{i} = \min \left(1,\frac{c}{|r_{i}|}\right)
 \]
 
-where $r_{i}$ is the $i$-th residual and $c$ is a positive constant which control the trade-off between robustness and efficiency.
+where $r_{i}$ is the $i$-th residual and $c$ is a positive constant which controls the trade-off between robustness and efficiency.
 
 Huber proposed an \textit{M}-estimator $\hat{\bm{\beta}}_{H}$ of $\bm{\beta}$ defined by the estimating equation:
 
@@ -68,7 +68,7 @@ Huber proposed an \textit{M}-estimator $\hat{\bm{\beta}}_{H}$ of $\bm{\beta}$ de
 	\sum_{i = 1}^{n} \psi_{c}\left(y_{i} - \mathbf{x}_{i}^{T} \bm{\beta} \right)\mathbf{x}_{i} = 0
 \]
 
-where $\psi_{c}(\cdot)$ correspond to Huber's function based on (\@ref(eq:huber_weight) and defined as:
+where $\psi_{c}(\cdot)$ corresponds to Huber's function based on (\@ref(eq:huber_weight) and defined as:
 
 \[
 \psi_{c}(r) = \left\{  
@@ -78,17 +78,11 @@ where $\psi_{c}(\cdot)$ correspond to Huber's function based on (\@ref(eq:huber_
 \end{array} \right. 
 \]
 
-However, the Huber estimator cannot cope with problems caused by outlying points in the factor space.
-
-One of the estimators developed to address this issue is that of Mallows. It has the important property that the influence function is bounded. Mallows's estimator was used to estimate the coefficients for this study (see @krasker1980estimation for more details).
+However, the Huber estimator cannot cope with problems caused by outlying points in the design (or covariate) matrix $X$. An estimator which was developed to address this particular issue is the one proposed by Mallows which has the important property that the influence function is bounded also for the matrix $X$ (see @krasker1980estimation for more details).
 
 ## Applications of Robust Estimation
 
-With the theory of robustness addressed, the focus now turns to emphasize the
-application of robust techniques. Over the course of the next three examples,
-estimation between classical or traditional methods will be compared against 
-robust methods to illustrate the effect using such techniques can have in
-specific scenarios. 
+Having rapidly highlighted the theory of robustness, we now focus on the application of robust techniques in practical settings. Over the next three examples, estimation between classical or traditional methods will be compared with  robust methods to illustrate the usefulness of using the latter techniques can have in specific scenarios. 
 
 ```{example, label = "slmrobust"}
 
@@ -104,20 +98,12 @@ $\beta = 0.5$ and $\sigma^2 = 1$ in order to simulate 20 observations from
 (\@ref(eq:exam)) where we define $x_i = i$ for $i = 1,...,20$. In the left 
 panel of Figure \@ref(fig:slmrobex), we present the simulated observations 
 together with the fitted regression lines obtained by least-squares and a
-robust estimation method, It can be observed that both lines are very similar and "close" to the true given by $y_i = 5 + 0.5 i$. Indeed, although the robust 
-estimator pays a small price in terms of efficiency compared to the the 
-least-squares, the two methods produce results in general very "similar" 
-when the assumption of the model holds. On the other hand, the robust 
-estimators provide (in general) far more reliable results when outliers 
-are present in a data-set. To illustrate this behavior we modify the last
-observation by setting $\varepsilon_{20} = -10$ (which is very "extreme" 
-under the assumption that $\varepsilon_i \overset{iid}{\sim} \mathcal{N}(0,1)$). 
-The modified observations are} presented in the left panel of 
+robust estimation method. It can be observed that both lines are very similar and "close" to the true model given by $y_i = 5 + 0.5 i$. Indeed, although the robust estimator pays a small price in terms of efficiency compared to the the least-squares estimator, the two methods generally deliver very "similar" results when the model assumption holds. On the other hand, the robust estimators provide (in general) far more reliable results when outliers are present in a data-set. To illustrate this behavior we modify the last observation by setting $\varepsilon_{20} = -10$ (which is "extreme" under the assumption that $\varepsilon_i \overset{iid}{\sim} \mathcal{N}(0,1)$). 
+The modified observations are presented in the left panel of 
 Figure \ref{Fig:example} together with the fitted regression lines. 
 In this case, the least-squares is strongly influenced by the outlier 
 we introduced while the robust estimator remains stable and "close" to the
-true model. Such results have been amply documented in the literature and 
-above sections of this Appendix provides more details on this topic.
+true model.
 ```
 
 
@@ -194,10 +180,7 @@ legend("topleft",c("Uncontamined observations", "Contamined observation",
 ```
 
 ```{example, label="bslmrob", name = "Robust v. Classical Simulation Study."}
-For the next example, both the robust and classical techniques will be placed
-under simulation to show that the previous example was not due to a struck of
-pure luck. The simulation study will attempt to estimate the previous example's
-parameters over course of 100 iterations. 
+The next example presents a simulation study where the robust and classical techniques will be compared in order to show that the previous example was not due to a "lucky" sample favorable to the robust approach. To do so, the simulation study will generate 100 realizations from the model in the previous example and use the same robust and classical estimators to retrieve the parameters for each of the 100 iterations. 
 ```
 
 ```{r lmbsrob, cache = TRUE, warning = FALSE, message = FALSE}
@@ -256,21 +239,10 @@ text(x = seq_along(names), y = par("usr")[3] - 0.015, srt = 45, adj = 1,
 abline(h = beta, lwd = 2)
 ```
 
-While under an uncontaminated setting the results between the estimators are
-relatively equivalent with the robust estimator performing slightly worst than
-that of the classical estimator. However, when the simulation study begins to
-use a contaminated setting, the robust methodology squarly handles the estimation
-while the classical techniques suffer greatly. Therefore, if the data is detected
-to have the presence of outliers, the use of robust methodology should be preferred
-over that of classical methodology.
+It can be seen that, as underlined earlier, that the estimations resulting from the two methods appear to be quite similar, with the robust estimator performing slightly less efficiently than the classical estimator. However, under the contaminated setting it is evident how the robust estimation procedure is not affected much by the outliers in the simulated data while the classical techniques appear to be highly biased. Therefore, if there appear to be outliers in the data, a robust estimation procedure may considered preferable. In fact, the results of the two estimations could be compared to understand if there appears to be some deviation from the model assumptions.
 
 ```{example, dsbook}
-As a pinnacle example of the utility of a robust methodology,
-consider a data set that contains properties of 47 stars from the Hertzsprung-Russell 
-diagram of the star cluster CYG OB1 in the direction of Cygnus. Within the 
-figure note that there is a cluster of four stars on the upper left hand-side of
-the diagram. Meanwhile, on the right handside, there is seemingly a perfect
-linear fit.
+A practical example which underlines the usefulness of robust estimation procedures is given by the dataset that contains the properties of 47 stars from the Hertzsprung-Russell diagram of the star cluster CYG OB1 in the direction of Cygnus. From the plot it can be observed that there appears to be a cluster of four stars on the upper left hand-side of the plot. The rest of the data however appears to have a reasonably good linear behavior.
 ```
 
 ```{r robstarcluster, cache = TRUE}
@@ -302,14 +274,8 @@ legend("topright",c("Observations","Estimated model (least-squares)",
 
 ```
 
-From Figure \@ref(fig:robstarcluster), the traditional linear regression falls
-victim to the presence of the cloud of outliers on the left hand side of the 
-graph. As a result, the regression line has a negative slope when the data 
-clearly has a positive linear trend. However, the reverse can be said for the
-robust method, which provides an estimate for the positive linear trend. Having
-said this, there are two distinct populations being modelled here: "giants" (upper left corner) and main sequencers ("right handside)". Thus, even with the ability to
-robustly provide parameter estimates, caution must be taken to ensure that the
-data is indeed a contamination and _not_ a secondary population.
+From Figure \@ref(fig:robstarcluster) it can be seen that classical linear regression is considerably affected by the cloud of apparent outliers on the left hand side of the plot. As a result, the regression line has a negative slope when the majority of the data appears to have a clear positive linear trend. The latter is however the case when using a robust approach which indeed detects a positive linear trend. Having
+said this, there are in fact two distinct populations in the data consisting in "giants" (upper left corner) and "main sequencers" (right handside). Thus, when observing data in general it is always necessary to understand if we are dealing with real outliers (unexplained outlying data) or simply with data that can be explained by other factors (e.g. a different population as in this example).
 
 ```{r estimatesreg, cache = TRUE}
 summary(LS)
