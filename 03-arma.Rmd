@@ -753,7 +753,7 @@ which implies that $x_1$ follows a normal distribution with zero expectation and
 a variance given by $\frac{\sigma_w^2}{(1-\phi^2)}$. Based on this, the 
 likelihood function of an AR(1) finally becomes
 \begin{equation*}
-L(\phi,\sigma_w^2) = (2\pi \sigma_w^2)^{-\frac{n}{2}} (1 - \phi)^2 \exp \left(-\frac{S(\phi)}{2 \sigma_w^2}\right)
+L(\phi,\sigma_w^2) = (2\pi \sigma_w^2)^{-\frac{n}{2}} (1 - \phi^2)^{\frac{1}{2}} \exp \left(-\frac{S(\phi)}{2 \sigma_w^2}\right)
 \end{equation*}
 with $S(\phi) = (1-\phi)^2 x_1^2 + \sum_{t=2}^T (x_t -\phi x_{t-1})^2$. Once the
 derivative of the logarithm of the likelihood is taken, the minimization of the 
