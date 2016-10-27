@@ -83,7 +83,7 @@ The backshift operator $B$ is defined as:
 Given this definition, the backshift operator has the following properties:
 
 1. ${B^k}{X_t} = B^{k-1} B {X_t} = B^{k-1} {X_{t-1}} = ... = {X_{t - k}}$ for $k \in \mathbb{N}^{+}$
-2. $B^{u} = {X_{t+u}}$ for $u \in \mathbb{Z}^{-}$ (i.e. negative integer powers)
+2. $B^{u}{X_t} = {X_{t+u}}$ for $u \in \mathbb{Z}^{-}$ (i.e. negative integer powers)
 3. $Bc = c$ for $c \in \real$
 4. $B^0 = 1$
 
