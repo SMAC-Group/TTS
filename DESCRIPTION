@@ -25,7 +25,7 @@ Imports:
   quantmod,
   reshape2,
   robustbase,
-  bookdown (>=0.1.18)
+  bookdown (>= 0.1.18)
 Remotes:
   rstudio/bookdown,
   sinhrks/ggfortify,
