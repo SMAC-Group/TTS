@@ -10,7 +10,6 @@ Authors@R: c(
 Depends: R (>= 3.3.0)
 URL: https://github.com/SMAC-Group/TTS
 Imports:
-  bookdown,
   ggplot2,
   astsa,
   ggfortify,
@@ -25,7 +24,8 @@ Imports:
   robcor,
   quantmod,
   reshape2,
-  robustbase
+  robustbase,
+  bookdown (>=0.1.18)
 Remotes:
   rstudio/bookdown,
   sinhrks/ggfortify,
