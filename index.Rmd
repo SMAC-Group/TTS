@@ -92,6 +92,15 @@ a
 Alongside the PDF download of the book, you should find the R code used within 
 each chapter. 
 
+## Acknowledgements
+
+The text has been developed in the open and has benefited greatly from many
+people being able to alert the authors to problematic areas. We are greatful
+for the corrections, suggestions, or requests ofclarity from the following:
+
+[Ziying Wang](https://github.com/zionward), [Haoxian Zhong](https://github.com/Lyle-Haoxian)
+
+
 ## License {-}
 
 ![This work is licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).](images/license/cc.png)
