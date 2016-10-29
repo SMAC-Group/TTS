@@ -16,6 +16,12 @@ url: 'https\://tts.smac-group.com/'
 github-repo: 'SMAC-Group/TTS'
 ---
 
+```{r}
+sessionInfo()
+
+packageVersion("bookdown")
+```
+
 # Preface {-}
 
 
