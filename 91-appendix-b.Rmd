@@ -20,7 +20,7 @@ robust statistics can be seen as an extension to classical parametric statistics
 by directly considering the deviations from the models. Indeed, while parametric
 models may be a good approximation of the true underlying situation, robust
 statistics does not assume that the model is exactly correct. A robust procedure
-therefore should have the following features @huber2009robust: 
+as stated in @huber2009robust therefore should have the following features: 
 
 - It should efficiently estimate the assumed model.
 - It should be reliable and reasonably efficient under small deviations from the
@@ -39,8 +39,8 @@ following two-step procedure:
 - Clean the data using some rule for outlier rejection.
 - Apply classical optimal procedures on the "clean" data. 
 
-Unfortunately such procedures cannot replace robust methods for the following 
-reasons @huber2009robust:
+Unfortunately such procedures cannot replace robust methods as discussed in
+ @huber2009robust for the following reasons:
 
 - It is rarely possible to seperate the two steps. For example, in a parametric
   regression setting, outliers are difficult to recognize without reliable 
