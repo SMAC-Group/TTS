@@ -716,6 +716,21 @@ where the empirical autocorrelation of residuals at lag $h$ is defined as $\hat{
 $$Q_{BP} \overset{\mathcal{D}}{\to} \chi^2_{m - m^{\prime}},$$
 where $m^{\prime}$ is the number of parameters in the time series model.
 
+## Proof
+In #appendixa, we give the proof of the asymptotic distribution of the sample autocorrelation $\hat{\rho}(h)$ that
+$$
+\sqrt{n}\hat{\rho}(h) \overset{\mathcal{D}}{\to} 
+    \mathcal{N}\left(0, 1 \right),
+$$
+under the data generating process $X_t = W_t + \mu$, where $\mu < \infty$ and $(W_t)$ is a strong white noise process with variance $\sigma^2$ and finite fourth moment (i.e. $\mathbb{E} [W_t^4] < \infty$).
+
+Thus, it's easy to show that the Box and Pierce test statistic 
+$$Q_{BP} = n\sum_{h =1}^m \hat{\rho}_h^2,$$
+under that data generating process would follow a $\chi^2$ distribution with $m$ degree of freedom.
+
+Before, we suppose that we know $\mu$ in our data generating process exactly, so that no unknown parameter needs to be estimated. Now, suppose $\mu$ is unknown and contains $m^{\prime}$ number of unknown parameters which we have to estimate. As we know, if our model for $\mu$ is correctly specified and those $m^{\prime}$ unknown parameters are appropriately estimated, then the underlying model of the residules of the fitted model would be $W_t$ as before, but the $m^{\prime}$ number of true parameters are replaced by their estimators. Then $Q_{BP}$ will still asymptotically follows $\chi^2$ but with $m - m^{\prime}$ degree of freedom. $\;\;\;\;\;\;\;\; \blacksquare$
+
+
 Then on 1978, Ljung and Box improved Box-Pierce test by standardizing each $\hat{\rho}_h$ by its asymptotic variance. The Ljung and Box test statistic is
 
 $$Q_{LB} = n\sum_{h =1}^m \frac{n+2}{n-h}\hat{\rho}_h^2.$$
