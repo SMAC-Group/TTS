@@ -456,7 +456,7 @@ BP.obs = rep(NA, B)
 LB.obs = rep(NA, B)
 
 for (j in seq_len(B)){
-  x = gen.gts(model, N = 1000)
+  x = gen_gts(1000, model)
   BP.obs[j] = Box.test(x, lag = 10, "Box-Pierce", fitdf = 0)$statistic
   LB.obs[j] = Box.test(x, lag = 10, "Ljung-Box", fitdf = 0)$statistic
 }
