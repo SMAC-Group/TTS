@@ -20,17 +20,32 @@ github-repo: 'SMAC-Group/TTS'
 # Preface {-}
 
 
-This text is designed as an introduction to time series analysis and is used as a support document for the class STAT 429 (Time Series Analysis) given at the University of Illinois at Urbana-Champaign. It preferable to always access the text online rather than a printed to be sure you are using the latest version. The online version so affords additional features over the traditional PDF copy such as a scaling text, variety of font faces, and themed backgrounds. However, if you are in need of a local copy, a [**pdf version** is also available](http://tts.smac-group.com/tts.pdf).
+This text is designed as an introduction to time series analysis and is used as
+a support document for the class STAT 429 (Time Series Analysis) given at the
+University of Illinois at Urbana-Champaign. It preferable to always access the 
+text online rather than a printed to be sure you are using the latest version. 
+The online version so affords additional features over the traditional PDF copy 
+such as a scaling text, variety of font faces, and themed backgrounds. However, 
+if you are in need of a local copy, a [**pdf version** is also available
+](http://tts.smac-group.com/tts.pdf).
 
-This document is under active development and as a result is likely to contains many errors. As Montesquieu puts it:
+This document is under active development and as a result is likely to contains
+many errors. As Montesquieu puts it:
 
 >
-> "*La nature semblait avoir sagement pourvu à ce que les sottises des hommes fussent passagères, et les livres les immortalisent.*"
+> "*La nature semblait avoir sagement pourvu à ce que les sottises des hommes 
+> fussent passagères, et les livres les immortalisent.*"
 >
 
 ## Contributing {-}
 
-If you notice any errors, we would be grateful if you would let us know. To let us know about the errors, there are two options available to you. The first and subsequently the fastest being if you are familiar with GitHub and know RMarkdown, then [make a pull request and fix the issue yourself!](https://github.com/SMAC-Group/TTS). Note, in the online version, there is even an option to automatically start the pull request by clicking the edit button in the top-left corner of the text.
+If you notice any errors, we would be grateful if you would let us know. To let
+us know about the errors, there are two options available to you. The first and
+subsequently the fastest being if you are familiar with GitHub and know 
+RMarkdown, then [make a pull request and fix the issue yourself!
+](https://github.com/SMAC-Group/TTS). Note, in the online version, there is
+even an option to automatically start the pull request by clicking the edit
+button in the top-left corner of the text.
 
 ```{r ebutton, cache = TRUE, echo = FALSE, fig.height=10, fig.align='center'}
 knitr::include_graphics("images/support/edit_button.png")

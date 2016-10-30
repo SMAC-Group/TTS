@@ -150,8 +150,10 @@ evaluate if some of the following phenomena occur:
 
 1. **Change in Mean:** Does the mean of the process shift over time?
 2. **Change in Variance:** Does the variance of the process evolve with time?
-3. **Change in State:** Does the time series appear to change between "states" having distinct statistical properties?
-4. **Outliers** Does the time series contain some "extreme" observations? Note that this is typically difficult to assess visually.
+3. **Change in State:** Does the time series appear to change between "states"
+   having distinct statistical properties?
+4. **Outliers** Does the time series contain some "extreme" observations? 
+   Note that this is typically difficult to assess visually.
 
 ```{example, label="earthquake"}
 In the figure below, we present an example of displacement recorded
@@ -173,7 +175,10 @@ notably around $t = 1200$ for explosion series.
 Extreme observations or outliers are commonly observed in real time series data, this is illustrated in the following example. 
 
 ```{example, label="percipitation"}
-We consider here a data set coming from the domain of hydrology. The data concerns monthly precipitation (in mm) over a certain period of time (1907 to 1972) and is interesting for scientists in order to study water cycles. The data are presented in the graph below:
+We consider here a data set coming from the domain of hydrology. The data 
+concerns monthly precipitation (in mm) over a certain period of time (1907 to
+1972) and is interesting for scientists in order to study water cycles. The
+data are presented in the graph below:
 ```
 
 ```{r example_hydro, fig.height = 4, fig.width = 7, cache = TRUE, message = FALSE, warning = FALSE}
@@ -184,9 +189,9 @@ the limitations our current framework.
 
 ```{example, label="stocks-starbucks"}
 The figure below presents the returns or price innovations
-(i.e. informally speaking the changes in price from one observation to the other) for the Starbuck's stock on
-July 1, 2011 for about 150 seconds (left panel) and about 400 minutes
-(right panel). 
+(i.e. informally speaking the changes in price from one observation to the
+other) for the Starbuck's stock on July 1, 2011 for about 150 seconds (left
+panel) and about 400 minutes (right panel). 
 ```
 
 ```{r example_Starbucks, fig.height = 4, fig.width = 7, cache = TRUE, message = FALSE}
@@ -212,7 +217,10 @@ illustrated in the following example.
 ```{example, label="large-imu"}
 We consider here the data coming from the calibration procedure of
 an Inertial Measurement Unit (IMU) which, in general terms, is used to enhance
-navigation precision or reconstruct three dimensional movements (see e.g. [link](https://www.youtube.com/watch?v=htoBvSq8jLA)). These sensors are used in a very wide range of applications such as robotics, virtual reality, vehicle stability control, human and animal motion capture and so forth (see e.g. [link](https://www.youtube.com/watch?v=g4tgtPA54_Y)).
+navigation precision or reconstruct three dimensional movements (see
+e.g. [link](https://www.youtube.com/watch?v=htoBvSq8jLA)). These sensors are
+used in a very wide range of applications such as robotics, virtual reality, 
+vehicle stability control, human and animal motion capture and so forth (see e.g. [link](https://www.youtube.com/watch?v=g4tgtPA54_Y)).
 The signals coming from these instruments are measured at
 high frequencies over a long time and are often characterized by linear trends
 and numerous underlying stochastic processes. If you have never heard 
@@ -274,7 +282,11 @@ the following example:
 ```{example, label="weaknotstrong"}
 
 Let $Y_t \mathop \sim F_{t+2}$, where $F_{t+2}$ denotes
-a Student distribution with $t+2$ degrees of freedom. Assuming the sequence $(Y_1, \ldots, Y_n)$ to be independent, we let $X_t = \sqrt{\frac{t}{t+2}} Y_t$. Then, the process $(X_t)$ is obviously not a strong white noise as the distribution of $X_t$ changes with $t$. However, this process is a weak white noise since we have:
+a Student distribution with $t+2$ degrees of freedom. Assuming the 
+sequence $(Y_1, \ldots, Y_n)$ to be independent, we 
+let $X_t = \sqrt{\frac{t}{t+2}} Y_t$. Then, the process $(X_t)$ is obviously
+not a strong white noise as the distribution of $X_t$ changes with $t$. However,
+this process is a weak white noise since we have:
 
 - $E[X_t] = \sqrt{\frac{t}{t+2}} E[Y_t] = 0$ for all $t$.
 - $\var(X_t) = \frac{t}{t+2} \var(Y_t) = \frac{t}{t+2} \frac{t+2}{t} = 1$ for all $t$.
@@ -294,7 +306,8 @@ The term *random walk* was first introduce by Karl Pearson in the early
 processes. For example, one of the simplest forms of random walk can be
 explained as follows: suppose that you are walking on campus and your
 next step can either be to your left, your right, forward or backward
-(each with equal probability). Two realizations of such processes are represented below:
+(each with equal probability). Two realizations of such processes are
+represented below:
 
 ```{r RW2d, fig.height = 3.5, fig.width = 7, cache = TRUE}
 ```
@@ -472,9 +485,21 @@ In the above graph, the first three plots represent the latent (unobserved)
 processes (i.e. white noise, random walk and drift) and the last one represents
 the sum of the three (i.e. $(X_t)$).
 
-Let us consider a real example where these latent processes are useful to describe (and predict) the behavior of economic variables such as Personal Saving Rates (PSR). A process that is used for these settings is the "random-walk-plus-noise" model, meaning that the data can be explained by a random walk process in addition to which we observe some other process (e.g. a white noise model, an autoregressive model such as an AR(1), etc.). The PSR taken from the Federal Reserve of St. Louis from January 1, 1959, to  May 1, 2015, is presented in the following plot:
+Let us consider a real example where these latent processes are useful to
+describe (and predict) the behavior of economic variables such as Personal 
+Saving Rates (PSR). A process that is used for these settings is the 
+"random-walk-plus-noise" model, meaning that the data can be explained by a 
+random walk process in addition to which we observe some other process (e.g. 
+a white noise model, an autoregressive model such as an AR(1), etc.). The PSR 
+taken from the Federal Reserve of St. Louis from January 1, 1959, to  May 1,
+2015, is presented in the following plot:
 
 ```{r example_PSR, fig.height = 4, fig.width = 7, cache=TRUE}
 ```
 
-It can be observed that the mean of the process seems to vary over time, suggesting that a random walk can indeed be considered as a possible model to explain this data. In addition, aside from some "spikes" and occasional sudden changes, the observations appear to gradually change from one time point to the other, suggesting that some other form of dependence between them could exist.
+It can be observed that the mean of the process seems to vary over time,
+suggesting that a random walk can indeed be considered as a possible model
+to explain this data. In addition, aside from some "spikes" and occasional 
+sudden changes, the observations appear to gradually change from one time point
+to the other, suggesting that some other form of dependence between them could
+exist.
