@@ -717,7 +717,7 @@ $$Q_{BP} \overset{\mathcal{D}}{\to} \chi^2_{m - m^{\prime}},$$
 where $m^{\prime}$ is the number of parameters in the time series model.
 
 ## Proof
-In #appendixa, we give the proof of the asymptotic distribution of the sample autocorrelation $\hat{\rho}(h)$ that
+In \@ref(appendixa), we give the proof of the asymptotic distribution of the sample autocorrelation $\hat{\rho}(h)$ that
 $$
 \sqrt{n}\hat{\rho}(h) \overset{\mathcal{D}}{\to} 
     \mathcal{N}\left(0, 1 \right),
