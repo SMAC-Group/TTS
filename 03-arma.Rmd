@@ -345,7 +345,7 @@ In the previous section we already introduced the idea of a causal time series m
  
 $$X_t = \sum_{j = 0}^{\infty} \psi_j W_{t-j} = \frac{1}{\phi(B)} W_t = \psi(B) W_t,$$
 
-where $\phi(B) = \sum_{j = 0}^{\infty} \phi_j B^j$, $\sum_{j=0}^{\infty}|\phi_j| < \infty$ and $\phi_0 = 1$.
+where $\phi(B) = 1 - \sum_{j = 1}^{\infty} \phi_j B^j$, $\sum_{j=0}^{\infty}|\phi_j| < \infty$ and $\phi_0 = 1$.
 ```
 
 As discussed earlier this condition implies that only the past values of the time series can explain the future values of it, and not vice versa. Moreover, in the previous section we saw that linear processes are (weakly) stationary processes and therefore causality directly implies (weak) stationarity. However, it might be difficult and not obvious to show the causality of  AR(p) processes by using the above definitions directly, thus the following property is particularly useful in practice. 
