@@ -800,10 +800,10 @@ can be used to deliver an M-estimator given by
 \sum_{j=1}^{n-p} \psi (\hat{\mathbf{\theta}}|x_j,...x_{j+p}) = 0,
 \end{equation*}
 where $\psi(\cdot)$ is a function of bounded variation. When conditioning on the
-first p observations, this problem can be brought back to a linear regression
+first $p$ observations, this problem can be brought back to a linear regression
 problem which can be applied in a robust manner using the robust regression
-tools available in R such as `rlm(...)` or `lmrob(...)`. However, another 
-available tool in R which can applied directly without conditioning also for 
+tools available in _R_ such as `rlm(...)` or `lmrob(...)`. However, another 
+available tool in _R_ which can applied directly without conditioning also for 
 general ARMA models is the `gmwm(...)` function which, by specifying the option
 `robust = TRUE`. This function makes use of a quantity called the wavelet 
 variance (denoted as $\nu$) which is estimated robustly and then used to 
@@ -818,7 +818,201 @@ matrix. Below we show some simulation studies where we present the results of
 the above estimation procedures in absence and in presence of contamination in
 the data.
 
-INSERT SIMULATIONS
+In particular, we simulate three different 
+processes $X_t, Y_t, Z_t$ from \[X_t = 0.5 X_{t-1} - 0.25 X_{t-2} + W_t\]
+with $W_t \sim WN(0, 1)$. Within two of the processes, we apply either a
+process-wise contamination or a pointwise contamination. The process wise 
+contamination, $Y_t$, has a portion of the original process, $X_t$ replaced 
+with concurrent samples from \[U_t = 0.90 U_{t-1} - 0.40 U_{t-2} + V_t\], 
+where $V_t \sim WN(0, 9)$ whereas the point-wise contaimination, $Z_t$, has 
+points selected at random from $X_t$ and replaced with $N_t \sim WN(0, 9)$.
+
+``` {r simuAR2data, cache = TRUE}
+n         = 1000           # Sample Size
+gamma     = 0.05           # Level of contamination
+dispersal = round(gamma*n) # Amount of samples contaminated
+
+set.seed(19)               # Set seed for reproducibility
+
+# Generate data!
+Xt = gen_gts(n, AR(phi = c(0.5,0.25), sigma2 = 1))
+Yt = gen_gts(n, AR(phi = c(0.5,0.25), sigma2 = 1))
+Zt = gen_gts(n, AR(phi = c(0.5,0.25), sigma2 = 1))
+
+# Contaminate a portion of Y_t with a process
+Yt[101:135,] = gen_gts(35, AR(phi = c(0.9,-0.4), sigma2 = 9))
+
+# Contaminate at random Z_t with noise
+Zt[sample(n, dispersal, replace = FALSE),] = gen_gts(dispersal, WN(sigma2 = 9))
+```
+```{r visualizesimuAR2data, cache = TRUE, echo = FALSE, fig.height = 13, fig.width = 9, fig.cap = "Contaminated AR(2) Processes"}
+# Graph points
+plot1 = autoplot(Xt) + ylab(expression(X[t]))
+plot2 = autoplot(Yt) + ylab(expression(Y[t]))
+plot3 = autoplot(Zt) + ylab(expression(Z[t]))
+grid.arrange(plot1, plot2, plot3, nrow = 3)
+```
+
+
+For convenience and reusability, we will first define a computational engine that
+will compute estimates for the parameters across all of the different methods
+under the simulation study. In addition, we have defined a means to
+visualize the results obtained from the simulation study through a boxplot.
+The procedure for creating the graphs is detailed after the simulation engine.
+
+```{r simengine, cache = TRUE}
+sim_engine = function(X_t){
+  # Estimate ARIMA parameters using MLE
+  mod = arima(X_t, order = c(2, 0, 0), include.mean  = FALSE)
+  
+  # Extract MLE Parameters (including sigma)
+  res.MLE = c(mod$coef, mod$sigma)
+  
+  # Calculate ACF
+  autocorr = as.numeric(acf(X_t, lag.max = 2, plot = FALSE)$acf)
+  X = matrix(1,2,2)
+  X[1,2] = X[2,1] = autocorr[2]
+  y = autocorr[2:3]
+  
+  # Compute Least Squares on ACF
+  svmat = solve(X)
+  phi.LS = svmat%*%y
+  sig2.LS = var(X_t)*(1 - t(y)%*%svmat%*%y)
+  res.LS = c(phi.LS, sig2.LS)
+  
+  # Calculate RACF
+  rob.ccf = as.numeric(robacf(X_t, plot=FALSE, type = "covariance")$acf)
+  X[1,2] = X[2,1] = rob.ccf[2]/rob.ccf[1]
+  y = rob.ccf[2:3]/rob.ccf[1]
+  
+  # Compute Least Squares on RACF
+  svmat = solve(X)
+  phi.RR = svmat%*%y
+  sig2.RR = rob.ccf[1]*(1 - t(y)%*%svmat%*%y)
+  res.RR = c(phi.RR, sig2.RR)
+  
+  # Compute the GMWM Estimator
+  res.GMWM = gmwm(ARMA(2,0), X_t)$estimate
+  res.RGMWM = gmwm(ARMA(2,0), X_t, robust = TRUE)$estimate
+
+  # Return results
+  list(res.MLE = res.MLE, res.LS = res.LS, res.RR = res.RR,
+       res.GMWM = res.GMWM, res.RGMWM = res.RGMWM)
+}
+```
+
+```{r simgraphcreator, cache = TRUE}
+sim_study_graph = function(res.MLE, res.LS, res.RR, res.GMWM, res.RGMWM,
+                           Truth = c(0.5, 0.25, 1)){
+  # Converts Simulation Matrices to Long Form for use in ggplot2
+  d = balamuta::study_df(res.MLE, res.LS, res.RR, res.GMWM, res.RGMWM,
+                         data_names = c("MLE","LS","RLS","GMWM","RGMWM"))
+  
+  # Reorder factors
+  d$Draw = factor(d$Draw, levels = c(1,2,3),
+                  labels = expression(phi[1], phi[2], sigma^2))
+  d$Type = factor(d$Type, levels = c("MLE","LS","RLS","GMWM","RGMWM"))
+  
+  # Add in horizontal lines
+  oracle = data.frame(Draw = 1:3, Truth = Truth)
+  oracle$Draw = factor(oracle$Draw, levels = c(1,2,3), 
+                       labels = expression(phi[1], phi[2], sigma^2))
+  
+  # Plot
+  ggplot(d, aes(x = Type, y = Values, fill = Type)) + 
+    geom_boxplot() + 
+    stat_boxplot(geom ='errorbar', width = 0.5) + 
+    geom_hline(data = oracle, aes(yintercept = Truth), color = "red") +
+    facet_wrap(~Draw, labeller = label_parsed, scales = "free_y") +
+    theme_bw() + 
+    theme(legend.position = "none",
+          axis.text.x = element_text(angle = 50, hjust = 1))
+}
+```
+
+
+With the means to now compute and visualize parameter estimates for each of the
+given methods, the bootrap simulation study may now commence. Using the 
+simulation engine, we can simultaneously evaluate the processes within one
+loop iteration. Please take into consideration that the following simulation
+study is computationally intensive and may require the amount of iteration $B$
+to be decreased on a personal computer to complete in a reasonable time.
+
+``` {r simuAR2study, cache = TRUE, fig.height = 4.5, fig.width = 9}
+# Number of bootstrap iterations
+B = 250
+
+# Simulation storage
+res.xt.MLE = res.xt.LS = res.xt.RR = res.xt.GMWM = res.xt.RGMWM = matrix(NA, B, 3)
+res.yt.MLE = res.yt.LS = res.yt.RR = res.yt.GMWM = res.yt.RGMWM = matrix(NA, B, 3)
+res.zt.MLE = res.zt.LS = res.zt.RR = res.zt.GMWM = res.zt.RGMWM = matrix(NA, B, 3)
+
+# Begin bootstrap
+for (i in seq_len(B)){
+  
+  # Set seed for reproducibility
+  set.seed(i)
+  
+  # Generate processes
+  Xt = gen_gts(n, AR(phi = c(0.5, 0.25), sigma2 = 1))
+  Yt = gen_gts(n, AR(phi = c(0.5, 0.25), sigma2 = 1))
+  Zt = gen_gts(n, AR(phi = c(0.5, 0.25), sigma2 = 1))
+  
+  # Generate Ut contamination process that replaces a portion of original signal
+  Yt[101:135] = gen_gts(35, AR(phi = c(0.9,-0.4), sigma2 = 9))
+  
+  # Generate Nt contamination that inject noise at random
+  Zt[sample(n, dispersal, replace = FALSE)] = gen_gts(dispersal, WN(sigma2 = 9))
+
+  # Compute estimates and store in the appropriate matrix
+  res = sim_engine(Xt)
+  res.xt.MLE[i,]  = res$res.MLE; res.xt.LS[i,] = res$res.LS; res.xt.RR[i,] = res$res.RR
+  res.xt.GMWM[i,] = res$res.GMWM;res.xt.RGMWM[i,] = res$res.RGMWM
+  
+  res = sim_engine(Yt)
+  res.yt.MLE[i,]  = res$res.MLE; res.yt.LS[i,] = res$res.LS; res.yt.RR[i,] = res$res.RR
+  res.yt.GMWM[i,] = res$res.GMWM;res.yt.RGMWM[i,] = res$res.RGMWM
+
+  res = sim_engine(Zt)
+  res.zt.MLE[i,]  = res$res.MLE; res.zt.LS[i,] = res$res.LS; res.zt.RR[i,] = res$res.RR
+  res.zt.GMWM[i,] = res$res.GMWM;res.zt.RGMWM[i,] = res$res.RGMWM
+}
+```
+
+```{r simuAR2XtResults, echo = FALSE, fig.height= 4.5, fig.width = 9, fig.cap = "Estimation of Uncontaminated AR(2) Process"}
+sim_study_graph(res.xt.MLE, res.xt.LS, res.xt.RR, res.xt.GMWM, res.xt.RGMWM) 
+```
+
+
+```{r simuAR2YtResults, echo = FALSE, cache = TRUE, fig.height = 4.5, fig.width = 9, fig.cap = "Estimation of Contaminated AR(2) Process with a Secondary Process"}
+sim_study_graph(res.yt.MLE, res.yt.LS, res.yt.RR, res.yt.GMWM, res.yt.RGMWM)
+```
+
+
+```{r simAR2ZtResults, cache = TRUE, echo = FALSE, fig.height= 4.5, fig.width= 9, fig.cap="Estimation of Contaminated AR(2) Process with Random Noise Injected"}
+sim_study_graph(res.zt.MLE, res.zt.LS, res.zt.RR, res.zt.GMWM, res.zt.RGMWM)
+```
+
+After performing the estimation, we opt to visually assess how well each
+methodology performed. We begin by observing the baseline case regarding the
+the uncontaminated sample $X_t$ given in Figure \@ref(fig:simuAR2XtResults). 
+Within this context, the estimation methods appear to performing equally across 
+all parameters. Note, it may appear as if $\phi_2$ had a noticable departure
+from the truth, however, the difference presented is minor considering the
+y-axis of the graph and parameter recovery present elsewhere. Turning our
+attention to Figure \@ref(fig:simuAR2YtResults), which displays results from 
+estimating $Y_t$, the process with partial  contamination from another; the 
+robust methodologies (R-LS, RGMWM) were able to effectively handle the
+contamination when compared to the classical approaches (LS, MLE, GMWM) missed 
+the mark greatly on several estimates. From the simulations, there is evidence
+to suggest that additional study should be performed to assess the performance 
+of R-LS vs. RGMWM. Lastly, we consider the results of estimating $Z_t$, the case
+of random noise injected into the process, given in Figure \@ref(fig:simAR2ZtResults). 
+The noise has a troubling impact with respect to estimating the large $\phi_1$
+and $\sigma^2$. However, the estimation procedure appear to be able to reasonably
+capture $\phi_2$. As shown previously, the robust techniques provide better 
+estimations than their counterparts.
+
 
 For all the above methods, it would be necessary to understand how "precise" 
 their estimates are. To do so we would need to obtain confidence intervals for
