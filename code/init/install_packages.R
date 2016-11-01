@@ -16,3 +16,6 @@ devtools::install_github("SMAC-Group/smacdata")
 
 # Install from github
 devtools::install_github("SMAC-Group/exts")
+
+# Install from github
+devtools::install_github("coatless/balamuta")
