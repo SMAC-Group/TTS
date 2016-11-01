@@ -978,15 +978,23 @@ $$Q_{BP} \overset{\mathcal{D}}{\to} \chi^2_{m - m^{\prime}},$$
 where $m^{\prime}$ is the number of parameters in the time series model.
 
 ## Proof
-In \@ref(appendixa), we give the proof of the asymptotic distribution of the
-sample autocorrelation $\hat{\rho}(h)$ that
-$$
-\sqrt{n}\hat{\rho}(h) \overset{\mathcal{D}}{\to} 
-    \mathcal{N}\left(0, 1 \right),
-$$
-under the data generating process $X_t = W_t + \mu$, where $\mu < \infty$ and
-$(W_t)$ is a strong white noise process with variance $\sigma^2$ and finite
-fourth moment (i.e. $\mathbb{E} [W_t^4] < \infty$).
+We can write the autocorrelation $\bm{\rho} = \left(\rho(1), \rho(2), \dots, \rho(m)\right)^T$, and the sample autocorrelation $\bm{\hat{\rho}} = \left(\hat{\rho}(1), \hat{\rho}(2), \dots, \hat{\rho}(m)\right)^T$.
+
+According to the Theorem A.7 on textbook, under the data generating process $X_t = W_t + \mu$, where $\mu < \infty$ and $(W_t)$ is a strong white noise process with variance $\sigma^2$ and finite fourth moment (i.e. $\mathbb{E} [W_t^4] < \infty$), we have 
+$$\sqrt{n} \left(\mathbf{\hat{\rho}} - \mathbf{\rho}\right) \overset{\mathcal{D}}{\to} V,$$
+where the $(p,q)^{th}$ element of $V$ is
+$$v_{pq} = \sum_{u=1}^{\infty}\left[ \rho(u+p) + \rho(u-p) - 2\rho(p)\rho(u) \right] \times \left[ \rho(u+p) + \rho(u-p) - 2\rho(p)\rho(u) \right].$$
+And since $V$ is positive definite covariance matrix, therefore,
+$$\sqrt{n} V^{-\frac{1}{2}}\left(\mathbf{\hat{\rho}} - \mathbf{\rho}\right) \overset{\mathcal{D}}{\to} \mathcal{N}(\mathbf{0}, I),$$
+and also
+$$n \left(\mathbf{\hat{\rho}} - \mathbf{\rho}\right)^T V^{-1} \left(\mathbf{\hat{\rho}} - \mathbf{\rho}\right) \overset{\mathcal{D}}{\to} \chi^2_m,$$
+Since under the null, $\mathbf{\rho} = \mathbf{0}$, we have 
+$$v_{pq} = 
+\begin{cases}
+0, \; p \neq q\\
+1, \; p = q
+\end{cases}
+.$$
 
 Thus, it's easy to show that the Box and Pierce test statistic 
 $$Q_{BP} = n\sum_{h =1}^m \hat{\rho}_h^2,$$
