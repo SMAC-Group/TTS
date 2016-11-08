@@ -1240,6 +1240,7 @@ for(i in seq_len(B)) {
 # Graphing 
 
 # Requires use of MASS
+library("MASS")
 est.phi.ML = na.omit(est.phi.ML)
 z = kde2d(est.phi.ML[,1],est.phi.ML[,2], n=50)
 k = 11
