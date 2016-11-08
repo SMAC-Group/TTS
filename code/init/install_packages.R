@@ -2,7 +2,7 @@
 inst_pkgs = load_pkgs =  c("devtools","reshape2","ggplot2","astsa","ggfortify",
                            "zoo","highfrequency","timeDate","gridExtra",
                            "robcor", "quantmod", "reshape2","robustbase",
-                           "MASS")
+                           "MASS", "RColorBrewer")
 inst_pkgs = inst_pkgs[!(inst_pkgs %in% installed.packages()[,"Package"])]
 if(length(inst_pkgs)) install.packages(inst_pkgs)
 

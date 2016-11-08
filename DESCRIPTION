@@ -13,6 +13,7 @@ Imports:
   rsconnect,
   balamuta,
   MASS,
+  RColorBrewer,
   ggplot2,
   astsa,
   ggfortify,
