@@ -1329,6 +1329,8 @@ $$\begin{aligned}
    (typically $100 \leq B \leq 10000$).
 5. Compute the empirical the statistics of interest based on 
    the $B$ independent replications. 
+
+
 ```
 
 The approach taken by MMB ensures that within each block the dependency
