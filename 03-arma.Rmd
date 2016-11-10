@@ -593,10 +593,15 @@ $$\phi_{hh} = \corr(X_{t+h} - \hat{X}_{t+h}, X_t - \hat{X}_t), \mbox{ } h \geq 2
 **Remark**
 From the above definition we can think of the partial autocorrelation $\phi_{hh}$ as the correlation between the residual of $X_{t+h}$ after removing its best linear predictor on the vector space spanned by $\{ X_{t+1}, \dots, X_{t+h-1} \}$ and the residual of $X_t$ after removing its best linear predictor on the same vector space. Similarly to linear regression, the residuals should be independent of the vector space spanned by $\{ X_{t+1}, \dots, X_{t+h-1} \}$ after projection. 
 
-We will discuss about the best linear predictor in the section dedicated to forecasting and therefore here we will just mention how to obtain the best linear predictor. Given a time series $X_1, X_2, \dots, X_t$ with zero mean, the best linear predictor of $X_{t+h}$ can be written as $\hat{X}_{t+h} = \sum_{j=1}^t \alpha_j X_j$ such that it satisfies the prediction equations:
+We will discuss about the best linear predictor in the section dedicated to forecasting and therefore here we will just mention how to obtain the best linear predictor.
+
+```{definition, label="blp", name = "Best Linear Predictor (BLP)"}
+Given a time series $X_1, X_2, \dots, X_t$ with zero mean, the best linear predictor of $X_{t+h}$ can be written as $\hat{X}_{t+h} = \sum_{j=1}^t \alpha_j X_j$ such that it satisfies the prediction equations:
 \[ \mathbb{E}(X_{t+h} - \hat{X}_{t+h}) = 0, \]
 and
 \[ \mathbb{E} [(X_{t+h} - \hat{X}_{t+h})X_j ] = 0, \mbox{ for } i = 1, \dots, t.\]
+```
+
 According to the projection theorem, we can show that satisfying the prediction equations is equivalent to minimizing the mean squared error $\mathbb{E}((X_{t+h} - \hat{X}_{t+h})^2)$.
 Thus we have two equivalent ways to obtain the best linear predictor.
 
@@ -1321,13 +1326,13 @@ $$\begin{aligned}
 \end{aligned}$$
 
 2. Draw $M = \left\lfloor {\frac{N}{\ell}} \right\rfloor$ blocks with replacement
-   from these $(S_1, \ldots, S_K)$ blocks and place them in order to form
+   from these $\left\{S_1, \ldots, S_K\right\}$ blocks and place them in order to form
    $(X_t^*)$. 
-3. Compute the statistics of interest on the simulated 
+3. Compute the statistic of interest on the simulated 
    sample $(X_t^*)$.
 4. Repeat Steps 2 and 3 $B$ times where $B$ is sufficiently "large" 
    (typically $100 \leq B \leq 10000$).
-5. Compute the empirical the statistics of interest based on 
+5. Compute the empirical mean and variance on the statistic of interest based on 
    the $B$ independent replications. 
 
 
@@ -1533,3 +1538,4 @@ see that the block bootstrap had a narrower distribution. However, there was a
 considerable bias that lead the distribution to be off-centered. The origins of
 bias come from the independence associated between blocks as they are placed
 into $(X^*_t)$. 
+
