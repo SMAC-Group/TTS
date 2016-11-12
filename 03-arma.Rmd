@@ -51,11 +51,10 @@ operation such as, for example, removing a trend through differencing.
 ### Linear Operators
 
 Prior to introducing linear processes, we will first discuss the concept of linear operators that are necessary to better understand the former. These operators allow to manipulate time series in order to transform them into a form that can be represented by the models presented in the previous chapters (and the ARMA models presented further on). Generally speaking, these operators serve three main goals:
-\begin{itemize}
-  \item converting a time series into a linear process form;
-  \item differencing in order to remove deterministic components;
-  \item removing seasonal trends.
-\end{itemize}
+
+- converting a time series into a linear process form;
+- differencing in order to remove deterministic components;
+- removing seasonal trends.
 
 ```{definition, label="linop", name = "Linear Operator"}
 A linear operator $L$ is an operator that satisfies the following two 
@@ -1538,5 +1537,4 @@ see that the block bootstrap had a narrower distribution. However, there was a
 considerable bias that lead the distribution to be off-centered. The origins of
 bias come from the independence associated between blocks as they are placed
 into $(X^*_t)$. 
-
 
