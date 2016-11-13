@@ -1562,6 +1562,8 @@ determined by the requirements
 
 1. $\hat{y} \in \mathcal{M}$ and 
 2. $(y - \hat{y}) \perp \mathcal{M}$.
+
+
 ```
 
 Projection theorem natually leads to an equivalent way to find the best linear 
@@ -1581,7 +1583,6 @@ be represented by the following form
     \vdots & \vdots & \ddots & \vdots \\
     \gamma(N-1) & \gamma(N-2) & \cdots &\gamma(0)
   \end{pmatrix}_{N \times N}
-
   \begin{pmatrix}
     \alpha_1 \\
     \vdots \\
