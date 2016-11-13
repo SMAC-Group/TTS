@@ -1,0 +1,72 @@
+---
+title: "pacf_ar"
+output: html_document
+---
+
+
+## PACF
+
+Show that $\phi_{hh} = 0$ if $h > p$ for an AR(p).
+
+PACF: 
+$$\begin{aligned}
+\phi_{11} &= \corr(X_{t+1},X_{t}) = \rho(1) \\
+\phi_{hh} &= \corr(X_{t+h} - \hat{X}_{t+h}, X_{t} - \hat{X}_{t}), h \ge 2
+\end{aligned}$$
+
+where $\hat{X}_t = \widetilde{\beta}_1 X_{t+h-1} + \cdots + \widetilde{\beta}_{p-1} X_{t+1}$
+
+therefore we have:
+$\widetilde{\beta} = \mathop {\arg \min }\limits_\beta  \underbrace {E\left[ {{{\left( {{X_{t + h}} - \sum\limits_{j = 1}^{h - 1} {{\beta _j}{X_{t + j}}} } \right)}^2}} \right]}_{MS{E_L}\left( \beta  \right)}$
+
+Consider a more general case:
+
+$ \widetilde{\beta}^{*} = \mathop {\arg \min }\limits_\beta  \underbrace {E\left[ {{{\left( {{X_{t + h}} - m\left( {{X_{t + 1}}, \cdots ,{X_{t + h}}} \right)} \right)}^2}} \right]}_{MSE\left( \beta  \right)}$
+
+It is clear that:
+
+\[MS{E_L}\left( {\tilde \beta } \right) \ge MSE\left( {{{\tilde \beta }^*}} \right)\]
+
+Let's now consider 
+
+\[{\left( {{X_t} - m} \right)^2} = {\left[ {\left( {{X_t} - E\left[ {{X_t}|{\Omega _t}} \right]} \right) + \left( {E\left[ {{X_t}|{\Omega _t}} \right] - m} \right)} \right]^2}\]
+
+Where we have: $m = m\left( {{X_{t + 1}}, \cdots ,{X_{t + h}}} \right)$, ${\Omega _t} = \left( {{X_{t + 1}}, \cdots ,{X_{t + h}}} \right)$.
+
+Therefore, 
+
+\[{\left( {{X_t} - m} \right)^2} = {\left( {{X_t} - E\left[ {{X_t}|{\Omega _T}} \right]} \right)^2} + {\left( {E\left[ {{X_t}|{\Omega _T}} \right] - m} \right)^2} + 2\left( {{X_t} - E\left[ {{X_t}|{\Omega _t}} \right]} \right)\left( {E\left[ {{X_t}|{\Omega _T}} \right] - m} \right)\]
+
+
+Focusing on only the last term, we have that:
+
+\[\underbrace {\left( {{X_t} - E\left[ {{X_t}|{\Omega _t}} \right]} \right)}_{ = {\varepsilon _t}}\left( {E\left[ {{X_t}|{\Omega _T}} \right] - m} \right)\]
+
+\[E\left[ {{\varepsilon _t}|{\Omega _t}} \right] = E\left[ {{X_t} - E\left[ {{X_t}|{\Omega _t}} \right]|{\Omega _t}} \right] = 0\]
+
+So, by the decomposition property, we have that:
+
+\[E\left[ {{\varepsilon _t}\left( {E\left[ {{X_t}|{\Omega _t}} \right] - m} \right)} \right] = E\left[ {E\left[ {{\varepsilon _t}\left( {E\left[ {{X_t}|{\Omega _t}} \right] - m} \right)|{\Omega _t}} \right]} \right] = E\left[ {\underbrace {E\left[ {{\varepsilon _t}|{\Omega _t}} \right]}_{ = 0}\left( {E\left[ {{X_t}|{\Omega _t}} \right] - m} \right)} \right] = 0\]
+
+By the previous discussion, we have that
+
+\[{\left( {{X_t} - m} \right)^2} = {\left( {{X_t} - E\left[ {{X_t}|{\Omega _t}} \right]} \right)^2} + {\left( {E\left[ {{X_t}|{\Omega _t}} \right] - m} \right)^2}\]
+
+is therefore minimized for $m = E\left[ {{X_t}|{\Omega _t}} \right]$.
+
+Note that $X < Y \Rightarrow E[X] < E[Y]$. In the case of an AR(p): $E\left[ {{X_t}|{\Omega _t}} \right] = \sum\limits_{j = 1}^{h - 1} {{\beta _j}{X_{t + j}}}$ 
+
+As a result, we have that 
+
+\[MS{E_L}\left( {\tilde \beta } \right) = MSE\left( {{{\tilde \beta }^*}} \right)\]
+
+Therefore, for $h > p$, we have:
+
+\[\begin{aligned}
+  {\phi _{hh}} &= corr\left( {{X_{t + h}} - E\left[ {{X_{t + h}}|{X_{t + 1}}, \cdots ,{X_{t + h - 1}}} \right],{X_t} - E\left[ {{X_t}|{X_{t - h}}, \cdots ,{X_{t - 1}}} \right]} \right) \hfill \\
+   &= corr\left( \begin{gathered}
+  {X_{t + h}} - E\left[ {{\phi _1}{X_{t + h - 1}} +  \cdots {\phi _p}{X_{t + h - p}} + {W_{t + h}}|{X_{t + 1}}, \cdots ,{X_{t + h - 1}}} \right], \hfill \\
+  {X_t} - E\left[ {{X_t}|{X_{t - h}}, \cdots ,{X_{t - 1}}} \right] \hfill \\ 
+\end{gathered}  \right) \hfill \\
+   &= corr\left( {{W_{t + h}},{W_t}} \right) = 0 \hfill \\ 
+\end{aligned} \]
