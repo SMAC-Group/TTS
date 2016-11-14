@@ -198,12 +198,12 @@ series converges under $\sum\limits_{j =  - \infty }^\infty  {\left| {{\psi _j}}
 
 \[E\left[ {{X_t}} \right] = E\left[ {\mu  + \sum\limits_{j =  - \infty }^\infty  {{\psi _j}{W_{t - j}}} } \right] = \mu  + \sum\limits_{j =  - \infty }^\infty  {{\psi _j}E\left[ {{W_{t - j}}} \right]}  = \mu  + 0 = \mu \]
 
-As for the autocovariance, noting that $\cov\left( {{W_{t + h - j}},{W_{t - i}}} \right) = 0$ for $i \ne j + h$, we have:
+As for the autocovariance, noting that $\cov\left( {{W_{t + h - j}},{W_{t - i}}} \right) = 0$ for $i \ne j - h$, we have:
 
 \[\begin{aligned}
   \cov \left( {{X_{t + h}},{X_t}} \right) &= \cov \left( {\mu  + \sum\limits_{j =  - \infty }^\infty  {{\psi _j}{W_{t + h - j}}} ,\mu  + \sum\limits_{i =  - \infty }^\infty  {{\psi _i}{W_{t - i}}} } \right) \\
    &= \sum\limits_{j =  - \infty }^\infty  {\sum\limits_{i =  - \infty }^\infty  {{\psi _j}{\psi _i}\cov \left( {{W_{t + h - j}},{W_{t - i}}} \right)} }  = \sum\limits_{j =  - \infty }^\infty  {{\psi _{j + h}}{\psi _j}\cov \left( {{W_t},{W_t}} \right)}  + \sum\limits_{j =  - \infty }^\infty  {\sum\limits_{i =  - \infty }^\infty  {{\psi _j}{\psi _i}\underbrace {\cov \left( {{W_{t + h - j}},{W_{t - i}}} \right)}_{ = 0}} }  \\
-   &= \sigma _W^2\sum\limits_{j =  - \infty }^\infty  {{\psi _j}{\psi _i}}.  \\ 
+   &= \sigma _W^2\sum\limits_{j =  - \infty }^\infty  {{\psi _j}{\psi _{j-h}}}.  \\ 
 \end{aligned} \]
 ```
 
