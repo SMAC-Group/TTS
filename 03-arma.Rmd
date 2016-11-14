@@ -649,4 +649,463 @@ Hence, as for the ACF, the PACF can be tested for significance by building appro
 
 
 
-### Model Selection
+### Estimation of AR(p) models
+
+Given the above defined properties of the AR(p) models, we will now discuss
+how these models can be estimated, more specifically how the p+1 parameters 
+can be obtained from an observed time series. Indeed, a reliable estimation of 
+these models is necessary in order to interpret and describe different natural 
+phenomena and/or forecast possible future values of the time series.
+
+A first approach builds upon the earlier definition of the AR(p) as being a
+linear process. And let it be **causal**. Recall that
+\begin{equation}
+    X_t = \sum_{j = 1}^{p} \phi_j X_{t-j} + W_t
+\end{equation}
+which delivers the following autocovariance function
+\begin{equation}
+    \gamma(h) = cov(X_{t+h}, X_t) = cov(\sum_{j = 1}^{p} \phi_j X_{t+h-j} + W_{t+h}, X_t) = \sum_{j = 1}^{p} \phi_j \gamma(h-j), \mbox{ } h \geq 0.
+\end{equation}
+Rearranging the above expressions we obtain the following general equations
+\begin{equation}
+    \gamma(h) - \sum_{j = 1}^{p} \phi_j \gamma(h-j) = 0, \mbox{ } h \geq 1
+\end{equation}
+and, recalling that $\gamma(h) = \gamma(-h)$ and $\gamma(0) = cov(X_t, X_t)$,
+\begin{equation}
+    \gamma(0) - \sum_{j = 1}^{p} \phi_j \gamma(j) = \sigma_w^2.
+\end{equation}
+We can now define the Yule-Walker equations.
+
+```{definition, label = "yweqs", name = "Yule-Walker Equations"}
+The Yule-Walker equations are given by
+\begin{equation}
+    \gamma(h) = \phi_1 \gamma(h-1) + ... + \phi_p \gamma(h-p), \mbox{ } h = 1,...,p
+\end{equation}
+and
+\begin{equation}
+    \sigma_w^2 = \gamma(0) - \phi_1 \gamma(1) - ... - \phi_p \gamma(p).
+\end{equation}
+which in matrix notation can be defined as follows
+\begin{equation}
+    \Gamma_p \mathbf{\phi} = \mathbf{\gamma}_p \text{ and } \sigma_w^2 = \gamma(0) - \mathbf{\phi}'\mathbf{\gamma}_p
+\end{equation}
+where $\Gamma_p$ is the $p\times p$ matrix with its $\left(k,j\right)^{th}$ element be the autocovariances $\gamma(k-j), j,k = 1, ...,p$ while $\mathbf{\phi} = (\phi_1,...,\phi_p)'$ and $\mathbf{\gamma}_p = (\gamma(1),...,\gamma(p))'$ are $p\times 1$ vectors.
+```
+
+Considering the Yule-Walker equations, it is possible to use a method of moments
+approach and simply replace the theoretical quantities given in the previous
+definition with their empirical (estimated) counterparts that we saw in the 
+previous chapter. This gives us the following Yule-Walker estimators
+\begin{equation}
+    \hat{\mathbf{\phi}} = \hat{\Gamma}_p^{-1}\hat{\mathbf{\gamma}}_p \text{ and } \hat{\sigma}_w^2 = \hat{\gamma}(0) - \hat{\mathbf{\gamma}}_p'\hat{\Gamma}_p^{-1}\hat{\mathbf{\gamma}}_p
+\end{equation}
+
+These estimators have the following asymptotic properties.
+
+**Property: Consistency and Asymptotic Normality of Yule-Walker estimators**
+The Yule-Walker estimators for a causal AR(p) model have the following 
+asymptotic properties:
+
+\begin{equation*}
+\sqrt{T}(\hat{\mathbf{\phi}}- \mathbf{\phi}) \xrightarrow{\mathcal{D}} \mathcal{N}(\mathbf{0},\sigma_w^2\Gamma_p^{-1}) \text{ and } \hat{\sigma}_w^2 \xrightarrow{\mathcal{P}} \sigma_w^2 .
+\end{equation*}
+
+Therefore the Yule-Walker estimators have an asymptotically normal distribution 
+and the estimator of the innovation variance is consistent. Moreover, these 
+estimators are also optimal for AR(p) models, meaning that they are also
+efficient. However, there exists another method which allows to achieve this
+efficiency also for general ARMA models and this is the maximum likelihood
+method. Considering an AR(1) model as an example, and assuming without loss of
+generality that the expectation is zero, we have the following representation
+of the AR(1) model
+\begin{equation*}
+X_t = \phi X_{t-1} + W_t
+\end{equation*}
+where $|\phi|<1$ and $W_t \overset{iid}{\sim} \mathcal{N}(0,\sigma_w^2)$. 
+Supposing we have observations issued from this model $(x_t)_{t=1,...,T}$, 
+then the likelihood function for this setting is given by
+\begin{equation*}
+L(\phi,\sigma_w^2) = f(\phi,\sigma_w^2|x_1,...,x_T)
+\end{equation*}
+which, for an AR(1) model, can be rewritten as follows
+\begin{equation*}
+L(\phi,\sigma_w^2) = f(x_1)f(x_2|x_1)\cdot \cdot \cdot f(x_T|x_{T-1}).
+\end{equation*}
+If we define $\Omega_t^p$ as the information contained in the previous $p$
+observations to time $t$, the above can be generalized for an AR(p) model as
+follows
+\begin{equation*}
+L(\phi,\sigma_w^2) = f(x_1,...,x_p)f(x_{p+1}|\Omega_{p+1}^p)\cdot \cdot \cdot f(x_T|\Omega_{T-1}^p)
+\end{equation*}
+where $f(x_1,...,x_p)$ is the joint probability distribution of the first $p$
+observations. A discussion on how to find $f(x_1,...,x_p)$ will be presented in
+the following paragraphs based on the approach to find $f(x_1)$ in the AR(1) 
+likelihood. Going back to the latter, we know that $x_t|x_{t-1} \sim \mathcal{N}(\phi x_{t-1},\sigma_w^2)$ and therefore we have that
+\begin{equation*}
+f(x_t|x_{t-1}) = f_w(x_t - \phi x_{t-1})
+\end{equation*}
+where $f_w(\cdot)$ is the distribution of $w_t$. This rearranges the likelihood
+function as follows
+\begin{equation*}
+L(\phi,\sigma_w^2) = f(x_1)\prod_{t=2}^T f_w(x_t - \phi x_{t-1})
+\end{equation*}
+where $f(x_1)$ can be found through the causal representation
+\begin{equation*}
+x_1 = \sum_{j=0}^{\infty} \phi^j w_{1-j} 
+\end{equation*}
+which implies that $x_1$ follows a normal distribution with zero expectation and
+a variance given by $\frac{\sigma_w^2}{(1-\phi^2)}$. Based on this, the 
+likelihood function of an AR(1) finally becomes
+\begin{equation*}
+L(\phi,\sigma_w^2) = (2\pi \sigma_w^2)^{-\frac{n}{2}} (1 - \phi^2)^{\frac{1}{2}} \exp \left(-\frac{S(\phi)}{2 \sigma_w^2}\right)
+\end{equation*}
+with $S(\phi) = (1-\phi)^2 x_1^2 + \sum_{t=2}^T (x_t -\phi x_{t-1})^2$. Once the
+derivative of the logarithm of the likelihood is taken, the minimization of the 
+negative of this function is usually done numerically. However, if we condition 
+on the initial values, the AR(p) models are linear and, for example, we can then
+define the conditional likelihood of an AR(1) as
+\begin{equation*}
+L(\phi,\sigma_w^2|x_1) = (2\pi \sigma_w^2)^{-\frac{n-1}{2}} \exp \left(-\frac{S_c(\phi)}{2 \sigma_w^2}\right)
+\end{equation*}
+where
+\begin{equation*}
+S_c(\phi) = \sum_{t=2}^T (x_t -\phi x_{t-1})^2 .
+\end{equation*}
+The latter is called the conditional sum of squares and $\phi$ can be estimated
+as a straightforward linear regression problem. Once an estimate $\hat{\phi}$ is
+obtained, this can be used to obtain the conditional maximum likelihood estimate
+of $\sigma_w^2$
+\begin{equation*}
+\hat{\sigma}_w^2 = \frac{S_c(\hat{\phi})}{(n-1)} .
+\end{equation*}
+
+The estimation methods presented so far are standard ones for these kind of
+models. Nevertheless, if the data suffers from some form of contamination, 
+these methods can become highly biased. For this reason, some robust estimators
+are available to limit this problematic if there are indeed outliers in the 
+observed time series. A first solution is given by the estimator proposed in
+Kunsch (1984) who underlines that the MLE score function of an AR(p) is 
+given by
+\begin{equation*}
+ \kappa(\mathbf{\theta}|x_j,...x_{j+p}) = \frac{\partial}{\partial \mathbf{\theta}} (x_{j+p} - \sum_{k=1}^p \phi_k x_{j+p-k})^2
+\end{equation*}
+where $\theta$ is the parameter vector containing, in the case of an AR(1)
+model, the two parameters $\phi$ and $\sigma_w^2$ 
+(i.e.$\theta = [\phi \,\, \sigma_w^2]$). This delivers the estimating equation
+\begin{equation*}
+\sum_{j=1}^{n-p} \kappa (\hat{\mathbf{\theta}}|x_j,...x_{j+p}) = 0 .
+\end{equation*}
+The score function $\kappa(\cdot)$ is clearly not bounded, in the sense that if
+we arbitrarily move a value of $(x_t)$ to infinity then the score function also 
+goes to infinity thereby delivering a biased estimation procedure. To avoid that
+outlying observations bias the estimation excessively, a bounded score function
+can be used to deliver an M-estimator given by
+\begin{equation*}
+\sum_{j=1}^{n-p} \psi (\hat{\mathbf{\theta}}|x_j,...x_{j+p}) = 0,
+\end{equation*}
+where $\psi(\cdot)$ is a function of bounded variation. When conditioning on the
+first $p$ observations, this problem can be brought back to a linear regression
+problem which can be applied in a robust manner using the robust regression
+tools available in _R_ such as `rlm(...)` or `lmrob(...)`. However, another 
+available tool in _R_ which can applied directly without conditioning also for 
+general ARMA models is the `gmwm(...)` function which, by specifying the option
+`robust = TRUE`. This function makes use of a quantity called the wavelet 
+variance (denoted as $\nu$) which is estimated robustly and then used to 
+retrieve the parameters $\theta$ of the time series model. The robust estimate 
+is obtained by solving the following minimization problem
+\begin{equation*}
+\hat{\theta} = \underset{\theta \in \Theta}{\argmin} (\hat{\nu} - \nu{\theta})^T\Omega(\hat{\nu} - \nu{\theta}),
+\end{equation*}
+where $\hat{\nu}$ is the robustly estimated wavelet variance, $\nu{\theta}$ is 
+the theoretical wavelet variance and $\Omega$ is positive definite weighting 
+matrix. Below we show some simulation studies where we present the results of
+the above estimation procedures in absence and in presence of contamination in
+the data.
+
+In particular, we simulate three different 
+processes $X_t, Y_t, Z_t$ from \[X_t = 0.5 X_{t-1} - 0.25 X_{t-2} + W_t\]
+with $W_t \sim WN(0, 1)$. Within two of the processes, we apply either a
+process-wise contamination or a pointwise contamination. The process wise 
+contamination, $Y_t$, has a portion of the original process, $X_t$ replaced 
+with concurrent samples from \[U_t = 0.90 U_{t-1} - 0.40 U_{t-2} + V_t\], 
+where $V_t \sim WN(0, 9)$ whereas the point-wise contaimination, $Z_t$, has 
+points selected at random from $X_t$ and replaced with $N_t \sim WN(0, 9)$.
+
+``` {r simuAR2data, cache = TRUE}
+n         = 1000           # Sample Size
+gamma     = 0.05           # Level of contamination
+dispersal = round(gamma*n) # Amount of samples contaminated
+
+set.seed(19)               # Set seed for reproducibility
+
+# Generate data!
+Xt = gen_gts(n, AR(phi = c(0.5,0.25), sigma2 = 1))
+Yt = gen_gts(n, AR(phi = c(0.5,0.25), sigma2 = 1))
+Zt = gen_gts(n, AR(phi = c(0.5,0.25), sigma2 = 1))
+
+# Contaminate a portion of Y_t with a process
+Yt[101:135,] = gen_gts(35, AR(phi = c(0.9,-0.4), sigma2 = 9))
+
+# Contaminate at random Z_t with noise
+Zt[sample(n, dispersal, replace = FALSE),] = gen_gts(dispersal, WN(sigma2 = 9))
+```
+```{r visualizesimuAR2data, cache = TRUE, echo = FALSE, fig.height = 13, fig.width = 9, fig.cap = "Contaminated AR(2) Processes"}
+# Graph points
+plot1 = autoplot(Xt) + ylab(expression(X[t]))
+plot2 = autoplot(Yt) + ylab(expression(Y[t]))
+plot3 = autoplot(Zt) + ylab(expression(Z[t]))
+grid.arrange(plot1, plot2, plot3, nrow = 3)
+```
+
+
+As every process will require the same estimation methodology, we will first
+define a computational engine that will compute estimates for the parameters
+across all of the different methods under the simulation study. Doing so provides
+separate, reusable code that lowers the threshold for error when compared to
+having multiple copies of the same code scattered about. In addition, we have 
+defined a means to visualize the results obtained from the simulation study 
+through a boxplot. The procedure for creating the graphs is detailed after the
+simulation engine.
+
+```{r simengine, cache = TRUE}
+sim_engine = function(X_t){
+  # Estimate ARIMA parameters using MLE
+  mod = arima(X_t, order = c(2, 0, 0), include.mean  = FALSE)
+  
+  # Extract MLE Parameters (including sigma)
+  res.MLE = c(mod$coef, mod$sigma)
+  
+  # Calculate ACF
+  autocorr = as.numeric(acf(X_t, lag.max = 2, plot = FALSE)$acf)
+  X = matrix(1,2,2)
+  X[1,2] = X[2,1] = autocorr[2]
+  y = autocorr[2:3]
+  
+  # Compute Least Squares on ACF
+  svmat = solve(X)
+  phi.LS = svmat%*%y
+  sig2.LS = var(X_t)*(1 - t(y)%*%svmat%*%y)
+  res.LS = c(phi.LS, sig2.LS)
+  
+  # Calculate RACF
+  rob.ccf = as.numeric(robacf(X_t, plot=FALSE, type = "covariance")$acf)
+  X[1,2] = X[2,1] = rob.ccf[2]/rob.ccf[1]
+  y = rob.ccf[2:3]/rob.ccf[1]
+  
+  # Compute Least Squares on RACF
+  svmat = solve(X)
+  phi.RR = svmat%*%y
+  sig2.RR = rob.ccf[1]*(1 - t(y)%*%svmat%*%y)
+  res.RR = c(phi.RR, sig2.RR)
+  
+  # Compute the GMWM Estimator
+  res.GMWM = gmwm(ARMA(2,0), X_t)$estimate
+  res.RGMWM = gmwm(ARMA(2,0), X_t, robust = TRUE)$estimate
+
+  # Return results
+  list(res.MLE = res.MLE, res.LS = res.LS, res.RR = res.RR,
+       res.GMWM = res.GMWM, res.RGMWM = res.RGMWM)
+}
+```
+
+```{r simgraphcreator, cache = TRUE}
+sim_study_graph = function(res.MLE, res.LS, res.RR, res.GMWM, res.RGMWM,
+                           Truth = c(0.5, 0.25, 1)){
+  # Converts Simulation Matrices to Long Form for use in ggplot2
+  d = balamuta::study_df(res.MLE, res.LS, res.RR, res.GMWM, res.RGMWM,
+                         data_names = c("MLE","LS","RLS","GMWM","RGMWM"))
+  
+  # Reorder factors
+  d$Draw = factor(d$Draw, levels = c(1,2,3),
+                  labels = expression(phi[1], phi[2], sigma^2))
+  d$Type = factor(d$Type, levels = c("MLE","LS","RLS","GMWM","RGMWM"))
+  
+  # Add in horizontal lines
+  oracle = data.frame(Draw = 1:3, Truth = Truth)
+  oracle$Draw = factor(oracle$Draw, levels = c(1,2,3), 
+                       labels = expression(phi[1], phi[2], sigma^2))
+  
+  # Plot
+  ggplot(d, aes(x = Type, y = Values, fill = Type)) + 
+    geom_boxplot() + 
+    stat_boxplot(geom ='errorbar', width = 0.5) + 
+    geom_hline(data = oracle, aes(yintercept = Truth), color = "red") +
+    facet_wrap(~Draw, labeller = label_parsed, scales = "free_y") +
+    theme_bw() + 
+    theme(legend.position = "none",
+          axis.text.x = element_text(angle = 50, hjust = 1))
+}
+```
+
+
+With the means to now compute and visualize parameter estimates for each of the
+given methods, the bootrap simulation study may now commence. Using the 
+simulation engine, we can simultaneously evaluate the processes within one
+loop iteration. Please take into consideration that the following simulation
+study is computationally intensive and may require the amount of iteration $B$
+to be decreased on a personal computer to complete in a reasonable time.
+
+``` {r simuAR2study, cache = TRUE, fig.height = 4.5, fig.width = 9}
+# Number of bootstrap iterations
+B = 250
+
+# Simulation storage
+res.xt.MLE = res.xt.LS = res.xt.RR = res.xt.GMWM = res.xt.RGMWM = matrix(NA, B, 3)
+res.yt.MLE = res.yt.LS = res.yt.RR = res.yt.GMWM = res.yt.RGMWM = matrix(NA, B, 3)
+res.zt.MLE = res.zt.LS = res.zt.RR = res.zt.GMWM = res.zt.RGMWM = matrix(NA, B, 3)
+
+# Begin bootstrap
+for (i in seq_len(B)){
+  
+  # Set seed for reproducibility
+  set.seed(i)
+  
+  # Generate processes
+  Xt = gen_gts(n, AR(phi = c(0.5, 0.25), sigma2 = 1))
+  Yt = gen_gts(n, AR(phi = c(0.5, 0.25), sigma2 = 1))
+  Zt = gen_gts(n, AR(phi = c(0.5, 0.25), sigma2 = 1))
+  
+  # Generate Ut contamination process that replaces a portion of original signal
+  Yt[101:135] = gen_gts(35, AR(phi = c(0.9,-0.4), sigma2 = 9))
+  
+  # Generate Nt contamination that inject noise at random
+  Zt[sample(n, dispersal, replace = FALSE)] = gen_gts(dispersal, WN(sigma2 = 9))
+
+  # Compute estimates and store in the appropriate matrix
+  res = sim_engine(Xt)
+  res.xt.MLE[i,]  = res$res.MLE; res.xt.LS[i,] = res$res.LS; res.xt.RR[i,] = res$res.RR
+  res.xt.GMWM[i,] = res$res.GMWM;res.xt.RGMWM[i,] = res$res.RGMWM
+  
+  res = sim_engine(Yt)
+  res.yt.MLE[i,]  = res$res.MLE; res.yt.LS[i,] = res$res.LS; res.yt.RR[i,] = res$res.RR
+  res.yt.GMWM[i,] = res$res.GMWM;res.yt.RGMWM[i,] = res$res.RGMWM
+
+  res = sim_engine(Zt)
+  res.zt.MLE[i,]  = res$res.MLE; res.zt.LS[i,] = res$res.LS; res.zt.RR[i,] = res$res.RR
+  res.zt.GMWM[i,] = res$res.GMWM;res.zt.RGMWM[i,] = res$res.RGMWM
+}
+```
+
+```{r simuAR2XtResults, echo = FALSE, fig.height= 4.5, fig.width = 9, fig.cap = "Estimation of Uncontaminated AR(2) Process"}
+sim_study_graph(res.xt.MLE, res.xt.LS, res.xt.RR, res.xt.GMWM, res.xt.RGMWM) 
+```
+
+
+```{r simuAR2YtResults, echo = FALSE, cache = TRUE, fig.height = 4.5, fig.width = 9, fig.cap = "Estimation of Contaminated AR(2) Process with a Secondary Process"}
+sim_study_graph(res.yt.MLE, res.yt.LS, res.yt.RR, res.yt.GMWM, res.yt.RGMWM)
+```
+
+
+```{r simAR2ZtResults, cache = TRUE, echo = FALSE, fig.height= 4.5, fig.width= 9, fig.cap="Estimation of Contaminated AR(2) Process with Random Noise Injected"}
+sim_study_graph(res.zt.MLE, res.zt.LS, res.zt.RR, res.zt.GMWM, res.zt.RGMWM)
+```
+
+After performing the estimation, we opt to visually assess how well each
+methodology performed. We begin by observing the baseline case regarding the
+the uncontaminated sample $X_t$ given in Figure \@ref(fig:simuAR2XtResults). 
+Within this context, the estimation methods appear to performing equally across 
+all parameters. Note, it may appear as if $\phi_2$ had a noticable departure
+from the truth, however, the difference presented is minor considering the
+y-axis of the graph and parameter recovery present elsewhere. Turning our
+attention to Figure \@ref(fig:simuAR2YtResults), which displays results from 
+estimating $Y_t$, the process with partial  contamination from another; the 
+robust methodologies (R-LS, RGMWM) were able to effectively handle the
+contamination when compared to the classical approaches (LS, MLE, GMWM) missed 
+the mark greatly on several estimates. From the simulations, there is evidence
+to suggest that additional study should be performed to assess the performance 
+of R-LS vs. RGMWM. Lastly, we consider the results of estimating $Z_t$, the case
+of random noise injected into the process, given in Figure \@ref(fig:simAR2ZtResults). 
+The noise has a troubling impact with respect to estimating the large $\phi_1$
+and $\sigma^2$. However, the estimation procedure appear to be able to reasonably
+capture $\phi_2$. As shown previously, the robust techniques provide better 
+estimations than their counterparts.
+
+For all the above methods, it would be necessary to understand how "precise" 
+their estimates are. To do so we would need to obtain confidence intervals for
+these estimates and this can be done mainly in two manners:
+
+- using the asymptotic distribution of the parameter estimates;
+- using parametric bootstrap.
+
+The first approach consists in using the asymptotic distribution of the 
+estimators presented earlier to deliver approximations of the confidence
+intervals which get better as the length of the observed time series increases. 
+Hence, for example, if we wanted to find a 95% confidence interval for the 
+parameter $\phi$, we would use the quantiles of the normal distribution 
+(given that all methods presented earlier present this asymptotic distribution).
+However, this approach can present some drawbacks, one of which is there
+behaviour when the parameters are close to the boundaries of the parameter space. 
+Suppose we consider a realization of length $n = 100$ of the following AR(1) model:
+
+\[X_t = 0.96 X_{t-1} + W_t, \;\;\;\; W_t \sim \mathcal{N}(0,1),\]
+
+which is depicted in Figure \@ref(fig:simAR1ci)
+
+``` {r simAR1ci, cache = TRUE, fig.height= 4.5, fig.width = 9, fig.cap = "AR(1) with $\\phi$ close to parameter bound"}
+set.seed(7)
+x = gen_gts(n = 100, AR1(0.96, 1))
+autoplot(x)
+```
+
+It can be seen that the parameter $\phi = 0.96$ respects the condition for 
+stationarity, $\left| \phi \right| < 1$, but is very close to its boundary.
+Using the MLE and the GMWM estimators, we first estimate the parameters and
+then compute confidence intervals for $\phi$ using the asymptotic 
+normal distribution.
+
+```{r asymAR1estci, cache = TRUE}
+# Compute the parameter estimates using MLE
+fit.ML = arima(x, order = c(1,0,0), include.mean = FALSE)
+c("phi" = fit.ML$coef, "se" = sqrt(fit.ML$var.coef))
+
+# Construct asymptotic confidence interval for phi
+fit.ML$coef + c(-1,1)*1.96*sqrt(fit.ML$var.coef)
+
+# Compute the parameter estimates with inference using GMWM
+fit.gmwm = gmwm(AR1(), x)
+summary(fit.gmwm, inference = TRUE)$estimate
+```
+
+From the estimation summary, we note that both confidence intervals contain 
+values that would make the AR(1) non-stationary (i.e. values of $\phi$ larger
+than 1). These estimates are indicating that they represent the
+estimated (asymptotic) distribution of $\hat{\phi}$ as displayed in Figure
+\@ref(fig:asymIC).
+
+```{r asymIC, cache = TRUE, echo = FALSE, fig.height = 4.5, fig.width = 9, fig.cap = "Estimated asymptotic distribution of $\\hat{\\phi}$ for MLE and GMWM parameter estimates. The dashed vertical line represents the true value of $\\phi$, the solid line denotes the upper bound of the parameter space for $\\phi$ and the vertical ticks represent the limits of the 95% confidence intervals for both methods."}
+# Define colors
+gg_color_hue = function(n, alpha = 1) {
+  hues = seq(15, 375, length = n + 1)
+  hcl(h = hues, l = 65, c = 100, alpha = alpha)[1:n]
+}
+
+colors = gg_color_hue(6, alpha = 0.2)
+colors2 = gg_color_hue(6, alpha = 1)
+phi.sd.gmwm = summary(fit.gmwm)$estimate[,"SE"][1]
+
+par(mfrow = c(1,2))
+xx = seq(from = 0, to = 1.2, length.out = 10^3)
+yy.ML = dnorm(xx, fit.ML$coef, sqrt(fit.ML$var.coef))
+plot(NA, xlim = c(0.8,1.04), ylim = range(yy.ML), 
+     xlab = expression(phi), ylab = "Density", main = "MLE")
+grid()
+abline(v = 1, lwd = 2, col = "grey60")
+abline(v = 0.96, lwd = 2, lty = 2, col = "grey60")
+polygon(c(xx,rev(xx)), c(rep(0,length(yy.ML)), rev(yy.ML)), border = NA, col = colors[1]) 
+points(qnorm(0.975,fit.ML$coef, sqrt(fit.ML$var.coef)), 0, cex = 3, 
+       col = colors2[1], pch = "|")
+points(qnorm(0.025,fit.ML$coef, sqrt(fit.ML$var.coef)), 0, cex = 3, 
+       col = colors2[1], pch = "|")
+
+yy.gmwm = dnorm(xx, fit.gmwm$estimate[1], phi.sd.gmwm)
+plot(NA, xlim = c(0.7,1.2), ylim = range(yy.gmwm), 
+     xlab = expression(phi), ylab = "Density", main = "GMWM")
+grid()
+abline(v = 1, lwd = 2, col = "grey60")
+abline(v = 0.96, lwd = 2, lty = 2, col = "grey60")
+polygon(c(xx,rev(xx)), c(rep(0,length(yy.gmwm)), rev(yy.gmwm)), border = NA, col = colors[2])
+points(qnorm(0.975, fit.gmwm$estimate[1], phi.sd.gmwm), 0, cex = 3, 
+       col = colors2[2], pch = "|")
+points(qnorm(0.025, fit.gmwm$estimate[1], phi.sd.gmwm), 0, cex = 3, 
+       col = colors2[2], pch = "|")
+```
