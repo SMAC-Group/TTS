@@ -937,3 +937,52 @@ sim_study_graph = function(res.MLE, res.LS, res.RR, res.GMWM, res.RGMWM,
 }
 ```
 
+
+With the means to now compute and visualize parameter estimates for each of the
+given methods, the bootrap simulation study may now commence. Using the 
+simulation engine, we can simultaneously evaluate the processes within one
+loop iteration. Please take into consideration that the following simulation
+study is computationally intensive and may require the amount of iteration $B$
+to be decreased on a personal computer to complete in a reasonable time.
+
+``` {r simuAR2study, cache = TRUE, fig.height = 4.5, fig.width = 9}
+# Number of bootstrap iterations
+B = 250
+
+# Simulation storage
+res.xt.MLE = res.xt.LS = res.xt.RR = res.xt.GMWM = res.xt.RGMWM = matrix(NA, B, 3)
+res.yt.MLE = res.yt.LS = res.yt.RR = res.yt.GMWM = res.yt.RGMWM = matrix(NA, B, 3)
+res.zt.MLE = res.zt.LS = res.zt.RR = res.zt.GMWM = res.zt.RGMWM = matrix(NA, B, 3)
+
+# Begin bootstrap
+for (i in seq_len(B)){
+  
+  # Set seed for reproducibility
+  set.seed(i)
+  
+  # Generate processes
+  Xt = gen_gts(n, AR(phi = c(0.5, 0.25), sigma2 = 1))
+  Yt = gen_gts(n, AR(phi = c(0.5, 0.25), sigma2 = 1))
+  Zt = gen_gts(n, AR(phi = c(0.5, 0.25), sigma2 = 1))
+  
+  # Generate Ut contamination process that replaces a portion of original signal
+  Yt[101:135] = gen_gts(35, AR(phi = c(0.9,-0.4), sigma2 = 9))
+  
+  # Generate Nt contamination that inject noise at random
+  Zt[sample(n, dispersal, replace = FALSE)] = gen_gts(dispersal, WN(sigma2 = 9))
+
+  # Compute estimates and store in the appropriate matrix
+  res = sim_engine(Xt)
+  res.xt.MLE[i,]  = res$res.MLE; res.xt.LS[i,] = res$res.LS; res.xt.RR[i,] = res$res.RR
+  res.xt.GMWM[i,] = res$res.GMWM;res.xt.RGMWM[i,] = res$res.RGMWM
+  
+  res = sim_engine(Yt)
+  res.yt.MLE[i,]  = res$res.MLE; res.yt.LS[i,] = res$res.LS; res.yt.RR[i,] = res$res.RR
+  res.yt.GMWM[i,] = res$res.GMWM;res.yt.RGMWM[i,] = res$res.RGMWM
+
+  res = sim_engine(Zt)
+  res.zt.MLE[i,]  = res$res.MLE; res.zt.LS[i,] = res$res.LS; res.zt.RR[i,] = res$res.RR
+  res.zt.GMWM[i,] = res$res.GMWM;res.zt.RGMWM[i,] = res$res.RGMWM
+}
+```
+
