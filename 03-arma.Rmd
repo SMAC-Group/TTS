@@ -1626,7 +1626,7 @@ Let's now consider
 
 \[{\left( {{X_t} - m} \right)^2} = {\left[ {\left( {{X_t} - E\left[ {{X_t}|{\Omega _t}} \right]} \right) + \left( {E\left[ {{X_t}|{\Omega _t}} \right] - m} \right)} \right]^2}\]
 
-Where we have: $m = m\left( {{X_{t + 1}}, \cdots ,{X_{t + h}}} \right)$ and ${\Omega _t} = \left( {{X_{t + 1}}, \cdots ,{X_{t + h}}} \right)$.
+where we have: $m = m\left( {{X_{t + 1}}, \cdots ,{X_{t + h}}} \right)$ and ${\Omega _t} = \left( {{X_{t + 1}}, \cdots ,{X_{t + h}}} \right)$.
 
 Therefore, 
 
@@ -1888,10 +1888,10 @@ where $W_t \sim WN(0, \sigma^2_W)$.
 library("exts")
 
 # Set seed for reproducibility
-set.seed(583)
+set.seed(9123)
 
 # Generate AR(3)
-Xt = gen_gts(200, AR(phi = c(0,0,0.8), sigma2 = 1))
+Xt = gen_gts(300, AR(phi = c(0, 0, 0.8), sigma2 = 1))
 
 # View time series
 autoplot(Xt)
@@ -1901,7 +1901,7 @@ With the data in hand, we will use our apriori knowledge to fit an AR(3) model.
 
 ```{r diagfit, cache = T}
 # Fit time series without mean.
-model = arima(Xt, order = c(3,0,0), include.mean = F)
+model = arima(Xt, order = c(3,0,0), include.mean = T)
 model
 ```
 
@@ -1932,6 +1932,12 @@ can be obtained by:
 autoplot(diag_ljungbox(model, stdres = T))
 autoplot(diag_boxpierce(model, stdres = T))
 ```
+
+Within both graphs, note that at the first test point there is evidence to 
+suggest that serial correlation is present. However, the majority of points all
+indicate that the model provides a good fit. Thus, without knowing if the model
+true model parametrization, one may wish to seek a higher order to verify
+the residuals have no dependency.
 
 After having assessed the serially correlation aspect of the residuals, the
 attention should now be turned to observing the normality and level of skew 
