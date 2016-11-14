@@ -982,7 +982,7 @@ are adequate), it can be shown that when $n \to \infty$, we have
 $$Q_{BP} \overset{\mathcal{D}}{\to} \chi^2_{m - m^{\prime}},$$
 where $m^{\prime}$ is the number of parameters in the time series model.
 
-```{Proof}
+## Proof
 We can write the autocorrelation $\bm{\rho} = \left(\rho(1), \rho(2), \dots, \rho(m)\right)^T$, and the sample autocorrelation $\bm{\hat{\rho}} = \left(\hat{\rho}(1), \hat{\rho}(2), \dots, \hat{\rho}(m)\right)^T$.
 
 According to the Theorem A.7 on textbook, under the data generating process $X_t = W_t + \mu$, where $\mu < \infty$ and $(W_t)$ is a strong white noise process with variance $\sigma^2$ and finite fourth moment (i.e. $\mathbb{E} [W_t^4] < \infty$), we have 
@@ -1015,7 +1015,7 @@ underlying model of the residules of the fitted model would be $W_t$ as before,
 but the $m^{\prime}$ number of true parameters are replaced by their estimators.
 Then $Q_{BP}$ will still asymptotically follows $\chi^2$ but
 with $m - m^{\prime}$ degree of freedom. $\;\;\;\;\;\;\;\; \blacksquare$
-```
+
 
 Then on 1978, Ljung and Box improved Box-Pierce test by standardizing
 each $\hat{\rho}_h$ by its asymptotic variance. The Ljung and Box test
