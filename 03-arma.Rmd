@@ -1715,7 +1715,8 @@ Then, we are able to find the BLP for each step by:
 
 \[\begin{aligned}
   {E_t}\left[ {{X_{t + 1}}} \right] &= {\phi _1}{X_t} + {\phi _2}{X_{t - 1}} \\
-  {E_t}\left[ {{X_{t + 2}}} \right] &= {E_t}\left[ {{\phi _1}{X_{t + 1}} + {\phi _2}{X_t}} \right] = {E_t}\left[ {{\phi _1}|{\phi _1}{X_t} + {\phi _2}{X_{t - 1}} + {\phi _2}{X_t}} \right] \\
+  {E_t}\left[ {{X_{t + 2}}} \right] &= {E_t}\left[ {{\phi _1}{X_{t + 1}} + {\phi _2}{X_t}} \right] = {\phi _1}{E_t}\left[ {{X_{t + 1}}} \right] + {\phi _2}{X_t} \\
+   &= {\phi _1}\left( {{\phi _1}{X_t} + {\phi _2}{X_{t - 1}}} \right) + {\phi _2}{X_t} \\
    &= \left( {\phi _1^2 + {\phi _2}} \right){X_t} + {\phi _1}{\phi _2}{X_{t - 1}} \\ 
 \end{aligned} \]
 
