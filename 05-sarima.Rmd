@@ -126,7 +126,7 @@ Returning to our previous example, we can see that the time series follows an $A
 ```{definition, name = "Seasonal ARIMA Model Form"}
 The form of a Seasonal Autoregressive Integrated Moving Average models is denoted as $ARIMA(p, d, q)\times(P, D, Q)_S$:
 
-$$\Theta_p \left({B^S}\right) \theta\left(B\right) \nabla^D_S \nabla^D X_t = \delta + \Theta_Q \left({ B^S }\right) \theta \left({ B }\right) W_t$$
+$$\Theta_p \left({B^S}\right) \theta\left(B\right) \nabla^D_S \nabla^d X_t = \delta + \Theta_Q \left({ B^S }\right) \theta \left({ B }\right) W_t$$
 
 where $\nabla^D = \left({1-B}\right)^d$ and $\nabla^D_S = \left({1-B^S}\right)^d$.
 ```
