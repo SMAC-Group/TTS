@@ -1,0 +1,232 @@
+## Model Selection
+Within this section, we will prove the properties of information criterion used
+to select models. The framework for the derivations of information criteria
+will be based upon the the following;
+
+\[{Y_t} = \sum\limits_{i = 1}^p {{\phi _i}{Y_{t - i}} + {W_t}} ,{W_t}\mathop  \sim \limits^{iid} N\left( {0,{\sigma ^2}} \right)\]
+
+The construction of a design matrix $X$ as follows: 
+${\left( X \right)_{t,j}} = {X_{t,j}} = {Y_{t - j}}$
+for $j = 1, \ldots, p$ and $t = p + 1, \ldots, n$.
+
+If we let $\phi  = {\left[ {\begin{array}{*{20}{c}}
+  {{\phi _1}}& \cdots &{{\phi _p}} 
+\end{array}} \right]^T}$, then $\hat \phi  = {\left( {{X^T}X} \right)^{ - 1}}{X^T}Y$
+
+where $Y = {\left[ {\begin{array}{*{20}{c}}
+  {{Y_{p + 1}}}& \cdots &{{Y_n}} 
+\end{array}} \right]^T} \Rightarrow Y = X\phi  + \varepsilon$
+
+Define $\tilde \sigma _p^2 = \frac{1}{m}\sum\limits_{i = p + 1}^n {{{\left( {{Y_i} - {{\hat Y}_i}} \right)}^2}}$
+
+${\hat Y_t} = \sum\limits_{i = 1}^P {{{\hat \phi }_i}{Y_{t - i}}}  = X\hat \phi$
+
+and \[S_p^2 = \frac{1}{{n - p}}\sum\limits_{i = p + 1}^n {{{\left( {{Y_i} - {{\hat Y}_i}} \right)}^2}} \]
+
+### Derivations of Information Criterion
+
+Under the above definitions, we will procedure to derive both Mallow's Cp and AIC
+model selection criteria. With a slight loss of generality, we will simplify the
+derivations slightly by considering $X$ as a fixed matrix.
+
+Define: \[C = E\left[ {{E_0}\left[ {\left\| {{Y_0} - \hat Y} \right\|_2^2} \right]} \right]\],
+where $Y_o$ is independent copy of $Y$.
+
+```{theorem}
+\[C = E\left[ {\left\| {Y - \hat Y} \right\|_2^2} \right] + 2tr\left( {\cov\left( {Y,\hat Y} \right)} \right)\]
+```
+
+```{proof}
+We begin by examining the norm:
+
+\begin{align*}
+  \left\| {Y - \hat Y} \right\|_2^2 &= \left\| {Y - X\hat \phi } \right\|_2^2 = {Y^T}Y + {{\hat \phi }^T}{X^T}X\phi  - 2{Y^T}X\hat \phi  \hfill \\
+   &= {Y^T}Y + {{\hat \phi }^T}{X^T}X\phi  - 2{\left( {Y - X\hat \phi } \right)^T}X\hat \phi  \hfill \\ 
+\end{align*}
+
+So,
+
+\[E\left[ {{E_0}\left[ {\left\| {Y_0 - \hat Y} \right\|_2^2} \right]} \right] = {E_0}\left[ {Y_0^TY} \right] - E\left[ {{{\hat \phi }^T}{X^T}X\hat \phi } \right] - 2E\left[ {{{\left( {{E_0}\left[ {{Y_0}} \right] - X\hat \phi } \right)}^T}X\hat \phi } \right]\]
+
+Let ${C^*} = E\left[ {\left\| {Y - \hat Y} \right\|_2^2} \right] = E\left[ {{Y^T}Y} \right] - E\left[ {\hat \phi {X^T}X\hat \phi } \right] - 2E\left[ {{{\left( {Y - X\hat \phi } \right)}^T}X\hat \phi } \right]$
+
+Therefore,
+
+\begin{align*}
+  C - {C^*} &= 2E\left[ {{{\left( {Y - {E_0}\left[ {{Y_0}} \right]} \right)}^T}X\hat \phi } \right]\overbrace  = ^{\left( * \right)}2tr\left( {\cov\left( {{Y_0} - {E_0}\left[ {{Y_0}} \right],X\hat \phi } \right)} \right) + 2tr\left( {E\left[ {y - {E_0}\left[ {{Y_0}} \right]} \right]E\left[ {X\hat \phi } \right]} \right) \hfill \\
+   &= 2tr\left( {\cov\left( {Y,X\hat \phi } \right)} \right) = 2tr\left( {\cov\left( {Y,\hat Y} \right)} \right) \hfill \\ 
+\end{align*}
+
+$\left({*}\right)$ follows from:
+
+\[E\left[ {{X^T}Z} \right] = E\left[ {tr\left( {{X^T}Z} \right)} \right] = E\left[ {tr\left( {Z{X^T}} \right)} \right] = tr\left( {\cov\left( {X,Z} \right)} \right) + tr\left( {E\left[ X \right]{E^T}\left[ Z \right]} \right)\]
+```
+
+```{theorem, name="Mallow Cp"}
+
+The model selection criteria for Mallow Cp is defined to be:
+
+\[{C_p} = \frac{{\left\| {Y - \hat Y} \right\|_2^2}}{{S_p^2}} - m + 2p\],
+
+where $m = n-p$. The value of $m$ is associated with the "effective length".
+```
+
+```{proof}
+If $\hat Y = X\hat \phi$ with a biased $X$, then
+
+\begin{align*}
+  tr\left( {\cov\left( {Y,\hat Y} \right)} \right) &= tr\left( {\cov\left( {Y,\underbrace {X{{\left( {{X^T}X} \right)}^{ - 1}}{X^T}}_{ = H}Y} \right)} \right) = tr\left( {\cov\left( {Y,Y} \right)H} \right) \hfill \\
+   &= tr\left( {\operatorname{var} \left( Y \right)H} \right) = tr\left( {\operatorname{var} \left( {X\phi  + \varepsilon } \right)H} \right) = tr\left( {{\sigma ^2}IH} \right) = {\sigma ^2}tr\left( H \right) \hfill \\
+   &= {\sigma ^2}p \hfill \\ 
+\end{align*}
+
+Therefore,
+
+\[{{\tilde C}_p} = \left\| {Y - \hat Y} \right\|_2^2 + 2S_p^2p\]
+
+such that \[E\left[ {{{\tilde C}_p}} \right] \approx C \text{ since } E\left[ {S_p^2} \right] = {\sigma ^2}\].
+
+Thus, \[{C_p} = \frac{{{{\tilde C}_p}}}{{S_p^2}} - m\] 
+
+or, equivalently,
+
+\[{C_p} = \frac{{\left\| {Y - \hat Y} \right\|_2^2}}{{S_p^2}} - m + 2p\]
+```
+
+
+```{definition, label="kldc", name = "Kullback-Leibler Divergence Criterion"}
+The Kullback–Leibler divergence criterion
+given by:
+
+\[KL = \frac{1}{m}E\left[ {{E_0}\left[ {\log \left( {\frac{{f\left( {{Y_0}|{\theta _0}} \right)}}{{f\left( {{Y_0}|\hat \theta } \right)}}} \right)} \right]} \right]\]
+
+where $\hat \theta$ is the estimated parameters on $y$, $m$ is the length of $y$, and $\theta_0$ is the true parameter.
+```
+
+```{theorem, name = "Akaike information criterion (AIC)"}
+The Akaike information criterion (AIC) is based upon \@ref(def:kldc) and is 
+given by:
+
+\[AIC = \log \left( {\hat \sigma _p^2} \right) + \frac{{2\left( {p + 1} \right)}}{m}\]
+```
+
+
+```{proof}
+We have:
+
+\begin{align*}
+  f\left( {Y|\theta } \right) &= {\left( {2\pi } \right)^{ = \frac{m}{2}}}{\left| {{\sigma ^2}I} \right|^{ - \frac{1}{2}}}\exp \left( { - \frac{1}{2}{{\left( {Y - X\phi } \right)}^T}{{\left( {{\sigma ^2}I} \right)}^{ - 1}}\left( {Y - X\phi } \right)} \right) \hfill \\
+   &= {\left( {2\pi } \right)^{ = \frac{m}{2}}}{\left( {{\sigma ^2}} \right)^{ - \frac{m}{2}}}\exp \left( { - \frac{1}{{2{\sigma ^2}}}{{\left( {Y - X\phi } \right)}^T}\left( {Y - X\phi } \right)} \right) \hfill \\
+\end{align*}
+
+where $m = n-p$.
+
+From here, we apply \@ref(def:kldc) to get:
+\begin{align*}
+  &\frac{1}{m}E\left[ {{E_0}\left[ {\log \left( {\frac{{f\left( {{Y_0}|{\theta _0}} \right)}}{{f\left( {{Y_0}|\hat \theta } \right)}}} \right)} \right]} \right] \\
+  &= \frac{1}{m}E\left[ {{E_0}\left[ {\log \left( {{{\left( {\frac{{\sigma _0^2}}{{\hat \sigma _p^2}}} \right)}^{ - \frac{m}{2}}}} \right) + \log \left( {\frac{{\exp \left( { - \frac{1}{{2{\sigma ^2}}}{{\left( {{Y_0} - X{\phi _0}} \right)}^T}\left( {{Y_0} - X{\phi _0}} \right)} \right)}}{{\exp \left( { - \frac{1}{{2{{\hat \sigma }^2}}}{{\left( {{Y_0} - X\hat \phi } \right)}^T}\left( {{Y_0} - X\hat \phi } \right)} \right)}}} \right)} \right]} \right] \hfill \\
+   &= \underbrace {\frac{1}{m}\left( { - \frac{m}{2}} \right)E\left[ {{E_0}\left[ {\frac{{\sigma _0^2}}{{\hat \sigma _p^2}}} \right]} \right]}_{\left( 1 \right)} - \underbrace {\frac{1}{{2\sigma _0^2m}}{E_0}\left[ {{{\left( {{Y_0} - X{\phi _0}} \right)}^T}\left( {{Y_0} - X{\phi _0}} \right)} \right]}_{\left( 2 \right)} \\
+   &+ \underbrace {\frac{1}{{2m}}E\left[ {\frac{1}{{2\hat \sigma _p^2}}{E_0}\left[ {{{\left( {{Y_0} - X\hat \phi } \right)}^T}\left( {{Y_0} - X\hat \phi } \right)} \right]} \right]}_{\left( 3 \right)} \hfill \\ 
+\end{align*}
+
+Treating each component piece wise yields:
+
+\begin{align*}
+  \left( 1 \right) &=  - \frac{1}{2}E\left[ {{E_0}\left[ {\frac{{\sigma _0^2}}{{\hat \sigma _p^2}}} \right]} \right] = \frac{1}{2}\left( {E\left[ {\log \left( {\hat \sigma _p^2} \right)} \right] - \log \left( {\sigma _0^2} \right)} \right) \hfill \\
+  \left( 2 \right) &=  - \frac{1}{2}\left\{ {\frac{1}{{\sigma _0^2}}\underbrace {\frac{1}{m}{E_0}\left[ {{{\left( {{Y_0} - X{\phi _0}} \right)}^T}\left( {{Y_0} - X{\phi _0}} \right)} \right]}_{ = \sigma _0^2}} \right\} =  - \frac{1}{2} \hfill \\
+  \left( 3 \right) &= \frac{1}{{2m}}E\left[ {\frac{1}{{\hat \sigma _p^2}}{E_0}\left[ {{{\left( {{Y_0} - X{\phi _0} - X\left( {\hat \phi  - {\phi _0}} \right)} \right)}^T}\left( {{Y_0} - X{\phi _0} - X\left( {\hat \phi  - {\phi _0}} \right)} \right)} \right]} \right] \hfill \\
+   &= \frac{1}{{2m}}E\left[ {\frac{1}{{\hat \sigma _p^2}}\underbrace {{E_0}\left[ {{{\left( {{Y_0} - X{\phi _0}} \right)}^T}\left( {{Y_0} - X{\phi _0}} \right)} \right]}_{ = \sigma _0^2m}} \right] + \frac{1}{{2m}}E\left[ {\frac{1}{{\hat \sigma _p^2}}{E_0}\left[ {{{\left( {\hat \phi  - {\phi _0}} \right)}^T}{X^T}X\left( {\hat \phi  - {\phi _0}} \right)} \right]} \right] \hfill \\
+   &- \underbrace {\frac{1}{m}E\left[ {\frac{1}{{\hat \sigma _p^2}}{E_0}\left[ {{{\left( {{Y_0} - X{\phi _0}} \right)}^T}\left( {X\left( {\hat \phi  - {\phi _0}} \right)} \right)} \right]} \right]}_{ = 0} \hfill \\
+   &= \underbrace {\frac{1}{2}E\left[ {\frac{{\sigma _0^2}}{{\hat \sigma _p^2}}} \right]}_{\left( 4 \right)} + \underbrace {\frac{1}{{2m}}E\left[ {\frac{{\sigma _0^2}}{{\hat \sigma _p^2}}{E_0}\left[ {\frac{{{{\left( {\hat \phi  - {\phi _0}} \right)}^T}{X^T}X\left( {\hat \phi  - {\phi _0}} \right)}}{{\sigma _0^2}}} \right]} \right]}_{\left( 5 \right)}
+\end{align*}
+
+At this point, it would be helpful to recall the a few properties
+regarding the $\chi^2$ distribution. In particular, note that:
+
+\[{U_1} = \frac{{m\hat \sigma _p^2}}{{\sigma _0^2}} \sim \chi _{m - p}^2 , 
+  {U_2} = \frac{{{{\left( {\hat \phi  - {\phi _0}} \right)}^T}{X^T}X\left( {\hat \phi  - {\phi _0}} \right)}}{{\sigma _0^2}} \sim \chi _p^2 \]
+
+If $U \sim \chi _k^2$, then $E\left[ {\frac{1}{U}} \right] = \frac{1}{{K - 2}}$.
+
+Lastly, note that $U_1$ and $U_2$ are independent. 
+
+From these properties, we can derive the following:
+
+\begin{align*}
+  \left( 4 \right) &= \frac{1}{2}E\left[ {\frac{{\sigma _0^2}}{{\hat \sigma _p^2}}} \right] = \frac{m}{2}E\left[ {\frac{{\sigma _0^2}}{{m\hat \sigma _p^2}}} \right] = \frac{m}{2}\frac{1}{{\left( {m - p - 2} \right)}} = \frac{m}{{2\left( {m - p - 2} \right)}} \hfill \\ 
+    \left( 5 \right) &= \frac{1}{2}E\left[ {\frac{{\sigma _0^2}}{{m\hat \sigma _p^2}}} \right]{E_0}\left[ {\frac{{{{\left( {\hat \phi  - {\phi _0}} \right)}^T}{X^T}X\left( {\hat \phi  - {\phi _0}} \right)}}{{\sigma _0^2}}} \right] = \frac{1}{2}\left( {\frac{1}{{m - p - 2}}} \right)\left( p \right) = \frac{p}{{2\left( {m - p - 2} \right)}} \hfill \\
+\end{align*}
+
+Having said this, we are now able to use both $\left( 4 \right)$ and $\left( 5 \right)$ to 
+obtain $\left( 3 \right)$:
+
+\[\left( 3 \right) = \left( 4 \right) + \left( 5 \right) = \frac{{p + m}}{{2\left( {m - p - 2} \right)}}\]
+
+Therefore, we have:
+
+\begin{align*}
+\frac{1}{m}E\left[ {{E_0}\left[ {\log \left( {\frac{{f\left( {{Y_0}|{\theta _0}} \right)}}{{f\left( {{Y_0}|\hat \theta } \right)}}} \right)} \right]} \right] &= \left( 1 \right) + \left( 2 \right) + \left( 3 \right) \\
+&= \frac{1}{2}\left( {E\left[ {\log \left( {\hat \sigma _p^2} \right)} \right] - \log \left( {\sigma _0^2} \right) - 1} \right) + \frac{{p + m}}{{2\left( {m - p - 2} \right)}}
+\end{align*}
+
+Note that the ${ - \log \left( {\sigma _0^2} \right) - 1}$ is constant
+throughout the different models and is therefore not significant. Thus,
+
+\[KL \propto E\left[ {\log \left( {\hat \sigma _p^2} \right)} \right] + \frac{{p + m}}{{\left( {m - p - 2} \right)}}\]
+
+giving
+
+\begin{align*}
+  AICc &= \log \left( {\hat \sigma _p^2} \right) + \frac{{p + m}}{{\left( {m - p - 2} \right)}} \hfill \\
+  AIC &= \log \left( {\hat \sigma _p^2} \right) + \frac{{2\left( {p + 1} \right)}}{m} \hfill \\ 
+\end{align*}
+
+since $\log \left( {\hat \sigma _p^2} \right)$ is an unbiased estimator of $E\left[ {\log \left( {\hat \sigma _p^2} \right)} \right]$.
+```
+
+### Properties of Model Selection
+
+Consider multiple AR(p) models each with a different parameterization denoted
+by:
+
+$$\mathcal{M}_j: {Y_t} = \sum\limits_{i = 1}^j {{\phi _i}{Y_{t - i}}}  + {W_t}$$
+Consider the following model selection criteria:
+
+
+\[\begin{align*}
+  AI{C_j} &= \log \left( {\hat \sigma _j^2} \right) + \frac{{2\left( {{p_j} + 1} \right)}}{m} \hfill \\
+  BI{C_j} &= \log \left( {\hat \sigma _j^2} \right) + \frac{{\log \left( m \right){p_j}}}{m} \hfill \\
+  H{Q_j}  &= \log \left( {\hat \sigma _j^2} \right) + \frac{{2\log \left( {\log \left( m \right)} \right){p_j}}}{m} \hfill \\ 
+  Crit    &= \log \left( {\hat \sigma _j^2} \right) + \lambda \frac{p}{m}, \text{where }\lambda=2,\log(m),\log(\log(m))
+\end{align*} \]
+
+Note: \[\hat \sigma _j^2 = \frac{1}{m}\sum\limits_{i = {p_{j + 1}}}^m {{{\left( {{Y_i} - \hat Y_i^{\left( j \right)}} \right)}^2}} \]
+
+In particular, $$Crit_j = Crit(\mathcal{M}_j)$$ and $\hat j = \mathop {\arg \min }\limits_{j = 1, \cdots ,J} {Crit_j}$ 
+denote the best model.
+
+The following properties hold:
+
+1. $\mathop {\lim }\limits_{n \to \infty } P\left( {\hat j = {j_0}} \right) = 1$
+2. $\mathop {\lim }\limits_{n \to \infty } P\left( {{L_n}\left( {\hat j} \right) = {L_n}\left( {{j_0}} \right)} \right)\mathop  \to \limits^P 1$ where
+  ${L_n}\left( {{j_0}} \right) = \frac{1}{n}\left\| {\mu  - {{\hat Y}_j}} \right\|_2^2$ and $\mu  = E\left[ Y \right]$.
+
+There are two cases two be wary about regarding the above properties.
+
+The first is when $E\left[ {{{\hat Y}_{{j_0}}}} \right] = \mu$, then
+for the BIC and HQ selection criteria both (1) + (2) hold. However, in the
+case of AIC and Mallow Cp only (2) holds.
+
+The converse, $E\left[ {{{\hat Y}_{{j_0}}}} \right] \neq \mu$, yields BIC and HQ
+selection criteria having neither of the above properties. However, in the
+case of AIC and Mallow Cp (2) condition still holds under some technical conditions.
+
+### Model Selection Simulation Studies
+
+Within this section, we hope to illustrate that the various properties of the
+model selection criteria. In particular, the AIC and Mallow Cp predict the model
+as the best model even though $j_0$ may not be a candidate whereas with BIC and HQ, 
+will pick the right model with probability 1 as the sample size goes to infinity
+when $j_0$ is a candidate.
+
+Simulation omitted temporarily.
