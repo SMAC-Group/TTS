@@ -111,7 +111,7 @@ autoplot(emp_acf(xt, lag.max = 40))
 ```{definition, name = "Seasonal ARMA Model Form"}
 The form of Seasonal Autoregressive Moving Average models is often written as $ARMA(p, q)\times(P, Q)_{S}$:
 
-$$\Theta_p \left({B^S}\right) \theta\left(B\right) X_t = \Theta_Q \left({ B^S }\right) \theta \left({ B }\right) W_t$$
+$$\Phi_p \left({B^S}\right) \theta\left(B\right) X_t = \Theta_Q \left({ B^S }\right) \theta \left({ B }\right) W_t$$
 ```
 
 ```{example, name = "Classifying a Seasonal ARMA"}
