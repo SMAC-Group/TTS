@@ -24,7 +24,7 @@ These properties are similar to that of an AR(1).
 ```{definition, name = "Seasonal Moving Average of Order 1"}
 A sesaonal moving average model of order 1 is defined to be:
 
-$$X_t = W_t + \theta W_{t-12} \Leftrightarrow X_t = (1 - \theta B^12) W_t$$
+$$X_t = W_t + \theta W_{t-12} \Leftrightarrow X_t = (1 - \theta B^{12}) W_t$$
 
 $$\gamma(h) = \begin{cases}
 \left({1+\theta^2}\right)\sigma^2, &\text{ if } h = 0 \\
@@ -51,7 +51,7 @@ $$\Theta_p(B^S) = 1 + \Theta_1 B^S + \Theta_2B^{2S} + \cdots + \Theta_PB^{PS}$$
 Consider the following time series model that contains both a seasonality term and
 a traditional time series component:
 
-$$X_t = \Theta X_{t-12} + W_t + \theta W_{t-1} \, \left| \Theta \right| < 1, \left| \theta \right| < 1$$
+$$X_t = \Phi X_{t-12} + W_t + \theta W_{t-1} \, \left| \Theta \right| < 1, \left| \theta \right| < 1$$
 
 The properties of this model can be derived as follows:
 
