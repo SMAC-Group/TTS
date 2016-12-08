@@ -111,14 +111,14 @@ autoplot(emp_acf(xt, lag.max = 40))
 ```{definition, name = "Seasonal ARMA Model Form"}
 The form of Seasonal Autoregressive Moving Average models is often written as $ARMA(p, q)\times(P, Q)_{S}$:
 
-$$\Phi_p \left({B^S}\right) \theta\left(B\right) X_t = \Theta_Q \left({ B^S }\right) \theta \left({ B }\right) W_t$$
+$$\Phi_p \left({B^S}\right) \phi\left(B\right) X_t = \Theta_Q \left({ B^S }\right) \theta \left({ B }\right) W_t$$
 ```
 
 ```{example, name = "Classifying a Seasonal ARMA"}
 Returning to our previous example, we can see that the time series follows an $ARMA(0,1)\times(1,0)_{12}$ process.
 
 \begin{align*}
-  {X_t} &= \Phi {X_{t - 12}} + {W_t} + \Theta {W_{t - 1}} \hfill \\
+  {X_t} &= \Phi {X_{t - 12}} + {W_t} + \theta {W_{t - 1}} \hfill \\
   \underbrace {\left( {{X_t} - \Phi {B^{12}}} \right)}_{{\Phi _1}\left( {{B^{12}}} \right)}\underbrace 1_{\phi \left( B \right)}{X_t} &= \underbrace 1_{{\theta _Q}\left( B \right)}\underbrace {\left( {1 - \theta B} \right)}_{\theta \left( B \right)}{W_t} \hfill \\ 
 \end{align*}
 ```
@@ -126,9 +126,9 @@ Returning to our previous example, we can see that the time series follows an $A
 ```{definition, name = "Seasonal ARIMA Model Form"}
 The form of a Seasonal Autoregressive Integrated Moving Average models is denoted as $ARIMA(p, d, q)\times(P, D, Q)_S$:
 
-$$\Theta_p \left({B^S}\right) \theta\left(B\right) \nabla^D_S \nabla^d X_t = \delta + \Theta_Q \left({ B^S }\right) \theta \left({ B }\right) W_t$$
+$$\Phi_p \left({B^S}\right) \phi\left(B\right) \nabla^D_S \nabla^d X_t = \delta + \Theta_Q \left({ B^S }\right) \theta \left({ B }\right) W_t$$
 
-where $\nabla^D = \left({1-B}\right)^d$ and $\nabla^D_S = \left({1-B^S}\right)^d$.
+where $\nabla^d = \left({1-B}\right)^d$ and $\nabla^D_S = \left({1-B^S}\right)^D$.
 ```
 
 ```{example, name = "Classifying a SARIMA"}
