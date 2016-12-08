@@ -1307,7 +1307,7 @@ in the presence of dependency,  would also be highly inaccurate and downright
 reckless to use. Therefore, to  preserve the dependency structure of the
 original data one would have to use _block bootstrapping_, which is a form of
 non-parametric bootstrap. There  are many different kinds of block bootstraps
-for time series, which are  descendents of the Moving Block Bootstrap (MBB)
+for time series, which are descendents of the Moving Block Bootstrap (MBB)
 presented in \@ref(thm:mbb).
 
 ```{theorem, label="mbb", "Moving Block Bootstrap"}
@@ -1315,17 +1315,17 @@ Suppose that $\left(X_t\right)$ is weakly stationary time series with $N$
 observations. 
 
 1. Divide time series into overlapping blocks $\left\{S_1, \ldots, S_M\right\}$ of
-   length $\ell$, $1 \le \ell < N$, resulting in $K = N - \ell + 1$ blocks structured as: 
+   length $\ell$, $1 \le \ell < N$, resulting in $M = N - \ell + 1$ blocks structured as: 
 
 $$\begin{aligned}   
   {S_1}& = & ({X_1}, &{X_2}, \cdots , {X_\ell}) & && \\
   {S_2}& = & &( {X_2}, {X_3}, \cdots , {X_{\ell + 1}}) & && \\
   & \cdots & & {} & \cdots && \\
-  {S_K} & = & & & {} &&( {X_{N-\ell+1}}, {X_{N-\ell+2}}, \cdots , {X_{N}})
+  {S_M} & = & & & {} &&( {X_{N-\ell+1}}, {X_{N-\ell+2}}, \cdots , {X_{N}})
 \end{aligned}$$
 
 2. Draw $M = \left\lfloor {\frac{N}{\ell}} \right\rfloor$ blocks with replacement
-   from these $\left\{S_1, \ldots, S_K\right\}$ blocks and place them in order to form
+   from these $\left\{S_1, \ldots, S_M\right\}$ blocks and place them in order to form
    $(X_t^*)$. 
 3. Compute the statistic of interest on the simulated 
    sample $(X_t^*)$.
@@ -1337,13 +1337,43 @@ $$\begin{aligned}
 
 ```
 
-The approach taken by MMB ensures that within each block the dependency
+
+The approach taken by MBB ensures that within each block the dependency
 between observations is preserved. Though, one particular issue that now arises
 is that some inaccuracy is introduced as a result of successive blocks potentially
 being independent from each other. In reality, this is one of the trade-offs
-of the MMB approach that can be mitigated by selecting an optimal $\ell$.
+of the MBB approach that can be mitigated by selecting an optimal $\ell$.
 To lower the inaccuracy of the procedure the selection of $\ell = N^{1/3}$ 
 as $N \to \infty$ is optimal (proof left as an exercise to the reader). 
+An earlier variant of MBB was called nonoverlapping block bootstrap (NBB),
+which prohbited the sharing of data described in \@ref(thm:nbb).
+
+```{theorem, label="nbb", "Nonoverlapping Block Bootstrap"}
+Suppose that $\left(X_t\right)$ is weakly stationary time series with $N$ 
+observations. 
+
+1. Divide time series into nonoverlapping blocks $\left\{S_1, \ldots, S_M\right\}$ of
+   length $\ell$, $1 \le \ell < N$, resulting in $M = \left\lfloor {\frac{N}{\ell}} \right\rfloor$ blocks structured as: 
+
+$$\begin{aligned}   
+  {S_1}& = & ({X_1}, {X_2}, \cdots , {X_\ell})& & && \\
+  {S_2}& = & &( {X_{\ell+1}}, {X_{\ell+2}}, \cdots , {X_{2\ell}}) & && \\
+  & \cdots & & {} & \cdots && \\
+  {S_K} & = & & & {} &&( {X_{\left({}\right)}}, {X_{N-\ell+2}}, \cdots , {X_{N}})
+\end{aligned}$$
+
+2. Draw $M$ blocks with replacement
+   from these $\left\{S_1, \ldots, S_M\right\}$ blocks and place them in order to form
+   $(X_t^*)$. 
+3. Compute the statistic of interest on the simulated 
+   sample $(X_t^*)$.
+4. Repeat Steps 2 and 3 $B$ times where $B$ is sufficiently "large" 
+   (typically $100 \leq B \leq 10000$).
+5. Compute the empirical mean and variance on the statistic of interest based on 
+   the $B$ independent replications. 
+
+```
+
 Alternatively, depending on the case one can also use modification of MBB that
 seeks to change how the beginning and end of the time series is weighted
 such as a circular block-bootstrap (CBB), that seeks improve dependency by
@@ -1352,9 +1382,9 @@ by under a geometric distribution of mean $\ell$. Regardless, the outcomes from
 using MBB on time series is considerably better than just resampling, which is 
 also possible if we set $\ell = 1$ since the length of $(X_t^*)$ is $M\times\ell$.
 
-Having said this, the implementation of Theorem \@ref(thm:mbb) follows the
+Having said this, the implementation of Theorem \@ref(thm:nbb) follows the
 similar mold of generating data, estimating, and returning a value. The most
-notably deviation from Theorem \@ref(thm:mbb) is the use of an indexing trick to
+notably deviation from Theorem \@ref(thm:nbb) is the use of an indexing trick to
 indicate the start period of each block that allows for only one copy of the data
 to be held within memory instead of $m$ blocks of length $\ell$ in addition 
 to the initial copy.
@@ -1975,5 +2005,3 @@ autoplot(diag_ts(model, Xt, std = TRUE))
 ```
 
 
-
-### Model Selection
