@@ -1,4 +1,4 @@
-## Model Selection
+# Model Selection
 Within this section, we will prove the properties of information criterion used
 to select models. The framework for the derivations of information criteria
 will be based upon the the following;
@@ -23,7 +23,7 @@ ${\hat Y_t} = \sum\limits_{i = 1}^P {{{\hat \phi }_i}{Y_{t - i}}}  = X\hat \phi$
 
 and \[S_p^2 = \frac{1}{{n - p}}\sum\limits_{i = p + 1}^n {{{\left( {{Y_i} - {{\hat Y}_i}} \right)}^2}} \]
 
-### Derivations of Information Criterion
+## Derivations of Information Criterion
 
 Under the above definitions, we will procedure to derive both Mallow's Cp and AIC
 model selection criteria. With a slight loss of generality, we will simplify the
@@ -184,7 +184,7 @@ giving
 since $\log \left( {\hat \sigma _p^2} \right)$ is an unbiased estimator of $E\left[ {\log \left( {\hat \sigma _p^2} \right)} \right]$.
 ```
 
-### Properties of Model Selection
+## Properties of Model Selection
 
 Consider multiple AR(p) models each with a different parameterization denoted
 by:
@@ -221,7 +221,7 @@ The converse, $E\left[ {{{\hat Y}_{{j_0}}}} \right] \neq \mu$, yields BIC and HQ
 selection criteria having neither of the above properties. However, in the
 case of AIC and Mallow Cp (2) condition still holds under some technical conditions.
 
-### Model Selection Simulation Studies
+## Model Selection Simulation Studies
 
 Within this section, we hope to illustrate that the various properties of the
 model selection criteria. In particular, the AIC and Mallow Cp predict the model
