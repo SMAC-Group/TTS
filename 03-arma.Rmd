@@ -1899,17 +1899,17 @@ that will be emphasized within this text: Median Prediction Error (MAPE) and
 Mean-squared Prediction Error (MSPE). Both are defined as follows:
 
 \begin{align*}
-MAPE &= \mathop {median}\limits_{t = 1, \cdots ,t - 1} \left| {{{\hat E}_t}\left[ {{X_{t + 1}}} \right] - {X_{t + 1}}} \right| = \mathop {median}\limits_{t = 1, \cdots ,t - 1} \left| {{{\hat E}_t}\left[ {r_i} \right| \\
+MAPE &= \mathop {median}\limits_{t = 1, \cdots ,t - 1} \left| {{{\hat E}_t}\left[ {{X_{t + 1}}} \right] - {X_{t + 1}}} \right| = \mathop {median}\limits_{t = 1, \cdots ,t - 1} \left| {{{\hat E}_t}\left[ {r_i}\right]} \right| \\
 MSPE &= \frac{1}{{n - m}}\sum\limits_{t = m,n}^{n - 1} {{{\left( {{{\hat E}_t}\left[ {{X_{t + 1}}} \right] - {X_{t + 1}}} \right)}^2}}  = \frac{1}{{n - m}}\sum\limits_{t = m,n}^{n - 1} {{r_i}^2}
 \end{align*}
 
 ```{proposition, name="Rolling Forecasting Origin"}
 The rolling forecast origin algorithm can be described as follows:
 
-1. Compute $\hat{\theta}$ on $X_t$ where $t = 1, \ldots, N-1$
+1. Compute $\hat{\theta}$ on $X_t$ where $t = 1, \ldots, N-1$ and let $m$ start somewhere like $m=\left \lfloor \frac{2N}{3} \right \rfloor$ so that we have some "training data"
 2. Using $\hat{\theta}$, compute ${\hat E_m}\left[ {{X_{m + 1}}} \right] = {\hat \phi _1}{X_m} +  \cdots  + {\hat \phi _p}{X_{m + 1 - p}}$.
 3. ${r_i} = {\hat E_m}\left[ {{X_{m + 1}}} \right] - {X_{m + 1}}$
-4. $i = i + 1$, $m = m+1$, go to Step 1. until $m < N - 1$ then go to 5.
+4. $i = i + 1$, $m = m+1$, go to Step 1. until $m = N - 1$ then go to 5.
 5. Compute desired forcast measure 
 ```
 
