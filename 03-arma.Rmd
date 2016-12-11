@@ -61,7 +61,7 @@ A linear operator $L$ is an operator that satisfies the following two
 conditions: 
 
 \[\begin{aligned}
-  L\left( {{X_t} + {Y_t}} \right) &= L{X_t} + L{X_t} & \text{(Preserves Addition)}\\
+  L\left( {{X_t} + {Y_t}} \right) &= L{X_t} + L{Y_t} & \text{(Preserves Addition)}\\
   L\left( {\lambda  \cdot {X_t}} \right) &= \lambda  \cdot \left( {L{X_t}} \right) & \text{(Preserves Scalar Multiplication)} \\ 
 \end{aligned} \]
 ```
