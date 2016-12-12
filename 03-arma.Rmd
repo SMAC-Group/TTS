@@ -451,19 +451,39 @@ $$\begin{cases}
         |\phi_2| &< 1.
 \end{cases}$$
 
-We can show the "*if*" part of the statement as follows
+The following proof is contributed by [Zhihan Xiong](zxiong9@illinois.edu).
+```{Proof of Causal Region for AR(2) Process}
+\begin{enumerate}
 
-$\phi_1 + \phi_2 = \frac{1}{z_1} + \frac{1}{z_2} - \frac{1}{z_1z_2} = \frac{1}{z_1}\left( 1 - \frac{1}{z_2} \right) + \frac{1}{z_2} < 1 - \frac{1}{z_2} + \frac{1}{z_2} = 1$, (since $\left( 1 - \frac{1}{z_2} \right) > 0$)
+\item We have known that $\phi_1=\frac{1}{z_1}+\frac{1}{z_2}$ and $\phi_2=-\frac{1}{z_1z_2}$, where $z_1$ and $z_2$ are the roots of $1-\phi_1z-\phi_2z^2=0$.\\
+We want to show that $\Abs{z_1}>1$ and $\Abs{z_2}>1$ if and only if the following three condition holds.
+$$\phi_1+\phi_2<1,\quad \phi_2-\phi_1<1,\text{ and }\Abs{\phi_2}<1$$
+First, we try to show the ``\textbf{if}'' direction:\\
+When the above condition is true, if $z_1$ and $z_2$ are both \textbf{complex}, because they are conjugate, we can have $\Abs{z_1}=\Abs{z_2}$. Based on the formula that $z_1=\frac{\phi_1+\sqrt{\phi_1^2+4\phi_2}}{2\phi_2}$ with $\phi_1^2+4\phi_2<0$ and thus $\phi_2<0$, we can have
+$$\Abs{z_1}^2=\frac{\phi_1^2-\phi_1^2-4\phi_2}{4\phi_2^2}=\frac{-4\phi_2}{4\phi_2^2}=\frac{1}{\Abs{\phi_2}}>1$$
+The last inequality comes from the fact that $\Abs{\phi_2}<1$. Because $\Abs{z_1}=\Abs{z_2}$, we can then have $\boxed{\Abs{z_1}>1}$ and $\boxed{\Abs{z_2}>1}$.\\
+If  $z_1$ and $z_2$ are both \textbf{real}, because $\Abs{\phi_2}=\frac{1}{\Abs{z_2}\Abs{z_2}}<1$, at least one of $\Abs{z_1}$ and $\Abs{z_2}$ is greater than $1$, say it is $\boxed{\Abs{z_1}>1}$. Also, we can have
+$$\phi_1+\phi_2-1=\frac{1}{z_1}+\frac{1}{z_2}-\frac{1}{z_1z_2}-1=\Sp{\frac{1}{z_1}-1}\Sp{1-\frac{1}{z_2}}<0$$
+$$1-\Sp{\phi_2-\phi_1}=\frac{1}{z_1}+\frac{1}{z_2}+\frac{1}{z_1z_2}+1=\Sp{\frac{1}{z_1}+1}\Sp{\frac{1}{z_2}+1}>0$$
+Because $\Abs{z_1}>1$, we can have $\frac{1}{z_1}+1>0$ and $\frac{1}{z_1}-1<0$. Thus, we must have $1+\frac{1}{z_2}>0$ and $1-\frac{1}{z_2}>0$. If $0<z_2<1$, then the later one will be false; if $-1<z_2<0$, then the former one will be false. Thus, we must also have $\boxed{\Abs{z_2}>1}$. Thus, the ``\textbf{if}'' direction is proved.\\
+\\
+Then, we try to show the ``\textbf{only if}'' direction:\\
+When we already have $\Abs{z_1}>1$ and $\Abs{z_2}>1$, then $\Abs{\phi_2}=\frac{1}{\Abs{z_1}\Abs{z_2}}<1$ is obviously true.\\
+To show the other two, if $z_1$ and $z_2$ are both \textbf{complex}, we can let $z_1=a+ib$ and $z_2=a-ib$ with $a^2+b^2>1$, $a\neq 0$ and $b\neq 0$. Then $$\phi_1+\phi_2=\frac{1}{z_1}+\frac{1}{z_2}-\frac{1}{z_1z_2}=\frac{2a-1}{a^2+b^2}$$
+Because $a^2+b^2-\Sp{2a-1}=\Sp{a-1}^2+b^2>0$ and $a^2+b^2>1>0$, we can have $\frac{2a-1}{a^2+b^2}<1$ and thus $\boxed{\phi_1+\phi_2<1}$. Similarly, we have
+$$\phi_2-\phi_1=-\Sp{\frac{1}{z_1}+\frac{1}{z_2}+\frac{1}{z_1z_2}}=\frac{-2a-1}{a^2+b^2}$$
+Because $a^2+b^2-\Sp{-2a-1}=\Sp{a+1}^2+b^2>0$ and $a^2+b^2>$, we can have $\frac{-2a-1}{a^2+b^2}<1$ and thus $\boxed{\phi_2-\phi_1<1}$.\\
+If $z_1$ and $z_2$ are both \textbf{real}, we can have
+$$\phi_1+\phi_2=\frac{1}{z_1}+\frac{1}{z_2}-\frac{1}{z_1z_2}=\frac{1}{z_1}\Sp{1-\frac{1}{z_2}}+\frac{1}{z_2}<1-\frac{1}{z_2}+\frac{1}{z_2}=1$$
+The above inequality comes from the fact that $1-\frac{1}{z_2}>0$ and $\frac{1}{z_1}\in\Sp{-1, 0}\cup\Sp{0, 1}$.\\
+Similarly, we have
+$$\phi_2-\phi_1=-\Sp{\frac{1}{z_1}+\frac{1}{z_2}+\frac{1}{z_1z_2}}=-\frac{1}{z_1}\Sp{\frac{1}{z_2}+1}-\frac{1}{z_2}<\frac{1}{z_2}1-\frac{1}{z_2}=1$$
+The above inequality holds for similar reason. Thus, we can have $\boxed{\phi_1+\phi_2<1}$ and $\boxed{\phi_2-\phi_1<1}$.
 
-$\phi_2 - \phi_1 = - \frac{1}{z_1z_2} - \frac{1}{z_1} - \frac{1}{z_2} = - \frac{1}{z_1}\left( \frac{1}{z_2} + 1 \right) - \frac{1}{z_2} < \frac{1}{z_2} + 1 - \frac{1}{z_2} = 1$, (since $\left( \frac{1}{z_2} + 1 \right) > 0$)
+Thus, we proved that $\Abs{z_1}>1$ and $\Abs{z_2}>1$ \textbf{if and only if} the following three condition holds.
+$$\phi_1+\phi_2<1,\quad \phi_2-\phi_1<1,\text{ and }\Abs{\phi_2}<1$$
 
-$|\phi_2| = \frac{1}{|z_1||z_2|} < 1$.
-
-We can also show "*only if*" part of the statement below
-
-Since $z_1 = \frac{\phi_1 + \sqrt{\phi_1^2 + 4\phi_2}}{-2 \phi_2}$ and $\phi_2-1 < \phi_1 < 1-\phi_2$, then $z_1^2 = \frac{\left(\phi_1 + \sqrt{\phi_1^2 + 4\phi_2}\right)^2}{4 \phi_2^2} < \frac{\left((1-\phi_2) + \sqrt{(1-\phi_2)^2 + 4\phi_2}\right)^2}{4 \phi_2^2} = \frac{4}{4 \phi_2^2} \leq 1$.
-
-Since $z_2 = \frac{\phi_1 - \sqrt{\phi_1^2 + 4\phi_2}}{-2 \phi_2}$ and $\phi_2-1 < \phi_1 < 1-\phi_2$, then $z_2^2 = \frac{\left(\phi_1 - \sqrt{\phi_1^2 + 4\phi_2}\right)^2}{4 \phi_2^2} < \frac{\left((\phi_2-1) + \sqrt{(\phi_2-1)^2 + 4\phi_2}\right)^2}{4 \phi_2^2} = \frac{4 \phi_2^2}{4 \phi_2^2} = 1$.
+\end{enumerate}
 ```
 
 Finally, the causal region of an AR(2) is depicted in Figure \@ref(fig:causalAR2).
