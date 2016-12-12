@@ -193,12 +193,12 @@ $$\mathcal{M}_j: {Y_t} = \sum\limits_{i = 1}^j {{\phi _i}{Y_{t - i}}}  + {W_t}$$
 Consider the following model selection criteria:
 
 
-\[\begin{align*}
+\begin{align*}
   AI{C_j} &= \log \left( {\hat \sigma _j^2} \right) + \frac{{2\left( {{p_j} + 1} \right)}}{m} \hfill \\
   BI{C_j} &= \log \left( {\hat \sigma _j^2} \right) + \frac{{\log \left( m \right){p_j}}}{m} \hfill \\
   H{Q_j}  &= \log \left( {\hat \sigma _j^2} \right) + \frac{{2\log \left( {\log \left( m \right)} \right){p_j}}}{m} \hfill \\ 
   Crit    &= \log \left( {\hat \sigma _j^2} \right) + \lambda \frac{p}{m}, \text{where }\lambda=2,\log(m),\log(\log(m))
-\end{align*} \]
+\end{align*}
 
 Note: \[\hat \sigma _j^2 = \frac{1}{m}\sum\limits_{i = {p_{j + 1}}}^m {{{\left( {{Y_i} - \hat Y_i^{\left( j \right)}} \right)}^2}} \]
 
