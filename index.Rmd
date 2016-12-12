@@ -114,7 +114,7 @@ The text has been developed in the open and has benefited greatly from many
 people being able to alert the authors to problematic areas. We are greatful
 for the corrections, suggestions, or requests ofclarity from the following:
 
-[Ziying Wang](https://github.com/zionward), [Haoxian Zhong](https://github.com/Lyle-Haoxian)
+[Ziying Wang](https://github.com/zionward), [Haoxian Zhong](https://github.com/Lyle-Haoxian), [Zhihan Xiong](https://www.linkedin.com/in/zhihan-xiong-988152114)
 
 
 ## License {-}
