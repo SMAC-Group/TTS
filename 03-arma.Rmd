@@ -696,7 +696,7 @@ linear process. And let it be **causal**. Recall that
 \end{equation}
 which delivers the following autocovariance function
 \begin{equation}
-    \gamma(h) = cov(X_{t+h}, X_t) = cov(\sum_{j = 1}^{p} \phi_j X_{t+h-j} + W_{t+h}, X_t) = \sum_{j = 1}^{p} \phi_j \gamma(h-j), \mbox{ } h \geq 0.
+    \gamma(h) = cov(X_{t+h}, X_t) = cov(\sum_{j = 1}^{p} \phi_j X_{t+h-j} + W_{t+h}, X_t) =\mathbf{1}_{\left\{h=0\right\}}\sigma_w^2 \sum_{j = 1}^{p} \phi_j \gamma(h-j), \mbox{ } h \geq 0.
 \end{equation}
 Rearranging the above expressions we obtain the following general equations
 \begin{equation}
