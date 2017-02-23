@@ -31,8 +31,6 @@ Imports:
   robustbase,
   bookdown (>= 0.1.18)
 Remotes:
-  rstudio/bookdown,
-  sinhrks/ggfortify,
   SMAC-Group/gmwm,
   SMAC-Group/exts,
   SMAC-Group/imudata,
