@@ -1,0 +1,122 @@
+--- 
+title: "A Tour of Time Series Analysis with R"
+author: "James Balamuta, Stéphane Guerrier, Roberto Molinari and Haotian Xu"
+date: "`r Sys.Date()`"
+knit: "bookdown::render_book"
+documentclass: book
+bibliography: [book.bib]
+biblio-style: apalike
+link-citations: yes
+colorlinks: yes
+lot: yes
+lof: yes
+site: bookdown::bookdown_site
+description: ""
+url: 'https\://tts.smac-group.com/'
+github-repo: 'SMAC-Group/TTS'
+---
+
+
+# Preface {-}
+
+
+This text is designed as an introduction to time series analysis and is used as
+a support document for the class STAT 429 (Time Series Analysis) given at the
+University of Illinois at Urbana-Champaign. It preferable to always access the 
+text online rather than a printed to be sure you are using the latest version. 
+The online version so affords additional features over the traditional PDF copy 
+such as a scaling text, variety of font faces, and themed backgrounds. However, 
+if you are in need of a local copy, a [**pdf version** is also available
+](http://tts.smac-group.com/tts.pdf).
+
+This document is under active development and as a result is likely to contains
+many errors. As Montesquieu puts it:
+
+>
+> "*La nature semblait avoir sagement pourvu à ce que les sottises des hommes 
+> fussent passagères, et les livres les immortalisent.*"
+>
+
+## Contributing {-}
+
+If you notice any errors, we would be grateful if you would let us know. To let
+us know about the errors, there are two options available to you. The first and
+subsequently the fastest being if you are familiar with GitHub and know 
+RMarkdown, then [make a pull request and fix the issue yourself!
+](https://github.com/SMAC-Group/TTS). Note, in the online version, there is
+even an option to automatically start the pull request by clicking the edit
+button in the top-left corner of the text.
+
+```{r ebutton, cache = TRUE, echo = FALSE, fig.height=10, fig.align='center'}
+knitr::include_graphics("images/support/edit_button.png")
+```
+
+The second option, that will have a slightly slower resolution time is to
+send an email to `balamut2 AT illinois DOT edu` that includes: the error and a
+possible revision. Please put in the subject header: `[TTS]`.
+
+## Bibliographic Note {-}
+
+This text is heavily inspired by the following three execellent references:
+
+1. "*Time Series Analysis and Its Applications*", Third Edition, Robert H. Shumway & David S. Stoffer.
+2. "*Time Series for Macroeconomics and Finance*", John H. Cochrane.
+3. "*Cours de Séries Temporelles: Théorie et Applications*", Volume 1, Arthur Charpentier.
+
+##  Rendering Mathematical Formulae {-}
+
+Throughout the book, there will be mathematical symbols used to express the
+material. Depending on the version of the book, there are two different render
+engines. 
+
+- For the online version, the text uses [MathJax](https://www.mathjax.org/)
+to render mathematical notation for the web. In the event the formulae does
+not load for a specific chapter, first try to refresh the page. 9 times out of
+10 the issue is related to the software library not loading quickly.
+- For the pdf version, the text is built using the recommended AMS LaTeX 
+symbolic packages. As a result, there should be no issue displaying equations.
+
+An example of a mathematical rendering capabilities would be given as:
+
+\[ a^2 + b^2 = c^2 \]
+
+## R Code Conventions {-}
+
+The code used throughout the book will predominately be `R` code.  To obtain
+a copy of [`R`](https://cloud.r-project.org/), go to the
+[Comprehensive R Archive Network (CRAN)](https://cloud.r-project.org/)
+and download the appropriate installer for your operating system.
+
+When `R` code is displayed it will be typeset using a `monospace` font with 
+syntax highlighting enabled to ensure the differentiation of functions,
+variables, and so on. For example, the following adds 1 to 1
+
+```{r, eval = FALSE}
+a = 1L + 1L
+a
+```
+
+Each code segment may contain actual output from `R`. Such output will appear
+in grey font prefixed by `##`. For example, the output of the above code
+segment would look like so:
+
+```{r, echo = FALSE, eval = TRUE}
+a = 1L + 1L
+a
+```
+
+Alongside the PDF download of the book, you should find the R code used within 
+each chapter. 
+
+## Acknowledgements {-}
+
+The text has been developed in the open and has benefited greatly from many
+people being able to alert the authors to problematic areas. We are greatful
+for the corrections, suggestions, or requests ofclarity from the following:
+
+[Ziying Wang](https://github.com/zionward), [Haoxian Zhong](https://github.com/Lyle-Haoxian), [Zhihan Xiong](https://www.linkedin.com/in/zhihan-xiong-988152114)
+
+
+## License {-}
+
+![This work is licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).](images/license/cc.png)
