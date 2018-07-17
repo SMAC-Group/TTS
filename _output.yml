@@ -1,29 +1,17 @@
 bookdown::gitbook:
-  css: styling/style.css
-  split_by: section
-  includes:
-      in_header: styling/mathjax-config.html
+  css: style.css
   config:
     toc:
       before: |
-        <li><a href="./">A Tour of Time Series Analysis with R</a></li>
+        <li><a href="./">Statistical Programming Methods</a></li>
       after: |
-        <li><a href="https://github.com/SMAC-Group/TTS" target="blank">&copy; 2016 Balamuta, Guerrier, Molinari, Xu</a></li>
-    download: [pdf, epub, mobi]
-    edit:
-      link: https://github.com/SMAC-Group/TTS/edit/master/%s
-bookdown::html_chapters:
-  css: [styling/style.css]
-  includes:
-      in_header: styling/mathjax-config.html
+        <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+    edit: https://github.com/rstudio/bookdown-demo/edit/master/%s
+    download: ["pdf", "epub"]
 bookdown::pdf_book:
   includes:
     in_header: preamble.tex
-  dev: "cairo_pdf"
   latex_engine: xelatex
   citation_package: natbib
-  pandoc_args: --chapters
-  toc_depth: 3
-  toc_unnumbered: no
-  toc_appendix: yes
+  keep_tex: yes
 bookdown::epub_book: default

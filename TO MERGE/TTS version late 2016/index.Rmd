@@ -1,36 +1,33 @@
 --- 
 title: "A Tour of Time Series Analysis with R"
-author: "Stéphane Guerrier, Robert Molinari and Haotian Xu"
+author: "James Balamuta, Stéphane Guerrier, Roberto Molinari and Haotian Xu"
 date: "`r Sys.Date()`"
-site: bookdown::bookdown_site
+knit: "bookdown::render_book"
 documentclass: book
-bibliography: [book.bib, packages.bib]
+bibliography: [book.bib]
 biblio-style: apalike
 link-citations: yes
-github-repo: SMAC-Group/ts_book
+colorlinks: yes
+lot: yes
+lof: yes
+site: bookdown::bookdown_site
 description: ""
-favicon: "favicon.ico"
+url: 'https\://tts.smac-group.com/'
+github-repo: 'SMAC-Group/TTS'
 ---
 
-# Introduction
 
-Welcome to A Tour of Time Series Analysis with `R` 
+# Preface {-}
 
-## About the Authors
 
-????
-
-## About This Book
-
-```{block, type='rmdcomment'}
-A few things are missing here:
-
-- Goal of the book:
-    - Teaching
-    - Research (demo research)
-- Mentioned that there was a previous version of the book was used for STAT 429 Time Series Analysis at UIUC. The teaching part of this book is based on a typed up version of my notes.
-- I like the text below: do you find it too corny?
-```
+This text is designed as an introduction to time series analysis and is used as
+a support document for the class STAT 429 (Time Series Analysis) given at the
+University of Illinois at Urbana-Champaign. It preferable to always access the 
+text online rather than a printed to be sure you are using the latest version. 
+The online version so affords additional features over the traditional PDF copy 
+such as a scaling text, variety of font faces, and themed backgrounds. However, 
+if you are in need of a local copy, a [**pdf version** is also available
+](http://tts.smac-group.com/tts.pdf).
 
 This document is under active development and as a result is likely to contains
 many errors. As Montesquieu puts it:
@@ -40,11 +37,8 @@ many errors. As Montesquieu puts it:
 > fussent passagères, et les livres les immortalisent.*"
 >
 
-## Contributing
+## Contributing {-}
 
-```{block, type='rmdcomment'}
-I proposed to remove this section or to considerably modify it.
-```
 If you notice any errors, we would be grateful if you would let us know. To let
 us know about the errors, there are two options available to you. The first and
 subsequently the fastest being if you are familiar with GitHub and know 
@@ -61,11 +55,7 @@ The second option, that will have a slightly slower resolution time is to
 send an email to `balamut2 AT illinois DOT edu` that includes: the error and a
 possible revision. Please put in the subject header: `[TTS]`.
 
-## Bibliographic Note 
-
-```{block, type='rmdcomment'}
-I think this section is OK
-```
+## Bibliographic Note {-}
 
 This text is heavily inspired by the following three execellent references:
 
@@ -73,11 +63,7 @@ This text is heavily inspired by the following three execellent references:
 2. "*Time Series for Macroeconomics and Finance*", John H. Cochrane.
 3. "*Cours de Séries Temporelles: Théorie et Applications*", Volume 1, Arthur Charpentier.
 
-##  Rendering Mathematical Formulae 
-
-```{block, type='rmdcomment'}
-I proposed to remove this section
-```
+##  Rendering Mathematical Formulae {-}
 
 Throughout the book, there will be mathematical symbols used to express the
 material. Depending on the version of the book, there are two different render
@@ -94,11 +80,7 @@ An example of a mathematical rendering capabilities would be given as:
 
 \[ a^2 + b^2 = c^2 \]
 
-## R Code Conventions 
-
-```{block, type='rmdcomment'}
-I proposed to remove this section
-```
+## R Code Conventions {-}
 
 The code used throughout the book will predominately be `R` code.  To obtain
 a copy of [`R`](https://cloud.r-project.org/), go to the
@@ -126,24 +108,15 @@ a
 Alongside the PDF download of the book, you should find the R code used within 
 each chapter. 
 
-## Acknowledgements
-
-```{block, type='rmdcomment'}
-This seems OK. Add James, Sam, ...
-```
+## Acknowledgements {-}
 
 The text has been developed in the open and has benefited greatly from many
 people being able to alert the authors to problematic areas. We are greatful
 for the corrections, suggestions, or requests ofclarity from the following:
 
-- [Ziying Wang](https://github.com/zionward)
-- [Haoxian Zhong](https://github.com/Lyle-Haoxian)
-- [Zhihan Xiong](https://www.linkedin.com/in/zhihan-xiong-988152114)
-- [Nathanael Claussen](https://github.com/Nathanael-Claussen)
-- [Justin Lee](https:://github.com/munsheet)
-- [James Balamuta](https::/github.com/coatless)
+[Ziying Wang](https://github.com/zionward), [Haoxian Zhong](https://github.com/Lyle-Haoxian), [Zhihan Xiong](https://www.linkedin.com/in/zhihan-xiong-988152114)
 
 
-## License 
+## License {-}
 
 ![This work is licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).](images/license/cc.png)

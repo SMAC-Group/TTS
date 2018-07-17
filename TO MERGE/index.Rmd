@@ -43,7 +43,7 @@ many errors. As Montesquieu puts it:
 ## Contributing
 
 ```{block, type='rmdcomment'}
-I proposed to remove this section or to considerably modify it.
+I proposed to remove this section
 ```
 If you notice any errors, we would be grateful if you would let us know. To let
 us know about the errors, there are two options available to you. The first and
