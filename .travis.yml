@@ -24,4 +24,5 @@ Remotes:
   - SMAC-Group/simts
 
 notifications:
-  slack: smac-group:28CTwNZ8qZkMoeQ8Ns5bFfwl
+  email: false
+  slack: smac-group:PN7zJaxD7pqGa0EJZE1bDaJ2
