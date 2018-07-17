@@ -3,7 +3,11 @@ cache:
   packages: true
   directories:
   - "$TRAVIS_BUILD_DIR/_bookdown_files"
+
 sudo: false
+dist: trusty
+warnings_are_errors: false
+
 before_script:
 - chmod +x ./deployment/_build.sh
 - chmod +x ./deployment/_deploy.sh
@@ -12,6 +16,12 @@ script:
 after_success:
 - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && bash
   deployment/_deploy.sh
+
+Imports:
+  - simts
+
+Remotes:
+  - SMAC-Group/simts
+
 notifications:
-  slack:
-    secure: UhihkzP/EPgBVPSD2ovlb5hjF6nA99w+fsp7+5WAvEzS5ZGXPkBkuYZt2S2b6M4bZwkaBQ+N61reaPLUpPYEQfVRunXJFkRvVkL05IB4pVhDiEqvHlwc2bEFjsPMh6zyPE8a9+RgVtgcu0uPCUHRTG6XrteWL7rjxUoixzxWTeAvlvek+UMjI+41lesEBYXcFiCjYaue/5b7R+XEygIYlV/GXRSXB5bC383NmFxIBrSzwKrX0mUTeBq5WwiO1jFTZWIG6sxEfxxUpcDwauNZJEK9GFBXilx0fiMmAYBDl7DPHCNbqrvZtL0Q2Zy0Utt3/zbrQeEH7erEYcoXZSYsMfF1Cq2/RIrOBLiJH/YJuZtK/Kdy5MRwIUXysKTXPlFQR6hiSx+GUVltKN89a8ubPObVnHf1GjVtqUI8J011NGj2r41Jch/eSvE1LVwctBHsgAgi9Mbxmgj1hjns5RTKD2BT6xkyAizTI25O36qYC+HCIqLtj6D4n4n7L64Au6onyGrxdEsgQmp4jE5Zg8xw68eJ00Fj4NQLhTunhkRdRNqydI04aMY3OoPvZx92PQnw2YR3vVC1kAiItQWzvIzo5aDPy1Z0RA7k8Ole/2QH6F92Ukuw0odcUfOa7gYpcQM3pd+AZ7uzkzfR6cxny49p9y0g1IUKShgwY0YCH2/P4Dw=
+  slack: smac-group:28CTwNZ8qZkMoeQ8Ns5bFfwl
