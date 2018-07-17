@@ -20,7 +20,7 @@ after_success:
 Imports:
   - simts
 
-Remotes:
+Remotes: 
   - SMAC-Group/simts
 
 notifications:
