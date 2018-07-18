@@ -1,3 +1,76 @@
+--- 
+title: "A Tour of Time Series Analysis with R"
+author: "James Balamuta, Stéphane Guerrier, Roberto Molinari and Haotian Xu"
+date: "`r Sys.Date()`"
+knit: "bookdown::render_book"
+documentclass: book
+bibliography: [book.bib]
+biblio-style: apalike
+link-citations: yes
+colorlinks: yes
+lot: yes
+lof: yes
+site: bookdown::bookdown_site
+description: ""
+url: 'https\://tts.smac-group.com/'
+github-repo: 'SMAC-Group/TTS'
+---
+
+# Preface {-}
+
+Placeholder
+
+
+## Contributing {-}
+## Bibliographic Note {-}
+##  Rendering Mathematical Formulae {-}
+## R Code Conventions {-}
+## Acknowledgements {-}
+## License {-}
+
+<!--chapter:end:index.Rmd-->
+
+
+# Introduction
+
+Placeholder
+
+
+## Time Series
+## Exploratory Data Analysis for Time Series {#eda}
+## Basic Time Series Models {#basicmodels}
+### White noise processes {#wn}
+### Random Walk Processes {#rw}
+### Autoregressive Process of Order 1 {#ar1}
+### Moving Average Process of Order 1 {#ma1}
+### Linear Drift {#drift}
+## Composite Stochastic Processes {#lts}
+
+<!--chapter:end:01-intro.Rmd-->
+
+
+# Autocorrelation and Stationarity
+
+Placeholder
+
+
+## The Autocorrelation and Autocovariance Functions 
+### A Fundamental Representation
+### Admissible Autocorrelation Functions
+## Stationarity {#stationary}
+### Assessing Weak Stationarity of Time Series Models
+## Estimation of Moments of Stationary Processes
+### Estimation of the Mean Function
+### Sample Autocovariance and Autocorrelation Functions
+### Robustness Issues
+## Joint Stationarity
+### Sample Cross-Covariance and Cross-Correlation Functions
+## Portmanteau test
+## Proof
+## Exercises
+
+<!--chapter:end:02-stationarity.Rmd-->
+
 ---
 output:
   pdf_document: default
@@ -2225,3 +2298,64 @@ There is a huge problem being able to identify what the values of the parameters
 are. To ensure that this problem does not arise in practice, there is 
 the requirement for invertibility, or being able to transform an MA(q) into
 an AR($\infty$).
+
+<!--chapter:end:03-arma.Rmd-->
+
+
+# Linear Regression
+
+Placeholder
+
+
+## Review on Linear Regression
+## Linear Regression with Autocorrelated Errors
+
+<!--chapter:end:04-linear-models.Rmd-->
+
+
+# Model Selection
+
+Placeholder
+
+
+## Derivations of Information Criterion
+## Properties of Model Selection
+## Model Selection Simulation Studies
+
+<!--chapter:end:04-model-selection.Rmd-->
+
+
+# SARIMA Models
+
+Placeholder
+
+
+
+<!--chapter:end:05-sarima.Rmd-->
+
+# (APPENDIX) Appendix {-} 
+
+<!--chapter:end:90-appendix.Rmd-->
+
+
+# Proofs {#appendixa}
+
+Placeholder
+
+
+## Proof of Theorem 1
+
+<!--chapter:end:91-appendix-a.Rmd-->
+
+
+# Robust Regression Methods {#appendixb}
+
+Placeholder
+
+
+## The Classical Least-Squares Estimator
+## Robust Estimators for Linear Regression Models
+## Applications of Robust Estimation
+
+<!--chapter:end:91-appendix-b.Rmd-->
+

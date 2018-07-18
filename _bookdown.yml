@@ -1,5 +1,8 @@
-book_filename: "ds"
+book_filename: "tts"
 output_dir: "docs"
 language:
+  label:
+    exr: 'Remark '
   ui:
     chapter_name: "Chapter "
+delete_merged_file: true

@@ -19,6 +19,7 @@ Depends: R (>= 3.1.0)
 License: CC BY-NC-SA 4.0
 RoxygenNote: 6.0.1.9000
 Imports: bookdown,
-  astsa
+  astsa,
+  robcor
 Remotes: rstudio/simts,
   rstudio/imudata

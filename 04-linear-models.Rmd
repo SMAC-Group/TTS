@@ -1,0 +1,235 @@
+
+# Linear Regression
+
+
+
+## Review on Linear Regression
+ 
+In this chapter we discuss how the classical linear regression setting can be extended to accomodate for autocorrelated error. Before considering this more general setting, we start by discussing the usual linear regression model with Gaussian errors, i.e. 
+
+\begin{equation*}
+ \mathbf{y} = \mathbf{X} \boldsymbol{\theta} + \boldsymbol{\epsilon}, \;\;\; \boldsymbol{\epsilon} \sim \mathcal{N}\left( \boldsymbol{0},\sigma_{\epsilon}^2 \mathbf{I} \right) ,
+\end{equation*}
+
+where $\mathbf{X}$ is a known $n \times p$ design matrix of rank $p$ and $\boldsymbol{\theta}$ is a $p \times 1$ vector of unknown parameters. Under this setting, the MLE and LSE are equivalent (due to normality of $\boldsymbol{\epsilon}$) and corresponds to the ordinary LS parameter estimates of $\boldsymbol{\theta}$, i.e.
+
+\begin{equation}
+	\hat{\boldsymbol{\theta}} = \left(\mathbf{X}^T \mathbf{X} \right)^{-1} \mathbf{X}^T \mathbf{y} ,
+	\label{eq:betaLSE}
+\end{equation}
+
+leading to the (linear) prediction
+
+\begin{equation*}
+	\hat{\mathbf{y}} = \mathbf{X} \hat{\boldsymbol{\theta}} = \mathbf{S} \mathbf{y}
+\end{equation*}
+
+where $\mathbf{S} = \mathbf{X}\left(\mathbf{X}^T \mathbf{X} \right)^{-1} \mathbf{X}^T$ denotes the "*hat*" matrix. The unbiased and maximum likelihood estimates of $\sigma^2_{\epsilon}$ are, respectively, given by
+
+\begin{equation}
+		\tilde{\sigma}^2_{\epsilon} = \frac{||\mathbf{y} - \hat{\mathbf{y}} ||_2^2}{n - p} \;\;\, \text{and} \;\;\,
+		\hat{\sigma}^2_{\epsilon} = \frac{||\mathbf{y} - \hat{\mathbf{y}} ||_2^2}{n}\,,
+	\label{eq:LM:sig2:hat}
+\end{equation}
+
+where $|| \cdot ||_2$ denotes the $L_2$ norm.  Throughout this chapter we assume that $0 < \sigma_{\epsilon}^2 < \mathbf{I}nfty$. Under this setting (i.e. Gaussian iid errors) $\tilde{\sigma}^2_{\epsilon}$ is distributed proportiinally to $\chi^2$ random vcaraible with $n-p$ degrees of freedom independent of $\hat{\boldsymbol{\theta}}$ (a proof of this result can for example be found in ?????). Consequently, it follow that
+
+\begin{equation}
+	\frac{\hat{\beta}_i - \beta_i}{\left(\boldsymbol{C}\right)_{i}} \sim t_{n-p},
+	\label{eq:beta_t_dist}
+\end{equation}
+
+where $\left(\boldsymbol{C}\right)_{i}$ denotes the $i$-th diagonal element of the following matrix
+
+\begin{equation}
+		\boldsymbol{C} = \text{cov} \left(\hat{\boldsymbol{\theta}} \right) = \sigma_{\epsilon}^2 \left(\mathbf{X}^T \mathbf{X}\right)^{-1},
+	\label{eq:covbeta}
+\end{equation}
+
+and where $\hat{\beta}_i$ denotes the $i$-th element of $\hat{\boldsymbol{\theta}}$. Thus, this allows for a natural approach for testing coefficients and selecting models. Moreover, a common quantity used ton evaluate the "quality" of a model is the $R^2$, which corresponds to the proportion of variation explained by the model, i.e.
+
+\[R^2 = \frac{\sum_{i=1}^n \left(y_i - \hat{\mathbf{y}}_i\right)^2 - \sum_{i=1}^n \left(y_i - \bar{y}\right)^2}{\sum_{i=1}^n \left(y_i - \bar{y}\right)^2},\]
+
+where $y_i$ and $\hat{y}_i$ denote, respectively, the $i$-th element of $\mathbf{y}$ and $\hat{\mathbf{y}}$, and $\bar{y}$ represent the mean value of the vector $\mathbf{y}$. This goodness-of-fit is widely used in practice but its limits are often misunderstood as illustrated in the example below.
+
+**Example:** Suppose that we have two *nested* models, say $\mathcal{M}_1$ and $\mathcal{M}_2$, i.e.
+
+\[\begin{aligned}
+\mathcal{M}_1: \;\;\;\;\; \mathbf{y} &= \mathbf{X}_1 \boldsymbol{\theta}_1 + \boldsymbol{\epsilon},\\
+\mathcal{M}_2: \;\;\;\;\; \mathbf{y} &= \mathbf{X}_1 \boldsymbol{\theta}_1 + \mathbf{X}_2 \boldsymbol{\theta}_2 + \boldsymbol{\epsilon},\\
+\end{aligned}\]
+
+and assume that $\boldsymbol{\theta}_2 = \boldsymbol{0}$. In this case, it is interesting to compare the $R^2$ of both models, say $R_1^2$ and $R^2_2$. Using $\hat{\mathbf{y}}_i$ to denote the predictions made from model $\mathcal{M}_i$, we have that
+
+\[||\mathbf{y} - \hat{\mathbf{y}}_1 ||_2^2 \geq ||\mathbf{y} - \hat{\mathbf{y}}_2 ||_2^2.\]
+
+By letting $||\mathbf{y} - \hat{\mathbf{y}}_1 ||_2^2 = ||\mathbf{y} - \hat{\mathbf{y}}_2 ||_2^2 + c$ where $c$ is a non-negartive constant we obtain:
+
+\[R_1^2 = 1 - \frac{ ||\mathbf{y} - \hat{\mathbf{y}}_1 ||_2^2 }{ \sum_{i=1}^n \left(y_i - \bar{y}\right)^2}  = 1 - \frac{||\mathbf{y} - \hat{\mathbf{y}}_2  ||_2^2 
++ c}{\sum_{i=1}^n \left(y_i - \bar{y}\right)^2} = R_2^2 + \frac{c}{\sum_{i=1}^n \left(y_i - \bar{y}\right)^2}.\]
+
+This implies that $R_1^2 \leq R_2^2$, regardelss of the value of $\boldsymbol{\theta}_2$ and therefore the $R^2$ is essentially useless in terms of model selection. This results is well known and is further discuss in ??????REF *REGRESSION and TIME SERIES MODEL SELECTION< TSAI< CHAP 2*.
+
+<!--Rob: could you expand a little the intro to linear model, maybe an example,.. no rush... thanks mate! -->
+
+A more approriate measure of the goodness-of-fit of a particular model is for example Mallow's $C_p$ introduced in **REF see STEF PHD**. This metric balances the error of fit against its complexity and can be defined as
+
+\begin{equation}
+C_p = || \mathbf{y} - \mathbf{X}\hat{\boldsymbol{\theta}}||_2^2 +  2 \hat{\sigma}_{\ast}^2 p,
+\label{eq:MallowCp}
+\end{equation}
+
+where $\hat{\sigma}_{\ast}^2$ is an unbiased estimates of ${\sigma}_{\epsilon}^2$, generally $\tilde{\sigma}^2_{\epsilon}$ computed on a "low-bias" model (i.e. a sufficiently "large" model).
+
+To understand how this result is derived, we let $\mathbf{y}_0$ denote an independent "copy" of $\mathbf{y}$ issued from the same data-generating process and let $E_0[\cdot]$ denotes the expectation under the distribution of $\mathbf{y}_0$ (conditionally on $\mathbf{X}$). Then, it can be argued that the following quantity is approriate at measuring the adequacy of model as it compares how $\mathbf{y}$ can be used to predict $\mathbf{y}_0$,
+
+\[E \left[ E_0 \left[ || \mathbf{y}_0 - \mathbf{X}\hat{\boldsymbol{\theta}}||_2^2 \right] \right].\]
+
+As we will see Mallow's $C_p$ is an unbiased estimator of this quantity. There are several ways of showing it, one of them is presented here using the following "*optimism*" theorem. Note that this result is based on Theorem 2.1 of **REF MISSING, TWO HERE PHD STEF** and on the Optimism Theorem of ** REF MISSING EFRON COVARIACNE PAPER 2004 JASA**.
+
+**Theorem:** Let $\mathbf{y}_0$ denote an independent "copy" of $\mathbf{y}$ issued from the same data-generating process and let $E_0[\cdot]$ denotes the expectation under the distribution of $\mathbf{y}_0$ (conditionally on $\mathbf{X}$). Then we have that,
+
+\[E \left[ E_0 \left[ || \mathbf{y}_0 - \mathbf{X}\hat{\boldsymbol{\theta}}||_2^2 \right] \right] = E \left[ || \mathbf{y} - \mathbf{X}\hat{\boldsymbol{\theta}}||_2^2 \right] + 2 \text{tr} \left( \text{cov} \left(\mathbf{y}, \mathbf{X} \hat{\boldsymbol{\theta}} \right)\right).\]
+
+*Proof:* We first expend $|| \mathbf{y} - \mathbf{X}{\boldsymbol{\theta}}||_2^2$ as follows:
+
+\[|| \mathbf{y} - \mathbf{X}{\boldsymbol{\theta}}||_2^2 = \mathbf{y}^T \mathbf{y} + \boldsymbol{\theta}^T \mathbf{X}^T \mathbf{X} \boldsymbol{\theta} - 2 \mathbf{y}^T \mathbf{X} \boldsymbol{\theta} = \mathbf{y}^T \mathbf{y} - \boldsymbol{\theta}^T \mathbf{X}^T \mathbf{X} \boldsymbol{\theta} - 2 \left(\mathbf{y} - \mathbf{X}\boldsymbol{\theta}\right)^T \mathbf{X} \boldsymbol{\theta}. \]
+
+Then, we define C and C$^\ast$ and used the above expension
+
+\[\begin{aligned}
+\text{C} &= E \left[ E_0 \left[ || \mathbf{y}_0 - \mathbf{X}\hat{\boldsymbol{\theta}}||_2^2 \right] \right] =  E_0 \left[ \mathbf{y}_0^T \mathbf{y}_0 \right] - E \left[ \hat{\boldsymbol{\theta}}^T \mathbf{X}^T \mathbf{X} \hat{\boldsymbol{\theta}}\right] - 2 E \left[\left(E_0 \left[ \mathbf{y}_0\right] - \mathbf{X}\hat{\boldsymbol{\theta}}\right)^T \mathbf{X} \hat{\boldsymbol{\theta}}\right],\\
+\text{C}^\ast &= E \left[ || \mathbf{y} - \mathbf{X}\hat{\boldsymbol{\theta}}||_2^2 \right] =  E \left[ \mathbf{y}^T \mathbf{y} \right] - E \left[ \hat{\boldsymbol{\theta}}^T \mathbf{X}^T \mathbf{X} \hat{\boldsymbol{\theta}}\right] - 2 E \left[\left( \mathbf{y} - \mathbf{X}\hat{\boldsymbol{\theta}}\right)^T \mathbf{X} \hat{\boldsymbol{\theta}}\right].
+\end{aligned}\]
+
+Next, we consider the difference between C and C$^\ast$, i.e.
+
+\[\begin{aligned} 
+\text{C} - \text{C}^\ast &= 2 E \left[\left( \mathbf{y} - E_0 \left[ \mathbf{y}_0\right]\right)^T \mathbf{X} \hat{\boldsymbol{\theta}}\right] = 2 \text{tr} \left( \text{cov} \left(\mathbf{y} - E_0 [\mathbf{y}_0], \mathbf{X} \hat{\boldsymbol{\theta}} \right)\right) + 2 \text{tr} \left(E \left[\mathbf{y} - E_0 [\mathbf{y}_0] \right] E^T [\mathbf{X} \hat{\boldsymbol{\theta}}]\right) \\
+&= 2 \text{tr} \left( \text{cov} \left(\mathbf{y} - E_0 [\mathbf{y}_0], \mathbf{X} \hat{\boldsymbol{\theta}} \right)\right) = 2 \text{tr} \left( \text{cov} \left(\mathbf{y}, \mathbf{X} \hat{\boldsymbol{\theta}} \right)\right),
+\end{aligned}
+\]
+which concludes our proof. Note that in the above equation we used the following equality, which is based on two vector valued random variation of approriate dimensions:
+
+\[E \left[\mathbf{X}^T \boldsymbol{Z}\right]  = E \left[\text{tr} \left(\mathbf{X}^T \boldsymbol{Z}\right)\right] = E \left[\text{tr} \left( \boldsymbol{Z} \mathbf{X}^T \right)\right] = \text{tr} \left(\text{cov} \left(\mathbf{X}, \boldsymbol{Z}\right)\right) + \text{tr} \left(E[\mathbf{X}] E^T[\boldsymbol{Z}]\right). \]
+
+In the linear regression case with iid Gaussian errors we have:
+
+\[\text{tr} \left( \text{cov} \left(\mathbf{y}, \mathbf{X} \hat{\boldsymbol{\theta}} \right)\right) = \text{tr} \left( \text{cov} \left(\mathbf{y}, \mathbf{S} \mathbf{y} \right)\right) = \sigma_{\epsilon}^2 \text{tr}\left(\mathbf{S}\right) = \sigma_{\epsilon}^2 p.\]
+
+Therefore,
+
+\[\text{C} = E \left[ E_0 \left[ || \mathbf{y}_0 - \mathbf{X}\hat{\boldsymbol{\theta}}||_2^2 \right] \right] = E \left[ || \mathbf{y} - \mathbf{X}\hat{\boldsymbol{\theta}}||_2^2 \right] + 2 \sigma_{\epsilon}^2 p, \]
+
+yielding to the unbiased estimate
+
+\[\widehat{\text{C}} = C_p = || \mathbf{y} - \mathbf{X}\hat{\boldsymbol{\theta}}||_2^2 +  2 \hat{\sigma}_{\ast}^2 p.\]
+
+An alternative famous goodness-of-fit criterion was proposed by Akaike (1969, 1973, 1974) **REF MISSING** and is given by
+
+\begin{equation}\text{AIC} = \log \left(\hat{\sigma}^2_{\epsilon} \right) + \frac{n + 2p}{n}.
+\label{eq:defAIC}
+\end{equation}
+
+where $\hat{\sigma}^2_{\epsilon}$ denotes the MLE for $\sigma_{\epsilon}^2$ defined in \@ref(eq:LM:sig2:hat).
+
+The AIC is based on a *divergence* (i.e. a generalization of the notion of distance) that informally speaking measures "how far" is the density of the estimated model compared to the "true" density. This divergence is called the Kullback-Leibler information which in this context can be defined for two densities of the same family as
+
+\[\text{KL}  =  \frac{1}{n} E \left[ E_0 \left[\log \left(  
+\frac{f (\mathbf{y}_0| \boldsymbol{\theta}_0)}
+{f (\mathbf{y}_0| \hat{\boldsymbol{\theta}})}
+\right)\right] \right],\]
+
+where we assume $\boldsymbol{\theta}_0$ and $\hat{\boldsymbol{\theta}}$ to denote, respectively, the true parameter vector of interest and an estimator $\boldsymbol{\theta}_0$ based on a postulated model. Similarly to the setting used to derive Mallow's $C_p$, the expectations $E \left[\cdot\right]$ and $E_0 \left[\cdot\right]$ denote the expectation with respect to the densities of $\mathbf{y}$ and $\mathbf{y}_0$ (conditionally on $\mathbf{X}$). Note that $\hat{\boldsymbol{\theta}}$ dependences on $\mathbf{y}$ and not $\mathbf{y}_0$. Informally speaking this divergence measure how far is $f (\mathbf{y}_0| \boldsymbol{\theta}_0)$ from $f (\mathbf{y}_0| \hat{\boldsymbol{\theta}})$, where in the latter $\hat{\boldsymbol{\theta}}$ is estimated on $\mathbf{y}$, a sample independent from $\mathbf{y}_0$.
+
+To derive the AIC we start by considering a generic a linear model $\mathcal{M}$ with parameter vector $\boldsymbol{\theta} = [\boldsymbol{\theta}^T \;\;\; \sigma_{\epsilon}^2]$. Indeed, we have that its density is given by
+
+\[\begin{aligned} 
+  f\left( {\mathbf{y}|\boldsymbol{\theta} } \right) &= {\left( {2\pi } \right)^{ - n/2}}{\left| { \sigma_{\epsilon}^2 \mathbf{I}} \right|^{ - 1/2}}\exp \left( { - \frac{1}{2}{{\left( {\mathbf{y} - \mathbf{X}{\boldsymbol{\theta}}} \right)}^T}{{\left( {\sigma_{\epsilon}^2 \mathbf{I}} \right)}^{ - 1}}\left( {\mathbf{y} - \mathbf{X}{\beta _i}} \right)} \right)  \\
+   &= {\left( {2\pi } \right)^{ - n/2}}{\left( {\sigma_{\epsilon}^2} \right)^{ - n/2}}\exp \left( { - \frac{1}{{2 \sigma_{\epsilon}^2}}{{\left( {\mathbf{y} - \mathbf{X}{\boldsymbol{\theta}}} \right)}^T}\left( {\mathbf{y} - \mathbf{X}{\boldsymbol{\theta}}} \right)} \right).  \\ 
+\end{aligned} \]
+
+Using this result and letting 
+
+\[{\boldsymbol{\theta}}_0 = [{\boldsymbol{\theta}}_0^T \;\;\; {\sigma}^2_0] \;\;\;\;\; \text{ and }  \;\;\;\;\; \hat{\boldsymbol{\theta}} = [\hat{\boldsymbol{\theta}}^T \;\;\; \hat{\sigma}^2], \]
+
+where $\hat{\boldsymbol{\theta}}$ denotes the MLE for $\hat{\boldsymbol{\theta}}$, we obtain
+
+\[\scriptsize \begin{aligned}
+ \frac{1}{n} {E}\left[ {E_0}\left[ {\log \left( {\frac{{f\left( {\mathbf{y}_0|{\boldsymbol{\theta}_0}} \right)}}{{f\left( {\mathbf{y}_0|{\hat{\boldsymbol{\theta}}}} \right)}}} \right)} \right]\right]
+   &= \frac{1}{n} {E}\left[ {E_0}\left[ \log \left( {\frac{{{{\left( {\sigma _0^2} \right)}^{ - n/2}}}}{{{{\left( {\hat{\sigma}^2} \right)}^{ - n/2}}}}} \right)  
+ + \log \left( \frac{{\exp \left( { - \frac{1}{{2\sigma _0^2}}{{\left( {\mathbf{y}_0 - \mathbf{X}{\boldsymbol{\theta} _0}} \right)}^T}\left( {\mathbf{y}_0 - \mathbf{X}{\boldsymbol{\theta} _0}} \right)} \right)}}{{\exp \left( { - \frac{1}{{2\hat{\sigma}^2}}{{\left( {\mathbf{y}_0 - \mathbf{X}{\hat{\boldsymbol{\theta}}}} \right)}^T}\left( {\mathbf{y}_0 - \mathbf{X}{\hat{\boldsymbol{\theta}}}} \right)} \right)}} \right) \right]  \right] \\
+  &= -\frac{1}{2} E \left[\log \left( {\frac{{\sigma _0^2}}{{\hat{\sigma}^2}}} \right)\right] - \frac{1}{{2n\sigma _0^2}}{E_0}\left[ {{{\left( {\mathbf{y}_0 - \mathbf{X}{\boldsymbol{\theta} _0}} \right)}^T}\left( {\mathbf{y}_0 - \mathbf{X}{\boldsymbol{\theta} _0}} \right)} \right] \\
+   &+ \frac{1}{{2n}}{E}\left[\frac{1}{\hat{\sigma}^2}E_0\left[ {{{\left( {\mathbf{y}_0 - \mathbf{X}{\hat{\boldsymbol{\theta}}}} \right)}^T}\left( {\mathbf{y}_0 - \mathbf{X}{\hat{\boldsymbol{\theta}}}} \right)} \right]\right].
+ \end{aligned} \]
+
+
+Next, we consider each term of the above equation. For the first term, we have
+
+\[
+-\frac{1}{2} E \left[\log \left( {\frac{{\sigma _0^2}}{{\hat{\sigma}^2}}} \right)\right] = 
+\frac{1}{2} \left(E \left[ \log \left( \hat{\sigma}^2 \right) \right] - \log \left( \sigma_0^2 \right)\right).
+\]
+
+For the second term, we obtain
+
+\[ -\frac{1}{{2n\sigma _0^2}} {E_0}\left[ {{{\left( {\mathbf{y}_0 - \mathbf{X}{\boldsymbol{\theta}_0}} \right)}^T}\left( {\mathbf{y}_0 - \mathbf{X}{\boldsymbol{\theta}_0}} \right)} \right] = -\frac{1}{2}. \]
+
+Finally, we have for the last term
+
+\[\scriptsize \begin{aligned}
+\frac{1}{{2n}} {E}\left[ \frac{1}{\hat{\sigma}^2} {E_0}\left[ {{{\left( {\mathbf{y}_0 - \mathbf{X}{\hat{\boldsymbol{\theta}}}} \right)}^T}\left( {\mathbf{y}_0 - \mathbf{X}\hat{\boldsymbol{\theta}}} \right)} \right]\right]
+   &=  \frac{1}{{2n}} {E}\left[ \frac{1}{\hat{\sigma}^2} {E_0}\left[ {{{\left( {\mathbf{y}_0 - \mathbf{X} \boldsymbol{\theta}_0 - \mathbf{X}\left( {\hat{\boldsymbol{\theta}} - \boldsymbol{\theta}_0} \right)} \right)}^T}\left( {\mathbf{y}_0 - \mathbf{X} \boldsymbol{\theta}_0 - \mathbf{X}\left( {\hat{\boldsymbol{\theta}} - \boldsymbol{\theta}_0} \right)} \right)} \right] \right] \\
+   &= \frac{1}{{2n}} E\left[  \frac{1}{\hat{\sigma}^2}  \left[ {E_0}\left[ {{{\left( {\mathbf{y}_0 - \mathbf{X} \boldsymbol{\theta}_0} \right)}^T}\left( {\mathbf{y}_0 - \mathbf{X} \boldsymbol{\theta}_0} \right)} \right]\right] \right]\\
+   &+ \frac{1}{{2n}} E \left[ \frac{1}{\hat{\sigma}^2}  \left( \boldsymbol{\theta}_0 - \hat{\boldsymbol{\theta}} \right)^T \mathbf{X}^T \mathbf{X}\left( \boldsymbol{\theta}_0 - \hat{\boldsymbol{\theta}} \right)\right]\\
+   &= \frac{1}{{2}} E \left[ \frac{\sigma_0^2}{\hat{\sigma}^2} \right]
+   + \frac{1}{{2n}} E \left[ \frac{\sigma_0^2}{\hat{\sigma}^2}  \frac{\left( \boldsymbol{\theta}_0 - \hat{\boldsymbol{\theta}} \right)^T \mathbf{X}^T \mathbf{X}\left( \boldsymbol{\theta}_0 - \hat{\boldsymbol{\theta}} \right)}{\sigma_0^2}\right].\\
+\end{aligned}\]
+   
+   To simplify further this result it is usefull to remeber that
+
+\[
+U_1 = \frac{n \hat{\sigma}^2}{\sigma_0^2} \sim \chi^2_{n-p}, \;\;\;\;\;\;
+U_2 = \frac{\left( \boldsymbol{\theta}_0 - \hat{\boldsymbol{\theta}} \right)^T \mathbf{X}^T \mathbf{X}\left( \boldsymbol{\theta}_0 - \hat{\boldsymbol{\theta}} \right)}{\sigma_0^2} \sim \chi^2_p,
+\]
+
+and that $U_1$ and $U_2$ are independent. Moreover, we have that if $U \sim \chi^2_k$ then $E[1/U] = 1/(k-2)$. Thus, we obtain
+
+\[\begin{aligned}
+\frac{1}{{2n}} {E}\left[ \frac{1}{\hat{\sigma}^2} {E_0}\left[ {{{\left( {\mathbf{y}_0 - \mathbf{X}{\hat{\boldsymbol{\theta}}}} \right)}^T}\left( {\mathbf{y}_0 - \mathbf{X}\hat{\boldsymbol{\theta}}} \right)} \right]\right]
+   = \frac{n+p}{{2(n-p-2)}}.
+\end{aligned}\]
+
+Combining, the above result we have
+
+\[\text{KL} = \frac{1}{2} \left[ E \left[ \log \left( \hat{\sigma}^2 \right) \right] + \frac{n+p}{(n-p-2)} + c \right],\]  
+ 
+where $c =  - \log \left( \sigma_0^2 \right) - 1$. Since the constant $c$ is *common* to all models it can neglated for the purpose of model selection. Therefore, neglecting the constant we obtain that  
+
+\[\text{KL} \propto E \left[ \log \left( \hat{\sigma}^2 \right) \right] + \frac{n+p}{(n-p-2)}.\] 
+
+Thus, an unbiased estimator of $\text{KL}$ is given by
+
+\[\text{AICc} = \log \left( \hat{\sigma}^2 \right)  + \frac{n+p}{(n-p-2)},\]
+
+since an unbiased estimator of $E \left[\log \left( \hat{\sigma}^2 \right)\right]$ is simply $\log \left( \hat{\sigma}^2 \right)$. However, it can be observed that the result we derived is not equal to the AIC defined in (\@ref(eq:defAIC)). Indeed, this result is known as the bias-corrected AIC or AICc. To understand the relationship between the AIC and AICc it is instructif to consider their difference and letting $n$ diverge to infinity, i.e.
+
+\[\lim_{n \to \mathbf{I}nfty} \; \text{AIC} - \text{AICc} = \frac{2 \left(p^2 + 2p + n\right)}{n \left(p - n - 2\right)} = 0.\]
+
+Therefore, the AIC is an asymptotically unbiased estimator of $\text{KL}$. In practice, the AIC and AICc provides very similar result expect when the sample size is rather small.
+
+
+**TO DO** Talk about BIC
+
+Illustration for model selection with linear model:
+
+**TO DO** add comments
+
+
+```{r modelSelectionEg, cache=TRUE, fig.height= 5.5, fig.width= 10}
+```
+
+
+## Linear Regression with Autocorrelated Errors
+
+**TO DO**

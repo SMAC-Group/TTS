@@ -31,16 +31,16 @@ In this chapter we will discuss and formalize how knowledge about $X_{t-1}$ (or
 more generally about all the information from the past, $\Omega_t$) can provide 
 us with some information about the properties of $X_t$. In particular, we will 
 consider the correlation (or covariance) of $X_t$ at different times such 
-as $\corr \left(X_t, X_{t+h}\right)$. This "form" of correlation (covariance) is
+as $\text{corr} \left(X_t, X_{t+h}\right)$. This "form" of correlation (covariance) is
 called the *autocorrelation* (*autocovariance*) and is a very useful tool in
 time series analysis. However, if we do not assume that a time series is 
 characterized by a certain form of "stability", it would be rather difficult 
-to estimate $\corr \left(X_t, X_{t+h}\right)$ as this quantity would depend on 
+to estimate $\text{corr} \left(X_t, X_{t+h}\right)$ as this quantity would depend on 
 both $t$ and $h$ leading to more parameters to estimate than observations 
 available. Therefore, the concept of *stationarity* is convenient in this
 context as it allows (among other things) to assume that
 
-\[\corr \left(X_t, X_{t+h}\right) = \corr \left(X_{t+j}, X_{t+h+j}\right), \;\;\; \text{for all $j$},\]
+\[\text{corr} \left(X_t, X_{t+h}\right) = \text{corr} \left(X_{t+j}, X_{t+h+j}\right), \;\;\; \text{for all $j$},\]
 
 implying that the autocorrelation (or autocovariance) is only a function of the
 lag between observations, rather than time itself. These two concepts (i.e. 
@@ -64,13 +64,13 @@ material discussed in this chapter.
 ```{definition, label="acvf"}
 The *autocovariance function* of a series $(X_t)$ is defined as 
 
-\[{\gamma_x}\left( {t,t+h} \right) = \cov \left( {{X_t},{X_{t+h}}} \right),\]
+\[{\gamma_x}\left( {t,t+h} \right) = \text{cov} \left( {{X_t},{X_{t+h}}} \right),\]
 ```
 
 where the definition of covariance is given by:
   
   \[
-    \cov \left( {{X_t},{X_{t+h}}} \right) = \mathbb{E}\left[ {{X_t}{X_{t+h}}} \right] - \mathbb{E}\left[ {{X_t}} \right]\mathbb{E}\left[ {{X_{t+h}}} \right].
+    \text{cov} \left( {{X_t},{X_{t+h}}} \right) = \mathbb{E}\left[ {{X_t}{X_{t+h}}} \right] - \mathbb{E}\left[ {{X_t}} \right]\mathbb{E}\left[ {{X_{t+h}}} \right].
     \]
 
 Similarly, the above expectations are defined to be:
@@ -97,7 +97,7 @@ of $X_{t+j}$ and $X_{t+h+j}$ (for all $j$), i.e. the covariance depends only
 on the time between observations and not on the specific time $t$. This is an 
 important property called *stationarity*, which will be discussed in the next
 section. In this case, we simply use to following notation:
-  \[\gamma \left( {h} \right) = \cov \left( X_t , X_{t+h} \right). \]
+  \[\gamma \left( {h} \right) = \text{cov} \left( X_t , X_{t+h} \right). \]
 
 This notation will generally be used throughout the text and implies 
 certain properties (i.e. stationarity) on the process $(X_t)$. 
@@ -105,9 +105,9 @@ Several remarks can be made on the autocovariance:
   
   1. The autocovariance function is *symmetric*. 
 That is, ${\gamma}\left( {h} \right) = {\gamma}\left( -h \right)$ 
-  since $\cov \left( {{X_t},{X_{t+h}}} \right) = \cov \left( X_{t+h},X_{t} \right)$.
+  since $\text{cov} \left( {{X_t},{X_{t+h}}} \right) = \text{cov} \left( X_{t+h},X_{t} \right)$.
 2. The autocovariance function "contains" the variance of the process 
-as $\var \left( X_{t} \right) = {\gamma}\left( 0 \right)$.
+as $\text{var} \left( X_{t} \right) = {\gamma}\left( 0 \right)$.
 3. We have that $|\gamma(h)| \leq \gamma(0)$ for all $h$. The proof of this 
 inequality is direct and follows from the Cauchy-Schwarz inequality, i.e.
 \[ \begin{aligned}
@@ -116,7 +116,7 @@ inequality is direct and follows from the Cauchy-Schwarz inequality, i.e.
   \end{aligned}
   \] 
 4. Just as any covariance, ${\gamma}\left( {h} \right)$ is "scale dependent"
-since ${\gamma}\left( {h} \right) \in \real$, 
+since ${\gamma}\left( {h} \right) \in \mathbb{R}$, 
 or $-\infty \le {\gamma}\left( {h} \right) \le +\infty$. We therefore have:
   - if $\left| {\gamma}\left( {h} \right) \right|$ is "close" to zero, 
 then $X_t$ and $X_{t+h}$ are "weakly" (linearly) dependent;
@@ -132,7 +132,7 @@ the jointly Gaussian case.
 As hinted in the introduction, an important related statistic is the correlation
 of $X_t$ with $X_{t+h}$ or *autocorrelation*, which is defined as
 
-$$\rho \left(  h \right) = \corr\left( {{X_t},{X_{t + h}}} \right) = \frac{{\cov\left( {{X_t},{X_{t + h}}} \right)}}{{{\sigma _{{X_t}}}{\sigma _{{X_{t + h}}}}}} = \frac{\gamma(h) }{\gamma(0)}.$$
+$$\rho \left(  h \right) = \text{corr}\left( {{X_t},{X_{t + h}}} \right) = \frac{{\text{cov}\left( {{X_t},{X_{t + h}}} \right)}}{{{\sigma _{{X_t}}}{\sigma _{{X_{t + h}}}}}} = \frac{\gamma(h) }{\gamma(0)}.$$
   
 Similarly to $\gamma(h)$, it is important to note that the above notation 
 implies that the autocorrelation function is only a function of the 
@@ -166,20 +166,20 @@ same process.*
 Since the autocorrelation is related to a fundamental representation of time
 series, it implies that one might be able to define a stochastic process by 
 picking a set of autocorrelation values (assuming for example
-                                         that $\var(X_t) = 1$). However, it turns out that not every collection of
+                                         that $\text{var}(X_t) = 1$). However, it turns out that not every collection of
 numbers, say $\{\rho_1, \rho_2, ...\}$, can represent the autocorrelation of a
 process. Indeed, two conditions are required to ensure the validity of an
 autocorrelation sequence:
   
 1. $\operatorname{max}_j \; | \rho_j| \leq 1$.
-2. $\var \left[\sum_{j = 0}^\infty \alpha_j X_{t-j} \right] \geq 0 \;$ for all $\{\alpha_0, \alpha_1, ...\}$.
+2. $\text{var} \left[\sum_{j = 0}^\infty \alpha_j X_{t-j} \right] \geq 0 \;$ for all $\{\alpha_0, \alpha_1, ...\}$.
 
 The first condition is obvious and simply reflects the fact 
 that $|\rho \left( h \right)| \leq 1$ but the second is far more difficult to
 verify. To further our understanding of the latter we let $\alpha_j = 0$ for $j > 1$,
 then condition two implies that
 
-\[\var \left[ \alpha_0 X_{t} + \alpha_1 X_{t-1}  \right] = \gamma_0 \begin{bmatrix}
+\[\text{var} \left[ \alpha_0 X_{t} + \alpha_1 X_{t-1}  \right] = \gamma_0 \begin{bmatrix}
    \alpha_0 & \alpha_1
    \end{bmatrix}   \begin{bmatrix}
    1 & \rho_1\\
@@ -203,7 +203,7 @@ must be positive semi-definite. Taking the determinant we have
 implying that the condition $|\rho_1| \leq 1$ must be respected. 
 Now, let $\alpha_j = 0$ for $j > 2$, then we must verify that:
   
-  \[\var \left[ \alpha_0 X_{t} + \alpha_1 X_{t-1}  + \alpha_2 X_{t-2} \right] = \gamma_0 \begin{bmatrix}
+  \[\text{var} \left[ \alpha_0 X_{t} + \alpha_1 X_{t-1}  + \alpha_2 X_{t-2} \right] = \gamma_0 \begin{bmatrix}
      \alpha_0 & \alpha_1 &\alpha_2
      \end{bmatrix}   \begin{bmatrix}
      1 & \rho_1 & \rho_2\\
@@ -324,8 +324,8 @@ stationary. In order to do so, we must ensure that our model satisfies the
 following three properties:
   
 1. $\mathbb{E}\left[X_t \right] = \mu_t = \mu < \infty$,
-2. $\var\left[X_t \right] = \sigma^2_t = \sigma^2 < \infty$,
-3. $\cov\left(X_t, X_{t+h} \right) = \gamma \left(h\right)$.
+2. $\text{var}\left[X_t \right] = \sigma^2_t = \sigma^2 < \infty$,
+3. $\text{cov}\left(X_t, X_{t+h} \right) = \gamma \left(h\right)$.
 
 In the following examples, we evaluate the stationarity of the processes
 introduced in Section \@ref(basicmodels).
@@ -354,21 +354,21 @@ of the first term in the sequence.
 
 2. Next, after finding the mean to be constant, we calculate the variance to check stationarity:
   \[\begin{aligned}
-     \var\left( {{X_t}} \right) &= \var\left( {\sum\limits_{i = 1}^t {{W_t}}  + {X_0}} \right) 
-     = \var\left( {\sum\limits_{i = 1}^t {{W_i}} } \right) + \underbrace {\var\left( {{X_0}} \right)}_{= 0} \\
-     &= \sum\limits_{i = 1}^t {\var\left( {{W_i}} \right)} 
+     \text{var}\left( {{X_t}} \right) &= \text{var}\left( {\sum\limits_{i = 1}^t {{W_t}}  + {X_0}} \right) 
+     = \text{var}\left( {\sum\limits_{i = 1}^t {{W_i}} } \right) + \underbrace {\text{var}\left( {{X_0}} \right)}_{= 0} \\
+     &= \sum\limits_{i = 1}^t {\text{var}\left( {{W_i}} \right)} 
      = t \sigma_w^2,
      \end{aligned}\] 
-where $\sigma_w^2 = \var(W_t)$. Therefore, the variance depends on time $t$, contradicting our
+where $\sigma_w^2 = \text{var}(W_t)$. Therefore, the variance depends on time $t$, contradicting our
 second property. Moreover, we have:
-  \[\mathop {\lim }\limits_{t \to \infty } \; \var\left(X_t\right) = \infty.\]
+  \[\mathop {\lim }\limits_{t \to \infty } \; \text{var}\left(X_t\right) = \infty.\]
 This process is therefore not weakly stationary.
 
 3. Regarding the autocovariance of a random walk, we have:
   \[\begin{aligned}
-     \gamma \left( h \right) &= \cov\left( {{X_t},{X_{t + h}}} \right) 
-     = \cov\left( {\sum\limits_{i = 1}^t {{W_i}} ,\sum\limits_{j = 1}^{t + h} {{W_j}} } \right) 
-     = \cov\left( {\sum\limits_{i = 1}^t {{W_i}} ,\sum\limits_{j = 1}^t {{W_j}} } \right)\\ 
+     \gamma \left( h \right) &= \text{cov}\left( {{X_t},{X_{t + h}}} \right) 
+     = \text{cov}\left( {\sum\limits_{i = 1}^t {{W_i}} ,\sum\limits_{j = 1}^{t + h} {{W_j}} } \right) 
+     = \text{cov}\left( {\sum\limits_{i = 1}^t {{W_i}} ,\sum\limits_{j = 1}^t {{W_j}} } \right)\\ 
      &= \min \left( {t,t + h} \right)\sigma _w^2
      = \left( {t + \min \left( {0,h} \right)} \right)\sigma _w^2,
      \end{aligned} \]
@@ -436,15 +436,15 @@ properties for the MA(1) model defined in Section \@ref(ma1):
     \mathbb{E}\left[ {{X_t}} \right] = \mathbb{E}\left[ {{\theta_1}{W_{t - 1}} + {W_t}} \right] 
     = {\theta_1} \mathbb{E} \left[ {{W_{t - 1}}} \right] + \mathbb{E}\left[ {{W_t}} \right] 
     = 0. \] 
-2. \[\var \left( {{X_t}} \right) = \theta_1^2 \var \left( W_{t - 1}\right) + \var \left( W_{t}\right) = \left(1 + \theta^2 \right) \sigma^2_w.\]  
+2. \[\text{var} \left( {{X_t}} \right) = \theta_1^2 \text{var} \left( W_{t - 1}\right) + \text{var} \left( W_{t}\right) = \left(1 + \theta^2 \right) \sigma^2_w.\]  
 3. Regarding the autocovariance, we have 
 \[\begin{aligned}
-   \cov\left( {{X_t},{X_{t + h}}} \right) &= \mathbb{E}\left[ {\left( {{X_t} - \mathbb{E}\left[ {{X_t}} \right]} \right)\left( {{X_{t + h}} - \mathbb{E}\left[ {{X_{t + h}}} \right]} \right)} \right] = \mathbb{E}\left[ {{X_t}{X_{t + h}}} \right] \\
+   \text{cov}\left( {{X_t},{X_{t + h}}} \right) &= \mathbb{E}\left[ {\left( {{X_t} - \mathbb{E}\left[ {{X_t}} \right]} \right)\left( {{X_{t + h}} - \mathbb{E}\left[ {{X_{t + h}}} \right]} \right)} \right] = \mathbb{E}\left[ {{X_t}{X_{t + h}}} \right] \\
    &= \mathbb{E}\left[ {\left( {{\theta}{W_{t - 1}} + {W_t}} \right)\left( {{\theta }{W_{t + h - 1}} + {W_{t + h}}} \right)} \right] \\
    &= \mathbb{E}\left[ {\theta^2{W_{t - 1}}{W_{t + h - 1}} + \theta {W_t}{W_{t + h}} + {\theta}{W_{t - 1}}{W_{t + h}} + {W_t}{W_{t + h}}} \right]. \\
    \end{aligned} \] 
 It is easy to see that $\mathbb{E}\left[ {{W_t}{W_{t + h}}} \right] = {\boldsymbol{1}_{\left\{ {h = 0} \right\}}}\sigma _w^2$ and therefore, we obtain
-\[\cov \left( {{X_t},{X_{t + h}}} \right) = \left( {\theta^2{ \boldsymbol{1}_{\left\{ {h = 0} \right\}}} + {\theta}{\boldsymbol{1}_{\left\{ {h = 1} \right\}}} + {\theta}{\boldsymbol{1}_{\left\{ {h =  - 1} \right\}}} + {\boldsymbol{1}_{\left\{ {h = 0} \right\}}}} \right)\sigma _w^2\] 
+\[\text{cov} \left( {{X_t},{X_{t + h}}} \right) = \left( {\theta^2{ \boldsymbol{1}_{\left\{ {h = 0} \right\}}} + {\theta}{\boldsymbol{1}_{\left\{ {h = 1} \right\}}} + {\theta}{\boldsymbol{1}_{\left\{ {h =  - 1} \right\}}} + {\boldsymbol{1}_{\left\{ {h = 0} \right\}}}} \right)\sigma _w^2\] 
 implying the following autocovariance function:
   \[\gamma \left( h \right) = \left\{ {\begin{array}{*{20}{c}}
     {\left( {\theta^2 + 1} \right)\sigma _w^2}&{h = 0} \\ 
@@ -505,15 +505,15 @@ With this setup, we demonstrate how crucial this property is by calculating each
      \end{aligned} \] As expected, the mean is zero and, hence, the first criteria for weak stationarity is satisfied. 
   2. Next, we opt to determine the variance of the process
   \[\begin{aligned}
-     \var\left( {{X_t}} \right) &= \mathop {\lim }\limits_{k \to \infty } \var\left( {{\phi^k}{X_{t-k}} + \sum\limits_{j = 0}^{k - 1} {\phi^j{W_{t - j}}} } \right)
-     = \mathop {\lim }\limits_{k \to \infty } \sum\limits_{j = 0}^{k - 1} {\phi ^{2j} \var\left( {{W_{t - j}}} \right)}  \\
+     \text{var}\left( {{X_t}} \right) &= \mathop {\lim }\limits_{k \to \infty } \text{var}\left( {{\phi^k}{X_{t-k}} + \sum\limits_{j = 0}^{k - 1} {\phi^j{W_{t - j}}} } \right)
+     = \mathop {\lim }\limits_{k \to \infty } \sum\limits_{j = 0}^{k - 1} {\phi ^{2j} \text{var}\left( {{W_{t - j}}} \right)}  \\
      &= \mathop {\lim }\limits_{k \to \infty } \sum\limits_{j = 0}^{k - 1} \sigma _W^2 \, {\phi ^{2j}}  =  
        \underbrace {\frac{\sigma _W^2}{{1 - {\phi ^2}}}.}_{\begin{subarray}{l} 
          {\text{Geom. Serie}} 
          \end{subarray}}
      \end{aligned} \] Once again, the above result only holds because we are able to use the geometric series convergence as a result of $\left| \phi  \right| < 1$.
   3. Finally, we consider the autocovariance of an AR(1). For $h > 0$, we have
-  \[\gamma \left( h \right) =  \cov\left( {{X_t},{X_{t + h}}} \right) = \phi \cov\left( {{X_t},{X_{t + h - 1}}} \right) = \phi \, \gamma \left( h-1 \right).\]
+  \[\gamma \left( h \right) =  \text{cov}\left( {{X_t},{X_{t + h}}} \right) = \phi \text{cov}\left( {{X_t},{X_{t + h - 1}}} \right) = \phi \, \gamma \left( h-1 \right).\]
   Therefore, using the symmetry of autocovariance, we find that
   \[\gamma \left( h \right) = \phi^{|h|} \, \gamma(0).\]
   
@@ -567,8 +567,8 @@ The variance of such an estimator can be derived as follows:
     
 \begin{equation}
   \begin{aligned}
-  \var \left( \hat{\beta}_k \right) &= \var \left( {\frac{1}{n}\sum\limits_{t = 1}^n {{X_t^k}} } \right)  \\
-  &= \frac{1}{{{n^2}}}\var \left( {{{\left[ {\begin{array}{*{20}{c}}
+  \text{var} \left( \hat{\beta}_k \right) &= \text{var} \left( {\frac{1}{n}\sum\limits_{t = 1}^n {{X_t^k}} } \right)  \\
+  &= \frac{1}{{{n^2}}}\text{var} \left( {{{\left[ {\begin{array}{*{20}{c}}
     1& \cdots &1
     \end{array}} \right]}_{1 \times n}}{{\left[ {\begin{array}{*{20}{c}}
       {{X_1^k}} \\
@@ -586,16 +586,16 @@ The variance of such an estimator can be derived as follows:
   (\#eq:chap2VarMoment)
 \end{equation}
     
-where $\boldsymbol{\Sigma}(k) \in \real^{n \times n}$ and its $i$-th, $j$-th
+where $\boldsymbol{\Sigma}(k) \in \mathbb{R}^{n \times n}$ and its $i$-th, $j$-th
 element is given by
     
-\[ \left(\boldsymbol{\Sigma}(k)\right)_{i,j} = \cov \left(X_i^k, X_j^k\right).\]
+\[ \left(\boldsymbol{\Sigma}(k)\right)_{i,j} = \text{cov} \left(X_i^k, X_j^k\right).\]
     
 In the case $k = 1$, \@ref(eq:chap2VarMoment) can easily be further simplified.
 Indeed, we have
     
 \[\begin{aligned}
-       \var \left( {\bar X} \right) &= \var \left( {\frac{1}{n}\sum\limits_{t = 1}^n {{X_t}} } \right)  \\
+       \text{var} \left( {\bar X} \right) &= \text{var} \left( {\frac{1}{n}\sum\limits_{t = 1}^n {{X_t}} } \right)  \\
        &= \frac{1}{{{n^2}}}{\left[ {\begin{array}{*{20}{c}}
          1& \cdots &1
          \end{array}} \right]_{1 \times n}}\left[ {\begin{array}{*{20}{c}}
@@ -613,26 +613,26 @@ Indeed, we have
 \end{aligned} \]
     
 Obviously, when $X_t$ is a white noise process, the above formula reduces to the
-usual $\var \left( {\bar X} \right) = \sigma^2_w/n$. In the following example,
+usual $\text{var} \left( {\bar X} \right) = \sigma^2_w/n$. In the following example,
 we consider the case of an AR(1) process and discuss 
-how $\var \left( {\bar X} \right)$ can be obtained or estimated.
+how $\text{var} \left( {\bar X} \right)$ can be obtained or estimated.
     
 ```{example, label="exactvbootstrap"}
 For an AR(1), we have $\gamma(h) = \phi^h \sigma_w^2 \left(1 - \phi^2\right)^{-1}$. Therefore, we obtain (after some computations):
       
 \begin{equation}
-    \var \left( {\bar X} \right) = \frac{\sigma_w^2 \left( n - 2\phi - n \phi^2 + 2 \phi^{n + 1}\right)}{n^2\left(1-\phi^2\right)\left(1-\phi\right)^2}.
+    \text{var} \left( {\bar X} \right) = \frac{\sigma_w^2 \left( n - 2\phi - n \phi^2 + 2 \phi^{n + 1}\right)}{n^2\left(1-\phi^2\right)\left(1-\phi\right)^2}.
 \end{equation}
     
 Unfortunately, deriving such an exact formula is often difficult when considering
 more complex models. However, asymptotic approximations are often employed to
 simplify the calculation. For example, in our case we have
     
-\[\mathop {\lim }\limits_{n \to \infty } \; n \var \left( {\bar X} \right) = \frac{\sigma_w^2}{\left(1-\phi\right)^2},\]
+\[\mathop {\lim }\limits_{n \to \infty } \; n \text{var} \left( {\bar X} \right) = \frac{\sigma_w^2}{\left(1-\phi\right)^2},\]
     
 providing the following approximate formula:
       
-\[\var \left( {\bar X} \right) \approx \frac{\sigma_w^2}{n \left(1-\phi\right)^2}.\]
+\[\text{var} \left( {\bar X} \right) \approx \frac{\sigma_w^2}{n \left(1-\phi\right)^2}.\]
     
 Alternatively, simulation methods can also be employed. For example, a possible
 strategy would be parametric bootstrap.
@@ -640,8 +640,8 @@ strategy would be parametric bootstrap.
     
 ```{theorem, label="parabootstrap", "Parametric Bootstrap"}
 1. Simulate a new sample under the postulated model, 
-    i.e. $X_t^* \sim F_{\btheta}$ (*note:* if $\btheta$ is unknown it can be
-                                   replace by $\hat{\btheta}$, a suitable estimator).
+    i.e. $X_t^* \sim F_{\boldsymbol{theta}}{$ (*note:* if $\boldsymbol{theta}$ is unknown it can be
+                                   replace by $\hat{\boldsymbol{theta}}$, a suitable estimator).
 2. Compute the statistics of interest on the simulated 
     sample $(X_t^*)$.
 3. Repeat Steps 1 and 2 $B$ times where $B$ is sufficiently "large" 
@@ -714,7 +714,7 @@ legend("topleft",c("Theoretical variance","Bootstrap variance","Approximate vari
 ```
     
 It can be observed that the variance of $\bar{X}$ typically increases with 
-$\phi$. As expected when $\phi = 0$, we have $\var(\bar{X}) = 1/n$ — in 
+$\phi$. As expected when $\phi = 0$, we have $\text{var}(\bar{X}) = 1/n$ — in 
 this case the process is a white noise. Moreover, the bootstrap approach 
 appears to approximate well the curve of (\@ref(eq:chap2_exAR1)), while the
 asymptotic formula provides a reasonable approximation for $\phi$ being between
@@ -1022,7 +1022,7 @@ multivariate setting.
 The **cross-covariance** function of two jointly stationary processes
 $\left\{X_t\right\}$ and $\left\{Y_t\right\}$ is given by:
   
-  \[{\gamma _{XY}}\left( {t + h,t} \right) = \cov\left( {{X_{t+h}},{Y_{t}}} \right) =
+  \[{\gamma _{XY}}\left( {t + h,t} \right) = \text{cov}\left( {{X_{t+h}},{Y_{t}}} \right) =
       \e{\left( {{X_{t + h}} - {\mu _X}} \right)\left( {{Y_t} - {\mu _Y}} \right)} = {\gamma _{XY}}\left( h \right)\]
 ```
 
@@ -1062,8 +1062,8 @@ The means of both time series are evident to be
 The autocovariance for $\left\{X_t\right\}$ is given as:
   
   \[\begin{aligned}
-     {\gamma _X}\left( h \right) &= \cov \left( {{X_{t + h}},{X_t}} \right) \\
-     &= \cov \left( {{W_{t + h}} - {W_{t + h - 1}},{W_t} - {W_{t - 1}}} \right) \\
+     {\gamma _X}\left( h \right) &= \text{cov} \left( {{X_{t + h}},{X_t}} \right) \\
+     &= \text{cov} \left( {{W_{t + h}} - {W_{t + h - 1}},{W_t} - {W_{t - 1}}} \right) \\
      &= {1_{\left\{ {h = 0} \right\}}}2{\sigma ^2} + {1_{\left\{ {h =  - 1} \right\}}}{-\sigma ^2} + {1_{\left\{ {h = 1} \right\}}}{-\sigma ^2} \\
      &= \begin{cases}
      2\sigma^2_W, &\text{if} h = 0 \\
@@ -1075,8 +1075,8 @@ The autocovariance for $\left\{X_t\right\}$ is given as:
 Similarly, the autocovariance for $\left\{Y_t\right\}$ is calculated to be:
   
   \[\begin{aligned}
-     {\gamma _Y}\left( h \right) &= \cov \left( {{Y_{t + h}},{Y_t}} \right) \\
-     &= \cov \left( {{W_{t + h}} + {W_{t + h - 1}},{W_t} + {W_{t - 1}}} \right) \\
+     {\gamma _Y}\left( h \right) &= \text{cov} \left( {{Y_{t + h}},{Y_t}} \right) \\
+     &= \text{cov} \left( {{W_{t + h}} + {W_{t + h - 1}},{W_t} + {W_{t - 1}}} \right) \\
      &= {1_{\left\{ {h = 0} \right\}}}2{\sigma ^2} + {1_{\left\{ {h =  - 1} \right\}}}{\sigma ^2} + {1_{\left\{ {h = 1} \right\}}}{\sigma ^2} \\ 
      &= \begin{cases}
      2\sigma^2_W, &\text{if} h = 0 \\
@@ -1088,8 +1088,8 @@ Similarly, the autocovariance for $\left\{Y_t\right\}$ is calculated to be:
 Next, the cross-covariance for $\left\{X_t\right\}$ and $\left\{Y_t\right\}$:
   
   \[\begin{aligned}
-     {\gamma _{XY}}\left( h \right) &= \cov \left( {{X_{t + h}},{Y_t}} \right) \\
-     &= \cov \left( {{W_{t + h}} - {W_{t + h - 1}},{W_t} + {W_{t-1}}} \right)  \\ 
+     {\gamma _{XY}}\left( h \right) &= \text{cov} \left( {{X_{t + h}},{Y_t}} \right) \\
+     &= \text{cov} \left( {{W_{t + h}} - {W_{t + h - 1}},{W_t} + {W_{t-1}}} \right)  \\ 
      &= \begin{cases}
      0, &\text{if } h = 0 \\
      -\sigma^2_W, &\text{if } h = 1 \\
@@ -1289,11 +1289,11 @@ scale_fill_hue(name="Specified m", breaks = c(1,2) , labels = c("m=1", "m=10"))
 1. Given three random variables $X_1$, $X_2$, and $X_3$ such that $\mathbb{\mu}  = \left[ {\begin{array}{*{20}{c}} 1 \\ 0 \\ { - 2} \end{array}} \right]$ and $\mathbb{\Sigma} = \left[ {\begin{array}{*{20}{c}} 2&0&{ - 1} \\ 0&3&{0.5} \\ { - 1}&{0.5}&1 \end{array}} \right]$ compute:
 - $\e{X_1 + X_3}$
 - $\e{3X_1 - X_2 + 4X_3}$
-- $\var(X_2 - X_3)$
-- $\var(X_2 + X_3)$
-- $\cov(4X_2 + X_1, 3X_1 - 2X_3)$
+- $\text{var}(X_2 - X_3)$
+- $\text{var}(X_2 + X_3)$
+- $\text{cov}(4X_2 + X_1, 3X_1 - 2X_3)$
 - $\corr(X_3 + X_2, 2X_2 - 3X_1)$
-1. Consider the time series of ${X_t} = {X_{t - 1}} + {W_t}$, where $W_t \sim N(0,\sigma ^2)$ and ${X_0} = 0$. Let $\bar X = \frac{1}{n}\sum\limits_{i = 1}^n {{X_i}}$. Derive the general form for $\var(\bar X)$. (Hint: $\sum\limits_{i = 1}^n {{i^2}}  = \frac{{n\left( {n + 1} \right)\left( {2n + 1} \right)}}{6}$)
+1. Consider the time series of ${X_t} = {X_{t - 1}} + {W_t}$, where $W_t \sim N(0,\sigma ^2)$ and ${X_0} = 0$. Let $\bar X = \frac{1}{n}\sum\limits_{i = 1}^n {{X_i}}$. Derive the general form for $\text{var}(\bar X)$. (Hint: $\sum\limits_{i = 1}^n {{i^2}}  = \frac{{n\left( {n + 1} \right)\left( {2n + 1} \right)}}{6}$)
 1. For each of the following first construct an example and then show that it has the correct properties:
 - $(X_t)$ with constant mean but has a variance that is a function of time.
 - $(W_t)$ white noise process that is not strongly stationary.

@@ -1,177 +1,20 @@
----
-output:
-  pdf_document: default
-  html_document: default
----
 # Autoregressive Moving Average Models
-
-```{r autocorrelation_stationarity_code, echo = FALSE, message = FALSE, warning = FALSE}
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
 library(simts)
 library(ggplot2)
 library(robcor)
 ```
 
->
-> "*Essentially, all models are wrong, but some are useful*", George Box
->
+In this chapter we introduce a class of time series models that is flexible and among the most commonly used to describe stationary time series. This class is represented by the AutoRegressive Moving Average (ARMA) models which combine and include the autoregressive and moving average models seen in the previous chapter, which we first discuss in further detail before introducing the general ARMA class. The importance of the latter class of models resides in its flexibility as well as its capacity of describing (or closely approximating) almost all the features of a stationary time series. The autoregressive parts of these models describe how consecutive observations in time influence each other while the moving average parts capture some possible unobserved shocks thereby allowing to model different phenomena going from biology to finance.
 
+To introduce and explain this class of models, this chapter is organized in the following manner. First of all we will discuss the class of linear processes of which the ARMA models are part of. We will then proceed to a detailed description of autoregressive models in which we review their definition, explain their properties, introduce the main estimation methods for their parameters and highlight the diagnostic tools which can help understand if the estimated models appear to be appropriate or sufficient to well describe the observed time series. Once this is done, we will then use most of the results given for the autoregressive models to further desribe and discuss the moving average models, for which we underline the property of invertibility, and finally the ARMA models. Indeed, the properties and estimation methods for the latter class are directly inherited from the discussions on the autoregressive and moving average models.
 
-In this chapter we introduce a class of time series models that is flexible and
-among the most commonly used to describe stationary time series. This class is 
-represented by the AutoRegressive Moving Average (ARMA) models which combine and
-include the AutoRegressive (AR) and Moving Average (MA) models seen in the
-previous chapter. We first discuss AR and MA models in further detail before
-introducing the general ARMA class. The importance of the latter class of models
-resides in its flexibility as well as its capacity of describing (or closely
-approximating) the features of stationary time series. The autoregressive parts
-of these models describe how consecutive observations in time influence each
-other while the moving average parts capture some possible unobserved shocks
-thereby allowing to model different phenomena going from biology to finance.
+## Linear Processes
 
-To introduce and explain this class of models, this chapter is organized in the
-following manner. First of all we will discuss the class of linear processes of
-which the ARMA models are part of. We will then proceed to a detailed
-description of AR models in which we review their definition, explain their
-properties, introduce the main estimation methods for their parameters and
-highlight the diagnostic tools which can help understand if the estimated models
-appear to be appropriate or sufficient to well describe the observed time series.
-Once this is done, we will then use most of the results given for AR models to 
-further describe and discuss MA models, for which we underline the property of
-invertibility, and finally the ARMA models. Indeed, the properties and
-estimation methods for the latter class are directly inherited from the
-discussions on AR and MA models.
-
-## Linear Operators and Processes
-
-Within this section, the concepts of linear operators and processes will be
-discussed thereby providing some theoretical bases to model a variety of time series data.
-In fact, every time series that is weakly stationary is either a 
-linear process or can be redefined as such after being transformed using a linear 
-operation such as, for example, removing a trend through differencing. 
-
-### Linear Operators
-
-Prior to introducing linear processes, we will first discuss the concept of linear operators that are necessary to better understand the former. These operators allow to manipulate time series in order to transform them into a form that can be represented by the models presented in the previous chapters (and the ARMA models presented further on). Generally speaking, these operators serve three main goals:
-
-- converting a time series into a linear process form;
-- differencing in order to remove deterministic components;
-- removing seasonal trends.
-
-```{definition, label="linop", name = "Linear Operator"}
-A linear operator $L$ is an operator that satisfies the following two 
-conditions: 
-
-\[\begin{aligned}
-  L\left( {{X_t} + {Y_t}} \right) &= L{X_t} + L{Y_t} & \text{(Preserves Addition)}\\
-  L\left( {\lambda  \cdot {X_t}} \right) &= \lambda  \cdot \left( {L{X_t}} \right) & \text{(Preserves Scalar Multiplication)} \\ 
-\end{aligned} \]
-```
-
-Given these definitions, the following subsections will investigate some specific linear operators that are particularly suited to manipulate the time series that are treated within this chapter.
-
-#### Backshift (Lag) Operator
-
-The backshift operator is a linear operator which can be used to define the other operators that will be discussed in the following paragraphs. The purpose of this operator is to change the
-indices of the time series by one period (e.g. $t \rightarrow t-1$) thereby shifting a variable at time $t$ to its predecessor at time $t-1$. 
-
-```{definition, label="backshiftop", name = "Backshift Operator"}
-The backshift operator $B$ is defined as:
-
-\[B{X_t} = {X_{t - 1}}\]
-```
-
-Given this definition, the backshift operator has the following properties:
-
-1. ${B^k}{X_t} = B^{k-1} B {X_t} = B^{k-1} {X_{t-1}} = ... = {X_{t - k}}$ for $k \in \mathbb{N}^{+}$
-2. $B^{u}{X_t} = {X_{t+u}}$ for $u \in \mathbb{Z}^{-}$ (i.e. negative integer powers)
-3. $Bc = c$ for $c \in \real$
-4. $B^0 = 1$
-
-Often the backshift operator may be denoted as $L$ which can be confused with the notation of the linear operator provided earlier. Therefore, in the context of this chapter (and book), please notice that $L$ will denote a general linear operator and that $B$ will instead denote the backshift operator.
-
-```{example, label="backshiftseasons", name = "Backshift operator for seasonality"}
-A certain power used for the backshift operator can be useful to deal with seasonal features in the observed time series. For example, in the case of 
-monthly data, $B^{12} X_t = X_{t-12}$ would eventually allow to deal with cycles that occur every year while $B^{3} X_t = X_{t-3}$ would be more adapted to dealing with quarterly characteristics.
-```
-
-#### Difference Operator
-
-A very useful operator that can be defined through the backshift operator $B$ is given by the difference operator $\nabla$. The latter is particularly helpful when there is a need to remove trends from the time series.
-
-```{definition, label="diffop", name = "Difference Operator"}
-The **Difference Operator** is defined as follows:
-
-\[\nabla {X_t} = \left( {1 - B} \right){X_t} = {X_t} - {X_{t - 1}}.\]
-
-The difference operator has the following properties:
-
-1. ${\nabla ^k}{X_t} = {\nabla ^{k - 1}} \left( {\nabla {X_t}}\right) = \left( {1 - B} \right)^k {X_t}$
-2. $\nabla c = 0$ for $c \in \real$
-3. ${\nabla ^0}{X_t} = {X_t}$
-
-```
-
-```{example, label="diffex", name = "Repetitive Differencing"}
-To understand the repetitive nature of the difference operator, consider the
-case when the number of differences is $k = 2$:
-
-\[\begin{aligned}
-  {\nabla ^2}{X_t} &= \nabla \left( {\nabla {X_t}} \right) \\
-   &= \nabla \left( {{X_t} - {X_{t - 1}}} \right) = \nabla {X_t} - \nabla {X_{t - 1}} \\
-   &= \left( {{X_t} - {X_{t - 1}}} \right) - \left( {{X_{t - 1}} - {X_{t - 2}}} \right) \\
-   &= {X_t} - 2{X_{t - 1}} + {X_{t - 2}} \\ 
-\end{aligned} \]
-
-Notice that at the end of the process, we are able to re-express the
-differencing operation in terms of the backshift operator:
-
-\[\begin{aligned}
-  {\nabla ^2}{X_t} &= {X_t} - 2{X_{t - 1}} + {X_{t - 2}} = {X_t} - 2B{X_t} + B^2{X_t} \\
-   &= \left( {1 - B} \right)\left( {1 - B} \right){X_t} = {\left( {1 - B} \right)^2}{X_t} \\ 
-\end{aligned} \]
-```
-
-#### Seasonal Difference Operator
-
-A specific case of the backshift operator, as highlighted earlier, is the capacity of adapting to seasonal features in the time series. Indeed, there may be trends in the time series that occur over lags of months or even years. In order to remove these trends in the process, a seasonal version of the difference operator can therefore be used.
-
-```{definition, label="seasonaldiff", name = "Seasonal Difference Operator"}
-The seasonal difference operator can applied by using a seasonal backshift:
-
-\[{\nabla _s}{X_t} = \left( {1 - B_s} \right){X_t} = {X_t} - {X_{t - s}} \]
-
-where $s$ denotes the lag at which the seasonal trend occurs. Being a specific case of the difference operator, the previously discussed
-properties associated with the difference operator generally hold. However, the seasonal difference operator is more specifically represented as follows:
-
-\[{\nabla ^k_s}{X_t} = {\left( {1 - B_s} \right)^k}{X_t},\]
-
-and therefore can be more complex to apply than a simple difference operator.
-
-```
-
-
-### Linear Processes
-
-The stationary models considered so far, including the ARMA models treated further on in this chapter, can all be represented as linear processes. Indeed, a linear process is a process that can be represented as an infinite linear combination of independent random variables $\left\{W_t\right\}$ with linear coefficients generally denoted as $\psi_j$, $j = -\infty,...,+\infty$. The following figure gives a general idea of how a linear process can be obtained.
-
-```{r linearfilter, fig.cap="Linear process representation", cache = TRUE, fig.align='center', echo = FALSE}
-knitr::include_graphics("images/filter/filtering.png")
-```
-
-To put this definition into context, recall Example \@ref(ex:exar1) where *backsubstitution* was used to represent an AR(1) model as a linear combination of a white noise process $\left\{W_t\right\}$. Using the *backshift* operator $B$ defined earlier, we can revisit this example in the following manner:
-
-\[\begin{aligned}
-  {X_t} &= \phi {X_{t - 1}} + {W_t} \\
-  {X_t} - \phi {X_{t - 1}} &= {W_t} \\
-  \left( {1 - \phi B} \right){X_t} &= {W_t} \\
-  {X_t} &= \frac{1}{{1 - \phi B}}{W_t} \\
-   &= \sum\limits_{j = 0}^\infty  {{\phi ^j}{B^j}{W_t}}  = \sum\limits_{j = 0}^\infty  {{\phi ^j}{W_{t - j}}} . \\ 
-\end{aligned} \]
-
-As can be seen, under the condition that $\left|\phi\right| < 1$, an AR(1) can therefore be represented as a linear process. Given the above discussion and examples, let us now formalize the definition of this class of processes.
+INSERT AN INTRODUCTION TO WHAT LINEAR PROCESSES ARE AND WHY THEY ARE IMPORTANT
 
 ```{definition, label="lp", name="Linear Process"}
-A time series $\left\{X_t\right\}$ is defined to be a linear process if it can be expressed
+A time series, $(X_t)$, is defined to be a linear process if it can be expressed
 as a linear combination of white noise by:
 
 \[{X_t} = \mu + \sum\limits_{j =  - \infty }^\infty  {{\psi _j}{W_{t - j}}} \]
@@ -179,117 +22,121 @@ as a linear combination of white noise by:
 where $W_t \sim WN(0, \sigma^2)$ and $\sum\limits_{j =  - \infty }^\infty  {\left| {{\psi _j}} \right|}  < \infty$.
 ```
 
-Note, the latter assumption (i.e. $\sum\limits_{j =  - \infty }^\infty  {\left| {{\psi _j}} \right|}  < \infty$) is required to ensure that the series has a limit. Hence, the set of coefficients \[{\{ {\psi _j}\} _{j =  - \infty , \cdots ,\infty }}\]
-can be viewed as linear filter that do not have to be all equal
-nor symmetric as later examples will show. 
-
-```{theorem, label="lpstat", name="Stationarity of Linear Process"}
-A linear process $\left\{X_t\right\}$ in the form of Definition \@ref(def:lp) 
-is stationary with:
+Note, the latter assumption is required to ensure that the series has a limit. 
+Furthermore, the set of coefficients \[{\{ {\psi _j}\} _{j =  - \infty , \cdots ,\infty }}\]
+can be viewed as linear filter. These coefficients do not have to be all equal
+nor symmetric as later examples will show. Generally, the properties of a linear
+process related to mean and variance are given by:
 
 \[\begin{aligned}
-\mathbb{E}[X_t] &= \mu \\
-\gamma(h) &= \sigma^2\sum\limits_{j =  - \infty }^\infty  {{\psi _j}{\psi _{h + j}}}.
+\mu_{X} &= \mu \\
+\gamma_{X}(h) &= \sigma _W^2\sum\limits_{j =  - \infty }^\infty  {{\psi _j}{\psi _{h + j}}}
 \end{aligned}\]
-```
 
-```{proof}
-Given that the
-series converges under $\sum\limits_{j =  - \infty }^\infty  {\left| {{\psi _j}} \right|}  < \infty$, the expectation and autocovariance can be computed in a straightforward manner. Indeed, for the expectation we have:
-
-\[E\left[ {{X_t}} \right] = E\left[ {\mu  + \sum\limits_{j =  - \infty }^\infty  {{\psi _j}{W_{t - j}}} } \right] = \mu  + \sum\limits_{j =  - \infty }^\infty  {{\psi _j}E\left[ {{W_{t - j}}} \right]}  = \mu  + 0 = \mu \]
-
-As for the autocovariance, noting that $\cov\left( {{W_{t + h - j}},{W_{t - i}}} \right) = 0$ for $i \ne j - h$, we have:
+The latter is derived from 
 
 \[\begin{aligned}
-  \cov \left( {{X_{t + h}},{X_t}} \right) &= \cov \left( {\mu  + \sum\limits_{j =  - \infty }^\infty  {{\psi _j}{W_{t + h - j}}} ,\mu  + \sum\limits_{i =  - \infty }^\infty  {{\psi _i}{W_{t - i}}} } \right) \\
-   &= \sum\limits_{j =  - \infty }^\infty  {\sum\limits_{i =  - \infty }^\infty  {{\psi _j}{\psi _i}\cov \left( {{W_{t + h - j}},{W_{t - i}}} \right)} }  = \sum\limits_{j =  - \infty }^\infty  {{\psi _{j + h}}{\psi _j}\cov \left( {{W_t},{W_t}} \right)}  + \sum\limits_{j =  - \infty }^\infty  {\sum\limits_{i =  - \infty }^\infty  {{\psi _j}{\psi _i}\underbrace {\cov \left( {{W_{t + h - j}},{W_{t - i}}} \right)}_{ = 0}} }  \\
-   &= \sigma _W^2\sum\limits_{j =  - \infty }^\infty  {{\psi _j}{\psi _{j-h}}}.  \\ 
-\end{aligned} \]
-```
-
-```{example, label="backshiftlp", name = "Backshift operators for Linear Processes"}
-A special notation for linear processes based on the backshift operator is as follows:
-
-\[\begin{aligned}
-  {X_t} &= \mu  + \psi \left( B \right){W_t} \\
-  \psi \left( B \right) &= \sum\limits_{j = 0}^\infty  {{\psi _j}{B^j}}  \\ 
+  \gamma \left( h \right) &= Cov\left( {{x_t},{x_{t + h}}} \right) \\
+   &= Cov\left( {\mu  + \sum\limits_{j =  - \infty }^\infty  {{\psi _j}{w_{t - j}}} ,\mu  + \sum\limits_{j =  - \infty }^\infty  {{\psi _j}{w_{t + h - j}}} } \right) \\
+   &= Cov\left( {\sum\limits_{j =  - \infty }^\infty  {{\psi _j}{w_{t - j}}} ,\sum\limits_{j =  - \infty }^\infty  {{\psi _j}{w_{t + h - j}}} } \right) \\
+   &= \sum\limits_{j =  - \infty }^\infty  {{\psi _j}{\psi _{j + h}}Cov\left( {{w_{t - j}},{w_{t - j}}} \right)}  \\
+   &= \sigma _w^2\sum\limits_{j =  - \infty }^\infty  {{\psi _j}{\psi _{j + h}}}  \\ 
 \end{aligned} \]
 
-This notation allows to define the processes in a more compact form.
-```
+Within the above derivation, the key is to realize that 
+$Cov\left( {{w_{t - j}},{w_{t + h - j}}} \right) = 0$ if $t - j \ne t + h - j$.
 
-### Examples of Linear Processes
+Lastly, one of the better formalities of a linear process is that it is able 
+to be represented in a simplified form under the **backshift operator**:
 
-Let us now consider how to represent the time series models discussed in
-Section \@ref(basicmodels) as a linear process. Generally speaking, the work required to transform the traditional representation of a time series model into the form of a linear process consists mainly in finding the set of corresponding linear coefficients $\psi_j$ highlighted earlier.
+\[{X_t} = \psi \left( B \right){W_t}\]
 
-```{example, label="lpwn", name="White Noise"}
+```{example, label="lpwn", name="Linear Process of White Noise"}
 
-The representation of white noise process $\left\{X_t\right\}$, defined in \@ref(wn), as a linear process is quite straighforward since we have that:
+The white noise process $\left\{X_t\right\}$, defined in \@ref(wn),
+can be expressed as a linear process under:
 
 \[\psi _j = \begin{cases}
       1 , &\mbox{ if } j = 0\\
-      0 , &\mbox{ if } |j| \ge 1,
-\end{cases}\]
+      0 , &\mbox{ if } |j| \ge 1
+\end{cases}.\]
 
-and $\mu = 0$. Indeed, $X_t = W_t$ with $W_t \sim WN(0, \sigma^2_W)$, and therefore $\psi_0 = 1$ while the other coefficients are zero.
+and $\mu = 0$.
+
+Therefore, $X_t = W_t$, where $W_t \sim WN(0, \sigma^2_W)$
 ```
 
-```{example, label="lpma1", name="First Order Moving Average"}
+```{example, label="lpma1", name="Linear Process of Moving Average Order 1"}
 
-Consider the MA(1) process $\left\{X_t\right\}$ defined in \@ref(ma1). The representation of this process as a linear process can be done when defining the coefficients $\psi_j$ as follows: 
+Similarly, consider $\left\{X_t\right\}$ to be a MA(1) process, 
+given by \@ref(ma1). The process can be expressed linearly under: 
 
 \[\psi _j = \begin{cases}
       1, &\mbox{ if } j = 0\\
       \theta , &\mbox{ if } j = 1 \\
-      0, &\mbox{ if } j \ge 2,
-\end{cases}\]
+      0, &\mbox{ if } j \ge 2
+\end{cases}.\]
 
-and $\mu = 0$. Also in this case, as for the white noise process, the linear representation is directly observable from the traditional representation of the MA(1) process given by $X_t = W_t + \theta W_{t-1}$. It is in fact easy to see that $\psi_0 = 1$, $\psi_1 = \theta$ and the others are zero.
+and $\mu = 0$.
+
+Thus, we have: $X_t = W_t + \theta W_{t-1}$
 ```
 
-```{example, label="lpsma", name="Symmetric Moving Average"}
+```{example, label="lpsma", name="Linear Process and Symmetric Moving Average"}
 
-Similarly to the MA(1) process, let us define a symmetric moving average which is given by:
+Consider a symmetric moving average given by:
 
 \[{X_t} = \frac{1}{{2q + 1}}\sum\limits_{j =  - q}^q {{W_{t + j}}} \]
 
-The process $\left\{X_t\right\}$ is therefore defined for $q + 1 \le t \le n-q$ and can also be represented as a linear process since:
+Thus, $\left\{X_t\right\}$ is defined for $q + 1 \le t \le n-q$. The above process
+would be a linear process since:
 
 \[\psi _j = \begin{cases}
       \frac{1}{{2q + 1}} , &\mbox{ if } -q \le j \le q\\
-      0 , &\mbox{ if } |j| > q.
-\end{cases}\]
+      0 , &\mbox{ if } |j| > q
+\end{cases}.\]
 
 and $\mu = 0$.
+
+In practice, if $q = 1$, we would have:
+
+\[{X_t} = \frac{1}{3}\left( {{W_{t - 1}} + {W_t} + {W_{t + 1}}} \right)\]
 ```
 
 
-```{example, label="lpar1", name="First Order Autoregressive Process"}
-A slightly less intuitive approach would be to represent an AR(1) process as a linear process. To do so, let $\left\{X_t\right\}$ in this case represent an AR(1) process, defined in \@ref(ar1) as being $X_t = \phi X_{t-1} + W_t$, with $\left| \phi \right| < 1$. If we use a first-step backsubsitution, from this we obtain that $X_t = \phi^2 X_{t-2} + \phi W_{t-1} + W_t$ and, by doing so recursively and using convergence results based on the value of $\phi$, this process can indeed be represented as a linear process by defining the coefficients $\psi_j$ as:
+```{example, label="lpar1", name="Linear Process of Autoregressive Process of Order 1"}
+A more intensive application of a linear process is $\left\{X_t\right\}$ as an
+AR1 process, defined in \@ref(ar1). The intensity comes
+from the necessity to define the weights with respect
+to the time lag.
 
 \[\psi _j = \begin{cases}
       \phi^j , &\mbox{ if } j \ge 0\\
-      0 , &\mbox{ if } j < 0.
-\end{cases}\]
+      0 , &\mbox{ if } j < 0
+\end{cases}.\]
 
+and $\mu = 0$.
+
+Under the condition that $\left| \phi \right| < 1$ the
+process can be considered to be the traditional $X_t = \phi X_{t-1} + W_t$. Furthermore, the process can also be considered to be an MA($\infty$)!
 ```
 
-## Autoregressive Models
+## Linear Operators
 
-The class of autoregressive models is based on the idea that previous values in the time series are needed to explain current values in the series. For this class of models, we assume that the $p$ previous observations are needed for this purpose and we therefore denote this class as AR($p$). In the previous  chapter, the model we introduced was an AR(1) in which only the immediately previous observation is needed to explain the following one and therefore represents a particular model which is part of the more general class of AR(p) models.
 
-```{definition, label="arp", name = "Autoregressive Models of Order $p$"}
+## Autoregressive Models (AR(p))
+
+The class of autoregressive models is based on the idea that previous values in the time series are needed to explain current values in the series. For this class of models, we assume that the $p$ previous observations are needed for this purpose and we therefore denote this class as AR($p$). In the previous chapter, the model we introduced was an AR(1) in which only the immediately previous observation is needed to explain the following one and therefore represents a particular model which is part of the more general class of AR(p) models.
+
+```{definition, label="ar_p","Autoregressive Models of Order P"}
 The AR(p) models can be formally represented as follows
-$${X_t} = {\phi_1}{X_{t - 1}} + ... + {\phi_p}{X_{t - p}} + {W_t},$$
-where $\phi_j \neq 0$, for $j=1,...,p$, and $W_t$ is a (Gaussian) white noise process with
-variance $\sigma^2$. 
+$${X_t} = {\phi_1}{Y_{t - 1}} + ... + {\phi_p}{X_{t - p}} + {W_t},$$
+where $\phi_p \neq 0$ and $W_t$ is a (Gaussian) white noise process with variance $\sigma^2$. 
 ```
 
-In general, we will assume that the expectation of the process $({X_t})$, as well as that of the following ones in this chapter, is zero. The reason for this simplification is that if $\mathbb{E} [ X_t ] = \mu$, we can define an AR(p) process *around* $\mu$ as follows:
+In general, we will assume that the expectation of the process $({X_t})$, as well as that of the following ones in this chapter, is zero. The reason for this simplification is that if $\mathbb{E} [ X_t ] = \mu$, we can define an AR process *around* $\mu$ as follows:
 
-$$X_t - \mu = \sum_{i = 1}^p \phi_i \left(X_{t-i} - \mu \right) + W_t,$$
+$$X_t - \mu = \sum_{i = 1}^p \left(\phi_i X_{t-i} - \mu \right) + W_t,$$
 
 which is equivalent to 
 
@@ -297,7 +144,7 @@ $$X_t  = \mu^{\star} +  \sum_{i = 1}^p \phi_i X_{t-i}  + W_t,$$
 
 where $\mu^{\star} = \mu (1 - \sum_{i = 1}^p \phi_i)$. Therefore, to simplify the notation we will generally consider only zero mean processes, since adding means (as well as other deterministic trends) is easy.
 
-A useful way of representing AR(p) processes is through the backshift operator introduced in the previous section and is as follows
+A useful way of representing AR processes is through the backshift operator introduced in the previous section and is as follows
 
 \[\begin{aligned}
   {X_t} &= {\phi_1}{X_{t - 1}} + ... + {\phi_p}{y_{t - p}} + {w_t} \\
@@ -309,408 +156,66 @@ which finally yields
 
 $$(1 - {\phi _1}B - ... - {\phi_p}B^p){X_t} = {W_t},$$
 
-or, in abbreviated form, can be expressed as
+which, in abbreviated form, can be expressed as
 
 $$\phi(B){X_t} = W_t.$$
 
-We will see that $\phi(B)$ is important to establish the stationarity of
-these processes and is called the *autoregressive* operator. Moreover, this
-quantity is closely related to another important property of AR(p) processes called *causality*. Before formally defining this new property, we consider the following example, which provides an intuitive illustration of its importance.
+We will see that $\phi(B)$ is important to establish the stationarity of these processes and is called the *autoregressive* operator. Moreover, this quantity is closely related to another important property of AR processes called *causality*. Before formally defining this new property, we consider the following example, which provides an intuitive illustration of its importance.
 
-```{example, label="ncAR1", name="Non-causal AR(1)"}
-Consider a classical AR(1) model with $|\phi| > 1$. Such a model could be
-expressed as
+**Example:** Consider a classical AR(1) model with $|\phi| > 1$. Such a model could be expressed as
 
-$$X_t = \phi^{-1} X_{t+1} - \phi^{-1} W_{t+1} = \phi^{-k} X_{t+k} - \sum_{i = 1}^{k-1} \phi^{-i} W_{t+i}.$$
+$$X_t = \phi^{-1} X_{t+1} - \phi^{-1} W_t = \phi^{-k} X_{t+k} - \sum_{i = 1}^{k-1} \phi^{-i} W_{t+i}.$$
 
 Since $|\phi| > 1$, we obtain
 
 $$X_t = - \sum_{i = 1}^{\infty} \phi^{-j} W_{t-j},$$
 
-which is a linear process and therefore is stationary. Unfortunately, such
-a model is useless because we need the future to predict the future itself and these processes are therefore called non-causal.
-```
+which is a linear process and therefore is stationary. Unfortunately, such a model is useless because we need the future to predict the future and such processes are called non-causal.
 
 ### Properties of AR(p) models
 
-In this section we discuss the main properties of AR(p) processes. We first consider the causality of these models which has already been introduced in the previous paragraphs and then discuss the autocorrelation (and partial autocorrelation) of AR(p) models. 
+In this section we will describe the main property of the AR(p) model which has already been introduced in the previous paragraphs and therefore let us now introduce the property of causality in a more formal manner.
 
-#### Causality
+**Definition:** An AR(p) model is *causal*, if the time series $\{ X_t \}_{-\infty}^{\infty}$ can be written as a one-sided linear process:
+\begin{equation}
+    X_t = \sum_{j = 0}^{\infty} \psi_j W_{t-j} = \frac{1}{\phi(B)} W_t = \psi(B) W_t,
+(\#eq:causal)
+\end{equation}
+where $\phi(B) = \sum_{j = 0}^{\infty} \phi_j B^j$, and $\sum_{j=0}^{\infty}|\phi_j| < \infty$; we set $\phi_0 = 1$.
 
-In the previous section we already introduced the idea of a causal time series model and therefore let us now introduce this concept in a more formal manner.
+As discussed earlier this condition implies that only the past values of the time series can explain the future values of it, and not viceversa. However, it might be difficult and not obvious to show the causality of an AR(p) process by using the above definitions directly, thus the following properties are useful in practice. 
 
-```{definition, label="causalar", name = "Causality of AR(p) models"}
- An AR(p) model is said to be *causal* if the time series $(X_t)$ can be
- written as a one-sided linear process:
- 
-$$X_t = \sum_{j = 0}^{\infty} \psi_j W_{t-j} = \psi(B) W_t,$$
-
-where $\psi(B) = \sum_{j = 0}^{\infty} \phi_j B^j$, $\sum_{j=0}^{\infty}|\phi_j| < \infty$ and $\phi_0 = 1$.
-```
-
-As discussed earlier this condition implies that only the past values of the time series can explain the future values of it, and not vice versa. Moreover, in the previous section we saw that linear processes are (weakly) stationary processes and therefore causality directly implies (weak) stationarity. However, it might be difficult and not obvious to show the causality of  AR(p) processes by using the above definitions directly, thus the following property is particularly useful in practice. 
-
-```{theorem, label="theocausalar", name = "Causality of AR models"}
-An AR(p) model is causal if and only if $\phi(z) \neq 0$ for $|z| \leq 1$.
-Then, the coefficients of the one-sided linear process given in
-\@ref(def:causalar) can be obtained by solving
+**Property: Causality**
+If an AR(p) model is causal, then the coefficients of the one-sided linear process given in (\@ref(eq:causal)) can be obtained by solving
 \begin{equation*}
     \psi(z) = \frac{1}{\sum_{j=0}^{\infty} \phi_j z^j} = \frac{1}{\phi(z)}, \mbox{ } |z| \leq 1.
 \end{equation*}
-```
 
-The proof of this result is omitted but can (for example) be found in Appendix B of @shumway2010time. Moreover, it can be seen how there is no solution to the above equation if $\phi(z) = 0$ for $|z| \leq 1$ and therefore, as highlighted earlier, an AR(p) is causal if and only if $\phi(z) \neq 0$ for $|z| \leq 1$. A condition for this to be respected is for the roots of $\phi(z) = 0$ to lie *outside the unit circle*.
+It can be seen how there is no solution to the above equation if $\phi(z) = 0$ and therefore an AR(p) is causal if and only if $\phi(z) \neq 0$. A condition for this to be respected is for the roots of $\phi(z) = 0$ to lie outside the unit circle.
 
-Before further discussing the properties of AR(p) models we consider the following two examples which discuss the causality (and stationarity) of AR(2) models.
+## Estimation of AR(p) models
 
-```{example, label="ex1causality", name = "Transforming an AR(2) into a linear process"}
+Given the above defined properties of the AR(p) models, we will now discuss how these models can be estimated, more specifically how the $p+1$ parameters can be obtained from an observed time series. Indeed, a reliable estimation of these models is necessary in order to intepret and describe different natural phenomena and/or forecast possible future values of the time series.
 
-Given the following AR(2) $X_t = 1.3X_{t-1} - 0.4X_{t-2} + W_t$ one could
-wonder if this process can be written as a one-sided linear process as in
-Definition \@ref(def:causalar). This can be done using the following approach:
-
-*Step 1:* The autoregressive operator of this model can be expressed as:
-
-\[\phi(z) = 1 - 1.3z + 0.4z^2 = (1 - 0.5z)(1 - 0.8z) ,\]
-
-and has roots $2 > 1$ and $1.25 > 1$. Thus, we should be able to covert it
-into linear process.
-
-
-*Step 2:* From Theorem \@ref(thm:theocausalar) we know that if an AR(p) process has all its roots outside the unit circle, we can write $X_t = \phi^{-1}(B)W_t$ and "inverse" the autoregressive operator $\phi(B)$ as follows:
-
-\[\phi^{-1}(z) = \frac{1}{(1 - 0.5z)(1 - 0.8z)} = \frac{c_1}{(1 - 0.5z)} + \frac{c_2}{(1 - 0.8z)} = \frac{c_2(1 - 0.5z) + c_1(1 - 0.8z)}{(1 - 0.5z)(1 - 0.8z)} .\]
-
-Since we can think of the above equation as valid for any $z$, we will solve  the following system of equations to get $c_1$ and $c_2$,
-
-\[\begin{cases}
-        c_1 + c_2 &= 1\\
-        -0.5 c_2 - 0.8 c_1 &= 0
-\end{cases}
-\implies 
-\begin{cases}
-        c_1 &= -\frac{5}{3}\\
-        c_2 &= \frac{8}{3},
-\end{cases}
-\]
-
-and, we obtain
-
-\[\phi^{-1}(z) = \frac{-5}{3(1 - 0.5z)} + \frac{8}{3(1 - 0.8z)} .\]
-
-*Step 3:* Using the Geometric series, i.e. 
-$a \sum_{k = 0}^{\infty}r^k = \frac{a}{1-r}, \mbox{ if } |r| < 1$, we have
-
-\[\begin{cases}
-      \frac{-5}{3(1 - 0.5z)} &= \frac{-5}{3} \sum_{j = 0}^{\infty}0.5^jz^j , \mbox{ if } |z| < 2\\
-      \frac{8}{3(1 - 0.8z)} &= \frac{8}{3} \sum_{j = 0}^{\infty}0.8^jz^j , \mbox{ if } |z| < 1.25.
-\end{cases}\]
-
-This allows to express $\phi^{-1}(z)$ as
-
-\[\phi^{-1}(z) = \sum_{j = 0}^{\infty} \left[ \frac{-5}{3} (0.5)^j + \frac{8}{3} (0.8)^j \right] z^j, \mbox{ if } |z| < 1.25 .\]
-
-*Step 4:* Finally, we obtain
-\[X_t = \phi^{-1}(B)W_t = \sum_{j = 0}^{\infty} \left[ \frac{-5}{3} (0.5)^j + \frac{8}{3} (0.8)^j \right] B^j W_t = \sum_{j = 0}^{\infty} \left[ \frac{-5}{3} (0.5)^j + \frac{8}{3} (0.8)^j \right] W_{t-j},
-\]
-which verifies that the AR(2) is causal (and stationary).
-```
-
-```{example, label="ex2causality", name = "Causal conditions for an AR(2) processes"}
-We already know that an AR(1) is causal with the simple condition $|\phi_1| < 1$. It could seem natural to believe that an AR(2) should be causal (and therefore stationary) with the conditon: $|\phi_i| < 1, \, i = 1,2$. However, this is not the case since an AR(2) can be expressed as
-
-\[X_t = \phi_1 X_{t-1} + \phi_2 X_{t-2} + W_t = \phi_1 B X_t + \phi_2 B^2 X_t + W_t,\]
-
-thereby delivering the following autoregressive operator:
-
-\[\phi(z) = 1 - \phi_1 z - \phi_2 z^2.\]
-
-Therefore, the process is causal when the roots of $\phi(z)$ lie outside the unit circle. Letting $z_1$ and $z_2$ denote those roots, we impose the following constraints to ensure the causality of the model:
-
-\[\begin{aligned}
-|z_1| &> 1, \;\;\;\; \text{where} \;\; &z_1 = \frac{\phi_1 + \sqrt{\phi_1^2 + 4\phi_2}}{-2 \phi_2},\\
-|z_2| &> 1, \;\;\;\; \text{where} \;\; &z_2 = \frac{\phi_1 - \sqrt{\phi_1^2 + 4\phi_2}}{-2 \phi_2},
-\end{aligned}\]
-noting that $z_1$ and $z_2$ can be complex values.
-
-Thus we can represent $\phi_1$ and $\phi_2$ by $z_1$ and $z_2$,
-\[\begin{aligned}
-\phi_1 = (z_1^{-1} + z_2^{-1}),\\
-\phi_2 = -(z_1 z_2)^{-1}.
-\end{aligned}\]
-
-Moreover we have the following equivalent condition for causality:
-
-$$\begin{cases}
-        |z_1| &> 1\\
-        |z_2| &> 1,
-\end{cases}$$
-if and only if
-$$\begin{cases}
-        \phi_1 + \phi_2 &< 1\\
-        \phi_2 - \phi_1 &< 1\\
-        |\phi_2| &< 1.
-\end{cases}$$
-
-```{proof, name="Proof of Causal Region for AR(2) Process"}
-
-We have known that $\phi_1=\frac{1}{z_1}+\frac{1}{z_2}$ and $\phi_2=-\frac{1}{z_1z_2}$, where $z_1$ and $z_2$ are the roots of $1-\phi_1z-\phi_2z^2=0$.
-
-We want to show that $\left|{z_1}\right|>1$ and $\left|{z_2}\right|>1$ if and only if the following three condition holds.
-$$\phi_1+\phi_2<1,\quad \phi_2-\phi_1<1,\text{ and }\left|{\phi_2}\right|<1$$
-
-First, we try to show the "**if**" direction:
-
-When the above condition is true, if $z_1$ and $z_2$ are both **complex**, because they are conjugate, we can have $\left|{z_1}\right|=\left|{z_2}\right|$. Based on the formula that $z_1=\frac{\phi_1+\sqrt{\phi_1^2+4\phi_2}}{2\phi_2}$ with $\phi_1^2+4\phi_2<0$ and thus $\phi_2<0$, we can have
-
-$$\left|{z_1}\right|^2=\frac{\phi_1^2-\phi_1^2-4\phi_2}{4\phi_2^2}=\frac{-4\phi_2}{4\phi_2^2}=\frac{1}{\left|{\phi_2}\right|}>1$$
-The last inequality comes from the fact that $\left|\phi_2\right|<1$. Because $\left|{z_1}\right|=\left|{z_2}\right|$, we can then have $\left|{z_1}>1\right|$ and $\left|{z_2}\right|>1$.
-
-If  $z_1$ and $z_2$ are both **real**, because $\left|{\phi_2}\right|=\frac{1}{\left|{z_2}\right|\left|{z_2}\right|}<1$, at least one of $\left|{z_1}\right|$ and $\left|{z_2}\right|$ is greater than $1$, say it is $\left|{z_1}\right|>1$. Also, we can have
-$$\phi_1+\phi_2-1=\frac{1}{z_1}+\frac{1}{z_2}-\frac{1}{z_1z_2}-1=\left({\frac{1}{z_1}-1}\right)\left({1-\frac{1}{z_2}}\right)<0$$
-
-$$1-\left({\phi_2-\phi_1}\right)=\frac{1}{z_1}+\frac{1}{z_2}+\frac{1}{z_1z_2}+1=\left({\frac{1}{z_1}+1}\right)\left({\frac{1}{z_2}+1}\right)>0$$
-
-Because $\left|{z_1}\right|>1$, we can have $\frac{1}{z_1}+1>0$ and $\frac{1}{z_1}-1<0$. Thus, we must have $1+\frac{1}{z_2}>0$ and $1-\frac{1}{z_2}>0$. If $0<z_2<1$, then the later one will be false; if $-1<z_2<0$, then the former one will be false. Thus, we must also have $\left|{z_2}\right|>1$. Thus, the "**if**" direction is proved.
-
-
-Then, we try to show the **only if**" direction:
-
-When we already have $\left|{z_1}\right|>1$ and $\left|{z_2}\right|>1$, then $\left|{\phi_2}\right|=\frac{1}{\left|{z_1}\right|\left|{z_2}\right|}<1$ is obviously true.
-
-To show the other two, if $z_1$ and $z_2$ are both **complex**, we can let $z_1=a+ib$ and $z_2=a-ib$ with $a^2+b^2>1$, $a\neq 0$ and $b\neq 0$. Then $$\phi_1+\phi_2=\frac{1}{z_1}+\frac{1}{z_2}-\frac{1}{z_1z_2}=\frac{2a-1}{a^2+b^2}$$
-
-Because $a^2+b^2-\left({2a-1}\right)=\left({a-1}\right)^2+b^2>0$ and $a^2+b^2>1>0$, we can have $\frac{2a-1}{a^2+b^2}<1$ and thus $\phi_1+\phi_2<1$. Similarly, we have
-$$\phi_2-\phi_1=-\left({\frac{1}{z_1}+\frac{1}{z_2}+\frac{1}{z_1z_2}}\right)=\frac{-2a-1}{a^2+b^2}$$
-
-Because $a^2+b^2-\left({-2a-1}\right)=\left({a+1}\right)^2+b^2>0$ and $a^2+b^2>$, we can have $\frac{-2a-1}{a^2+b^2}<1$ and thus $\phi_2-\phi_1<1$.
-
-If $z_1$ and $z_2$ are both **real**, we can have
-$$\phi_1+\phi_2=\frac{1}{z_1}+\frac{1}{z_2}-\frac{1}{z_1z_2}=\frac{1}{z_1}\left({1-\frac{1}{z_2}}\right)+\frac{1}{z_2}<1-\frac{1}{z_2}+\frac{1}{z_2}=1$$
-
-The above inequality comes from the fact that $1-\frac{1}{z_2}>0$ and $\frac{1}{z_1}\in\left({-1, 0}\right)\cup\left({0, 1}\right)$.
-
-Similarly, we have
-$$\phi_2-\phi_1=-\left({\frac{1}{z_1}+\frac{1}{z_2}+\frac{1}{z_1z_2}}\right)=-\frac{1}{z_1}\left({\frac{1}{z_2}+1}\right)-\frac{1}{z_2}<\frac{1}{z_2}1-\frac{1}{z_2}=1$$
-
-The above inequality holds for similar reason. Thus, we can have $\phi_1+\phi_2<1$ and $\phi_2-\phi_1 <1$.
-
-Thus, we proved that $\left|{z_1}\right|>1$ and $\left|{z_2}\right|>1$ **if and only if** the following three condition holds.
-$$\phi_1+\phi_2<1,\quad \phi_2-\phi_1<1,\text{ and }\left|{\phi_2}\right|<1$$
-```
-
-Finally, the causal region of an AR(2) is depicted in Figure \@ref(fig:causalAR2).
-
-```{r causalAR2, echo = FALSE, cache = TRUE, fig.cap="Causal Region for Parameters of an AR(2) Process"}
-```
-
-#### Autocorrelation
-
-In this section we discuss the autocorrelation of (causal) AR(p) processes. Before considering the general case of an AR(p) model, we revisit Example \@ref(ex:ex1causality) and derive the ACF of the AR(2) model presented in this example.
-
-```{example, label="ar2acf", name = "Autocorrelation of an AR(2)"}
-Considering the same model as in Example \@ref(ex:ex1causality), i.e.
-$X_t = 1.3X_{t-1} - 0.4X_{t-2} + W_t$, we can derive the ACF using the
-following steps: 
-
-*Step 1:* Find the homogeneous difference equation with respect to the ACF 
-$\rho(h)$, which in this case is given by:
-\[\rho(h) - 1.3\rho(h-1) + 0.4\rho(h-2) = 0, \mbox{   } h = 1,2,...\]
-and the initial conditions are $\rho(0) = 1$ and $\rho(-1) = \frac{13}{14}$.
-Note that the above equation is a homogenous difference equation of order 2.
-
-*Step 2:* Using the results of Example \@ref(ex:ex1causality), we have:
-\[\phi(z) = 1 - 1.3z + 0.4z^2 = (1 - 0.5z)(1 - 0.8z) ,\]
-and the roots of this equation are given by $z_1 = 2 > 1$ and $z_2 = 1.25 > 1$.
-Moreover, since $z_1$ and $z_2$ are real and distinct, and since they correspond to the solution of a homogenous difference equation of order 2, we obtain:
-
-\[\rho(h) = c_1 z_1^{-h} + c_2 z_2^{-h}.\]
-
-*Step 3:* Solve $c_1$ and $c_2$ based on the two initial conditions found in Step 1, i.e.
-\[\begin{cases}
-      \rho(0) = c_1 + c_2 = 1\\
-      \rho(-1) = 2c_1 + 1.25c_2 = \frac{13}{14},
-\end{cases},\]
-implying that $c_1 = -\frac{3}{7}$ and $c_2 = \frac{10}{7}$. The ACF for this model is therefore given by
-\[\rho(h) = -\frac{3}{7}2^{-h} + \frac{10}{7}\left(\frac{5}{4}\right)^{-h} ,\]
-which is represented in the plot below.
-```
-
-```{r ACFAR2cont, fig.height = 4, fig.width = 6, warning=FALSE, message=FALSE, fig.cap="Theoretical ACF of the AR(2) Process."}
-```
-
-The method used in the previous paragraphs is only applicable for AR(2) models with roots that are distinct and real, which is true when $\phi_2 > - \phi^1/4$. In the case where $\phi_2 = - \phi^1/4$, the autoregressive operator has a single root and $\rho(h)$ can be obtained by determining (using initial conditions) the constants $c_1$ and  $c_2$ of the following expression:
-
-$$\rho(h) = z_1^{-h} \left(c_1 + c_2 h\right).$$
-When $\phi_2 > - \phi^1/4$ the roots are complex conjugate pairs and the solution is given by:
-
-$$\rho(h) = c_1 |z_1|^{-h} \cos \left(h \theta + c_2\right), $$
-where the constants depend on initial conditions, while $\theta = \text{arg}(z_1)$. 
-
-Therefore, we have that $\rho(h) \to 0$ exponentially fast as $h \to \infty$ and when $\phi_2 > - \phi^1/4$ $\rho(h)$ it goes to zero in a sinusoidal fashion. This behavior is illustrated in the next example.
-
-```{example, label="ar2acfExample", name = "Autocorrelation of AR(2) Processes"}
-Consider the following models:
-
-\[\begin{aligned}
-  \text{Model 1}: \;\;\; X_t &= X_{t-1} - 0.25 X_{t-2} + W_t  \\
-  \text{Model 2}: \;\;\; X_t &= 0.5 X_{t-1} + 0.25 X_{t-2} + W_t  \\
-  \text{Model 3}: \;\;\; X_t &= -1.5 X_{t-1} - 0.75 X_{t-2} + W_t.
-\end{aligned} \]
-
-It is easy to verify that the first one has real distrinct roots, the second has a unique real root while the last has complex roots. This is illustrated in Figure \@ref(fig:causalAR2part2) which depicts the causal region of an AR(2) that has been separated between models with real and complex roots.
-```
-
-The ACF of these models are represented in Figure \@ref(fig:ACFAR2eg). As expected the 
-three models correspond to an ACF that dampens exponentially fast but only 
-Model 3 exhibits a sinusoidal features.
-
-```{r ACFAR2eg, fig.height = 3, fig.width = 9, warning=FALSE, message=FALSE, fig.cap="Theoretical Autocorrelation Graphs with models from left to right being Model 1, Model 2 and Model 3."}
-```
-
-
-Next, we consider the ACF for a general causal AR($p$) model. Unfortunately, this is far more complicated than our previous example.
-
-```{r causalAR2part2, echo = FALSE, cache = TRUE, fig.cap = "Viable Solutions of AR(p)"}
-```
-
-```{example, label="arpacf", name = "Autocorrelation of an AR($p$)"}
-
-Recall that the AR($p$) models can formally be represented as follows
-$${X_t} = {\phi_1}{X_{t - 1}} + ... + {\phi_p}{X_{t - p}} + {W_t},$$
-where $W_t$ is a (Gaussian) white noise process with variance $\sigma^2$.
-
-There are two ways to derive the ACF for general AR($p$) models. Considering the first approach, since we assume our AR($p$) model is causal, we can write it as a one-sided linear process: $X_t = \sum_{j = 0}^{\infty} \psi_j W_{t-j}$ which defines the autocovariance function as $\gamma(h) = cov(X_{t+h},X_t) = \sigma^2 \sum_{j=0}^{\infty} \psi_j \psi_{j+h}$, for $h \geq 0$. The difficulty of this method is to solve for the $\psi$-weights. Treating the AR(p) as a special case of ARMA(p,q) models, we can let the MA polynomials $\theta(z) = 1$ and solve the $\psi$-weights by matching the coefficients in $\phi(z)\psi(z) = \theta(z)$. 
-
-Considering now the second method, we can also use the procedure we used for the AR(2) example. This consists in finding a homogeneous difference equation with respect to the ACF $\rho(h)$ thereby solving it directly. To do so we need following steps.
-
-*Step 1*: Find the homogeneous difference equation with repsect to the ACF $\rho(h)$.
-
-Firstly verify whether our model is causal. If it is then we have
-\[\rho(h) - \phi_1\rho(h-1) - \cdots - \phi_p\rho(h-p) = 0, \mbox{ } h \geq p. \]
-
-*Step 2*: Solve the roots of the associated AR polynomials.
-
-The polynomials can be written as:
-\[\phi(z) = 1 - \phi_1z - \cdots - \phi_pz^p .\]
-
-Let us suppose now that the polynomials have $r$ distinct roots and let $m_j$ denote the number of replicates of $z_j$, such that $m_1 +m_2 + \cdots +m_r = p$. Then the general solution of the homogeneous difference equation is 
-\[\rho(h) = z_1^{-h}P_1(h) + z_2^{-h}P_2(h) + \cdots + z_r^{-h}P_r(h), \mbox{ } h \geq p,\]
-where $P_j(h)$ is the polynomial in $h$ of degree $m_j - 1$.
-
-*Step 3*: Solve every $P_j(h)$ based on $p$ given initial conditions on $\rho(h)$.
-
-**Remark:**
-Since the AR($p$) model is causal, the roots we obtained in step 2 should be outside the unit circle (i.e. $|z_i| > 1$, for $i = 1, \cdots, r$). Then the absolute value of the general solution is given by
-\[|\rho(h)| = \left|\frac{P_1(h)}{z_1^{h}} + \frac{P_2(h)}{z_2^{h}} + \cdots + \frac{P_r(h)}{z_r^{h}}\right| \leq \left|\frac{P_1(h)}{z_1^{h}}\right| + \left| \frac{P_2(h)}{z_2^{h}}\right| + \dots + \left|\frac{P_r(h)}{z_r^{h}}\right| \leq \frac{r \left|P_r(h)\right|}{\min_{j = 1, \dots, r} \left|z_j \right|^{h}},\]
-
-and, from the right hand side of the last inequality, we can find that the rate of convergence would be dominated by $\frac{1}{\min_{j = 1, \dots, r} \left|z_j \right|^{h}}$.
-Thus the ACF $\rho(h)$ will go to zero exponentially as $h \to \infty$.
-```
-
-EXAMPLE MISSING HERE 
-
-The ACF can overall be extremely useful in detecting if there appears to be an autocorrelation pattern in the data where, as seen above, an exponentially or sinusoidally decaying ACF would suggest the presence of an AR(p) process generating the time series. However, these patterns can appear to be very similar even for AR(p) models with considerably different orders (i.e. an AR(1) or and AR(3) for example). In this sense, the ACF has limited utility if there is a need to detect the order of the underlying AR(p) process. For this reason, the next section will discuss another representation of a time series which can be of more help in detecting, for example, the order of an AR(p) model.
-
-#### Partial autocorrelation of AR(p) models
-
-```{definition, label="pacf", name = "Partial autocorrelation"}
-For a stationary process, $X_t$, the Partial AutoCorrelation Function (PACF)
-can be denoted as $\phi_{hh}$, for $h = 1, 2, \dots,$ where
-$$\phi_{11} = \corr(X_{t+1}, X_t) = \rho(1),$$
-and 
-$$\phi_{hh} = \corr(X_{t+h} - \hat{X}_{t+h}, X_t - \hat{X}_t), \mbox{ } h \geq 2.$$
-```
-
-**Remark**
-From the above definition we can think of the partial autocorrelation $\phi_{hh}$ as the correlation between the residual of $X_{t+h}$ after removing its best linear predictor on the vector space spanned by $\{ X_{t+1}, \dots, X_{t+h-1} \}$ and the residual of $X_t$ after removing its best linear predictor on the same vector space. Similarly to linear regression, the residuals should be independent of the vector space spanned by $\{ X_{t+1}, \dots, X_{t+h-1} \}$ after projection. 
-
-We will discuss about the best linear predictor in the section dedicated to forecasting and therefore here we will just mention how to obtain the best linear predictor.
-
-```{definition, label="blp", name = "Best Linear Predictor (BLP)"}
-Given a time series $X_1, X_2, \dots, X_t$ with zero mean, the best linear predictor of $X_{t+h}$ can be written as $\hat{X}_{t+h} = \sum_{j=1}^t \alpha_j X_j$ such that it satisfies the prediction equations:
-\[ \mathbb{E}(X_{t+h} - \hat{X}_{t+h}) = 0, \]
-and
-\[ \mathbb{E} [(X_{t+h} - \hat{X}_{t+h})X_j ] = 0, \mbox{ for } i = 1, \dots, t.\]
-```
-
-According to the projection theorem, we can show that satisfying the prediction equations is equivalent to minimizing the mean squared error $\mathbb{E}((X_{t+h} - \hat{X}_{t+h})^2)$.
-Thus we have two equivalent ways to obtain the best linear predictor.
-
-```{example, label="pacfar1", name = "PACF of an AR(1)"}
-Consider a causal AR(1) model ${X_t} = \phi {X_{t - 1}} + {W_t}$. We have, 
-\[\phi_{11} = \corr(X_{t+1}, X_t) = \rho(1) = \phi,\]
-and 
-\[\phi_{22} = \corr(X_{t+2} - \hat{X}_{t+2}, X_t - \hat{X}_t).\]
-Next, we find $\hat{X}_t$ and $\hat{X}_{t+2}$. Since $X_{t+1}$ is the only
-random variavle between $X_t$ and $X_{t+2}$, $\hat{X}_t$ and $\hat{X}_{t+2}$ are the best linear predictors on the vector space spanned by $X_t$ and we can obtain them by minimizing the MSE: 
-\[\mathbb{E}(X_{t+2} - \hat{X}_{t+2})^2 = \mathbb{E}(X_{t+2} - \beta_1 X_{t+1})^2 = \gamma(0) - 2\beta_1 \gamma(1) + \beta_1^2 \gamma(0),\]
-By minimizing the MSE, we have $\beta_1 = \frac{\gamma(1)}{\gamma(0)} = \phi$.
-
-Similarily, by minimizing
-\[\mathbb{E}(X_{t} - \hat{X}_{t})^2 = \mathbb{E}(X_{t} - \beta_2 X_{t+1})^2 = \gamma(0) - 2\beta_2 \gamma(1) + \beta_2^2 \gamma(0),\]
-we have $\beta_2 = \frac{\gamma(1)}{\gamma(0)} = \phi$.
-
-Equivalently we can use the prediction equations and thus we have
-\[\mathbb{E}[(X_{t+2} - \hat{X}_{t+2})X_{t+1}] = \mathbb{E}[(X_{t+2}X_{t+1} - \beta_1 X_{t+1}^2)] = \gamma(1) - \beta_1 \gamma(0) = 0,\]
-and
-\[\mathbb{E}[(X_{t} - \hat{X}_{t})X_{t+1}] = \mathbb{E}[(X_{t}X_{t+1} - \beta_2 X_{t+1}^2)] = \gamma(1) - \beta_2 \gamma(0) = 0,\]
-Consequently we can get the same solutions.
-
-Therefore, \[\phi_{22} = \corr(X_{t+2} - \phi X_{t+1}, X_t - \phi X_{t+1}) = \corr(W_{t+2}, X_t - \phi X_{t+1}) = 0,\]
-noting that the last equation is based on causality.
-```
-
-```{example, label="pacfarp", name = "PACF of AR(p)"}
-In this example we would like to show that the PACF characterizes the order of AR(p) models. Indeed, when $h > p$, the PACF of an AR(p) $\phi_{hh} = 0$. Suppose we have a causal AR(p) model, $X_{t+h} = \sum_{j=1}^p \phi_j X_{t+h-j} + W_{t+h}$ and we want to 
-calculate $\phi_{hh}$.
-
-The best linear predictor of $X_{t+h}$ is 
-\[\hat{X}_{t+h} = \mathbb{E}\left[X_{t+h}|X_t, \dots, X_{t+h-1}\right] = \mathbb{E}\left[\sum_{j=1}^p \phi_j X_{t+h-j} + W_{t+h}|X_t, \dots, X_{t+h-1}\right] = \sum_{j=1}^p \mathbb{E}\left[\phi_j X_{t+h-j}|X_t, \dots, X_{t+h-1}\right] = \sum_{j=1}^p \phi_j X_{t+h-j}.\]
-Thus when $h > p$,
-\[ \phi_{hh} = corr(X_{t+h} - \hat{X}_{t+h}, X_t - \hat{X}_t) = corr(W_{t+h}, X_t - \hat{X}_t) = 0. \]
-```
-
-With these properties in mind, it would be useful to have an estimator for the PACF just as we defined an estimator for the ACF in the previous chapter. If we re-express the above definitions of the PACF $\phi_{hh}$ using the linear predictors and taking from the defintion given earlier followed by its subsequent remark, we can redefine the PACF $\phi_{hh}$ as being the coefficient $\beta_h$ of the linear predictor
-\[\hat{X}_{t+h} = \sum_{j=1}^h \beta_j X_{t+h-j}\]
-since $\beta_h$ represents the effect of $X_t$ on $X_{t+h}$ once the linear effect of the intermediate variables has been removed. Therefore, given this linear problem, we can obtain an estimate of the PACF ($\hat{\phi}_{hh}$) as the least squares solution for $\beta_h$ to the following regression problem
-\[x_{t+h} = \sum_{j=1}^h \beta_j x_{t+h-j},\]
-where $(x_t)_{t=h,...,T}$ is the observed time series. Adapting the asymptotics for the coefficients of a linear regression, we have that $\hat{\phi}_{hh}$ is asymptotically normally distributed and, if the process $(X_t)$ is a white noise, its variance is given by
-\[\var(\hat{\phi}_{hh}) \approx \frac{1}{T}.\]
-Hence, as for the ACF, the PACF can be tested for significance by building approximate confidence intervals using $\pm 2/\sqrt{T}$ as critical limits. Moreover, with such an estimator and confidence intervals, it would be possible to use the information from the estimated ACF and that of the PACF to determine the presence and eventual order of an AR(p) model underlying the observed time series.
-
-
-
-
-### Estimation of AR(p) models
-
-Given the above defined properties of the AR(p) models, we will now discuss
-how these models can be estimated, more specifically how the p+1 parameters 
-can be obtained from an observed time series. Indeed, a reliable estimation of 
-these models is necessary in order to interpret and describe different natural 
-phenomena and/or forecast possible future values of the time series.
-
-A first approach builds upon the earlier definition of the AR(p) as being a
-linear process. And let it be **causal**. Recall that
+A first approach builds upon the earlier definition of the AR(p) as being a linear process. Recall that
 \begin{equation}
-    X_t = \sum_{j = 1}^{p} \phi_j X_{t-j} + W_t
+    X_t = \sum_{j = 1}^{p} \phi_j X_{t-j}
 \end{equation}
 which delivers the following autocovariance function
 \begin{equation}
-    \gamma(h) = cov(X_{t+h}, X_t) = cov(\sum_{j = 1}^{p} \phi_j X_{t+h-j} + W_{t+h}, X_t) = \sum_{j = 1}^{p} \phi_j \gamma(h-j), \mbox{ } h \geq 0.
+    \gamma(h) = cov(X_{t+h}, X_t) = cov(\sum_{j = 1}^{p} \phi_j X_{t-j}, X_t) = \sum_{j = 1}^{p} \phi_j \gamma(h-j), \mbox{ } h \geq 0.
 \end{equation}
 Rearranging the above expressions we obtain the following general equations
 \begin{equation}
     \gamma(h) - \sum_{j = 1}^{p} \phi_j \gamma(h-j) = 0, \mbox{ } h \geq 1
 \end{equation}
-and, recalling that $\gamma(h) = \gamma(-h)$ and $\gamma(0) = cov(X_t, X_t)$,
+and, recalling that $\gamma(h) = \gamma(-h)$,
 \begin{equation}
     \gamma(0) - \sum_{j = 1}^{p} \phi_j \gamma(j) = \sigma_w^2.
 \end{equation}
 We can now define the Yule-Walker equations.
 
-```{definition, label = "yweqs", name = "Yule-Walker Equations"}
-The Yule-Walker equations are given by
+**Definition:** The Yule-Walker equations are given by
 \begin{equation}
     \gamma(h) = \phi_1 \gamma(h-1) + ... + \phi_p \gamma(h-p), \mbox{ } h = 1,...,p
 \end{equation}
@@ -720,43 +225,29 @@ and
 \end{equation}
 which in matrix notation can be defined as follows
 \begin{equation}
-    \Gamma_p \mathbf{\phi} = \mathbf{\gamma}_p \text{ and } \sigma_w^2 = \gamma(0) - \mathbf{\phi}'\mathbf{\gamma}_p
+    \Gamma_p \mathbf{\phi} = \mathbf{\gamma}_p \text{and} \sigma_w^2 = \gamma(0) - \mathbf{\phi}'\mathbf{\gamma}_p
 \end{equation}
-where $\Gamma_p$ is the $p\times p$ matrix with its $\left(k,j\right)^{th}$ element be the autocovariances $\gamma(k-j), j,k = 1, ...,p$ while $\mathbf{\phi} = (\phi_1,...,\phi_p)'$ and $\mathbf{\gamma}_p = (\gamma(1),...,\gamma(p))'$ are $p\times 1$ vectors.
-```
+where $\Gamma_p$ is the $p\times p$ matrix containing the autocovariances $\gamma(k-j), j,k = 1, ...,p$ while $\mathbf{\phi} = (\phi_1,...,\phi_p)'$ and $\mathbf{\gamma}_p = (\gamma(1),...,\gamma(p))'$ are $p\times 1$ vectors.
 
-Considering the Yule-Walker equations, it is possible to use a method of moments
-approach and simply replace the theoretical quantities given in the previous
-definition with their empirical (estimated) counterparts that we saw in the 
-previous chapter. This gives us the following Yule-Walker estimators
+Considering the Yule-Walker equations, it is possible to use a method of moments approach and simply replace the theoretical quantities given in the previous definition with their empirical (estimated) counterparts that we saw in the previous chapter. This gives us the following Yule-Walker estimators
 \begin{equation}
-    \hat{\mathbf{\phi}} = \hat{\Gamma}_p^{-1}\hat{\mathbf{\gamma}}_p \text{ and } \hat{\sigma}_w^2 = \hat{\gamma}(0) - \hat{\mathbf{\gamma}}_p'\hat{\Gamma}_p^{-1}\hat{\mathbf{\gamma}}_p
+    \hat{\mathbf{\phi}} = \hat{\Gamma}_p^{-1}\hat{\mathbf{\gamma}}_p \text{and} \hat{\sigma}_w^2 = \hat{\gamma}(0) - \hat{\mathbf{\gamma}}_p'\hat{\Gamma}_p^{-1}\hat{\mathbf{\gamma}}_p
 \end{equation}
 
 These estimators have the following asymptotic properties.
 
 **Property: Consistency and Asymptotic Normality of Yule-Walker estimators**
-The Yule-Walker estimators for a causal AR(p) model have the following 
-asymptotic properties:
+The Yule-Walker estimators for a causal AR(p) model have the following asymptotic properties:
 
 \begin{equation*}
-\sqrt{T}(\hat{\mathbf{\phi}}- \mathbf{\phi}) \xrightarrow{\mathcal{D}} \mathcal{N}(\mathbf{0},\sigma_w^2\Gamma_p^{-1}) \text{ and } \hat{\sigma}_w^2 \xrightarrow{\mathcal{P}} \sigma_w^2 .
+\sqrt{T}(\hat{\mathbf{\phi}}- \mathbf{\phi}) \xrightarrow{\mathcal{D}} \mathcal{N}(\mathbf{0},\sigma_w^2\Gamma_p^{-1}) \text{and} \hat{\sigma}_w^2 \xrightarrow{\mathcal{P}} \sigma_w^2 .
 \end{equation*}
 
-Therefore the Yule-Walker estimators have an asymptotically normal distribution 
-and the estimator of the innovation variance is consistent. Moreover, these 
-estimators are also optimal for AR(p) models, meaning that they are also
-efficient. However, there exists another method which allows to achieve this
-efficiency also for general ARMA models and this is the maximum likelihood
-method. Considering an AR(1) model as an example, and assuming without loss of
-generality that the expectation is zero, we have the following representation
-of the AR(1) model
+Therefore the Yule-Walker estimators have an asymptotically normal distribution and the estimator of the innovation variance is consistent. Moreover, these estimators are also optimal for AR(p) models, meaning that they are also efficient. However, there exists another method which allows to achieve this efficiency also for general ARMA models and this is the maximum likelihood method. Considering an AR(1) model as an example, and assuming without loss of generality that the expectation is zero, we have the following representation of the AR(1) model
 \begin{equation*}
-X_t = \phi X_{t-1} + W_t
+X_t = \phi X_{t-1} + w_t
 \end{equation*}
-where $|\phi|<1$ and $W_t \overset{iid}{\sim} \mathcal{N}(0,\sigma_w^2)$. 
-Supposing we have observations issued from this model $(x_t)_{t=1,...,T}$, 
-then the likelihood function for this setting is given by
+where $|\phi|<1$ and $w_t \overset{iid}{\sim} \mathcal{N}(0,\sigma_w^2)$. Supposing we have observations issued from this model $(x_t)_{t=1,...,T}$, then the likelihood function for this setting is given by
 \begin{equation*}
 L(\phi,\sigma_w^2) = f(\phi,\sigma_w^2|x_1,...,x_T)
 \end{equation*}
@@ -764,21 +255,15 @@ which, for an AR(1) model, can be rewritten as follows
 \begin{equation*}
 L(\phi,\sigma_w^2) = f(x_1)f(x_2|x_1)\cdot \cdot \cdot f(x_T|x_{T-1}).
 \end{equation*}
-If we define $\Omega_t^p$ as the information contained in the previous $p$
-observations to time $t$, the above can be generalized for an AR(p) model as
-follows
+If we define $\Omega_t^p$ as the information contained in the previous $p$ observations to time $t$, the above can be generalized for an AR(p) model as follows
 \begin{equation*}
 L(\phi,\sigma_w^2) = f(x_1,...,x_p)f(x_{p+1}|\Omega_{p+1}^p)\cdot \cdot \cdot f(x_T|\Omega_{T-1}^p)
 \end{equation*}
-where $f(x_1,...,x_p)$ is the joint probability distribution of the first $p$
-observations. A discussion on how to find $f(x_1,...,x_p)$ will be presented in
-the following paragraphs based on the approach to find $f(x_1)$ in the AR(1) 
-likelihood. Going back to the latter, we know that $x_t|x_{t-1} \sim \mathcal{N}(\phi x_{t-1},\sigma_w^2)$ and therefore we have that
+where $f(x_1,...,x_p)$ is the joint probability distribution of the first $p$ observations. A discussion on how to find $f(x_1,...,x_p)$ will be presented in the following paragraphs based on the approach to find $f(x_1)$ in the AR(1) likelihood. Going back to the latter, we know that $x_t|x_{t-1} \sim \mathcal{N}(\phi x_{t-1},\sigma_w^2)$ and therefore we have that
 \begin{equation*}
 f(x_t|x_{t-1}) = f_w(x_t - \phi x_{t-1})
 \end{equation*}
-where $f_w(\cdot)$ is the distribution of $w_t$. This rearranges the likelihood
-function as follows
+where $f_w(\cdot)$ is the distribution of $w_t$. This rearranges the likelihood function as follows
 \begin{equation*}
 L(\phi,\sigma_w^2) = f(x_1)\prod_{t=2}^T f_w(x_t - \phi x_{t-1})
 \end{equation*}
@@ -786,17 +271,11 @@ where $f(x_1)$ can be found through the causal representation
 \begin{equation*}
 x_1 = \sum_{j=0}^{\infty} \phi^j w_{1-j} 
 \end{equation*}
-which implies that $x_1$ follows a normal distribution with zero expectation and
-a variance given by $\frac{\sigma_w^2}{(1-\phi^2)}$. Based on this, the 
-likelihood function of an AR(1) finally becomes
+which implies that $x_1$ follows a normal distribution with zero expectation and a variance given by $\frac{\sigma_w^2}{(1-\phi^2)}$. Based on this, the likelihood function of an AR(1) finally becomes
 \begin{equation*}
-L(\phi,\sigma_w^2) = (2\pi \sigma_w^2)^{-\frac{n}{2}} (1 - \phi^2)^{\frac{1}{2}} \exp \left(-\frac{S(\phi)}{2 \sigma_w^2}\right)
+L(\phi,\sigma_w^2) = (2\pi \sigma_w^2)^{-\frac{n}{2}} (1 - \phi)^2 \exp \left(-\frac{S(\phi)}{2 \sigma_w^2}\right)
 \end{equation*}
-with $S(\phi) = (1-\phi)^2 x_1^2 + \sum_{t=2}^T (x_t -\phi x_{t-1})^2$. Once the
-derivative of the logarithm of the likelihood is taken, the minimization of the 
-negative of this function is usually done numerically. However, if we condition 
-on the initial values, the AR(p) models are linear and, for example, we can then
-define the conditional likelihood of an AR(1) as
+with $S(\phi) = (1-\phi)^2 x_1^2 + \sum_{t=2}^T (x_t -\phi x_{t-1})^2$. Once the derivative of the logarithm of the likelihood is taken, the minimization of the negative of this function is usually done numerically. However, if we condition on the initial values, the AR(p) models are linear and, for example, we can then define the conditional likelihood of an AR(1) as
 \begin{equation*}
 L(\phi,\sigma_w^2|x_1) = (2\pi \sigma_w^2)^{-\frac{n-1}{2}} \exp \left(-\frac{S_c(\phi)}{2 \sigma_w^2}\right)
 \end{equation*}
@@ -804,21 +283,12 @@ where
 \begin{equation*}
 S_c(\phi) = \sum_{t=2}^T (x_t -\phi x_{t-1})^2 .
 \end{equation*}
-The latter is called the conditional sum of squares and $\phi$ can be estimated
-as a straightforward linear regression problem. Once an estimate $\hat{\phi}$ is
-obtained, this can be used to obtain the conditional maximum likelihood estimate
-of $\sigma_w^2$
+The latter is called the conditional sum of squares and $\phi$ can be estimated as a straightforward linear regression problem. Once an estimate $\hat{\phi}$ is obtained, this can be used to obtain the conditional maximum likelihood estimate of $\sigma_w^2$
 \begin{equation*}
 \hat{\sigma}_w^2 = \frac{S_c(\hat{\phi})}{(n-1)} .
 \end{equation*}
 
-The estimation methods presented so far are standard ones for these kind of
-models. Nevertheless, if the data suffers from some form of contamination, 
-these methods can become highly biased. For this reason, some robust estimators
-are available to limit this problematic if there are indeed outliers in the 
-observed time series. A first solution is given by the estimator proposed in
-Kunsch (1984) who underlines that the MLE score function of an AR(p) is 
-given by
+The estimation methods presented so far are standard ones for these kind of models. Nevertheless, if the data suffers from some form of contamination, these methods can become highly biased. For this reason, some robust estimators are available to limit this problematic if there are indeed outliers in the observed time series. A first solution is given by the estimator proposed in Kunsch (1984) who underlines that the MLE score function of an AR(p) is given by
 \begin{equation*}
  \kappa(\mathbf{\theta}|x_j,...x_{j+p}) = \frac{\partial}{\partial \mathbf{\theta}} (x_{j+p} - \sum_{k=1}^p \phi_k x_{j+p-k})^2
 \end{equation*}
@@ -847,7 +317,7 @@ variance (denoted as $\nu$) which is estimated robustly and then used to
 retrieve the parameters $\theta$ of the time series model. The robust estimate 
 is obtained by solving the following minimization problem
 \begin{equation*}
-\hat{\theta} = \underset{\theta \in \Theta}{\argmin} (\hat{\nu} - \nu{\theta})^T\Omega(\hat{\nu} - \nu{\theta}),
+\hat{\boldsymbol{\theta}} = \underset{\boldsymbol{\theta} \in \boldsymbol{\Theta}}{\text{argmin}} (\hat{\boldsymbol{\nu}} - \boldsymbol{\nu}(\boldsymbol{\theta}))^T\boldsymbol{\Omega}(\hat{\boldsymbol{\nu}} - \boldsymbol{\nu}({\boldsymbol{\theta}})),
 \end{equation*}
 where $\hat{\nu}$ is the robustly estimated wavelet variance, $\nu{\theta}$ is 
 the theoretical wavelet variance and $\Omega$ is positive definite weighting 
@@ -863,6 +333,7 @@ contamination, $Y_t$, has a portion of the original process, $X_t$ replaced
 with concurrent samples from \[U_t = 0.90 U_{t-1} - 0.40 U_{t-2} + V_t\], 
 where $V_t \sim WN(0, 9)$ whereas the point-wise contaimination, $Z_t$, has 
 points selected at random from $X_t$ and replaced with $N_t \sim WN(0, 9)$.
+
 
 ``` {r simuAR2data, cache = TRUE}
 n         = 1000           # Sample Size
@@ -882,34 +353,27 @@ Yt[101:135,] = gen_gts(35, AR(phi = c(0.9,-0.4), sigma2 = 9))
 # Contaminate at random Z_t with noise
 Zt[sample(n, dispersal, replace = FALSE),] = gen_gts(dispersal, WN(sigma2 = 9))
 ```
-```{r visualizesimuAR2data, cache = TRUE, echo = FALSE, fig.height = 13, fig.width = 9, fig.cap = "Contaminated AR(2) Processes"}
+
+```{r visualizesimuAR2data, cache = TRUE, echo = FALSE, fig.height = 9, fig.width = 6, fig.cap = "Contaminated AR(2) Processes", fig.align='center'}
 # Graph points
-plot1 = autoplot(Xt) + ylab(expression(X[t]))
-plot2 = autoplot(Yt) + ylab(expression(Y[t]))
-plot3 = autoplot(Zt) + ylab(expression(Z[t]))
-grid.arrange(plot1, plot2, plot3, nrow = 3)
+par(mfrow = c(3,1))
+plot(Xt, main = expression(paste("Simulated process ",X[t])))
+plot(Yt, main = expression(paste("Simulated process ",Y[t])))
+plot(Zt, main = expression(paste("Simulated process ",Z[t])))
 ```
 
-
-As every process will require the same estimation methodology, we will first
-define a computational engine that will compute estimates for the parameters
-across all of the different methods under the simulation study. Doing so provides
-separate, reusable code that lowers the threshold for error when compared to
-having multiple copies of the same code scattered about. In addition, we have 
-defined a means to visualize the results obtained from the simulation study 
-through a boxplot. The procedure for creating the graphs is detailed after the
-simulation engine.
+As every process will require the same estimation methodology, we will first define a computational engine that will compute estimates for the parameters across all of the different methods under the simulation study. Doing so provides separate, reusable code that lowers the threshold for error when compared to having multiple copies of the same code scattered about. In addition, we have defined a means to visualize the results obtained from the simulation study through a boxplot. The procedure for creating the graphs is detailed after the simulation engine.
 
 ```{r simengine, cache = TRUE}
-sim_engine = function(X_t){
+sim_engine = function(Xt){
   # Estimate ARIMA parameters using MLE
-  mod = arima(X_t, order = c(2, 0, 0), include.mean  = FALSE)
+  mod = arima(Xt, order = c(2, 0, 0), include.mean  = FALSE)
   
   # Extract MLE Parameters (including sigma)
   res.MLE = c(mod$coef, mod$sigma)
   
   # Calculate ACF
-  autocorr = as.numeric(acf(X_t, lag.max = 2, plot = FALSE)$acf)
+  autocorr = as.numeric(acf(Xt, lag.max = 2, plot = FALSE)$acf)
   X = matrix(1,2,2)
   X[1,2] = X[2,1] = autocorr[2]
   y = autocorr[2:3]
@@ -917,11 +381,11 @@ sim_engine = function(X_t){
   # Compute Least Squares on ACF
   svmat = solve(X)
   phi.LS = svmat%*%y
-  sig2.LS = var(X_t)*(1 - t(y)%*%svmat%*%y)
+  sig2.LS = var(Xt)*(1 - t(y)%*%svmat%*%y)
   res.LS = c(phi.LS, sig2.LS)
   
   # Calculate RACF
-  rob.ccf = as.numeric(robacf(X_t, plot=FALSE, type = "covariance")$acf)
+  rob.ccf = as.numeric(robcor::robacf(Xt, plot=FALSE, type = "covariance")$acf)
   X[1,2] = X[2,1] = rob.ccf[2]/rob.ccf[1]
   y = rob.ccf[2:3]/rob.ccf[1]
   
@@ -932,20 +396,20 @@ sim_engine = function(X_t){
   res.RR = c(phi.RR, sig2.RR)
   
   # Compute the GMWM Estimator
-  res.GMWM = gmwm(ARMA(2,0), X_t)$estimate
-  res.RGMWM = gmwm(ARMA(2,0), X_t, robust = TRUE)$estimate
+  res.GMWM = gmwm2::gmwm(ARMA(2,0), Xt)$estimate
+  res.RGMWM = gmwm2::gmwm(ARMA(2,0), Xt, robust = TRUE)$estimate
 
   # Return results
   list(res.MLE = res.MLE, res.LS = res.LS, res.RR = res.RR,
        res.GMWM = res.GMWM, res.RGMWM = res.RGMWM)
-}
+} 
 ```
 
 ```{r simgraphcreator, cache = TRUE}
 sim_study_graph = function(res.MLE, res.LS, res.RR, res.GMWM, res.RGMWM,
                            Truth = c(0.5, 0.25, 1)){
   # Converts Simulation Matrices to Long Form for use in ggplot2
-  d = balamuta::study_df(res.MLE, res.LS, res.RR, res.GMWM, res.RGMWM,
+  d = bmisc::study_df(res.MLE, res.LS, res.RR, res.GMWM, res.RGMWM,
                          data_names = c("MLE","LS","RLS","GMWM","RGMWM"))
   
   # Reorder factors
@@ -970,13 +434,10 @@ sim_study_graph = function(res.MLE, res.LS, res.RR, res.GMWM, res.RGMWM,
 }
 ```
 
-
-With the means to now compute and visualize parameter estimates for each of the
-given methods, the bootrap simulation study may now commence. Using the 
+With the means to now compute and visualize parameter estimates for each of the given methods, the bootrap simulation study may now commence. Using the
 simulation engine, we can simultaneously evaluate the processes within one
-loop iteration. Please take into consideration that the following simulation
-study is computationally intensive and may require the amount of iteration $B$
-to be decreased on a personal computer to complete in a reasonable time.
+loop iteration. Please take into consideration that the following simulation study is computationally intensive and may require the amount of iteration $B$ to be decreased on a personal computer to complete in a reasonable time.
+
 
 ``` {r simuAR2study, cache = TRUE, fig.height = 4.5, fig.width = 9}
 # Number of bootstrap iterations
@@ -1033,6 +494,7 @@ sim_study_graph(res.yt.MLE, res.yt.LS, res.yt.RR, res.yt.GMWM, res.yt.RGMWM)
 sim_study_graph(res.zt.MLE, res.zt.LS, res.zt.RR, res.zt.GMWM, res.zt.RGMWM)
 ```
 
+
 After performing the estimation, we opt to visually assess how well each
 methodology performed. We begin by observing the baseline case regarding the
 the uncontaminated sample $X_t$ given in Figure \@ref(fig:simuAR2XtResults). 
@@ -1077,7 +539,7 @@ which is depicted in Figure \@ref(fig:simAR1ci)
 ``` {r simAR1ci, cache = TRUE, fig.height= 4.5, fig.width = 9, fig.cap = "AR(1) with $\\phi$ close to parameter bound"}
 set.seed(7)
 x = gen_gts(n = 100, AR1(0.96, 1))
-autoplot(x)
+plot(x)
 ```
 
 It can be seen that the parameter $\phi = 0.96$ respects the condition for 
@@ -1092,12 +554,13 @@ fit.ML = arima(x, order = c(1,0,0), include.mean = FALSE)
 c("phi" = fit.ML$coef, "se" = sqrt(fit.ML$var.coef))
 
 # Construct asymptotic confidence interval for phi
-fit.ML$coef + c(-1,1)*1.96*sqrt(fit.ML$var.coef)
+fit.ML$coef + c(-1,1)*1.96*as.numeric(sqrt(fit.ML$var.coef))
 
 # Compute the parameter estimates with inference using GMWM
-fit.gmwm = gmwm(AR1(), x)
+fit.gmwm = gmwm2::gmwm(AR1(), x)
 summary(fit.gmwm, inference = TRUE)$estimate
 ```
+
 
 From the estimation summary, we note that both confidence intervals contain 
 values that would make the AR(1) non-stationary (i.e. values of $\phi$ larger
@@ -1143,15 +606,8 @@ points(qnorm(0.025, fit.gmwm$estimate[1], phi.sd.gmwm), 0, cex = 3,
        col = colors2[2], pch = "|")
 ```
 
-For this purpose, the confidence intervals are not realistic. Therefore, one viable
-solution is to employ a parametric bootstrap, detailed in Theorem \@ref(thm:parabootstrap). 
-Indeed, parametric bootstrap takes the estimated parameter values and uses them
-in order to simulate from an AR(1) process. For each simulation, the parameters
-are estimated again and stored.  Finally, the empirical quantiles at $\alpha/2$ and $1-\alpha/2$
-are taken of the saved estimated parameter values to obtrain a confidence interval
-which does not suffer from boundary problems. The code below gives an example of 
-how this confidence interval is built based on the same estimation procedure but
-using parametric bootstrap (using $B = 10000$ bootstrap replicates).
+For this purpose, the confidence intervals are not realistic. Therefore, one viable solution is to employ a parametric bootstrap, detailed in Theorem \@ref(thm:parabootstrap). Indeed, parametric bootstrap takes the estimated parameter values and uses them in order to simulate from an AR(1) process. For each simulation, the parameters are estimated again and stored.  Finally, the empirical quantiles at $\alpha/2$ and $1-\alpha/2$ are taken of the saved estimated parameter values to obtrain a confidence interval which does not suffer from boundary problems. The code below gives an example of how this confidence interval is built based on the same estimation procedure but using parametric bootstrap (using $B = 10000$ bootstrap replicates).
+
 
 ``` {r paraAR1ciest, cache = TRUE, warning = FALSE, fig.height= 6, fig.width= 9}
 # Number of Iterations
@@ -1180,7 +636,7 @@ for(i in seq_len(B)){
   
   # Generate process under GMWM parameter estimate
   x.star = gen_gts(100, model.gmwm)
-  est.phi.gmwm[i] = gmwm(model.gmwm, x.star)$estimate[1]
+  est.phi.gmwm[i] = gmwm2::gmwm(model.gmwm, x.star)$estimate[1]
 }
 ```
 
@@ -1244,7 +700,7 @@ where $W_t \sim WN(0, 1)$. The generated process is displayed in Figure \@ref(fi
 ```{r CIAR2data, cache = TRUE, fig.cap="Generated AR(2) Process"}
 set.seed(432)
 Xt = gen_gts(500, AR(phi = c(1.98, -0.99), sigma2 = 1))
-autoplot(Xt)
+plot(Xt)
 mod = arima(Xt, c(2,0,0), include.mean = FALSE)
 mod
 ```
@@ -1328,20 +784,7 @@ lines(phi1, phi2.c2, lty = 2, col = "darkgrey")
 contour(z, drawlabels=FALSE, nlevels=k, col=my.cols, add = TRUE)
 ```
 
-The cost of this approach is the assumption the model captures the dependency
-structure that is present within the time series. That is to say, we are able to 
-successfully a regenerate new time series process that follows the appropriate
-distribution for each sampling phase. However, if we are not confident that the 
-model we have selected is a valid estimation of the truth, then using parametric
-bootstrap with the estimated model is highly problematic as it does not represent
-the dependency between observations. To complicate matters further, the
-traditional bootstrap that  consists of simple random sampling with replacement,
-in the presence of dependency,  would also be highly inaccurate and downright
-reckless to use. Therefore, to  preserve the dependency structure of the
-original data one would have to use _block bootstrapping_, which is a form of
-non-parametric bootstrap. There  are many different kinds of block bootstraps
-for time series, which are descendents of the Moving Block Bootstrap (MBB)
-presented in \@ref(thm:mbb).
+The cost of this approach is the assumption the model captures the dependency structure that is present within the time series. That is to say, we are able to successfully a regenerate new time series process that follows the appropriate distribution for each sampling phase. However, if we are not confident that the model we have selected is a valid estimation of the truth, then using parametric bootstrap with the estimated model is highly problematic as it does not represent the dependency between observations. To complicate matters further, the traditional bootstrap that  consists of simple random sampling with replacement, in the presence of dependency,  would also be highly inaccurate and downright reckless to use. Therefore, to  preserve the dependency structure of the original data one would have to use _block bootstrapping_, which is a form of non-parametric bootstrap. There  are many different kinds of block bootstraps for time series, which are descendents of the Moving Block Bootstrap (MBB) presented in \@ref(thm:mbb).
 
 ```{theorem, label="mbb", "Moving Block Bootstrap"}
 Suppose that $\left(X_t\right)$ is weakly stationary time series with $N$ 
@@ -1366,20 +809,11 @@ $$\begin{aligned}
    (typically $100 \leq B \leq 10000$).
 5. Compute the empirical mean and variance on the statistic of interest based on 
    the $B$ independent replications. 
-
-
 ```
 
 
 The approach taken by MBB ensures that within each block the dependency
-between observations is preserved. Though, one particular issue that now arises
-is that some inaccuracy is introduced as a result of successive blocks potentially
-being independent from each other. In reality, this is one of the trade-offs
-of the MBB approach that can be mitigated by selecting an optimal $\ell$.
-To lower the inaccuracy of the procedure the selection of $\ell = N^{1/3}$ 
-as $N \to \infty$ is optimal (proof left as an exercise to the reader). 
-An earlier variant of MBB was called nonoverlapping block bootstrap (NBB),
-which prohbited the sharing of data described in \@ref(thm:nbb).
+between observations is preserved. Though, one particular issue that now arises is that some inaccuracy is introduced as a result of successive blocks potentially being independent from each other. In reality, this is one of the trade-offs of the MBB approach that can be mitigated by selecting an optimal $\ell$. To lower the inaccuracy of the procedure the selection of $\ell = N^{1/3}$ as $N \to \infty$ is optimal (proof left as an exercise to the reader). An earlier variant of MBB was called nonoverlapping block bootstrap (NBB), which prohbited the sharing of data described in \@ref(thm:nbb).
 
 ```{theorem, label="nbb", "Nonoverlapping Block Bootstrap"}
 Suppose that $\left(X_t\right)$ is weakly stationary time series with $N$ 
@@ -1407,20 +841,10 @@ $$\begin{aligned}
 
 ```
 
-Alternatively, depending on the case one can also use modification of MBB that
-seeks to change how the beginning and end of the time series is weighted
-such as a circular block-bootstrap (CBB), that seeks improve dependency by
-wrapping observations, or a stationary bootstrap (SB), that randomizes block length
-by under a geometric distribution of mean $\ell$. Regardless, the outcomes from
-using MBB on time series is considerably better than just resampling, which is 
-also possible if we set $\ell = 1$ since the length of $(X_t^*)$ is $M\times\ell$.
+Alternatively, depending on the case one can also use modification of MBB that seeks to change how the beginning and end of the time series is weighted such as a circular block-bootstrap (CBB), that seeks improve dependency by wrapping observations, or a stationary bootstrap (SB), that randomizes block length by under a geometric distribution of mean $\ell$. Regardless, the outcomes from using MBB on time series is considerably better than just resampling, which is also possible if we set $\ell = 1$ since the length of $(X_t^*)$ is $M\times\ell$.
 
 Having said this, the implementation of Theorem \@ref(thm:nbb) follows the
-similar mold of generating data, estimating, and returning a value. The most
-notably deviation from Theorem \@ref(thm:nbb) is the use of an indexing trick to
-indicate the start period of each block that allows for only one copy of the data
-to be held within memory instead of $m$ blocks of length $\ell$ in addition 
-to the initial copy.
+similar mold of generating data, estimating, and returning a value. The most notably deviation from Theorem \@ref(thm:nbb) is the use of an indexing trick to indicate the start period of each block that allows for only one copy of the data to be held within memory instead of $m$ blocks of length $\ell$ in addition to the initial copy.
 
 ```{r funblockbootstrap}
 ar1_blockboot = function(Xt, block_len = 10, B = 500) {
@@ -1452,10 +876,7 @@ ar1_blockboot = function(Xt, block_len = 10, B = 500) {
 }
 ```
 
-With the block bootstrapping technique in hand, let us consider a scenario where
-the model's assumption that the residuals will be Gaussian is violated. Consider
-two AR(1) processes with the same coefficient but different noise generation
-procedures:
+With the block bootstrapping technique in hand, let us consider a scenario where the model's assumption that the residuals will be Gaussian is violated. Consider two AR(1) processes with the same coefficient but different noise generation procedures:
 
 $$
 \begin{aligned}
@@ -1463,11 +884,7 @@ $$
 \mathcal{M}_2:&{}& X_t &=0.5 X_{t-1} + V_t,&{}& V_t\sim t_4
 \end{aligned}
 $$
-The generation procedure for $\mathcal{M}_1$ is straightforward, use: `gen_gts()`.
-However, the underlying generating mechanism for `gen_gts()` relies upon 
-the noise being Gaussian. Therefore, to generate $\mathcal{M}_2$, one must use
-_R_'s `arima.sim()` function with a custom noise generator defined to sample
-from a $t$ distribution.
+The generation procedure for $\mathcal{M}_1$ is straightforward, use: `gen_gts()`. However, the underlying generating mechanism for `gen_gts()` relies upon the noise being Gaussian. Therefore, to generate $\mathcal{M}_2$, one must use _R_'s `arima.sim()` function with a custom noise generator defined to sample from a $t$ distribution.
 
 ```{r mbbdata, cache = TRUE}
 set.seed(1)                                        # Set seed for reproducibilty
@@ -1477,22 +894,12 @@ xt_m2 = arima.sim(n = 500, list(ar = 0.5, ma = 0), # Multiple noises supported
 ```
 
 ```{r mbbdatavis, echo = F, cache = TRUE, fig.cap="AR(1) processes generated under different noise conditions."}
-library(gridExtra) 
-plot1 = autoplot(xt_m1) + ylab("Model 1")
-plot2 = autoplot(gts(xt_m2)) + ylab("Model 2")
-grid.arrange(plot1, plot2, nrow = 2) 
+par(mfrow = c(1,2))
+plot(xt_m1, main = "Model 1")
+plot(xt_m2, main = "Model 2")
 ```
 
-From Figure \@ref(fig:mbbdatavis), the time series look remarkably different as a 
-result of the noise process being altered slightly even though
-the $\phi$ coefficient was held constant. Principally, the difference is the due
-related to the variance of the $t$ distribution is defined to
-be $\frac{\nu}{\nu-2}$ for $\nu > 2$ and $\infty$ for $\nu \le 2$. Therefore, 
-the i.i.d white noise processes generated are $\sigma^2_{\mathcal{M}_1} = 1$
-when compared to the alternative $\sigma^2_{\mathcal{M}_2} = 2$. With this being said, both the
-underlying nonparametric and parametric bootstrap estimation procedures between 
-the models will be the same. The implementation for blocking approach regarding
-an AR(1) was discussed previously and the parametric approach is as follows:
+From Figure \@ref(fig:mbbdatavis), the time series look remarkably different as a result of the noise process being altered slightly even though the $\phi$ coefficient was held constant. Principally, the difference is the due related to the variance of the $t$ distribution is defined to be $\frac{\nu}{\nu-2}$ for $\nu > 2$ and $\infty$ for $\nu \le 2$. Therefore, the i.i.d white noise processes generated are $\sigma^2_{\mathcal{M}_1} = 1$ when compared to the alternative $\sigma^2_{\mathcal{M}_2} = 2$. With this being said, both the underlying nonparametric and parametric bootstrap estimation procedures betweenthe models will be the same. The implementation for blocking approach regarding an AR(1) was discussed previously and the parametric approach is as follows:
 
 ```{r ar1bootstrapper, cache = TRUE}
 ar1_paraboot = function(model, B = 10000) {
@@ -1604,18 +1011,9 @@ into $(X^*_t)$.
 
 ### Forecasting AR(p) Models
 
-One of the most interesting things in time series analysis is to predict the 
-future unobserved values based on the observed values up to now. However, it is
-not possible if the underlying model is unknown, thus in this section we assume 
-the time series $X_t$ is stationary and its model is known. In particular, we
-denote forecasts by $X^{n}_{n+m}$, where $n$ represents the data points collected
-(e.g. $\bm{X} = \{X_{1}, X_{2}, \cdots , X_{n-1}, X_n\}$) and $m$ represents the amount
-of points in the future we wish to predict. So, $X^{n}_{n+1}$ represents a
-one-step-ahead prediction $X_{n+1}$ given data $\{X_{1}, X_{2}, \cdots, X_{n-1}, X_{n}\}$.
+One of the most interesting things in time series analysis is to predict the future unobserved values based on the observed values up to now. However, it is not possible if the underlying model is unknown, thus in this section we assume the time series $X_t$ is stationary and its model is known. In particular, we denote forecasts by $X^{n}_{n+m}$, where $n$ represents the data points collected (e.g. $\bm{X} = \{X_{1}, X_{2}, \cdots , X_{n-1}, X_n\}$) and $m$ represents the amount of points in the future we wish to predict. So, $X^{n}_{n+1}$ represents a one-step-ahead prediction $X_{n+1}$ given data $\{X_{1}, X_{2}, \cdots, X_{n-1}, X_{n}\}$.
 
-To obtain forecasts, we rely upon the best linear prediction (BLP). Recall that
-the BLP Definition \@ref(def:blp) is mentioned when we calculate the PACF of AR model.
-In general, the best approach to finding the BLP is to use the Theorem \@ref(thm:projtheo).
+To obtain forecasts, we rely upon the best linear prediction (BLP). Recall that the BLP Definition \@ref(def:blp) is mentioned when we calculate the PACF of AR model. In general, the best approach to finding the BLP is to use the Theorem \@ref(thm:projtheo).
 
 ```{theorem, label="projtheo", name="Projection Theorem"}
 Let $\mathcal{M} \subset \mathcal{L}_2$ be a closed linear subspace of Hibert space. 
@@ -1625,8 +1023,6 @@ determined by the requirements
 
 1. $\hat{y} \in \mathcal{M}$ and 
 2. $(y - \hat{y}) \perp \mathcal{M}$.
-
-
 ```
 
 Projection theorem natually leads to an equivalent way to find the best linear 
@@ -1861,7 +1257,6 @@ how the predictions for an AR(2) process with $\phi _1 = 0.75$ and $\phi _2 = 0.
 vary across time in Figure \@ref(fig:predplot).
 
 ```{r predplot, cache = TRUE, echo = FALSE, fig.cap="Values of the AR(2) predictions with the pink line being the median prediction, red and green lines are respectively 95% and 75% Confidence intervals."}
-library(gmwm)
 
 gg_color_hue <- function(n, alpha = 1) {
   hues = seq(15, 375, length = n + 1)
@@ -1876,7 +1271,7 @@ Xt = gen_gts(n = 200, AR(phi = c(0.75, 0.2), sigma2 = 1))
 
 plot(NA, xlim = c(0,250), ylim  = c(-10,15), ylab="Prediction", xlab="Time")
 grid()
-lines(1:200,Xt, col = color[4])
+lines(1:200, Xt, col = color[4])
 
 
 B = 5000
@@ -1998,8 +1393,6 @@ $${X_t} = {.8}{X_{t - 3}} + {W_t}$$
 where $W_t \sim WN(0, \sigma^2_W)$.
 
 ```{r diagext, cache = T}
-library("exts")
-
 # Set seed for reproducibility
 set.seed(9123)
 
@@ -2007,7 +1400,7 @@ set.seed(9123)
 Xt = gen_gts(300, AR(phi = c(0, 0, 0.8), sigma2 = 1))
 
 # View time series
-autoplot(Xt)
+plot(Xt)
 ```
 
 With the data in hand, we will use our apriori knowledge to fit an AR(3) model.
@@ -2027,11 +1420,13 @@ classical and robust versions of the ACF to see if there may be problematic
 values within the residual time period in addition to dependency.
 
 ```{r rescompare, cache = T}
+# TO MODIFY WITH SIMTS FUNCTIONS
+
 # Standardize the residuals
-stdres = model$residuals/sd(model$residuals)
+#stdres = model$residuals/sd(model$residuals)
 
 # Graph both R/ACF
-autoplot(compare_acf(stdres))
+#autoplot(compare_acf(stdres))
 ```
 
 However, by solely observing a graph, we neglecting the efficient portmanteau
@@ -2042,8 +1437,9 @@ of white noise within residuals: Ljung-Box and Box-Pierce. The results of which
 can be obtained by:
 
 ```{r diagcorr, cache = TRUE}
-autoplot(diag_ljungbox(model, stdres = T))
-autoplot(diag_boxpierce(model, stdres = T))
+# TO MODIFY WITH SIMTS FUNCTIONS
+#autoplot(diag_ljungbox(model, stdres = T))
+#autoplot(diag_boxpierce(model, stdres = T))
 ```
 
 Within both graphs, note that at the first test point there is evidence to 
@@ -2073,8 +1469,9 @@ can be a variety of things from light to heavy tails, right to left skewed, or
 even being bimodal.
 
 ```{r diagdist, cache = TRUE}
-autoplot(diag_resid(model, std = TRUE))
-autoplot(diag_qq(model, std = TRUE))
+# TO MODIFY WITH SIMTS FUNCTIONS
+#autoplot(diag_resid(model, std = TRUE))
+#autoplot(diag_qq(model, std = TRUE))
 ```
 
 Now, each of these graphs taken independently are only one part of the
@@ -2084,7 +1481,8 @@ The function provides all of the above graphs embedded within the same display
 to enable a quick scan of the model information.
 
 ```{r diagtsmaster, cache = TRUE}
-autoplot(diag_ts(model, Xt, std = TRUE))
+# TO MODIFY WITH SIMTS FUNCTIONS
+#autoplot(diag_ts(model, Xt, std = TRUE))
 ```
 
 ## Moving Average Models
@@ -2225,3 +1623,4 @@ There is a huge problem being able to identify what the values of the parameters
 are. To ensure that this problem does not arise in practice, there is 
 the requirement for invertibility, or being able to transform an MA(q) into
 an AR($\infty$).
+

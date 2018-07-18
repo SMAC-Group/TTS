@@ -3,11 +3,22 @@ title: "A Tour of Time Series Analysis with R"
 author: "Stéphane Guerrier, Robert Molinari and Haotian Xu"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
+output:
+  bookdown::gitbook:
+    lib_dir: assets
+    split_by: section
+    config:
+      toolbar:
+        position: static
+  bookdown::pdf_book:
+    keep_tex: yes
+  bookdown::html_book:
+    css: toc.css
 documentclass: book
 bibliography: [book.bib, packages.bib]
-biblio-style: apalike
+biblio-style: "acm"
 link-citations: yes
-github-repo: SMAC-Group/ts_book
+github-repo: SMAC-Group/tts
 description: ""
 favicon: "favicon.ico"
 ---
@@ -29,7 +40,7 @@ A few things are missing here:
     - Teaching
     - Research (demo research)
 - Mentioned that there was a previous version of the book was used for STAT 429 Time Series Analysis at UIUC. The teaching part of this book is based on a typed up version of my notes.
-- I like the text below: do you find it too corny?
+- I like the text below... :D what do you think?
 ```
 
 This document is under active development and as a result is likely to contains
