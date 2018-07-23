@@ -116,14 +116,11 @@ After reading this chapter you will be able to:
 - Perform exploratory data analysis on time series data.
 - Evaluate different characteristics of a time series.
 - Classify basic time series models through equations and plots. 
-- Manipulate a time series equation using *backsubstitution*.
+<!-- - Manipulate a time series equation using *backsubstitution*. -->
 
 ## Time Series
 
-Generally speaking a *time series* (or stochastic process) corresponds to set of
-"repeated" observations of the same variable such as price of a financial asset
-or temperature in a given location. In terms of notation a time series is often
-written as
+A *time series* is a particular kind of *stochastic process* which, generally speaking, is a collection of random variables indexed by a set of numbers. Not surprisingly, the index of reference for a time series is given by *time* and, consequently, a time series is a collection of random variables indexed (or "measured") over time such as, for example, the daily price of a financial asset or the monthly average temperature in a given location. In terms of notation, a time series is often represented as
 
  \[\left(X_1, X_2, ..., X_n \right) \;\;\; \text{ or } \;\;\; \left(X_t\right)_{t = 1,...,n}.\]
  

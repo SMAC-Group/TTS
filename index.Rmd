@@ -23,7 +23,7 @@ description: ""
 favicon: "favicon.ico"
 ---
 
-# Introduction
+# Preface
 
 Welcome to A Tour of Time Series Analysis with `R` 
 
